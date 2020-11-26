@@ -34,8 +34,8 @@ def invocations():
     data = None
     if flask.request.content_type == 'application/json':
         data = flask.request.data.decode('utf-8')
-        data = json.loads(data)
         print("invocations params [{}]".format(data))
+        data = json.loads(data)
     else:
         return flask.Response(response='This predictor only supports JSON data', status=415, mimetype='text/plain')    
     
