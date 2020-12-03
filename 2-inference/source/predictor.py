@@ -13,6 +13,11 @@ DEBUG = False
 # The flask app for serving predictions
 app = flask.Flask(__name__)
 
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+
 @app.route('/ping', methods=['GET'])
 def ping():
     """Determine if the container is working and healthy. In this sample container, we declare
@@ -31,24 +36,38 @@ def hello_world():
 
 @app.route('/invocations', methods=['POST'])
 def invocations():
-    data = None
-    if flask.request.content_type == 'application/json':
-        data = flask.request.data.decode('utf-8')
-        print("invocations params [{}]".format(data))
-        data = json.loads(data)
-    else:
-        return flask.Response(response='This predictor only supports JSON data', status=415, mimetype='text/plain')    
+    content_type = flask.request.content_type
+    if content_type != 'application/json' and not(content_type.startswith("image")):
+        return flask.Response(response='This predictor only supports JSON/image data', status=415, mimetype='text/plain')
     
-    bucket = data['bucket']
     tt = time.mktime(datetime.datetime.now().timetuple())
     current_output_dir = os.path.join(init_output_dir, str(int(tt))+str(random.randint(1000,9999)))
     os.mkdir(current_output_dir)
     images=[]
-    for image_uri in data['image_uri']:
-        download_file_name = image_uri.split('/')[-1]
-        download_file_name = os.path.join(current_output_dir, download_file_name)
-        s3_client.download_file(bucket, image_uri, download_file_name)
+    
+    if content_type == 'application/json':
+        data = flask.request.data.decode('utf-8')
+        logger.info("invocations params [{}]".format(data))
+        try:
+            data = json.loads(data)
+        except:
+            return flask.Response(response='This predictor only supports JSON data', status=415, mimetype='text/plain')
+
+        bucket = data['bucket']
+        for image_uri in data['image_uri']:
+            download_file_name = image_uri.split('/')[-1]
+            download_file_name = os.path.join(current_output_dir, download_file_name)
+            s3_client.download_file(bucket, image_uri, download_file_name)
+            images.append(download_file_name)
+    else:
+        image_type = content_type.split('/')[-1]
+        file_name = "data."+image_type
+        download_file_name = os.path.join(current_output_dir, file_name)
+        with open(download_file_name, 'ba') as f:
+            f.write(flask.request.data)
         images.append(download_file_name)
+        
+        
     inference_result = ocr.predict(paths=images)
     shutil.rmtree(current_output_dir)
     
@@ -66,13 +85,14 @@ def str2bool(v):
 init_output_dir = '/opt/ml/output_dir'
 
 if not os.path.exists(init_output_dir):
-    os.mkdir(init_output_dir)
-else:
-    print("-------------init_output_dir ", init_output_dir)
+    try:
+        os.mkdir(init_output_dir)
+    except FileExistsError:
+        logger.info("File Exist.")
 
 s3_client = boto3.client("s3")
 use_gpu=str2bool(os.environ.get("USE_GPU", "False"))
-print("entry use_gpu:"+str(use_gpu))
+logger.info("entry use_gpu:"+str(use_gpu))
 ocr = OCRSystem(use_gpu=use_gpu)
 #---------------------------------------
 
