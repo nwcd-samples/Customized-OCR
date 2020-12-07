@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+  	<property resource="application.properties" />
+	<property name="LOG_PATTERN"
+		value="[%d{yyyy-MM-dd HH:mm:ss.SSS}][%level] %logger{35} - %m%n" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
+		<encoder>
+			<pattern><![CDATA[${LOG_PATTERN}]]></pattern>
+		</encoder>
+	</appender>
+
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.rootpath}/ocr.log</file>
+		<append>true</append>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern><![CDATA[${LOG_PATTERN}]]></pattern>
+		</layout>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logback.rootpath}/ocr.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="errorAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.rootpath}/error.log</file>
+		<append>true</append>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern><![CDATA[${LOG_PATTERN}]]></pattern>
+		</layout>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logback.rootpath}/error.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="dao" level="${logback.level.project}" />
+	<logger name="cn.nwcdcloud" level="${logback.level.project}" />
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="fileAppender" />
+		<appender-ref ref="errorAppender" />
+	</root>
+</configuration>
