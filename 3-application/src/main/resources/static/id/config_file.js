@@ -20,8 +20,8 @@ function init_config_map(){
     item_contract_number['target_value_name'] = '性别'              // 目标识别字段
     item_contract_number['recognition_type'] = 'horizontal'             // 类型 horizontal; vertical; all; table
     item_contract_number['key_word_list'] = ['性别']       // 可能出现的关键字
-    item_contract_number['min_length'] = 8                              // 目标识别字段 最小长度
-    item_contract_number['max_length'] = 20                             // 目标识别字段 最大长度
+    item_contract_number['min_length'] = 1                              // 目标识别字段 最小长度
+    item_contract_number['max_length'] = 1                             // 目标识别字段 最大长度
     item_contract_number['target_value_type'] = 'digit'                  // 目标识别字段 类型   char:字符;  digit 数字;
     item_list.push(item_contract_number)
 
@@ -31,8 +31,8 @@ function init_config_map(){
     item_race['target_value_name'] = '民族'              // 目标识别字段
     item_race['recognition_type'] = 'horizontal'             // 类型 horizontal; vertical; all; table
     item_race['key_word_list'] = ['民族']       // 可能出现的关键字
-    item_race['min_length'] = 8                              // 目标识别字段 最小长度
-    item_race['max_length'] = 20                             // 目标识别字段 最大长度
+    item_race['min_length'] = 1                              // 目标识别字段 最小长度
+    item_race['max_length'] = 5                             // 目标识别字段 最大长度
     item_race['target_value_type'] = 'digit'                  // 目标识别字段 类型   char:字符;  digit 数字;
     item_list.push(item_race)
 

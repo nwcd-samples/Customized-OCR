@@ -56,9 +56,11 @@ function deploy(){
 }
 
 function remove(){
-	$("#remove").attr("disabled",true);
-	$.post('inference/remove');
-	setTimeout("getStatus()",2*1000);
+	if(confirm('确认删除Endpoint?')){
+		$("#remove").attr("disabled",true);
+		$.post('inference/remove');
+		setTimeout("getStatus()",2*1000);
+	}
 }
 </script>
 </body>

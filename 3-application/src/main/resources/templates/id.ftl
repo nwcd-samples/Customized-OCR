@@ -31,8 +31,8 @@
                 <h3>身份证识别</h3>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
-                <a class="btn btn-sm btn-outline-secondary" target="_blank" href="https://aws.amazon.com/cn/about-aws/select-regions/?sc_channel=PS&sc_campaign=acquisition_CN&sc_publisher=baidu&sc_medium=bz&sc_content=pc&sc_detail=HL&sc_category=pc&sc_segment=test&sc_country=CN&trkCampaign=request_for_pilot_account&trk=baidu-ppc-test"><img src="../static/logo.jpg" /></a>
-                <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-left:5px;padding-top:8px" target="_blank" href="https://github.com/dikers/ocr-template-export">Github</a>
+                <a class="btn btn-sm btn-outline-secondary" target="_blank" href="https://www.amazonaws.cn/"><img src="../static/logo.jpg" /></a>
+                <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-left:5px;padding-top:8px" target="_blank" href="https://github.com/nwcd-samples/Customized-OCR">Github</a>
             </div>
         </div>
     </header>

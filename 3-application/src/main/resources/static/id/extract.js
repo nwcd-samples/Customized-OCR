@@ -22,7 +22,6 @@ function extract_value(blockItemList, item_list){
             //case:  如果是 '投保人'  '被保人' 特殊处理， 查询后面的性别    证件号码等信息
 
         }else if(item['recognition_type'] == 'horizontal-all'){
-
             result = doHorizontalAll(item, blockItemList)
             if (result == null){
                 continue
@@ -59,7 +58,7 @@ function doHorizontal(item, blockItemList){
     var key_word =''
     for(var i=0; i<item['key_word_list'].length; i++){
         key_word = item['key_word_list'][i]
-        console.log('\t---关键字 ',i, '  ',  key_word)
+//        console.log('\t---关键字 ',i, '  ',  key_word)
 
 
         for(var j=0; j<blockItemList.length; j++){
@@ -77,7 +76,6 @@ function doHorizontal(item, blockItemList){
             break
         }
 
-
     }
 
     result_item = {}
@@ -93,11 +91,14 @@ function doHorizontal(item, blockItemList){
     var value = ''
     //case 1.  英文或者中文引号
 
-    console.log("current_text==================== ", current_text)
 
-    value = current_text.substr(result_item['target_name'].length, current_text.length)
+
+    index =  blockItemList[j]['text'].indexOf(key_word)
+    console.log("current_text==================== ", current_text, 'index : ', index, 'key_word ', key_word, item)
+    console.log("start: ", index + result_item['target_name'].length,  'end: ', index + result_item['target_name'].length+ item['max_length'])
+    value = current_text.substr(index + result_item['target_name'].length, item['max_length'] )
     value = value.trim()
-//        console.log("=======+++++++++++++++++++[%s]", value )
+    console.log("=======+++++++++++++++++++[%s]", value )
     if(value.length>=1){
         result_item['value'] = value
         return [result_item, blockItem]
@@ -164,7 +165,7 @@ function find_target_block(item, blockItemList){
 查找一整行的元素
 */
 function doHorizontalAll(item, blockItemList){
-    console.log('查找目标名称： ', item['target_value_name'])
+    console.log('查找目标名称： ', item['target_value_name'], item)
 
         var blockItem = find_target_block(item, blockItemList)
         if(blockItem ==null){
@@ -177,7 +178,7 @@ function doHorizontalAll(item, blockItemList){
             if(blockItem['text'] == curItem['text']){
                 continue
             }
-//            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
+            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
             if(curItem['top'] > blockItem['top']- blockItem['height']
                 && curItem['bottom'] < blockItem['bottom'] + blockItem['height']){
                 console.log('\t-----------------curItem ' , curItem['text'])
@@ -196,7 +197,13 @@ function doHorizontalAll(item, blockItemList){
         var result_item = {}
         result_item['target_name'] = item['target_value_name']
         result_item['value'] = result_value
-        return [result_item, blockItem]
+
+        console.log("------------------------- 890", result_value)
+        if(result_value != null && result_value != ''){
+            return [result_item, blockItem]
+        }
+
+        return doHorizontal(item, blockItemList)
 
 }
 
