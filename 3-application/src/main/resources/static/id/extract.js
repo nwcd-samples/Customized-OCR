@@ -275,7 +275,7 @@ function find_next_right_block_item(blockItemList, blockItem){
         tempBlockItem = blockItemList[i]
 
 
-        if(tempBlockItem['left'] > blockItem['right']
+        if(tempBlockItem['left'] > blockItem['x']
             && Math.abs(tempBlockItem['y'] - blockItem['y']) < 2 * blockItem['height']
             ){
 

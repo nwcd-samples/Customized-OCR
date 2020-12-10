@@ -19,7 +19,7 @@
     <script src="/static/jcanvas.min.js"></script>
     <script src="/static/upload_${uploadType}.js"></script>
 </head>
-<body style="width:1100px;margin:0 auto;">
+<body style="width:1200px;margin:0 auto;">
 
 <div class="container-fluid" id="main" style="width:100%">
 
@@ -50,16 +50,16 @@
     </div>
 
     <div class="row" >
-        <div class="col-md-8" class="overflow-auto" id="myCanvasParent" >
+        <div class="col-md-7" class="overflow-auto" id="myCanvasParent" >
             <canvas id="myCanvas" width="600" height="400"
                   style="border:1px solid #000000;">
         </canvas>
         </div>
 
         <!-- Right Start -->
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div>
-                <img id="showImg" width="400">
+                <img id="showImg" width="500px">
             </div>
 
             <div>
@@ -67,18 +67,16 @@
                 <span>&nbsp;</span>
             </div>
 
-            <div>
+            <div style="500px">
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">名称</th>
                         <th scope="col">值</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(result, index) of result_list" >
-                        <th scope="row"><span v-text="index + 1"></span></th>
                         <td><span v-text="result.target_name"></span></td>
                         <td><span v-text="result.value"></span></td>
                     </tr>

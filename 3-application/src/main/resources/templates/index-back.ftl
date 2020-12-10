@@ -2,70 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>NICO Web 演示</title>
+<title>OCR</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body class="d-flex flex-column h-100">
-<div class="container" id="main" style="800px">
+<body>
 
-    <h1 class="mt-5 " style="width:100%;text-align:center;margin:30px" >NICO Web 演示</h1>
+<div class="container" id="main" style="width:100%">
 
-    <div class="row">
-        <div class="col-sm">
+<h1>NICO web 演示</h1>
 
-            <div style="margin-top:20px">
-                Web 服务状态: <b id="status">None</b>
-            </div>
-
-            <div style="margin-top:20px">
-                <input type="button" id="deploy" onclick="deploy();" value="创建OCR服务" disabled="disabled">
-                <input type="button" id="remove" onclick="remove();" value="删除OCR服务" disabled="disabled">
-            </div>
-
-
-
-
-
-            <div class="list-group" style="margin-top:100px;width:300px">
-                <a href="#" class="list-group-item list-group-item-action active">
-                    卡证文字识别
-                </a>
-                <a href="id" class="list-group-item list-group-item-action">身份证</a>
-                <a href="license" class="list-group-item list-group-item-action">营业执照</a>
-            </div>
-
-
-
-            <div class="list-group" style="margin-top:5px;width:300px">
-                <a href="#" class="list-group-item list-group-item-action active">
-                    财务票据文字识别
-                </a>
-                <a href="id" class="list-group-item list-group-item-action">发票识别</a>
-
-            </div>
-
-
-        </div>
-
-        <div class="col-sm">
-             <div>
-                <h3>架构说明</h3>
-                <small> 架构说明 架构说明  架构说明 </small>
-            </div>
-
-            <img style="width:500px;margin-top:30px" src="https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/a5c27d1ed21b0ef4bec482e3ddc451da81cb3e5a.jpg"/>
-        </div>
-    </div>
+Endpoint Status:<b id="status">None</b><br>
+<input type="button" id="deploy" onclick="deploy();" value="创建Endpoint" disabled="disabled">
+<input type="button" id="remove" onclick="remove();" value="删除Endpoint" disabled="disabled">
+<br>
+<a href="id">身份证</a> <a href="license">营业执照</a>
 
 </div>
-
-
-    <script>
+<script>
 $(function(){
 	getStatus();
 });

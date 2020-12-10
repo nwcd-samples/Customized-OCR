@@ -22,7 +22,7 @@ function predictBinary(){
 			console.log("正在进行，请稍候");
 		},
 		success : function(result) {
-			//console.log(JSON.stringify(result));
+			console.log(JSON.stringify(result));
 			console.log(result);
 			get_data(result);
 			$("#loading-icon").hide()
