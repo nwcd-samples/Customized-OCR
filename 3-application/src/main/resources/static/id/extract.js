@@ -96,7 +96,7 @@ function doHorizontal(item, blockItemList){
     index =  blockItemList[j]['text'].indexOf(key_word)
     console.log("current_text==================== ", current_text, 'index : ', index, 'key_word ', key_word, item)
     console.log("start: ", index + result_item['target_name'].length,  'end: ', index + result_item['target_name'].length+ item['max_length'])
-    value = current_text.substr(index + result_item['target_name'].length, item['max_length'] )
+    value = current_text.substr(index + key_word.length, item['max_length'] )
     value = value.trim()
     console.log("=======+++++++++++++++++++[%s]", value )
     if(value.length>=1){

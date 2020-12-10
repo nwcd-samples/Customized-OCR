@@ -51,7 +51,7 @@ function init_config_map(){
     item_address = {}
     item_address['target_value_name'] = '住址'              // 目标识别字段
     item_address['recognition_type'] = 'horizontal-multi-line'             // 类型 horizontal; vertical; all; table
-    item_address['key_word_list'] = ['住址']       // 可能出现的关键字
+    item_address['key_word_list'] = ['住址','佳址','往址']       // 可能出现的关键字
     item_address['min_length'] = 8                              // 目标识别字段 最小长度
     item_address['max_length'] = 20                             // 目标识别字段 最大长度
     item_address['max_line_count'] = 3                             // 最多行数
@@ -63,7 +63,7 @@ function init_config_map(){
     item_id = {}
     item_id['target_value_name'] = '公民身份号码'              // 目标识别字段
     item_id['recognition_type'] = 'horizontal'             // 类型 horizontal; vertical; all; table
-    item_id['key_word_list'] = ['公民身份号码']       // 可能出现的关键字
+    item_id['key_word_list'] = ['公民身份号码','公民身份证号码']       // 可能出现的关键字
     item_id['min_length'] = 8                              // 目标识别字段 最小长度
     item_id['max_length'] = 20                             // 目标识别字段 最大长度
     item_id['target_value_type'] = 'digit'                  // 目标识别字段 类型   char:字符;  digit 数字;
