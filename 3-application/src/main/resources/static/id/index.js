@@ -249,7 +249,6 @@ function redraw_canvas(){
     $('#myCanvas').remove(); // this is my <canvas> element
     $('#myCanvasParent').append('<canvas id="myCanvas" height="'+canvas_height+'" width="'+canvas_width+'" style="border:1px solid #000000;"></canvas>');
 
-
     console.log("---------------------------redraw_canvas  ")
     for(i =0 ; i<vue.blockItemList.length; i++){
         draw_block_inside(vue.blockItemList[i] )

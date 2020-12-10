@@ -14,12 +14,8 @@ function extract_value(blockItemList, item_list){
             if(result_item['value'] == ''){
                 continue
             }
-            if(item['target_value_name'] == '投保人' || item['target_value_name'] == '被保人' ){
-                result_item['sub_name'] = '姓名'
-            }
             result_list.push(result_item)
 
-            //case:  如果是 '投保人'  '被保人' 特殊处理， 查询后面的性别    证件号码等信息
 
         }else if(item['recognition_type'] == 'horizontal-all'){
             result = doHorizontalAll(item, blockItemList)
@@ -72,7 +68,7 @@ function doHorizontal(item, blockItemList){
         }
 
         if(find_flag){
-            console.log('\t-----------------' , key_word, blockItem['text'])
+//            console.log('\t-----------------' , key_word, blockItem['text'])
             break
         }
 
@@ -94,11 +90,10 @@ function doHorizontal(item, blockItemList){
 
 
     index =  blockItemList[j]['text'].indexOf(key_word)
-    console.log("current_text==================== ", current_text, 'index : ', index, 'key_word ', key_word, item)
+//    console.log("current_text==================== ", current_text, 'index : ', index, 'key_word ', key_word, item)
     console.log("start: ", index + result_item['target_name'].length,  'end: ', index + result_item['target_name'].length+ item['max_length'])
     value = current_text.substr(index + key_word.length, item['max_length'] )
     value = value.trim()
-    console.log("=======+++++++++++++++++++[%s]", value )
     if(value.length>=1){
         result_item['value'] = value
         return [result_item, blockItem]
@@ -139,7 +134,7 @@ function find_target_block(item, blockItemList){
         var key_word =''
         for(var i=0; i<item['key_word_list'].length; i++){
                 key_word = item['key_word_list'][i]
-                console.log('\t---关键字 ',i, '  ',  key_word)
+//                console.log('\t---关键字 ',i, '  ',  key_word)
 
                 for(var j=0; j<blockItemList.length; j++){
                    blockItemList[j]['text'] = delete_unnecessary_char(blockItemList[j]['text'])
@@ -152,7 +147,7 @@ function find_target_block(item, blockItemList){
                 }
 
                 if(find_flag){
-                    console.log('\t-----------------' , key_word, blockItem['text'])
+//                    console.log('\t-----------------' , key_word, blockItem['text'])
                     break
                 }
          }
@@ -178,10 +173,10 @@ function doHorizontalAll(item, blockItemList){
             if(blockItem['text'] == curItem['text']){
                 continue
             }
-            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
+//            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
             if(curItem['top'] > blockItem['top']- blockItem['height']
                 && curItem['bottom'] < blockItem['bottom'] + blockItem['height']){
-                console.log('\t-----------------curItem ' , curItem['text'])
+//                console.log('\t-----------------curItem ' , curItem['text'])
                 result_list.push(curItem)
             }
 
@@ -198,7 +193,6 @@ function doHorizontalAll(item, blockItemList){
         result_item['target_name'] = item['target_value_name']
         result_item['value'] = result_value
 
-        console.log("------------------------- 890", result_value)
         if(result_value != null && result_value != ''){
             return [result_item, blockItem]
         }
@@ -228,7 +222,7 @@ function doHorizontalMultiLine(item, blockItemList){
 //            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
             if(curItem['top'] > blockItem['top']- blockItem['height']
                 && curItem['bottom'] < blockItem['bottom'] + 3 * blockItem['height']){
-                console.log('\t-----------------curItem ' , curItem['text'])
+//                console.log('\t-----------------curItem ' , curItem['text'])
                 result_list.push(curItem)
             }
 
