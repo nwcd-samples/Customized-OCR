@@ -19,12 +19,12 @@
         <div class="col-sm">
 
             <div style="margin-top:20px">
-                Web 服务状态: <b id="status">None</b>
+                OCR推理服务状态: <b id="status">None</b>
             </div>
 
             <div style="margin-top:20px">
-                <input type="button" id="deploy" onclick="deploy();" value="创建OCR服务" disabled="disabled">
-                <input type="button" id="remove" onclick="remove();" value="删除OCR服务" disabled="disabled">
+                <input type="button" id="deploy" onclick="deploy();" value="创建OCR推理服务" disabled="disabled">
+                <input type="button" id="remove" onclick="remove();" value="删除OCR推理服务" disabled="disabled">
             </div>
 
 
@@ -55,10 +55,9 @@
         <div class="col-sm">
              <div>
                 <h3>架构说明</h3>
-                <small> 架构说明 架构说明  架构说明 </small>
+                <small>OCR推理服务部署在SageMaker endpoint上。<br>
+                上传图片时，支持两种方式：上传到Web服务，然后推送图片流到推理服务（默认）；上传到S3，推理服务从S3获取图片。</small>
             </div>
-
-            <img style="width:500px;margin-top:30px" src="https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/a5c27d1ed21b0ef4bec482e3ddc451da81cb3e5a.jpg"/>
         </div>
     </div>
 
@@ -106,7 +105,7 @@ function changeStatus(status){
 function deploy(){
 	$("#deploy").attr("disabled",true);
 	$.post('inference/deploy');
-	setTimeout("getStatus()",3*1000);
+	setTimeout("getStatus()",5*1000);
 }
 
 function remove(){

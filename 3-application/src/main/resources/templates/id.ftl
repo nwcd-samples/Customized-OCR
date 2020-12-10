@@ -31,6 +31,7 @@
                 <h3>身份证识别</h3>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
+                <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-right:5px;padding-top:8px" href="/">返回首页</a>
                 <a class="btn btn-sm btn-outline-secondary" target="_blank" href="https://www.amazonaws.cn/"><img src="../static/logo.jpg" /></a>
                 <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-left:5px;padding-top:8px" target="_blank" href="https://github.com/nwcd-samples/Customized-OCR">Github</a>
             </div>
