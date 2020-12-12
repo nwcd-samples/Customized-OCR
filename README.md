@@ -34,7 +34,7 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 #### 运行Web服务
 命令：`java -jar ocr-0.1.0.jar`  
 如果需要把上传的文件存放到S3，请使用命令：`java -jar ocr-0.1.0.jar --uploadType=s3 --bucketName=<BucketName>`  
-注意：文件上传到S3时，需要设置该存储桶的跨源资源共享(CORS)，参见常见问题的[如何设置S3存储桶跨源资源共享(CORS)](#如何设置S3存储桶跨源资源共享(CORS))  
+注意：文件上传到S3时，需要设置该存储桶的跨源资源共享(CORS)，参见常见问题的[如何设置S3存储桶跨源资源共享(CORS)](#如何设置S3存储桶跨源资源共享cors)  
 启动成功会输出以下类似内容：
 ```
 [2020-12-12 10:55:33.954][DEBUG] c.n.samples.ocr.OcrApplication - Running with Spring Boot v2.4.0, Spring v5.3.1
