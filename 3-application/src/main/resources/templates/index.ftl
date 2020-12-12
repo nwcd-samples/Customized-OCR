@@ -13,7 +13,7 @@
 <body class="d-flex flex-column h-100">
 <div class="container" id="main" style="800px">
 
-    <h1 class="mt-5 " style="width:100%;text-align:center;margin:30px" >NICO Web 演示</h1>
+    <h1 class="mt-3 " style="width:100%;text-align:center;margin:30px" >NICO Web 演示</h1>
 
     <div class="row">
         <div class="col-sm">
@@ -31,7 +31,7 @@
 
 
 
-            <div class="list-group" style="margin-top:100px;width:300px">
+            <div class="list-group" style="margin-top:50px;width:300px">
                 <a href="#" class="list-group-item list-group-item-action active">
                     卡证文字识别
                 </a>
@@ -104,8 +104,15 @@ function changeStatus(status){
 
 function deploy(){
 	$("#deploy").attr("disabled",true);
-	$.post('inference/deploy');
-	setTimeout("getStatus()",5*1000);
+	$.post('inference/deploy',{},
+		    function(result) {
+				if (result.code == 1) {
+					setTimeout("getStatus()",3*1000);
+				}else{
+					alert(result.msg);
+				}
+	        },
+	        "json");
 }
 
 function remove(){
