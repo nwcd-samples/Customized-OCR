@@ -4,12 +4,18 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.InferenceService;
+import cn.nwcdcloud.samples.ocr.service.TextractService;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;
@@ -34,6 +40,11 @@ import software.amazon.awssdk.utils.StringUtils;
 
 @Service
 public class InferenceServiceImpl implements InferenceService {
+	private static Map<String, TextractService> mapTextractService = new HashMap<>();
+
+	public void addTextractService(String key, TextractService textractService) {
+		mapTextractService.put(key, textractService);
+	}
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -46,10 +57,9 @@ public class InferenceServiceImpl implements InferenceService {
 		result.setData(response.body().asUtf8String());
 		return result;
 	}
-	
 
 	@Override
-	public Result invokeEndpoint(String endpointName,String contentType, InputStream inputStream) {
+	public Result invokeEndpoint(String endpointName, String contentType, InputStream inputStream) {
 		Result result = new Result();
 		SdkBytes requestBody = SdkBytes.fromInputStream(inputStream);
 		InvokeEndpointRequest request = InvokeEndpointRequest.builder().endpointName(endpointName)
@@ -117,7 +127,7 @@ public class InferenceServiceImpl implements InferenceService {
 
 	private String getRoleArn() {
 		String roleArn = "";
-		//IAM必须明确指定Region为cn-north-1
+		// IAM必须明确指定Region为cn-north-1
 		IamClient client = IamClient.builder().region(Region.CN_NORTH_1).build();
 		ListRolesRequest request = ListRolesRequest.builder().pathPrefix("/service-role").build();
 		ListRolesResponse response = client.listRoles(request);
@@ -154,5 +164,35 @@ public class InferenceServiceImpl implements InferenceService {
 				.build();
 		client.deleteEndpointConfig(request2);
 		return result;
+	}
+
+	private Result doPredict(String type, String data) {
+		TextractService textractService = mapTextractService.get(type);
+		if (textractService == null) {
+			Result result2 = new Result();
+			result2.setCode(10);
+			result2.setMsg("无对应解析器");
+			return result2;
+		}
+		JSONArray json = JSON.parseArray(data);
+		return textractService.parse(json);
+	}
+
+	@Override
+	public Result predict(String type, String endpointName, String body) {
+		Result result = invokeEndpoint(endpointName, body);
+		if (result.getCode() != CommonConstants.NORMAL) {
+			return result;
+		}
+		return doPredict(type, (String) result.getData());
+	}
+
+	@Override
+	public Result predict(String type, String endpointName, String contentType, InputStream inputStream) {
+		Result result = invokeEndpoint(endpointName, contentType, inputStream);
+		if (result.getCode() != CommonConstants.NORMAL) {
+			return result;
+		}
+		return doPredict(type, (String) result.getData());
 	}
 }

@@ -11,7 +11,7 @@ function generatePresignedUrl(){
 	$.post("/generatePresignedUrl",
 			  {},
 			  function(result) {
-			      if (result.code==1) {
+			      if (result.code == 1) {
 					  data=result.data;
 					  console.log(data);
 					  upload(data);
@@ -48,8 +48,13 @@ function predict(keyName){
 		  {"keyName":keyName},
 		  function(result) {
 			  console.log(result);
-			  get_data(result);
-			  $("#loading-icon").hide()
+		      $("#loading-icon").hide();
+		      if (result.code == 1) {
+		    	  data = JSON.parse(result.data);
+		    	  get_data(data[0]);
+		      }else{
+		    	  alert(result.msg);
+		      }
 		  },
 		  "json");
 }

@@ -11,7 +11,7 @@ function predictBinary(){
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
 	$.ajax({
-		url : "/inference/predictBinary", 
+		url : "/inference/predictBinary/id", 
 		type : 'POST', 
 		data : file, 
 		processData : false,
@@ -22,10 +22,14 @@ function predictBinary(){
 			console.log("正在进行，请稍候");
 		},
 		success : function(result) {
-			console.log(JSON.stringify(result));
 			console.log(result);
-			get_data(result);
-			$("#loading-icon").hide()
+		    $("#loading-icon").hide();
+		    if (result.code == 1) {
+		    	data = JSON.parse(result.data);
+		    	get_data(data[0]);
+		    }else{
+		    	alert(result.msg);
+		    }
 		}, 
 		error : function(responseStr) { 
 			console.log(responseStr);
