@@ -47,7 +47,7 @@ RUN pip install awscli==1.18.181 -i https://opentuna.cn/pypi/web/simple && aws c
 ENV PYTHONUNBUFFERED=TRUE
 ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/ml/code/:${PATH}"
-ENV MODEL_SERVER_WORKERS=1
+#ENV MODEL_SERVER_WORKERS=1
 ENV USE_GPU=False
 
 ENTRYPOINT ["python3"]
