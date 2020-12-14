@@ -40,11 +40,19 @@ def invocations():
     if content_type != 'application/json' and not(content_type.startswith("image")):
         return flask.Response(response='This predictor only supports JSON/image data', status=415, mimetype='text/plain')
     
-    tt = time.mktime(datetime.datetime.now().timetuple())
-    current_output_dir = os.path.join(init_output_dir, str(int(tt))+str(random.randint(1000,9999)))
-    os.mkdir(current_output_dir)
-    images=[]
+    tt = time.strftime("%Y%m%d%H%M%S", time.localtime())
+    for i in range(0,5):
+        current_output_dir = os.path.join(init_output_dir,tt+str(random.randint(1000,9999)))
+        if not os.path.exists(current_output_dir):
+            try:
+                os.mkdir(current_output_dir)
+                break
+            except FileExistsError:
+                logger.info("Dir Exist."+current_output_dir)
+    else:
+        return flask.Response(response='Make dir error', status=500, mimetype='text/plain')
     
+    images=[]
     if content_type == 'application/json':
         data = flask.request.data.decode('utf-8')
         logger.info("invocations params [{}]".format(data))
@@ -88,7 +96,7 @@ if not os.path.exists(init_output_dir):
     try:
         os.mkdir(init_output_dir)
     except FileExistsError:
-        logger.info("File Exist.")
+        logger.info("Dir Exist.")
 
 s3_client = boto3.client("s3")
 use_gpu=str2bool(os.environ.get("USE_GPU", "False"))
