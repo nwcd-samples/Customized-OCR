@@ -1,5 +1,8 @@
 package cn.nwcdcloud.samples.ocr.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -17,6 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.InferenceService;
+import cn.nwcdcloud.samples.ocr.service.SageMakerService;
 
 @RequestMapping("inference")
 @Controller
@@ -24,6 +28,8 @@ public class InferenceController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private InferenceService inferenceService;
+	@Autowired
+	private SageMakerService sageMakerService;
 	@Value("${bucketName}")
 	private String bucketName;
 	@Value("${imageUri}")
@@ -36,19 +42,19 @@ public class InferenceController {
 	@PostMapping("/deploy")
 	@ResponseBody
 	public String deploy() {
-		return inferenceService.deploy(endpointName, imageUri, instanceType).toString();
+		return sageMakerService.deploy(endpointName, imageUri, instanceType).toString();
 	}
 
 	@PostMapping("/remove")
 	@ResponseBody
 	public String remove() {
-		return inferenceService.remove(endpointName).toString();
+		return sageMakerService.remove(endpointName).toString();
 	}
 
 	@GetMapping("/getEndpointStatus")
 	@ResponseBody
 	public String getEndpointStatus() {
-		String result = inferenceService.getEndpointStatus(endpointName);
+		String result = sageMakerService.getEndpointStatus(endpointName);
 		return result;
 	}
 
@@ -58,7 +64,7 @@ public class InferenceController {
 		JSONObject jsonRequest = new JSONObject();
 		jsonRequest.put("bucket", bucketName);
 		jsonRequest.put("image_uri", new String[] { keyName });
-		Result result = inferenceService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
+		Result result = sageMakerService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
 		return result.toString();
 	}
 
@@ -66,7 +72,7 @@ public class InferenceController {
 	@ResponseBody
 	public String predictBinary(HttpServletRequest request) {
 		try {
-			Result result = inferenceService.invokeEndpoint(endpointName, request.getContentType(),
+			Result result = sageMakerService.invokeEndpoint(endpointName, request.getContentType(),
 					request.getInputStream());
 			return result.toString();
 		} catch (Exception e) {
@@ -81,7 +87,7 @@ public class InferenceController {
 		JSONObject jsonRequest = new JSONObject();
 		jsonRequest.put("bucket", bucketName);
 		jsonRequest.put("image_uri", new String[] { keyName });
-		Result result = inferenceService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
+		Result result = inferenceService.predict(type, endpointName, jsonRequest.toJSONString());
 		return result.toString();
 	}
 
@@ -95,6 +101,38 @@ public class InferenceController {
 		} catch (Exception e) {
 			logger.warn("图片推理报错", e);
 			return "{}";
+		}
+	}
+
+	@PostMapping("/analysis/{type}")
+	@ResponseBody
+	public String analyse(@PathVariable("type") String type, HttpServletRequest request) {
+		Result result = inferenceService.analyse(type, getRequestContent(request));
+		return result.toString();
+	}
+
+	private String getRequestContent(HttpServletRequest request) {
+		// 获取POST数据
+		BufferedReader bufReader = null;
+		try {
+			bufReader = request.getReader();
+			String line = null;
+			StringBuffer sbBody = new StringBuffer();
+			while ((line = bufReader.readLine()) != null) {
+				sbBody.append(line);
+			}
+			return sbBody.toString();
+		} catch (IOException e) {
+			logger.info("获取POST数据时出错", e);
+			return null;
+		} finally {
+			if (bufReader != null) {
+				try {
+					bufReader.close();
+				} catch (IOException e) {
+					logger.info("关闭获取POST数据流时出错", e);
+				}
+			}
 		}
 	}
 }
