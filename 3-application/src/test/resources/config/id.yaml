@@ -1,0 +1,11 @@
+template-name: 'id-ocr-template'
+
+target:
+  - name: "姓名"
+    recognition-type: ""
+
+  - name: "出生"
+    recognition-type: ""
+    x-range-min: 0      # 百分比
+    x-range-max: 100
+
