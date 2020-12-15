@@ -11,37 +11,41 @@ import java.util.List;
 
 public class TextractUtil {
     private static final Logger logger = LoggerFactory.getLogger(TextractUtil.class);
-    public static void parseData(JSONObject jsonObject){
+
+
+    public static void parseData(JSONObject jsonObject, int pageWidth, int pageHeight){
 
         logger.info(jsonObject.toJSONString());
         logger.info(jsonObject.getJSONObject("DocumentMetadata").toJSONString());
         Integer pageCount = jsonObject.getJSONObject("DocumentMetadata").getInteger("Pages");
-        logger.info("" + pageCount);
+        logger.info("页数： {} ",  pageCount);
 
         if(pageCount<=0){
             logger.warn("该文档 没有内容");
             return;
         }
 
-
-        float margin_document_top = 0.0f;      //累计文档开始高度
-        List blockItemList =  new ArrayList();    //保存所有元素的列表
-        float document_page_height = 0.0f;      //文档的累计总高度
-
         //TODO:  先处理单页的情况，
-        blockItemList = parseDataByPageCount(1, jsonObject.getJSONArray("Blocks"));
+        List<JSONObject> blockItemList = parseDataByPageCount(1, jsonObject.getJSONArray("Blocks"), pageWidth, pageHeight);
 
 
     }
 
-    private static List parseDataByPageCount(int pageCount, JSONArray jsonArray){
+    /**
+     * 返回每页的元素列表
+     * @param pageCount
+     * @param jsonArray
+     * @return
+     */
+    private static List<JSONObject> parseDataByPageCount(int pageCount, JSONArray jsonArray,  int pageWidth, int pageHeight){
         List<JSONObject> blockList = new ArrayList<JSONObject>();
         logger.info(" 共有Blocks {} 个元素 ", jsonArray.size());
 
         for(int i=0; i<jsonArray.size(); i++){
             JSONObject blockItem = jsonArray.getJSONObject(i);
             String blockType = blockItem.getString("BlockType");
-            if(blockItem.getInteger("Page") == pageCount && ("WORD".equals(blockType) || "LINE".equals(blockType))){
+            if(blockItem.getInteger("Page") == pageCount
+                    && ("WORD".equals(blockType) || "LINE".equals(blockType))){
                 blockList.add(blockItem);
                 logger.info(" {} {} {} ", blockItem.getString("Page"), blockItem.getString("BlockType"),
                         blockItem.getString("Text"));
@@ -60,12 +64,21 @@ public class TextractUtil {
         List<JSONObject> newBlockItemList = new ArrayList<JSONObject>();
 
         for(int i=0; i<blockList.size(); i++){
-
-            createBlockItem(matrixList, blockList.get(i));
-
+            newBlockItemList.add(createBlockItem(matrixList, blockList.get(i)));
+        }
+        JSONObject pageMargin = initPageMargin(newBlockItemList);
+        for(int i=0; i<newBlockItemList.size(); i++){
+            reArrangePositionBlockItem(newBlockItemList.get(i), pageMargin);
         }
 
-        return null;
+        double documentPageHeight = pageMargin.getDouble("bottom") - pageMargin.getDouble("top");
+        double documentZoomOutHeight = pageHeight * documentPageHeight;
+
+        for(int i=0; i<newBlockItemList.size(); i++){
+            zoomLayoutBlockItem(newBlockItemList.get(i), documentZoomOutHeight, pageWidth, pageHeight);
+        }
+
+        return newBlockItemList;
     }
 
 
@@ -128,9 +141,9 @@ public class TextractUtil {
 
 
     /**
-     计算所有元素经过旋转以后的新坐标
+     计算所有元素经过旋转以后的新坐标 ， 生成新blockItem
      */
-    private static void createBlockItem(List<Double> matrixList, JSONObject rawBlockItem){
+    private static JSONObject createBlockItem(List<Double> matrixList, JSONObject rawBlockItem){
 
         JSONArray pointArray = rawBlockItem.getJSONObject("Geometry").getJSONArray("Polygon");
         logger.info("createBlockItem ---------------   {} ", rawBlockItem.getString("Text"));
@@ -151,38 +164,14 @@ public class TextractUtil {
         }
 
 
+        JSONObject blockItem = new JSONObject();
+//        blockItem.put("id", rawBlockItem.getString("Id"));
+        blockItem.put("newPoly", newPolyArray);
+        blockItem.put("text", rawBlockItem.getString("Text"));
+//        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
 
-
-//        //对坐标按照原点进行旋转
-//        for(j=0; j<polyList.length; j++){
-//            //围绕中心点旋转
-//            ploy = {}
-//            ploy['x'] = polyList[j]['X'] - 0.5
-//            ploy['y'] = polyList[j]['Y'] - 0.5
-//            newPloy = matrix_rotate(matrix, ploy)
-//            newPloy['x'] =   newPloy['x']+ 0.5
-//            newPloy['y'] =   newPloy['y']+ 0.5
-//            polyArray.push(newPloy)
-//        }
-//
-//
-////    封装block 元素， 供页面显示
-//        var blockItem = {
-//                id:block['Id'],
-//                raw_block_type: block['BlockType'],   // LINE or WORD
-//                newPoly:polyArray,
-//                selected:0,  // 是否选中
-//                blockType:0, //0 默认;  1 表头; 2 表格中的值
-//                text:block['Text']
-//        };
-//
-//        // 如果是行元素， 保存它的孩子元素 WORD
-//        if(blockItem['raw_block_type'] == 'LINE' ){
-//            blockItem['child_list'] = block['Relationships'][0]['Ids']
-//            blockItem['child_count'] = block['Relationships'][0]['Ids'].length
-//            blockItem['is_split'] = false  // 是否做拆分
-//        }
-
+        logger.info("    {} ", blockItem.toJSONString());
+        return blockItem;
 
     }
 
@@ -205,18 +194,99 @@ public class TextractUtil {
         return newPoint;
     }
 
-//    function matrix_rotate(m, point){
-//
-//        var a = point['x']
-//        var b = point['y']
-//        var X = m[0]*a + m[1]*b
-//        var Y = m[2]*a + m[3]*b
-//        var new_point = {}
-//        new_point['x']=X
-//        new_point['y']=Y
-////    console.log('point: %f, %f , new point: %f  %f',a, b , X, Y)
-//        return new_point
-//    }
 
+    /**
+     * 找到每一页空白的地方， 去除掉， 防止有偏移
+     * @param blockItemList
+     * @return
+     */
+    private static JSONObject initPageMargin(List<JSONObject> blockItemList){
+
+        double pageTop = 1;
+        double pageBottom = 0.0;
+        double pageLeft = 1;
+        double pageRight = 0.0;
+
+        for(int i=0; i< blockItemList.size(); i++){
+            JSONObject item = blockItemList.get(i);
+            JSONArray polyArray =  item.getJSONArray("newPoly");
+            double top = polyArray.getJSONObject(0).getDouble("y");
+            double left = polyArray.getJSONObject(0).getDouble("x");
+            double bottom = polyArray.getJSONObject(2).getDouble("y");
+            double right = polyArray.getJSONObject(2).getDouble("x");
+
+            if(top < pageTop){
+                pageTop = top;
+            }
+            if(left < pageLeft){
+                pageLeft = left;
+            }
+            if(bottom > pageBottom){
+                pageBottom = bottom;
+            }
+            if(right > pageRight){
+                pageRight = right;
+            }
+
+        }
+        JSONObject pageMargin = new JSONObject();
+        pageMargin.put("top", pageTop);
+        pageMargin.put("bottom", pageBottom);
+        pageMargin.put("left", pageLeft);
+        pageMargin.put("right", pageRight);
+        pageMargin.put("height", pageBottom - pageTop);
+
+        pageMargin.put("height_rate", 1.0/(pageBottom - pageTop));
+        pageMargin.put("width_rate", 1.0/(pageRight - pageLeft));
+
+        logger.info("page margin    {} ", pageMargin.toJSONString());
+        return pageMargin;
+
+    }
+
+    /**
+     删除空白区域以后，加上前面所有页的高度， 将所有页面合并到一起
+     */
+    private static void reArrangePositionBlockItem(JSONObject blockItem, JSONObject pageMargin){
+
+        double pageTop = pageMargin.getDouble("top");
+        double pageLeft = pageMargin.getDouble(("left"));
+//        logger.info("\n{}----------------- reArrangePositionBlockItem  {} ",blockItem.getString("text"), blockItem.toJSONString());
+        JSONArray polyArray = blockItem.getJSONArray("newPoly");
+
+        for(int i=0; i< polyArray.size(); i++ ){
+            JSONObject poly = polyArray.getJSONObject(i);
+//            logger.info("---------------^^^  {}  {} {} ", poly.getDouble("x"), pageLeft, pageMargin.getDouble("width_rate"));
+            poly.put("x" , ((poly.getDouble("x") - pageLeft) * pageMargin.getDouble("width_rate")));
+            poly.put("y" , (poly.getDouble("y") - pageTop) );
+        }
+    }
+
+    /**
+     * 把现有元素等比例放大， 占满空间
+     * @return
+     */
+    private static void zoomLayoutBlockItem(JSONObject blockItem, double documentZoomOutHeight,
+                                            int pageWidth, int pageHeight){
+        JSONArray polyArray = blockItem.getJSONArray("newPoly");
+
+        for(int i=0; i< polyArray.size(); i++ ){
+            JSONObject poly = polyArray.getJSONObject(i);
+            poly.put("x", (int) (poly.getDouble("x")* pageWidth));
+            poly.put("y", (int) (poly.getDouble("y")* pageHeight));
+        }
+
+        blockItem.put("width", (int)((polyArray.getJSONObject(1).getDouble("x") - polyArray.getJSONObject(0).getDouble("x"))));
+        blockItem.put("height", (int)((polyArray.getJSONObject(3).getDouble("y") - polyArray.getJSONObject(0).getDouble("y"))));
+        blockItem.put("left", (int)(polyArray.getJSONObject(0).getDouble("x").doubleValue()));
+        blockItem.put("top", (int)(polyArray.getJSONObject(0).getDouble("y")).doubleValue());
+
+        blockItem.put("right", (int)(polyArray.getJSONObject(1).getDouble("x")).doubleValue());
+        blockItem.put("bottom", (int)(polyArray.getJSONObject(2).getDouble("y")).doubleValue());
+
+        blockItem.put("x", (int)(polyArray.getJSONObject(2).getDouble("x") - polyArray.getJSONObject(0).getDouble("x")/2.0));
+        blockItem.put("y", (int)(polyArray.getJSONObject(2).getDouble("y") - polyArray.getJSONObject(0).getDouble("y")/2.0));
+
+    }
 
 }

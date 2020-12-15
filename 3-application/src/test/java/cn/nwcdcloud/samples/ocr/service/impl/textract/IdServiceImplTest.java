@@ -46,6 +46,6 @@ public class IdServiceImplTest {
 
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        TextractUtil.parseData(jsonObject);
+        TextractUtil.parseData(jsonObject, 1124, 800);
     }
 }
