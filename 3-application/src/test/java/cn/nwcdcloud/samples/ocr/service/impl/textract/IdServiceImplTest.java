@@ -1,16 +1,19 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import cn.nwcdcloud.commons.utils.FileUtils;
-import cn.nwcdcloud.commons.utils.TextractUtil;
+import cn.nwcdcloud.commons.utils.BlockItemUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.ho.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IdServiceImplTest {
 
@@ -22,19 +25,19 @@ public class IdServiceImplTest {
     @Before
     public void setUp() throws Exception {
 
-        logger.info("-------------- setUp");
-        String jsonArrayPath=this.getClass().getResource(ID_SAMPLE_JSON_ARRAY_FILE).getFile().toString();
-        JSONArray jsonArray = FileUtils.readJsonArray(jsonArrayPath);//前面两行是读取文件
-        logger.info("-------------- jsonArray size: " + jsonArray.size());
-        assert (jsonArray.size()>=1);
-
-
-
-
-        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
-        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-
-        assert (jsonObject != null);
+//        logger.info("-------------- setUp");
+//        String jsonArrayPath=this.getClass().getResource(ID_SAMPLE_JSON_ARRAY_FILE).getFile().toString();
+//        JSONArray jsonArray = FileUtils.readJsonArray(jsonArrayPath);//前面两行是读取文件
+//        logger.info("-------------- jsonArray size: " + jsonArray.size());
+//        assert (jsonArray.size()>=1);
+//
+//
+//
+//
+//        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
+//        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+//
+//        assert (jsonObject != null);
 
 
 
@@ -42,10 +45,17 @@ public class IdServiceImplTest {
 
     @Test
     public void parse() {
-        logger.info("-------------- parse");
 
-        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
-        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        TextractUtil.parseData(jsonObject, 1124, 800);
+//
+//        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
+//        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+//        BlockItemUtil.getBlockItemList(jsonObject, 1124, 800);
+    }
+
+    @Test
+    public void readConfig() throws FileNotFoundException {
+        logger.info("-------------- readConfig");
+
+
     }
 }

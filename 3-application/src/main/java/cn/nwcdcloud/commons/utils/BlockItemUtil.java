@@ -5,29 +5,29 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextractUtil {
-    private static final Logger logger = LoggerFactory.getLogger(TextractUtil.class);
+/**
+ * 解析Textract返回的json数据， 生成元素列表， 供后续进行结构化提取
+ */
+public class BlockItemUtil {
+    private static final Logger logger = LoggerFactory.getLogger(BlockItemUtil.class);
 
+    public static List<JSONObject> getBlockItemList(JSONObject jsonObject, int pageWidth, int pageHeight){
 
-    public static void parseData(JSONObject jsonObject, int pageWidth, int pageHeight){
-
-        logger.info(jsonObject.toJSONString());
-        logger.info(jsonObject.getJSONObject("DocumentMetadata").toJSONString());
+//        logger.info(jsonObject.toJSONString());
+//        logger.info(jsonObject.getJSONObject("DocumentMetadata").toJSONString());
         Integer pageCount = jsonObject.getJSONObject("DocumentMetadata").getInteger("Pages");
         logger.info("页数： {} ",  pageCount);
 
         if(pageCount<=0){
             logger.warn("该文档 没有内容");
-            return;
+            return null;
         }
 
-        //TODO:  先处理单页的情况，
-        List<JSONObject> blockItemList = parseDataByPageCount(1, jsonObject.getJSONArray("Blocks"), pageWidth, pageHeight);
-
+        //TODO:  先处理单页的情况, 或者元素坐标， 进行转正 去空白等操作。
+        return parseDataByPageCount(1, jsonObject.getJSONArray("Blocks"), pageWidth, pageHeight);
 
     }
 
@@ -59,13 +59,16 @@ public class TextractUtil {
         // 取出最长的元素， 找到旋转角度， 让它保持水平。
         JSONObject maxWidthBlockItem = findMaxWidthBlockItem(blockList);
 
+        // 计算旋转矩阵， 用于对元素进行旋转
         List<Double> matrixList = computeDegree(maxWidthBlockItem);
+
 
         List<JSONObject> newBlockItemList = new ArrayList<JSONObject>();
 
         for(int i=0; i<blockList.size(); i++){
             newBlockItemList.add(createBlockItem(matrixList, blockList.get(i)));
         }
+        //去除左右空白， 将多页合并到一起， （目前是一页）
         JSONObject pageMargin = initPageMargin(newBlockItemList);
         for(int i=0; i<newBlockItemList.size(); i++){
             reArrangePositionBlockItem(newBlockItemList.get(i), pageMargin);
@@ -74,6 +77,7 @@ public class TextractUtil {
         double documentPageHeight = pageMargin.getDouble("bottom") - pageMargin.getDouble("top");
         double documentZoomOutHeight = pageHeight * documentPageHeight;
 
+        // 让元素占满整个空间， 在Y轴方向进行拉伸
         for(int i=0; i<newBlockItemList.size(); i++){
             zoomLayoutBlockItem(newBlockItemList.get(i), documentZoomOutHeight, pageWidth, pageHeight);
         }
@@ -82,33 +86,6 @@ public class TextractUtil {
     }
 
 
-    /**
-     找到最宽的元素， 用它来进行页面的旋转
-     */
-
-    private static JSONObject findMaxWidthBlockItem(List<JSONObject> blockList){
-        JSONObject resultItem = null;
-        double max_width = 0.0;
-        for(int i=0; i< blockList.size(); i++){
-            JSONObject item = blockList.get(i);
-
-            BigDecimal width = item.getJSONObject("Geometry").getJSONObject("BoundingBox").getBigDecimal("Width");
-            if( width.doubleValue() > max_width){
-                max_width = width.doubleValue();
-                resultItem = item;
-            }
-
-        }
-        if(resultItem !=null){
-            logger.info("findMaxWidthBlockItem {}", resultItem.toJSONString());
-        }else {
-            logger.warn("findMaxWidthBlockItem  没有找到结果");
-        }
-
-        return resultItem;
-
-
-    }
 
     /**
      * 计算用于界面旋转的矩阵
@@ -139,14 +116,15 @@ public class TextractUtil {
 
     }
 
-
     /**
-     计算所有元素经过旋转以后的新坐标 ， 生成新blockItem
+     * 计算所有元素经过旋转以后的新坐标 ， 生成新blockItem
+     * @param matrixList
+     * @param rawBlockItem
+     * @return
      */
     private static JSONObject createBlockItem(List<Double> matrixList, JSONObject rawBlockItem){
 
         JSONArray pointArray = rawBlockItem.getJSONObject("Geometry").getJSONArray("Polygon");
-        logger.info("createBlockItem ---------------   {} ", rawBlockItem.getString("Text"));
 
         JSONArray newPolyArray = new JSONArray();
         for(int i=0; i<pointArray.size(); i++){
@@ -159,7 +137,7 @@ public class TextractUtil {
             newPloy.put("y", newPloy.getDouble("y")+ 0.5);
             newPolyArray.add(newPloy);
 
-            logger.info(" x: {} y: {} ", newPloy.getString("x"), newPloy.getString("y"));
+//            logger.info(" x: {} y: {} ", newPloy.getString("x"), newPloy.getString("y"));
 //            logger.info(" x: {} y: {} ", pointArray.getJSONObject(i).getDouble("X"), pointArray.getJSONObject(i).getDouble("Y"));
         }
 
@@ -170,7 +148,7 @@ public class TextractUtil {
         blockItem.put("text", rawBlockItem.getString("Text"));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
 
-        logger.info("    {} ", blockItem.toJSONString());
+//        logger.info("    {} ", blockItem.toJSONString());
         return blockItem;
 
     }
@@ -245,7 +223,9 @@ public class TextractUtil {
     }
 
     /**
-     删除空白区域以后，加上前面所有页的高度， 将所有页面合并到一起
+     * 删除空白区域以后，加上前面所有页的高度， 将所有页面合并到一起
+     * @param blockItem
+     * @param pageMargin
      */
     private static void reArrangePositionBlockItem(JSONObject blockItem, JSONObject pageMargin){
 
@@ -287,6 +267,28 @@ public class TextractUtil {
         blockItem.put("x", (int)(polyArray.getJSONObject(2).getDouble("x") - polyArray.getJSONObject(0).getDouble("x")/2.0));
         blockItem.put("y", (int)(polyArray.getJSONObject(2).getDouble("y") - polyArray.getJSONObject(0).getDouble("y")/2.0));
 
+        logger.info("-------- {} ",blockItem.toJSONString());
+
     }
+
+    /**
+     * 找到最宽的元素， 用它来进行页面的旋转
+     * @param blockList
+     * @return
+     */
+    private static JSONObject findMaxWidthBlockItem(List<JSONObject> blockList){
+        JSONObject resultItem = blockList.get(0);
+        double max_width = 0.0;
+        for(int i=0; i< blockList.size(); i++){
+            JSONObject item = blockList.get(i);
+            double width = item.getJSONObject("Geometry").getJSONObject("BoundingBox").getDouble("Width");
+            if( width > max_width){
+                max_width = width;
+                resultItem = item;
+            }
+        }
+        return resultItem;
+    }
+
 
 }
