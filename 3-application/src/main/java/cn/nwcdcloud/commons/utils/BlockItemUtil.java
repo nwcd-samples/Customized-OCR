@@ -145,7 +145,7 @@ public class BlockItemUtil {
         JSONObject blockItem = new JSONObject();
 //        blockItem.put("id", rawBlockItem.getString("Id"));
         blockItem.put("newPoly", newPolyArray);
-        blockItem.put("text", rawBlockItem.getString("Text"));
+        blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
 
 //        logger.info("    {} ", blockItem.toJSONString());
@@ -264,8 +264,8 @@ public class BlockItemUtil {
         blockItem.put("right", (int)(polyArray.getJSONObject(1).getDouble("x")).doubleValue());
         blockItem.put("bottom", (int)(polyArray.getJSONObject(2).getDouble("y")).doubleValue());
 
-        blockItem.put("x", (int)(polyArray.getJSONObject(2).getDouble("x") - polyArray.getJSONObject(0).getDouble("x")/2.0));
-        blockItem.put("y", (int)(polyArray.getJSONObject(2).getDouble("y") - polyArray.getJSONObject(0).getDouble("y")/2.0));
+        blockItem.put("x", (int)((polyArray.getJSONObject(2).getDouble("x") + polyArray.getJSONObject(0).getDouble("x"))/2.0));
+        blockItem.put("y", (int)((polyArray.getJSONObject(2).getDouble("y") + polyArray.getJSONObject(0).getDouble("y"))/2.0));
 
         logger.info("-------- {} ",blockItem.toJSONString());
 
@@ -290,5 +290,15 @@ public class BlockItemUtil {
         return resultItem;
     }
 
+    /**
+     * 去掉字符串中 多余的字符
+     */
+    private static String deleteUnnecessaryChar(String oldString){
+
+        if (oldString == null || "".equals(oldString)){
+            return "";
+        }
+        return oldString.replaceAll(" ", "");
+    }
 
 }

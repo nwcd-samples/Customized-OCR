@@ -6,15 +6,75 @@ target:
     key-word-list: ["姓名", "名字"]
     min-length: 2
     max-length: 6
+    max-line-count: 1
     target-value-type: "char"
-    x-range-min: 0
-    x-range-max: 40
-    y-range-min: 0
-    y-range-max: 40
+    x-range-min: 0.0
+    x-range-max: 0.30
+    y-range-min: 0.0
+    y-range-max: 0.30
+
+  - name: "性别"
+    recognition-type: "horizontal"
+    key-word-list: ["性别"]
+    # 百分比
+    min-length: 1
+    max-length: 1
+    max-line-count: 1
+    target-value-type: "char"
+    x-range-min: 0.0
+    x-range-max: 0.30
+    y-range-min: 0.10
+    y-range-max: 0.40
+
+  - name: "民族"
+    recognition-type: "horizontal"
+    key-word-list: ["民族"]
+    # 百分比
+    min-length: 1
+    max-length: 6
+    max-line-count: 1
+    target-value-type: "char"
+    x-range-min: 0.0
+    x-range-max: 0.3
+    y-range-min: 0.10
+    y-range-max: 0.40
+
 
   - name: "出生"
     recognition-type: "horizontal"
+    key-word-list: ["出生"]
     # 百分比
-    x-range-min: 0
-    x-range-max: 100
+    min-length: 10
+    max-length: 20
+    max-line-count: 1
+    target-value-type: "char"
+    x-range-min: 0.0
+    x-range-max: 0.70
+    y-range-min: 0.20
+    y-range-max: 0.60
 
+  - name: "住址"
+    recognition-type: "horizontal"
+    key-word-list: ["住址", "往址"]
+    # 百分比
+    min-length: 4
+    max-length: 30
+    max-line-count: 3
+    target-value-type: "char"
+    x-range-min: 0.0
+    x-range-max: 0.30
+    y-range-min: 0.30
+    y-range-max: 0.80
+
+  - name: "公民身份号码"
+    recognition-type: "horizontal"
+    key-word-list: ["公民身份号码", "公民身份证号码"]
+    # 百分比
+    min-length: 10
+    max-length: 20
+    max-line-count: 1
+    target-value-type: "char"
+    x-range-min: 0.0
+    x-range-max: 0.70
+    y-range-min: 0.50
+    y-range-max: 1.0

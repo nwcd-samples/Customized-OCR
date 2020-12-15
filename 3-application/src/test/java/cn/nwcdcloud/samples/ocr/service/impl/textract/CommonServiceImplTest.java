@@ -26,7 +26,7 @@ public class CommonServiceImplTest {
     @Resource
     CommonServiceImpl commonServiceImpl;
 
-    private static final String  ID_SAMPLE_JSON_OBJECT_FILE =  "/sample/id001.json";
+    private static final String  ID_SAMPLE_JSON_OBJECT_FILE =  "/sample/id002.json";
     private static final String  ID_SAMPLE_JSON_ARRAY_FILE =  "/sample/id001_array.json";
 
     @Test
@@ -38,9 +38,10 @@ public class CommonServiceImplTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtil.getBlockItemList(jsonObject, 1124, 800);
-        ParseJsonUtil parseJsonUtil = new ParseJsonUtil();
-        parseJsonUtil.extractValue(blockItemList);
+        ParseJsonUtil parseJsonUtil = new ParseJsonUtil(1124, 800, blockItemList);
+        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
 
+        logger.info(resultArray.toJSONString());
 
 
     }
