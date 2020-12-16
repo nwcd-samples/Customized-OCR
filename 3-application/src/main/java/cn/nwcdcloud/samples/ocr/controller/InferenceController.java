@@ -106,8 +106,8 @@ public class InferenceController {
 
 	@PostMapping("/analysis/{type}")
 	@ResponseBody
-	public String analyse(@PathVariable("type") String type, HttpServletRequest request) {
-		Result result = inferenceService.analyse(type, getRequestContent(request));
+	public String analyse(@PathVariable("type") String type, String fullData) {
+		Result result = inferenceService.analyse(type, fullData);
 		return result.toString();
 	}
 

@@ -30,3 +30,8 @@ function get_data(data){
     vue.currentTableBlock = {}
     parse_data(data);
 }
+
+
+function displayResult(fullData,simpleData){
+	console.info(simpleData);
+}

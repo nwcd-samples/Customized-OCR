@@ -27,6 +27,6 @@ public class IdServiceImpl implements TextractService {
 	@Override
 	@PostConstruct
 	public void init() {
-		inferenceService.addTextractService("id", this);
+		inferenceService.addTextractService("id2", this);
 	}
 }

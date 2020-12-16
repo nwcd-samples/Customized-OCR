@@ -2,11 +2,11 @@ function showImg(){
 	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
 }
 
-function inference(){
-	predictBinary();
+function inference(type){
+	predictBinary(type);
 }
 
-function predictBinary(){
+function predictBinary(type){
     $("#loading-icon").show();
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
@@ -23,16 +23,31 @@ function predictBinary(){
 		},
 		success : function(result) {
 			console.log(result);
-		    $("#loading-icon").hide();
 		    if (result.code == 1) {
 		    	data = JSON.parse(result.data);
-		    	get_data(data[0]);
+		    	analysis(type,data);
 		    }else{
 		    	alert(result.msg);
 		    }
 		}, 
 		error : function(responseStr) { 
 			console.log(responseStr);
+		    $("#loading-icon").hide();
 		}
 	});
+}
+
+function analysis(type,fullData){
+	console.log(fullData);
+	$.post("/inference/analysis/"+type,
+			{"fullData":JSON.stringify(fullData)},
+			function(result) {
+			    if (result.code == 1) {
+			    	displayResult(fullData,JSON.parse(result.data));
+				}else{
+					alert(result.msg);
+				}
+			    $("#loading-icon").hide();
+			},
+			"json");
 }

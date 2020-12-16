@@ -26,17 +26,16 @@ public class InferenceServiceImpl implements InferenceService {
 
 	@Autowired
 	private SageMakerService sageMakerService;
+	@Autowired
+	private CommonService commonService;
 
 	@Override
 	public Result analyse(String type, String data) {
 		TextractService textractService = mapTextractService.get(type);
-		if (textractService == null) {
-			Result result2 = new Result();
-			result2.setCode(10);
-			result2.setMsg("无对应解析器");
-			return result2;
-		}
 		JSONArray json = JSON.parseArray(data);
+		if (textractService == null) {
+			return commonService.parse(type, json);
+		}
 		return textractService.parse(json);
 	}
 
