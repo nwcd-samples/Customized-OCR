@@ -1,19 +1,11 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
-import cn.nwcdcloud.commons.utils.FileUtils;
-import cn.nwcdcloud.commons.utils.BlockItemUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.ho.yaml.Yaml;
+import java.io.FileNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IdServiceImplTest {
 

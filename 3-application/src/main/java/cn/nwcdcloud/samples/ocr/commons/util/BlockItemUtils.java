@@ -1,4 +1,4 @@
-package cn.nwcdcloud.commons.utils;
+package cn.nwcdcloud.samples.ocr.commons.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * 解析Textract返回的json数据， 生成元素列表， 供后续进行结构化提取
  */
-public class BlockItemUtil {
-    private static final Logger logger = LoggerFactory.getLogger(BlockItemUtil.class);
+public class BlockItemUtils {
+    private static final Logger logger = LoggerFactory.getLogger(BlockItemUtils.class);
 
     public static List<JSONObject> getBlockItemList(JSONObject jsonObject, int pageWidth, int pageHeight){
 

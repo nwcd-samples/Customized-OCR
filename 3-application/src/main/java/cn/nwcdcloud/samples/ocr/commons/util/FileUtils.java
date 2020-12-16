@@ -1,4 +1,4 @@
-package cn.nwcdcloud.commons.utils;
+package cn.nwcdcloud.samples.ocr.commons.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

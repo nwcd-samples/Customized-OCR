@@ -60,47 +60,55 @@ public class InferenceController {
 
 	@PostMapping("/predict")
 	@ResponseBody
-	public String predict(String keyName) {
-		JSONObject jsonRequest = new JSONObject();
-		jsonRequest.put("bucket", bucketName);
-		jsonRequest.put("image_uri", new String[] { keyName });
-		Result result = sageMakerService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
-		return result.toString();
-	}
-
-	@PostMapping("/predictBinary")
-	@ResponseBody
-	public String predictBinary(HttpServletRequest request) {
+	public String predict(HttpServletRequest request) {
+		String contentType = request.getContentType();
 		try {
-			Result result = sageMakerService.invokeEndpoint(endpointName, request.getContentType(),
-					request.getInputStream());
-			return result.toString();
+			if ("application/json".equalsIgnoreCase(contentType)) {
+				String body = getRequestContent(request);
+				return sageMakerService.invokeEndpoint(endpointName, body).toString();
+			} else if (contentType.startsWith("image")) {
+				return sageMakerService.invokeEndpoint(endpointName, contentType, request.getInputStream()).toString();
+			} else {
+				String keyName = request.getParameter("keyName");
+				JSONObject jsonRequest = new JSONObject();
+				jsonRequest.put("bucket", bucketName);
+				jsonRequest.put("image_uri", new String[] { keyName });
+				Result result = sageMakerService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
+				return result.toString();
+			}
 		} catch (Exception e) {
 			logger.warn("图片推理报错", e);
-			return "{}";
+			Result result = new Result();
+			result.setCode(10);
+			result.setMsg("推理报错");
+			return result.toString();
 		}
 	}
 
 	@PostMapping("/predict/{type}")
 	@ResponseBody
-	public String predict(@PathVariable("type") String type, String keyName) {
-		JSONObject jsonRequest = new JSONObject();
-		jsonRequest.put("bucket", bucketName);
-		jsonRequest.put("image_uri", new String[] { keyName });
-		Result result = inferenceService.predict(type, endpointName, jsonRequest.toJSONString());
-		return result.toString();
-	}
-
-	@PostMapping("/predictBinary/{type}")
-	@ResponseBody
-	public String predictBinary(@PathVariable("type") String type, HttpServletRequest request) {
+	public String predict(@PathVariable("type") String type, HttpServletRequest request) {
+		String contentType = request.getContentType();
 		try {
-			Result result = inferenceService.predict(type, endpointName, request.getContentType(),
-					request.getInputStream());
-			return result.toString();
+			if ("application/json".equalsIgnoreCase(contentType)) {
+				String body = getRequestContent(request);
+				return inferenceService.predict(type, endpointName, body).toString();
+			} else if (contentType.startsWith("image")) {
+				return inferenceService.predict(type, endpointName, contentType, request.getInputStream()).toString();
+			} else {
+				String keyName = request.getParameter("keyName");
+				JSONObject jsonRequest = new JSONObject();
+				jsonRequest.put("bucket", bucketName);
+				jsonRequest.put("image_uri", new String[] { keyName });
+				Result result = inferenceService.predict(type, endpointName, jsonRequest.toJSONString());
+				return result.toString();
+			}
 		} catch (Exception e) {
 			logger.warn("图片推理报错", e);
-			return "{}";
+			Result result = new Result();
+			result.setCode(10);
+			result.setMsg("推理报错");
+			return result.toString();
 		}
 	}
 

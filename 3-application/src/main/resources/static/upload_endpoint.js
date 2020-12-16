@@ -11,7 +11,7 @@ function predictBinary(type){
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
 	$.ajax({
-		url : "/inference/predictBinary", 
+		url : "/inference/predict", 
 		type : 'POST', 
 		data : file, 
 		processData : false,

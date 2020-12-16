@@ -1,4 +1,4 @@
-package cn.nwcdcloud.commons.utils;
+package cn.nwcdcloud.samples.ocr.commons.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -13,16 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParseJsonUtil {
+public class ParseJsonUtils {
     private static final String  ID_SAMPLE_CONFIG_FILE =  "/config/id.yaml";
 
-    private  final Logger logger = LoggerFactory.getLogger(ParseJsonUtil.class);
+    private  final Logger logger = LoggerFactory.getLogger(ParseJsonUtils.class);
 
     private int pageWidth;
     private int pageHeight;
     private List<JSONObject> blockItemList;
 
-    public ParseJsonUtil(int pageWidth, int pageHeight , List<JSONObject> blockItemList) {
+    public ParseJsonUtils(int pageWidth, int pageHeight , List<JSONObject> blockItemList) {
         this.pageWidth = pageWidth;
         this.pageHeight = pageHeight;
         this.blockItemList = blockItemList;
