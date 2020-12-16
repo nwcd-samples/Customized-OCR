@@ -137,13 +137,13 @@ public class ParseJsonUtil {
             resultItem.put("value", text.substring( index+ keyWord.length(), lastIndex));
         }else {
             logger.info("index --------------------------- " );
-            JSONObject valueBlockItem = findNextRightBlockItem(blockItem);
+            String blockItemValue = findNextRightBlockItemValue(item, blockItem);
 
-            if(valueBlockItem ==  null){
+            if(blockItemValue ==  null){
                 return null;
             }
-            logger.info("key {}  -------------- value {}  ", item.get("name"), valueBlockItem.getString("text"));
-            resultItem.put("value", valueBlockItem.getString("text"));
+            logger.info("key {}  -------------- value {}  ", item.get("name"), blockItemValue);
+            resultItem.put("value", blockItemValue);
 
         }
 
@@ -217,10 +217,15 @@ public class ParseJsonUtil {
      找到右边一个单元格
      */
 
-    private JSONObject findNextRightBlockItem(JSONObject blockItem){
+    private String findNextRightBlockItemValue(HashMap item, JSONObject blockItem){
 
         int minDistance = 1000000;
         JSONObject minDistanceBlockItem = null;
+
+        int maxLineCount = (int)item.get("max-line-count");
+        if(maxLineCount > 1){
+            return findMultiLineBlockItemValue(blockItem, maxLineCount);
+        }
 
         for(int i=0; i< this.blockItemList.size(); i++){
             JSONObject tempBlockItem = this.blockItemList.get(i);
@@ -238,6 +243,60 @@ public class ParseJsonUtil {
                 }
             }
         }
-        return minDistanceBlockItem;
+        return minDistanceBlockItem.getString("text");
     }
+
+    /**
+     * 找到多行的元素
+     */
+
+    private String findMultiLineBlockItemValue(JSONObject blockItem, int maxLineCount){
+
+        List<JSONObject> contentBlockItemList = new ArrayList<>();
+        for(int i=0; i< this.blockItemList.size(); i++){
+            JSONObject curItem = blockItemList.get(i);
+            if(blockItem.getString("text").equals(curItem.getString("text"))){
+                continue;
+            }
+
+            if(curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
+              && curItem.getInteger("bottom")< blockItem.getInteger("bottom") + maxLineCount * (blockItem.getInteger("height")+3)){
+                contentBlockItemList.add(curItem);
+            }
+
+
+
+        }
+
+        return null;
+
+    }
+
+    /**
+     * var result_list = new Array()
+     *         for(var i=0; i<blockItemList.length; i++){
+     *             var curItem = blockItemList[i]
+     *             if(blockItem['text'] == curItem['text']){
+     *                 continue
+     *             }
+     * //            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
+     *             if(curItem['top'] > blockItem['top']- blockItem['height']
+     *                 && curItem['bottom'] < blockItem['bottom'] + 3 * blockItem['height']){
+     *                 result_list.push(curItem)
+     *             }
+     *
+     *         }
+     *
+     *         var result_value = ''
+     *
+     *         result_list.sort(sort_block_by_y)
+     *
+     *         for(var i=0; i< result_list.length; i++ ){
+     *             result_value += result_list[i]['text']
+     *         }
+     *         var result_item = {}
+     *         result_item['target_name'] = item['target_value_name']
+     *         result_item['value'] = result_value
+     */
+
 }
