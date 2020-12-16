@@ -82,7 +82,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="(result, index) of result_list" >
-                        <td><span v-text="result.target_name"></span></td>
+                        <td><span v-text="result.name"></span></td>
                         <td><span v-text="result.value"></span></td>
                     </tr>
 

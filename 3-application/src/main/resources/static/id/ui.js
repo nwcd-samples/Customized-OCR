@@ -26,12 +26,21 @@ $(function(){
 
 
 function get_data(data){
-    vue.tableBlockList = new Array()
-    vue.currentTableBlock = {}
-    parse_data(data);
+//    vue.tableBlockList = new Array()
+//    vue.currentTableBlock = {}
+//    parse_data(data);
 }
 
 
 function displayResult(fullData,simpleData){
-	console.info(simpleData);
+
+
+    console.log("------------------------  ")
+	vue.tableBlockList = new Array()
+    vue.currentTableBlock = {}
+    parse_data(fullData[0]);
+
+
+	console.info(simpleData[0]);
+	vue.result_list = simpleData[0]
 }
