@@ -1,20 +1,21 @@
 package cn.nwcdcloud.samples.ocr.commons.util;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.ho.yaml.Yaml;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ho.yaml.Yaml;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 public class ParseJsonUtils {
-    private static final String  ID_SAMPLE_CONFIG_FILE =  "/config/id.yaml";
+    private static final String  ID_SAMPLE_CONFIG_FILE =  "config/id.yaml";
 
     private  final Logger logger = LoggerFactory.getLogger(ParseJsonUtils.class);
 
@@ -171,17 +172,15 @@ public class ParseJsonUtils {
      */
 
     private Map readConfig(String configPath) {
+    	InputStream is=this.getClass().getClassLoader().getResourceAsStream(configPath);
 
-        String filePath=this.getClass().getResource(configPath).getFile().toString();
-        File dumpFile=new File(filePath);
-
-        Map rootMap = null;
+    	Map rootMap = null;
         try {
-            rootMap = Yaml.loadType(dumpFile, HashMap.class);
+            rootMap = Yaml.loadType(is, HashMap.class);
 
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+        	logger.error("读取配置文件出错:{}"+configPath,e);
         }
         return rootMap;
     }
