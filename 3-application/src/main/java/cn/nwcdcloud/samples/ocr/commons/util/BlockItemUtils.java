@@ -47,8 +47,8 @@ public class BlockItemUtils {
             if(blockItem.getInteger("Page") == pageCount
                     && ("WORD".equals(blockType) || "LINE".equals(blockType))){
                 blockList.add(blockItem);
-                logger.info(" {} {} {} ", blockItem.getString("Page"), blockItem.getString("BlockType"),
-                        blockItem.getString("Text"));
+//                logger.info(" {} {} {} ", blockItem.getString("Page"), blockItem.getString("BlockType"),
+//                        blockItem.getString("Text"));
             }
 
         }
@@ -267,7 +267,7 @@ public class BlockItemUtils {
         blockItem.put("x", (int)((polyArray.getJSONObject(2).getDouble("x") + polyArray.getJSONObject(0).getDouble("x"))/2.0));
         blockItem.put("y", (int)((polyArray.getJSONObject(2).getDouble("y") + polyArray.getJSONObject(0).getDouble("y"))/2.0));
 
-        logger.info("-------- {} ",blockItem.toJSONString());
+//        logger.info("-------- {} ",blockItem.toJSONString());
 
     }
 

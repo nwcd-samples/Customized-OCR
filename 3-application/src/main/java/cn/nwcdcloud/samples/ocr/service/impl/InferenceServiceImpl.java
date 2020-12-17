@@ -33,6 +33,9 @@ public class InferenceServiceImpl implements InferenceService {
 	public Result analyse(String type, String data) {
 		TextractService textractService = mapTextractService.get(type);
 		JSONArray json = JSON.parseArray(data);
+		System.out.println("\n");
+		System.out.println(JSON.toJSONString(json.getJSONObject(0)));
+		System.out.println("\n");
 		if (textractService == null) {
 			return commonService.parse(type, json);
 		}

@@ -35,11 +35,13 @@ function get_data(data){
 function displayResult(fullData,simpleData){
 
 
-    console.log("------------------------  ")
+    console.log("------------***------------  ")
 	vue.tableBlockList = new Array()
     vue.currentTableBlock = {}
     parse_data(fullData[0]);
-
+    console.log("\n")
+    console.log(JSON.stringify(fullData[0]))
+    console.log("\n")
 
 	console.info(simpleData[0]);
 	vue.result_list = simpleData[0]

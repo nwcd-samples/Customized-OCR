@@ -33,7 +33,7 @@ public class ParseJsonUtils {
         Map configMap =  readConfig(ID_SAMPLE_CONFIG_FILE);
 
         JSONArray resultArray = new JSONArray();
-        List targetList  = (ArrayList) configMap.get("target");
+        List targetList  = (ArrayList) configMap.get("Targets");
         for( Object item: targetList){
             JSONObject resultItem =  extractItem((HashMap) item, blockItemList);
             if(resultItem == null){
@@ -48,7 +48,7 @@ public class ParseJsonUtils {
     private JSONObject  extractItem(HashMap item, List<JSONObject> blockItemList){
 
 
-        if("horizontal".equals(item.get("recognition-type"))){
+        if("horizontal".equals(item.get("RecognitionType"))){
              return doHorizontal(item, blockItemList);
         }
         return null;
@@ -64,7 +64,7 @@ public class ParseJsonUtils {
 //        logger.info("name: {}  key-word-list: {}", item.get("name") , item.get("key-word-list"));
 //        logger.info("recognition-type: {} ", item.get("recognition-type"));
 
-        List keyWordList = (List) item.get("key-word-list");
+        List keyWordList = (List) item.get("KeyWordList");
 
         //case1. key， 单个元素里面包含了关键字， 或者以关键字开头
         boolean findFlag = false;
@@ -127,16 +127,18 @@ public class ParseJsonUtils {
         //case 1. 关键字和值 在一个单元格里面
 
         JSONObject resultItem = new JSONObject();
-        resultItem.put("name", item.get("name"));
+        resultItem.put("name", item.get("Name"));
 
+        // key和value 在一个单元格里
         if( index + keyWord.length() < text.length()){
-            int lastIndex = text.length() > index + keyWord.length() + (int)item.get("max-length") ?
-                    index + keyWord.length() + (int)item.get("max-length"): text.length();
+            int lastIndex = text.length() > index + keyWord.length() + (int)item.get("MaxLength") ?
+                    index + keyWord.length() + (int)item.get("MaxLength"): text.length();
             logger.info("key {}  -------------- value {}  lastIndex {} ", item.get("name"),
                     text.substring( index+ keyWord.length(), lastIndex), lastIndex);
 
             resultItem.put("value", text.substring( index+ keyWord.length(), lastIndex));
         }else {
+            // value 单独在一个单元格里
             logger.info("index --------------------------- " );
             String blockItemValue = findNextRightBlockItemValue(item, blockItem);
 
@@ -151,7 +153,7 @@ public class ParseJsonUtils {
 
 
 
-        if("single".equals(keyBlockItemResult.getString("key-type"))){
+        if("single".equals(keyBlockItemResult.getString("KeyType"))){
             //key 在单个单元格里
 
         }else {
@@ -160,7 +162,6 @@ public class ParseJsonUtils {
         }
 
         return resultItem;
-
 
     }
 
@@ -193,11 +194,11 @@ public class ParseJsonUtils {
      * @return
      */
     private boolean isValidRange(HashMap item, JSONObject blockItem) {
-        int left = (int) ((double)item.get("x-range-min")  * this.pageWidth);
-        int right = (int) ((double) item.get("x-range-max")  * this.pageWidth);
+        int left = (int) ((double)item.get("XRangeMin")  * this.pageWidth);
+        int right = (int) ((double) item.get("XRangeMax")  * this.pageWidth);
 
-        int top = (int) ((double) item.get("y-range-min")  * this.pageHeight);
-        int bottom = (int) ((double)item.get("y-range-max")  * this.pageHeight);
+        int top = (int) ((double) item.get("YRangeMin")  * this.pageHeight);
+        int bottom = (int) ((double)item.get("YRangeMax")  * this.pageHeight);
 //        logger.info("x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
 //        logger.info("x: {}    y: {} ", blockItem.getInteger("x"),
 //                blockItem.getInteger("y"));
@@ -221,7 +222,7 @@ public class ParseJsonUtils {
         int minDistance = 1000000;
         JSONObject minDistanceBlockItem = null;
 
-        int maxLineCount = (int)item.get("max-line-count");
+        int maxLineCount = (int)item.get("MaxLineCount");
         if(maxLineCount > 1){
             return findMultiLineBlockItemValue(blockItem, maxLineCount);
         }
@@ -271,31 +272,5 @@ public class ParseJsonUtils {
 
     }
 
-    /**
-     * var result_list = new Array()
-     *         for(var i=0; i<blockItemList.length; i++){
-     *             var curItem = blockItemList[i]
-     *             if(blockItem['text'] == curItem['text']){
-     *                 continue
-     *             }
-     * //            console.log('\t-----------------curItem ' , curItem['text'], curItem['top'])
-     *             if(curItem['top'] > blockItem['top']- blockItem['height']
-     *                 && curItem['bottom'] < blockItem['bottom'] + 3 * blockItem['height']){
-     *                 result_list.push(curItem)
-     *             }
-     *
-     *         }
-     *
-     *         var result_value = ''
-     *
-     *         result_list.sort(sort_block_by_y)
-     *
-     *         for(var i=0; i< result_list.length; i++ ){
-     *             result_value += result_list[i]['text']
-     *         }
-     *         var result_item = {}
-     *         result_item['target_name'] = item['target_value_name']
-     *         result_item['value'] = result_value
-     */
 
 }
