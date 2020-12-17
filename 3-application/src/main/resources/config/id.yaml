@@ -35,9 +35,9 @@ Targets:
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
-    XRangeMax: 0.3
+    XRangeMax: 0.5
     YRangeMin: 0.10
-    YRangeMax: 0.40
+    YRangeMax: 0.50
 
 
   - Name: "出生"
@@ -62,8 +62,8 @@ Targets:
     MaxLineCount: 3
     TargetValueType: "char"
     XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.30
+    XRangeMax: 0.90
+    YRangeMin: 0.10
     YRangeMax: 0.80
 
   - Name: "公民身份号码"

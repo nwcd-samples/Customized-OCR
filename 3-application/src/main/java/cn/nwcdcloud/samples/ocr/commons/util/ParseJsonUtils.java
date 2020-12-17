@@ -2,11 +2,9 @@ package cn.nwcdcloud.samples.ocr.commons.util;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.alibaba.fastjson.JSON;
 import org.ho.yaml.Yaml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +80,7 @@ public class ParseJsonUtils {
                 if(index  < 0 ){
                     continue;
                 }
-//                logger.info(" Text:  {}   key: {}   {} ", blockText,  keyWord, index);
+                logger.info(" Text:  {}   key: {}   {} ", blockText,  keyWord, index);
 
                 //判断范围
                 if(!isValidRange(item, blockItem)){
@@ -113,9 +111,11 @@ public class ParseJsonUtils {
 
 
     private JSONObject doHorizontal(HashMap item, List<JSONObject> blockItemList){
+        logger.info("doHorizontal : +++++++++++++ : text {}  ",  item.get("Name"));
         JSONObject keyBlockItemResult = findKeyBlockItem(item, blockItemList);
         JSONObject blockItem = keyBlockItemResult.getJSONObject("blockItem");
         if(blockItem == null){
+            logger.warn("doHorizontal   没有找到 : text {}  ",  item.get("Name"));
             return null;
         }
 
@@ -131,15 +131,26 @@ public class ParseJsonUtils {
 
         // key和value 在一个单元格里
         if( index + keyWord.length() < text.length()){
-            int lastIndex = text.length() > index + keyWord.length() + (int)item.get("MaxLength") ?
-                    index + keyWord.length() + (int)item.get("MaxLength"): text.length();
-            logger.info("key {}  -------------- value {}  lastIndex {} ", item.get("name"),
-                    text.substring( index+ keyWord.length(), lastIndex), lastIndex);
+            int maxLineCount = (int)item.get("MaxLineCount");
+            logger.info(" [{}] Key value ®在一个单元格里  ---------- {} " , text, maxLineCount);
+            if(maxLineCount > 1){
+                String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
+                resultItem.put("value", mergeValue.substring(keyWord.length()));
 
-            resultItem.put("value", text.substring( index+ keyWord.length(), lastIndex));
+            }else {
+
+                int lastIndex = text.length() > index + keyWord.length() + (int)item.get("MaxLength") ?
+                        index + keyWord.length() + (int)item.get("MaxLength"): text.length();
+                logger.info("key {}  -------------- value {}  lastIndex {} ", item.get("name"),
+                        text.substring( index+ keyWord.length(), lastIndex), lastIndex);
+
+                resultItem.put("value", text.substring( index+ keyWord.length(), lastIndex));
+
+            }
+
         }else {
             // value 单独在一个单元格里
-            logger.info("index --------------------------- " );
+            logger.info(" [{}]  value 单独在一个单元格里  --------------------------- " , text);
             String blockItemValue = findNextRightBlockItemValue(item, blockItem);
 
             if(blockItemValue ==  null){
@@ -223,8 +234,9 @@ public class ParseJsonUtils {
         JSONObject minDistanceBlockItem = null;
 
         int maxLineCount = (int)item.get("MaxLineCount");
+        //如果是多行， 找右边多行的元素，进行文本合并
         if(maxLineCount > 1){
-            return findMultiLineBlockItemValue(blockItem, maxLineCount);
+            return findMultiLineBlockItemValue(blockItem, maxLineCount, false);
         }
 
         for(int i=0; i< this.blockItemList.size(); i++){
@@ -248,29 +260,48 @@ public class ParseJsonUtils {
 
     /**
      * 找到多行的元素
+     * @param blockItem
+     * @param maxLineCount
+     * @param isContainSelf  是否包含元素本身， 处理Key和Value 在一起的情况
+     * @return
      */
-
-    private String findMultiLineBlockItemValue(JSONObject blockItem, int maxLineCount){
+    private String findMultiLineBlockItemValue(JSONObject blockItem, int maxLineCount, boolean isContainSelf){
 
         List<JSONObject> contentBlockItemList = new ArrayList<>();
         for(int i=0; i< this.blockItemList.size(); i++){
             JSONObject curItem = blockItemList.get(i);
-            if(blockItem.getString("text").equals(curItem.getString("text"))){
+            if(!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))){
                 continue;
             }
-
+            logger.info("{} ################## {}", JSON.toJSONString(curItem.getString("text")), JSON.toJSONString(curItem));
             if(curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
               && curItem.getInteger("bottom")< blockItem.getInteger("bottom") + maxLineCount * (blockItem.getInteger("height")+3)){
                 contentBlockItemList.add(curItem);
+//                logger.info("################## {}", JSON.toJSONString(curItem));
             }
-
-
-
         }
 
-        return null;
+        Collections.sort(contentBlockItemList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject jsonObject, JSONObject t1) {
+                return jsonObject.getInteger("y") - t1.getInteger("y");
+            }
+        }); // 按年龄排序
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0; i< contentBlockItemList.size();i++){
+            logger.info("++++++++++++ {} ", JSON.toJSON(contentBlockItemList.get(i)));
+            stringBuilder.append(contentBlockItemList.get(i).getString("text"));
+        }
+
+
+        return stringBuilder.toString();
 
     }
+
+
+
 
 
 }

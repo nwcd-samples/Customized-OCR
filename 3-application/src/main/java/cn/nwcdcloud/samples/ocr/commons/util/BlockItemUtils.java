@@ -143,7 +143,7 @@ public class BlockItemUtils {
 
 
         JSONObject blockItem = new JSONObject();
-//        blockItem.put("id", rawBlockItem.getString("Id"));
+        blockItem.put("id", rawBlockItem.getString("Id"));
         blockItem.put("newPoly", newPolyArray);
         blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
