@@ -29,21 +29,23 @@ public class ParseJsonWorker {
 	public JSONArray extractValue(List<JSONObject> blockItemList) {
 		Map configMap = readConfig(this.configFilePath);
 
+		ParseTableWorker tableWorker = new ParseTableWorker();
 		JSONArray resultArray = new JSONArray();
 		List targetList = (ArrayList) configMap.get("Targets");
 		for (Object item : targetList) {
 			// 识别单个元素
 			HashMap newItem = (HashMap) item;
-			if ("horizontal".equals(newItem.get("RecognitionType"))) {
+			if ("horizontalss".equals(newItem.get("RecognitionType"))) {
 				JSONObject resultItem = doHorizontal(newItem, blockItemList);
 				if(resultItem != null) {
 					resultArray.add(resultItem);
 				}
 			}else if ("table".equals(newItem.get("RecognitionType"))) {
-				JSONObject resultItem = doTable(newItem, blockItemList);
-
+				List<JSONObject> resultList = tableWorker.parse(newItem, blockItemList);
+				if(resultList != null){
+					resultArray.addAll(resultList);
+				}
 			}
-
 		}
 		return resultArray;
 	}
@@ -347,11 +349,5 @@ public class ParseJsonWorker {
 
 	}
 
-	/**
-	 * 处理表格元素
-	 */
-	private JSONObject doTable(HashMap item, List<JSONObject> blockItemList) {
-		return null;
-	}
 
 }

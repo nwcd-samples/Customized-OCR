@@ -1,0 +1,7 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "费用列表"
+    RecognitionType: "table"
+    KeyWordStartList: ["项目名称", "医幅", "医强"]
+    KeyWordEndList: ["应收金额", "金额", "金级"]

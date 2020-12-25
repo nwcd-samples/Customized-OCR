@@ -158,3 +158,8 @@ Targets:
     XRangeMax: 0.3
     YRangeMin: 0.10
     YRangeMax: 0.50
+
+  - Name: "明细"
+    RecognitionType: "table"
+    KeyWordStartList: ["货物或应税劳务、服务名称"]
+    KeyWordEndList: ["金额"]
