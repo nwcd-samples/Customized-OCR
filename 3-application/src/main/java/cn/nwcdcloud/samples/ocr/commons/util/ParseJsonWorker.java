@@ -35,7 +35,7 @@ public class ParseJsonWorker {
 		for (Object item : targetList) {
 			// 识别单个元素
 			HashMap newItem = (HashMap) item;
-			if ("horizontalss".equals(newItem.get("RecognitionType"))) {
+			if ("horizontal".equals(newItem.get("RecognitionType"))) {
 				JSONObject resultItem = doHorizontal(newItem, blockItemList);
 				if(resultItem != null) {
 					resultArray.add(resultItem);
