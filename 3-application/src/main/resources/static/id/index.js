@@ -1,5 +1,5 @@
-var page_width=600;  //默认页面宽度
-var page_height=500;  //默认页面高度 会根据元素内容自动跳转
+var page_width=900;  //默认页面宽度
+var page_height=900;  //默认页面高度 会根据元素内容自动跳转
 var canvas_width = page_width
 var canvas_height = page_height
 

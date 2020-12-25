@@ -4,7 +4,6 @@ Targets:
   - Name: "购买方-名称"
     RecognitionType: "horizontal"
     KeyWordList: ["称：","称:"]
-    # 百分比
     MinLength: 16
     MaxLength: 20
     MaxLineCount: 1
@@ -17,7 +16,6 @@ Targets:
   - Name: "购买方-纳税人识别号"
     RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
-    # 百分比
     MinLength: 16
     MaxLength: 20
     MaxLineCount: 1
@@ -30,7 +28,6 @@ Targets:
   - Name: "购买方-开户行及账号"
     RecognitionType: "horizontal"
     KeyWordList: ["开户行及账号"]
-    # 百分比
     MinLength: 40
     MaxLength: 40
     MaxLineCount: 1
@@ -44,7 +41,6 @@ Targets:
   - Name: "销售方-名称"
     RecognitionType: "horizontal"
     KeyWordList: ["称：","称:"]
-    # 百分比
     MinLength: 16
     MaxLength: 20
     MaxLineCount: 1
@@ -57,7 +53,6 @@ Targets:
   - Name: "销售方-纳税人识别号"
     RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
-    # 百分比
     MinLength: 16
     MaxLength: 20
     MaxLineCount: 1
@@ -71,7 +66,6 @@ Targets:
   - Name: "销售方-开户行及账号"
     RecognitionType: "horizontal"
     KeyWordList: ["开户行及账号"]
-    # 百分比
     MinLength: 40
     MaxLength: 40
     MaxLineCount: 1
@@ -85,7 +79,6 @@ Targets:
   - Name: "价税合计"
     RecognitionType: "horizontal"
     KeyWordList: ["价税合计（大写）"]
-    # 百分比
     MinLength: 40
     MaxLength: 40
     MaxLineCount: 1
@@ -98,7 +91,6 @@ Targets:
   - Name: "价税合计-小写"
     RecognitionType: "horizontal"
     KeyWordList: ["（小写）"]
-    # 百分比
     MinLength: 40
     MaxLength: 40
     MaxLineCount: 1
@@ -111,7 +103,6 @@ Targets:
   - Name: "发票代码"
     RecognitionType: "horizontal"
     KeyWordList: ["发票代码"]
-    # 百分比
     MinLength: 40
     MaxLength: 40
     MaxLineCount: 1
@@ -121,51 +112,49 @@ Targets:
     YRangeMin: 0.00
     YRangeMax: 0.30
   - Name: "发票号码"
-      RecognitionType: "horizontal"
-      KeyWordList: ["发票号码"]
-      # 百分比
-      MinLength: 40
-      MaxLength: 40
-      MaxLineCount: 1
-      TargetValueType: "char"
-      XRangeMin: 0.6
-      XRangeMax: 1.0
-      YRangeMin: 0.00
-      YRangeMax: 0.40
+    RecognitionType: "horizontal"
+    KeyWordList: ["发票号码"]
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.6
+    XRangeMax: 1.0
+    YRangeMin: 0.00
+    YRangeMax: 0.40
+
   - Name: "开票日期"
-      RecognitionType: "horizontal"
-      KeyWordList: ["开票日期"]
-      # 百分比
-      MinLength: 40
-      MaxLength: 40
-      MaxLineCount: 1
-      TargetValueType: "char"
-      XRangeMin: 0.6
-      XRangeMax: 1.0
-      YRangeMin: 0.00
-      YRangeMax: 0.40
+    RecognitionType: "horizontal"
+    KeyWordList: ["开票日期"]
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.6
+    XRangeMax: 1.0
+    YRangeMin: 0.00
+    YRangeMax: 0.40
 
   - Name: "校验码"
-      RecognitionType: "horizontal"
-      KeyWordList: ["校验码"]
-      # 百分比
-      MinLength: 40
-      MaxLength: 40
-      MaxLineCount: 1
-      TargetValueType: "char"
-      XRangeMin: 0.6
-      XRangeMax: 1.0
-      YRangeMin: 0.10
-      YRangeMax: 0.50
+    RecognitionType: "horizontal"
+    KeyWordList: ["校验码"]
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.6
+    XRangeMax: 1.0
+    YRangeMin: 0.10
+    YRangeMax: 0.50
+
   - Name: "机器编码"
-      RecognitionType: "horizontal"
-      KeyWordList: ["机器编码"]
-      # 百分比
-      MinLength: 40
-      MaxLength: 40
-      MaxLineCount: 1
-      TargetValueType: "char"
-      XRangeMin: 0.0
-      XRangeMax: 0.3
-      YRangeMin: 0.10
-      YRangeMax: 0.50
+    RecognitionType: "horizontal"
+    KeyWordList: ["机器编码"]
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.3
+    YRangeMin: 0.10
+    YRangeMax: 0.50

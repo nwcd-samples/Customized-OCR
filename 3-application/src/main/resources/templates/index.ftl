@@ -36,7 +36,7 @@
                     卡证文字识别
                 </a>
                 <a href="ocr?type=id" class="list-group-item list-group-item-action">身份证</a>
-                <a href="license" class="list-group-item list-group-item-action">营业执照</a>
+                <a href="ocr?type=business_license" class="list-group-item list-group-item-action">营业执照</a>
             </div>
 
 
