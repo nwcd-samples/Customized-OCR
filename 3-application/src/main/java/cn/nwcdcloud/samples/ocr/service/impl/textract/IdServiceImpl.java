@@ -19,7 +19,7 @@ public class IdServiceImpl implements TextractService {
 	@Override
 	public Result parse(JSONArray jsonArray) {
 		Result result = new Result();
-		String data = "[{\"姓名\":\"测试\"}]";
+		String data = "[[{\"name\":\"姓名\",\"value\":\"张三\"},{\"name\":\"性别\",\"value\":\"男\"}]]";
 		result.setData(data);
 		return result;
 	}

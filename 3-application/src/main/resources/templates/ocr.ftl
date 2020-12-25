@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>身份证识别</title>
+    <title>${title}</title>
     <link href="/static/id/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     
@@ -28,7 +28,7 @@
             <div class="col-4 pt-1">
             </div>
             <div class="col-4 text-center">
-                <h3>身份证识别</h3>
+                <h3>${title}</h3>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-right:5px;padding-top:8px" href="/">返回首页</a>
@@ -43,7 +43,7 @@
             <nav class="navbar navbar-light bg-light">
                 <form class="form-inline">
 					<input type="file" id="upload" onchange="showImg();">
-					<input type="button" value="识别" onclick="inference('id');"  class="btn btn-outline-success my-2 my-sm-0">
+					<input type="button" value="识别" onclick="inference('${type}');"  class="btn btn-outline-success my-2 my-sm-0">
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
 					</div>

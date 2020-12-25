@@ -3,6 +3,8 @@ package cn.nwcdcloud.samples.ocr.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,11 @@ public class IndexController {
 	private String prefix;
 	@Value("${uploadType}")
 	private String uploadType;
+	private static Map<String, String> mapOcrType = new HashMap<>();
+	{
+		mapOcrType.put("id", "身份证识别");
+		mapOcrType.put("invoice", "发票识别");
+	}
 
 	@GetMapping("/")
 	public ModelAndView index() {
@@ -32,9 +39,11 @@ public class IndexController {
 		return mv;
 	}
 
-	@GetMapping("/id")
-	public ModelAndView id() {
+	@GetMapping("/ocr")
+	public ModelAndView id(String type) {
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("type", type);
+		mv.addObject("title", mapOcrType.get(type));
 		mv.addObject("uploadType", uploadType);
 		return mv;
 	}

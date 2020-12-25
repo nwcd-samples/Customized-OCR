@@ -1,17 +1,19 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
-import cn.nwcdcloud.samples.ocr.enums.DocumentTypeEnum;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
-import java.util.List;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
+import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
 
 
 public class InvoiceTypeTest {
@@ -31,7 +33,7 @@ public class InvoiceTypeTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, DocumentTypeEnum.INVOICE.getPath());
+        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/invoice.yaml");
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "购买方-名称", "北京西云数据科技有限公司");

@@ -35,7 +35,7 @@
                 <a href="#" class="list-group-item list-group-item-action active">
                     卡证文字识别
                 </a>
-                <a href="id" class="list-group-item list-group-item-action">身份证</a>
+                <a href="ocr?type=id" class="list-group-item list-group-item-action">身份证</a>
                 <a href="license" class="list-group-item list-group-item-action">营业执照</a>
             </div>
 
@@ -45,7 +45,7 @@
                 <a href="#" class="list-group-item list-group-item-action active">
                     财务票据文字识别
                 </a>
-                <a href="id" class="list-group-item list-group-item-action">发票识别</a>
+                <a href="ocr?type=invoice" class="list-group-item list-group-item-action">发票识别</a>
 
             </div>
 

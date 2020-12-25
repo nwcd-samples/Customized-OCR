@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,14 @@ import com.alibaba.fastjson.JSONArray;
 
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
+import cn.nwcdcloud.samples.ocr.service.CommonService;
 import cn.nwcdcloud.samples.ocr.service.InferenceService;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
 import cn.nwcdcloud.samples.ocr.service.TextractService;
 
 @Service
 public class InferenceServiceImpl implements InferenceService {
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private static Map<String, TextractService> mapTextractService = new HashMap<>();
 
 	public void addTextractService(String key, TextractService textractService) {
@@ -33,9 +37,9 @@ public class InferenceServiceImpl implements InferenceService {
 	public Result analyse(String type, String data) {
 		TextractService textractService = mapTextractService.get(type);
 		JSONArray json = JSON.parseArray(data);
-		System.out.println("\n");
-		System.out.println(JSON.toJSONString(json.getJSONObject(0)));
-		System.out.println("\n");
+		if (logger.isDebugEnabled()) {
+			logger.debug(JSON.toJSONString(json.getJSONObject(0)));
+		}
 		if (textractService == null) {
 			return commonService.parse(type, json);
 		}
