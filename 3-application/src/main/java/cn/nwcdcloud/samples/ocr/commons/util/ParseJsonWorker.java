@@ -32,22 +32,20 @@ public class ParseJsonWorker {
 		JSONArray resultArray = new JSONArray();
 		List targetList = (ArrayList) configMap.get("Targets");
 		for (Object item : targetList) {
-			JSONObject resultItem = extractItem((HashMap) item, blockItemList);
-			if (resultItem == null) {
-				continue;
+			// 识别单个元素
+			HashMap newItem = (HashMap) item;
+			if ("horizontal".equals(newItem.get("RecognitionType"))) {
+				JSONObject resultItem = doHorizontal(newItem, blockItemList);
+				if(resultItem != null) {
+					resultArray.add(resultItem);
+				}
+			}else if ("table".equals(newItem.get("RecognitionType"))) {
+				JSONObject resultItem = doTable(newItem, blockItemList);
+
 			}
-			resultArray.add(resultItem);
+
 		}
 		return resultArray;
-	}
-
-	private JSONObject extractItem(HashMap item, List<JSONObject> blockItemList) {
-
-		if ("horizontal".equals(item.get("RecognitionType"))) {
-			return doHorizontal(item, blockItemList);
-		}
-		return null;
-
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class ParseJsonWorker {
 				if (index < 0) {
 					continue;
 				}
-				logger.debug(" Text:  {}   key: {}   {} ", blockText, keyWord, index);
+//				logger.debug(" Text:  {}   key: {}   {} ", blockText, keyWord, index);
 
 				// 判断范围
 				if (!isValidRange(item, blockItem)) {
@@ -90,11 +88,16 @@ public class ParseJsonWorker {
 				targetKeyWord = keyWord;
 				break;
 			}
+			if(!findFlag ){
+				//如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
+				 JSONObject result = findResultBySplitKeywords(item, blockItemList, keyWord);
+				 if(result.getJSONObject("blockItem") != null){
+				 	return result;
+				 }
+			}
 
 		}
 //        logger.info(" findFlag:  {}   index: {}    {} ", findFlag, targetIndex,  targetBlockItem);
-
-		// case2. 取出一行的元素， 从前往后匹配关键字
 
 		JSONObject result = new JSONObject();
 		result.put("index", targetIndex);
@@ -105,8 +108,76 @@ public class ParseJsonWorker {
 
 	}
 
+	/**
+	 * 如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
+	 * @param item
+	 * @param blockItemList
+	 * @return
+	 */
+	private JSONObject findResultBySplitKeywords(HashMap item, List<JSONObject> blockItemList, String targetKeyWord){
+
+		if(targetKeyWord == null || targetKeyWord.length()<2){
+			logger.warn("关键字设置不正确 {} ", JSON.toJSON(item));
+			return null;
+		}
+
+		String startKey = targetKeyWord.substring(0,1);
+		String endKey = targetKeyWord.substring(targetKeyWord.length()-1, targetKeyWord.length() );
+
+		JSONObject startBlockItem = null;
+
+		logger.debug("findResultBySplitKeywords  {}   first {} , last {}", targetKeyWord , startKey, endKey);
+		// 找到开始的关键字
+		for (int i = 0; i < blockItemList.size(); i++) {
+			JSONObject blockItem = blockItemList.get(i);
+			String blockText = blockItem.getString("text").trim();
+			if(blockText.equals(startKey)){
+				startBlockItem = blockItem;
+			}
+		}
+
+		if(startBlockItem == null){
+			JSONObject result = new JSONObject();
+			result.put("index", 1);
+			result.put("blockItem", null);
+			result.put("keyWord", targetKeyWord);
+			result.put("keyType", "single"); // 关键字在一个单元格里面
+			return result;
+		}
+
+		logger.info(" find start blockItem {} ", JSON.toJSON(startBlockItem));
+
+		JSONObject targetBlockItem = null;
+
+		//找到后一个关键字
+		for (int i = 0; i < blockItemList.size(); i++) {
+			JSONObject blockItem = blockItemList.get(i);
+			String blockText = blockItem.getString("text").trim();
+			if(blockText.startsWith(endKey) &&
+					blockItem.getInteger("y") > startBlockItem.getInteger("y") - startBlockItem.getInteger("height")&&
+					blockItem.getInteger("y") < startBlockItem.getInteger("y") + startBlockItem.getInteger("height")
+			){
+				targetBlockItem = blockItem;
+			}
+		}
+
+
+		JSONObject result = new JSONObject();
+		result.put("index", 1);
+		result.put("blockItem", targetBlockItem);
+		result.put("keyWord", targetKeyWord);
+		result.put("keyType", "split"); // 关键字不在一个单元格里面
+		return result;
+
+	}
+
+	/**
+	 * 处理单个水平元素
+	 * @param item
+	 * @param blockItemList
+	 * @return
+	 */
 	private JSONObject doHorizontal(HashMap item, List<JSONObject> blockItemList) {
-		logger.debug("doHorizontal : +++++++++++++ : text {}  ", item.get("Name"));
 		JSONObject keyBlockItemResult = findKeyBlockItem(item, blockItemList);
 		JSONObject blockItem = keyBlockItemResult.getJSONObject("blockItem");
 		if (blockItem == null) {
@@ -127,49 +198,34 @@ public class ParseJsonWorker {
 		// key和value 在一个单元格里
 		if (index + keyWord.length() < text.length()) {
 			int maxLineCount = (int) item.get("MaxLineCount");
-			logger.debug(" [{}] Key value 在一个单元格里  ---------- {} ", text, maxLineCount);
-			if (maxLineCount > 1) {
+			if (maxLineCount > 1) { //多行的情况
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
-
 			} else {
-
 				int lastIndex = text.length() > index + keyWord.length() + (int) item.get("MaxLength")
 						? index + keyWord.length() + (int) item.get("MaxLength")
 						: text.length();
-				logger.debug("key {}  -------------- value {}  lastIndex {} ", item.get("name"),
-						text.substring(index + keyWord.length(), lastIndex), lastIndex);
-
 				resultItem.put("value", text.substring(index + keyWord.length(), lastIndex));
-
 			}
-
 		} else {
 			// value 单独在一个单元格里
-			logger.debug(" [{}]  value 单独在一个单元格里  --------------------------- ", text);
 			String blockItemValue = findNextRightBlockItemValue(item, blockItem);
 
 			if (blockItemValue == null) {
 				return null;
 			}
-			logger.debug("key {}  -------------- value {}  ", item.get("name"), blockItemValue);
 			resultItem.put("value", blockItemValue);
-
 		}
 
-		if ("single".equals(keyBlockItemResult.getString("KeyType"))) {
-			// key 在单个单元格里
-
-		} else {
-//            多行
+		if ("split".equals(keyBlockItemResult.getString("keyType"))) {
+			// key 在多个单元格里， 取最后一个单元格 第一个字符开始的内容
+			resultItem.put("value", blockItem.getString("text").substring(1));
 		}
 
 		if (resultItem.getString("value").startsWith(":") || resultItem.getString("value").startsWith("：")) {
 			resultItem.put("value", resultItem.getString("value").substring(1));
 		}
-
 		return resultItem;
-
 	}
 
 	/**
@@ -268,13 +324,10 @@ public class ParseJsonWorker {
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
-			logger.debug("{} ################## {}", JSON.toJSONString(curItem.getString("text")),
-					JSON.toJSONString(curItem));
 			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
 					&& curItem.getInteger("bottom") < blockItem.getInteger("bottom")
 							+ maxLineCount * (blockItem.getInteger("height") + 3)) {
 				contentBlockItemList.add(curItem);
-//                logger.info("################## {}", JSON.toJSONString(curItem));
 			}
 		}
 
@@ -287,12 +340,18 @@ public class ParseJsonWorker {
 
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
-			logger.debug("++++++++++++ {} ", JSON.toJSON(contentBlockItemList.get(i)));
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
 		}
 
 		return stringBuilder.toString();
 
+	}
+
+	/**
+	 * 处理表格元素
+	 */
+	private JSONObject doTable(HashMap item, List<JSONObject> blockItemList) {
+		return null;
 	}
 
 }

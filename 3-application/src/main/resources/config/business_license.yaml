@@ -1,17 +1,6 @@
 TemplateName: 'business-license-ocr-template'
 
 Targets:
-  - Name: "名称"
-    RecognitionType: "horizontal"
-    KeyWordList: ["称", "称"]
-    MinLength: 2
-    MaxLength: 6
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.3
-    YRangeMax: 0.60
   - Name: "统一社会信用代码"
     RecognitionType: "horizontal"
     KeyWordList: ["统一社会信用代码"]
@@ -23,6 +12,43 @@ Targets:
     XRangeMax: 0.80
     YRangeMin: 0.0
     YRangeMax: 0.50
+
+  - Name: "名称"
+    RecognitionType: "horizontal"
+    KeyWordList: ["名称"]
+    MinLength: 20
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.30
+    YRangeMin: 0.3
+    YRangeMax: 0.60
+
+  - Name: "类型"
+    RecognitionType: "horizontal"
+    KeyWordList: ["类型"]
+    MinLength: 20
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.30
+    YRangeMin: 0.3
+    YRangeMax: 0.60
+
+  - Name: "住所"
+    RecognitionType: "horizontal"
+    KeyWordList: ["住所"]
+    MinLength: 20
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.30
+    YRangeMin: 0.3
+    YRangeMax: 0.60
+
 
   - Name: "法定代表人"
     RecognitionType: "horizontal"
