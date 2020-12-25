@@ -19,7 +19,7 @@
     <script src="/static/jcanvas.min.js"></script>
     <script src="/static/upload_${uploadType}.js"></script>
 </head>
-<body style="width:1200px;margin:0 auto;">
+<body style="width:1600px;margin:0 auto;">
 
 <div class="container-fluid" id="main" style="width:100%">
 
@@ -56,7 +56,7 @@
 
     <div class="row" >
         <div class="col-md-7" class="overflow-auto" id="myCanvasParent" >
-            <canvas id="myCanvas" width="600" height="400"
+            <canvas id="myCanvas" width="900" height="800"
                   style="border:1px solid #000000;">
         </canvas>
         </div>

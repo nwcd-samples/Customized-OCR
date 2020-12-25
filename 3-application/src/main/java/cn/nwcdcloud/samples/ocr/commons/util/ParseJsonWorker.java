@@ -1,6 +1,5 @@
 package cn.nwcdcloud.samples.ocr.commons.util;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -12,23 +11,25 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-public class ParseJsonUtils {
-    private static final String  ID_SAMPLE_CONFIG_FILE =  "config/id.yaml";
+public class ParseJsonWorker {
+    private static final String  ID_SAMPLE_CONFIG_FILE =  "config/identity_card.yaml";
 
-    private  final Logger logger = LoggerFactory.getLogger(ParseJsonUtils.class);
+    private  final Logger logger = LoggerFactory.getLogger(ParseJsonWorker.class);
 
     private int pageWidth;
     private int pageHeight;
     private List<JSONObject> blockItemList;
+    private String configFilePath;
 
-    public ParseJsonUtils(int pageWidth, int pageHeight , List<JSONObject> blockItemList) {
+    public ParseJsonWorker(int pageWidth, int pageHeight , List<JSONObject> blockItemList, String configFilePath) {
         this.pageWidth = pageWidth;
         this.pageHeight = pageHeight;
         this.blockItemList = blockItemList;
+        this.configFilePath = configFilePath;
     }
 
     public JSONArray extractValue(List<JSONObject> blockItemList){
-        Map configMap =  readConfig(ID_SAMPLE_CONFIG_FILE);
+        Map configMap =  readConfig(this.configFilePath);
 
         JSONArray resultArray = new JSONArray();
         List targetList  = (ArrayList) configMap.get("Targets");

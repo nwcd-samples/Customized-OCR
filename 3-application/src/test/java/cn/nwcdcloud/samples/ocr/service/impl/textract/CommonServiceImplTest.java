@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.nwcdcloud.samples.ocr.enums.DocumentTypeEnum;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonUtils;
+import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
 
 
 public class CommonServiceImplTest {
@@ -50,7 +51,7 @@ public class CommonServiceImplTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-        ParseJsonUtils parseJsonUtil = new ParseJsonUtils(1124, 800, blockItemList);
+        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, DocumentTypeEnum.IDENTITY_CARD.getPath());
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "姓名", "代用名");
@@ -69,7 +70,7 @@ public class CommonServiceImplTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-        ParseJsonUtils parseJsonUtil = new ParseJsonUtils(1124, 800, blockItemList);
+        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, DocumentTypeEnum.IDENTITY_CARD.getPath());
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "姓名", "李四");
@@ -88,7 +89,7 @@ public class CommonServiceImplTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-        ParseJsonUtils parseJsonUtil = new ParseJsonUtils(1124, 800, blockItemList);
+        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, DocumentTypeEnum.IDENTITY_CARD.getPath());
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "姓名", "韦小宝");
