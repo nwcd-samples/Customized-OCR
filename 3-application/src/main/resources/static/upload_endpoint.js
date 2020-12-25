@@ -2,16 +2,20 @@ function showImg(){
 	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
 }
 
-function inference(type){
-	predictBinary(type);
+function inference(type,showJson){
+	predict(type,showJson);
 }
 
-function predictBinary(type){
+function predict(type,showJson){
     $("#loading-icon").show();
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
+	var url = "/inference/predict";
+	if(showJson){
+		url += "/"+type;
+	}
 	$.ajax({
-		url : "/inference/predict", 
+		url : url, 
 		type : 'POST', 
 		data : file, 
 		processData : false,
@@ -22,10 +26,15 @@ function predictBinary(type){
 			console.log("正在进行，请稍候");
 		},
 		success : function(result) {
-			console.log(result);
+			//console.log(result);
 		    if (result.code == 1) {
-		    	data = JSON.parse(result.data);
-		    	analysis(type,data);
+		    	if(showJson){
+				    $("#loading-icon").hide();
+		    		alert(result.data);
+		    	}else{
+			    	data = JSON.parse(result.data);
+			    	analysis(type,data);
+		    	}
 		    }else{
 		    	alert(result.msg);
 		    }
@@ -38,7 +47,7 @@ function predictBinary(type){
 }
 
 function analysis(type,fullData){
-	console.log(fullData);
+	//console.log(fullData);
 	$.post("/inference/analysis/"+type,
 			{"fullData":JSON.stringify(fullData)},
 			function(result) {

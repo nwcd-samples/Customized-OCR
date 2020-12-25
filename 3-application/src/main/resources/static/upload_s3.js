@@ -2,11 +2,11 @@ function showImg(){
 	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
 }
 
-function inference(type){
-	generatePresignedUrl(type);
+function inference(type,showJson){
+	generatePresignedUrl(type,showJson);
 }
 
-function generatePresignedUrl(type){
+function generatePresignedUrl(type,showJson){
     $("#loading-icon").show();
 	$.post("/generatePresignedUrl",
 			  {},
@@ -14,7 +14,7 @@ function generatePresignedUrl(type){
 			      if (result.code == 1) {
 					  data=result.data;
 					  console.log(data);
-					  upload(type,data);
+					  upload(type,data,showJson);
 				  }else{
 				  	alert(result.msg);
 				  }
@@ -22,7 +22,7 @@ function generatePresignedUrl(type){
 			  "json");
 }
 
-function upload(type,data){
+function upload(type,data,showJson){
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
 	$.ajax({
@@ -35,7 +35,7 @@ function upload(type,data){
 			console.log("正在进行，请稍候");
 		},
 		success : function(result) {
-			predict(type,data.keyName);
+			predict(type,data.keyName,showJson);
 		}, 
 		error : function(result) { 
 			console.log(result);
@@ -43,14 +43,23 @@ function upload(type,data){
 	});
 }
 
-function predict(type,keyName){
-	$.post("/inference/predict",
+function predict(type,keyName,showJson){
+	var url = "/inference/predict";
+	if(showJson){
+		url += "/"+type;
+	}
+	$.post(url,
 		  {"keyName":keyName},
 		  function(result) {
 			  console.log(result);
 		      if (result.code == 1) {
-		    	  data = JSON.parse(result.data);
-		    	  analysis(type,data);
+			      if(showJson){
+					  $("#loading-icon").hide();
+			    	  alert(result.data);
+			      }else{
+				      data = JSON.parse(result.data);
+			    	  analysis(type,data);
+			      }
 		      }else{
 		    	  alert(result.msg);
 		      }
