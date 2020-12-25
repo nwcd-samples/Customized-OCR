@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ParseTableWorker {
 
@@ -24,7 +22,7 @@ public class ParseTableWorker {
             String startKey = keyWordStartList.get(i).toString();
             for(int j=0; j<keyWordEndList.size(); j++){
                 String endKey = keyWordEndList.get(j).toString();
-                List<JSONObject> resultList = findTableByKeys(blockItemList, startKey, endKey);
+                List<JSONObject> resultList = findTableByKeys(item, blockItemList, startKey, endKey);
                 if(resultList!=null){
                     return resultList;
                 }
@@ -35,7 +33,7 @@ public class ParseTableWorker {
 
 
 
-    private List<JSONObject>  findTableByKeys(List<JSONObject> blockItemList, String startKey, String endKey){
+    private List<JSONObject>  findTableByKeys(HashMap item, List<JSONObject> blockItemList, String startKey, String endKey){
 
         JSONObject startBlockItem = null;
         JSONObject endBlockItem = null;
@@ -54,7 +52,11 @@ public class ParseTableWorker {
             return null;
         }
         logger.info(" 找到匹配的关键字  start key [{}]   end key [{}]-----------  ", startKey, endKey);
-        return mergeColumnList(findColumnBlockItem(startBlockItem, blockItemList),findColumnBlockItem(endBlockItem, blockItemList) , startKey);
+
+        List<JSONObject> startColumnBlockItemList = findColumnBlockItem(startBlockItem, blockItemList);
+        startColumnBlockItemList = deleteInvalidBlockItem(startColumnBlockItemList, startBlockItem);
+        List<JSONObject> endColumnBlockItemList = findColumnBlockItem(endBlockItem, blockItemList);
+        return mergeColumnList(startColumnBlockItemList, endColumnBlockItemList , item.get("Name").toString());
 
     }
 
@@ -75,7 +77,7 @@ public class ParseTableWorker {
 
             if(tempBlockItem.getInteger("y") > blockItem.getInteger("y")&&
                     tempBlockItem.getInteger("right") > blockItem.getInteger("left")
-                    && tempBlockItem.getInteger("left") < blockItem.getInteger("right") + blockItem.getInteger("width")
+                    && tempBlockItem.getInteger("left") < blockItem.getInteger("right") +10
             ){
 
                 findCount ++;
@@ -137,6 +139,39 @@ public class ParseTableWorker {
 
         logger.info(" 找到 {} 个行元素 ", resultItemList.size());
         return  resultItemList;
+    }
+
+    /**
+     * 删除y坐标差距过大的行
+     */
+    private List<JSONObject>  deleteInvalidBlockItem(List<JSONObject> blockItemList, JSONObject startBlockItem){
+
+        if(blockItemList == null || blockItemList.size()<=1){
+            return blockItemList;
+        }
+
+        Collections.sort(blockItemList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject jsonObject, JSONObject t1) {
+                return jsonObject.getInteger("y")- t1.getInteger("y");
+            }
+        });
+
+
+        int lastBlockItemPozY = startBlockItem.getInteger("y");
+        List<JSONObject> newBlockItemList = new ArrayList<>();
+
+        for(int i=0; i< blockItemList.size(); i++){
+            JSONObject tempItem = blockItemList.get(i);
+//            logger.info("tempItem    y [{}] -- {}   ", tempItem.getInteger("y"), tempItem.getString("text"));
+            if(tempItem.getInteger("y") <  lastBlockItemPozY + 2* tempItem.getInteger("height")){
+                newBlockItemList.add(tempItem);
+                lastBlockItemPozY = tempItem.getInteger("y");
+            }else {
+                break;
+            }
+        }
+        return newBlockItemList;
     }
 
 }
