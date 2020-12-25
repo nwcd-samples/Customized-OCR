@@ -133,7 +133,7 @@ public class ParseJsonWorker {
         // key和value 在一个单元格里
         if( index + keyWord.length() < text.length()){
             int maxLineCount = (int)item.get("MaxLineCount");
-            logger.info(" [{}] Key value ®在一个单元格里  ---------- {} " , text, maxLineCount);
+            logger.info(" [{}] Key value 在一个单元格里  ---------- {} " , text, maxLineCount);
             if(maxLineCount > 1){
                 String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
                 resultItem.put("value", mergeValue.substring(keyWord.length()));
@@ -170,7 +170,10 @@ public class ParseJsonWorker {
 
         }else {
 //            多行
+        }
 
+        if(resultItem.getString("value").startsWith(":") ||resultItem.getString("value").startsWith("：")){
+            resultItem.put("value", resultItem.getString("value").substring(1));
         }
 
         return resultItem;

@@ -34,7 +34,22 @@ public class InvoiceTypeTest {
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, DocumentTypeEnum.INVOICE.getPath());
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
         logger.info(resultArray.toJSONString());
-//        assert  checkKeyValueMap(resultArray, "姓名", "代用名");
+        assert  checkKeyValueMap(resultArray, "购买方-名称", "北京西云数据科技有限公司");
+        assert  checkKeyValueMap(resultArray, "购买方-纳税人识别号", "91110105MA01M3778H");
+        assert  checkKeyValueMap(resultArray, "购买方-开户行及账号", "中国工商银行股份有限公司北京东四支行0200004109200060094");
+
+        assert  checkKeyValueMap(resultArray, "销售方-名称", "北京滴滴出行科技有限公司");
+        assert  checkKeyValueMap(resultArray, "销售方-纳税人识别号", "91110108MA01GOFB09");
+        assert  checkKeyValueMap(resultArray, "销售方-开户行及账号", "招商银行股份有限公司北京东三环支行110936504210806");
+
+        assert  checkKeyValueMap(resultArray, "价税合计", "肆佰柒拾肆圆柒角玖分");
+        assert  checkKeyValueMap(resultArray, "价税合计-小写", "￥474.79");
+        assert  checkKeyValueMap(resultArray, "发票代码", "011002000311");
+
+        assert  checkKeyValueMap(resultArray, "发票号码", "96079560");
+        assert  checkKeyValueMap(resultArray, "开票日期", "2020年09月25日");
+        assert  checkKeyValueMap(resultArray, "校验码", "16372973982892550584");
+
 
     }
 

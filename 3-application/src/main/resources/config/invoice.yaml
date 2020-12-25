@@ -1,17 +1,18 @@
 TemplateName: 'invoice-ocr-template'
 
 Targets:
-  - Name: "姓名"
+  - Name: "购买方-名称"
     RecognitionType: "horizontal"
-    KeyWordList: ["姓名", "名字"]
-    MinLength: 2
-    MaxLength: 6
+    KeyWordList: ["称：","称:"]
+    # 百分比
+    MinLength: 16
+    MaxLength: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.0
-    YRangeMax: 0.30
+    XRangeMax: 0.60
+    YRangeMin: 0.10
+    YRangeMax: 0.40
 
   - Name: "购买方-纳税人识别号"
     RecognitionType: "horizontal"
@@ -26,6 +27,33 @@ Targets:
     YRangeMin: 0.10
     YRangeMax: 0.40
 
+  - Name: "购买方-开户行及账号"
+    RecognitionType: "horizontal"
+    KeyWordList: ["开户行及账号"]
+    # 百分比
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.60
+    YRangeMin: 0.10
+    YRangeMax: 0.40
+
+
+  - Name: "销售方-名称"
+    RecognitionType: "horizontal"
+    KeyWordList: ["称：","称:"]
+    # 百分比
+    MinLength: 16
+    MaxLength: 20
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.60
+    YRangeMin: 0.50
+    YRangeMax: 0.90
+
   - Name: "销售方-纳税人识别号"
     RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
@@ -39,18 +67,6 @@ Targets:
     YRangeMin: 0.50
     YRangeMax: 0.90
 
-  - Name: "购买方-开户行及账号"
-    RecognitionType: "horizontal"
-    KeyWordList: ["开户行及账号"]
-    # 百分比
-    MinLength: 40
-    MaxLength: 40
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.60
-    YRangeMin: 0.10
-    YRangeMax: 0.40
 
   - Name: "销售方-开户行及账号"
     RecognitionType: "horizontal"
@@ -78,3 +94,78 @@ Targets:
     XRangeMax: 0.60
     YRangeMin: 0.30
     YRangeMax: 0.80
+
+  - Name: "价税合计-小写"
+    RecognitionType: "horizontal"
+    KeyWordList: ["（小写）"]
+    # 百分比
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.6
+    XRangeMax: 1.0
+    YRangeMin: 0.40
+    YRangeMax: 0.70
+
+  - Name: "发票代码"
+    RecognitionType: "horizontal"
+    KeyWordList: ["发票代码"]
+    # 百分比
+    MinLength: 40
+    MaxLength: 40
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.6
+    XRangeMax: 1.0
+    YRangeMin: 0.00
+    YRangeMax: 0.30
+  - Name: "发票号码"
+      RecognitionType: "horizontal"
+      KeyWordList: ["发票号码"]
+      # 百分比
+      MinLength: 40
+      MaxLength: 40
+      MaxLineCount: 1
+      TargetValueType: "char"
+      XRangeMin: 0.6
+      XRangeMax: 1.0
+      YRangeMin: 0.00
+      YRangeMax: 0.40
+  - Name: "开票日期"
+      RecognitionType: "horizontal"
+      KeyWordList: ["开票日期"]
+      # 百分比
+      MinLength: 40
+      MaxLength: 40
+      MaxLineCount: 1
+      TargetValueType: "char"
+      XRangeMin: 0.6
+      XRangeMax: 1.0
+      YRangeMin: 0.00
+      YRangeMax: 0.40
+
+  - Name: "校验码"
+      RecognitionType: "horizontal"
+      KeyWordList: ["校验码"]
+      # 百分比
+      MinLength: 40
+      MaxLength: 40
+      MaxLineCount: 1
+      TargetValueType: "char"
+      XRangeMin: 0.6
+      XRangeMax: 1.0
+      YRangeMin: 0.10
+      YRangeMax: 0.50
+  - Name: "机器编码"
+      RecognitionType: "horizontal"
+      KeyWordList: ["机器编码"]
+      # 百分比
+      MinLength: 40
+      MaxLength: 40
+      MaxLineCount: 1
+      TargetValueType: "char"
+      XRangeMin: 0.0
+      XRangeMax: 0.3
+      YRangeMin: 0.10
+      YRangeMax: 0.50
