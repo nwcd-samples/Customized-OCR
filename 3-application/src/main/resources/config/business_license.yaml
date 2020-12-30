@@ -13,6 +13,18 @@ Targets:
     YRangeMin: 0.0
     YRangeMax: 0.50
 
+  - Name: "注册号"
+    RecognitionType: "horizontal"
+    KeyWordList: ["注册号"]
+    MinLength: 20
+    MaxLength: 20
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.3
+    XRangeMax: 0.80
+    YRangeMin: 0.0
+    YRangeMax: 0.50
+
   - Name: "名称"
     RecognitionType: "horizontal"
     KeyWordList: ["名称"]
@@ -33,9 +45,9 @@ Targets:
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.3
-    YRangeMax: 0.60
+    XRangeMax: 0.80
+    YRangeMin: 0.1
+    YRangeMax: 0.80
 
   - Name: "住所"
     RecognitionType: "horizontal"
@@ -48,6 +60,31 @@ Targets:
     XRangeMax: 0.30
     YRangeMin: 0.3
     YRangeMax: 0.60
+
+  - Name: "经营场所"
+    RecognitionType: "horizontal"
+    KeyWordList: ["经营场所"]
+    MinLength: 20
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.80
+    YRangeMin: 0.2
+    YRangeMax: 0.80
+
+  - Name: "组成形式"
+    RecognitionType: "horizontal"
+    KeyWordList: ["组成形式"]
+    MinLength: 20
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.80
+    YRangeMin: 0.2
+    YRangeMax: 0.80
+
 
 
   - Name: "法定代表人"
@@ -77,7 +114,7 @@ Targets:
 
   - Name: "成立日期"
     RecognitionType: "horizontal"
-    KeyWordList: ["成立日期"]
+    KeyWordList: ["成立日期", "注册日期"]
     MinLength: 20
     MaxLength: 20
     MaxLineCount: 1

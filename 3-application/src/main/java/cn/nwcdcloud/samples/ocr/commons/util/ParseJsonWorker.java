@@ -99,7 +99,7 @@ public class ParseJsonWorker {
 			}
 
 		}
-//        logger.info(" findFlag:  {}   index: {}    {} ", findFlag, targetIndex,  targetBlockItem);
+        logger.info(" findFlag:  {}   index: {}    {} ", findFlag, targetIndex,  targetBlockItem);
 
 		JSONObject result = new JSONObject();
 		result.put("index", targetIndex);
@@ -123,8 +123,9 @@ public class ParseJsonWorker {
 			return null;
 		}
 
-		String startKey = targetKeyWord.substring(0,1);
-		String endKey = targetKeyWord.substring(targetKeyWord.length()-1, targetKeyWord.length() );
+		int lastKeyLength =1;
+		String startKey = targetKeyWord.substring(0,lastKeyLength);
+		String endKey = targetKeyWord.substring(targetKeyWord.length()-lastKeyLength, targetKeyWord.length() );
 
 		JSONObject startBlockItem = null;
 
@@ -140,10 +141,11 @@ public class ParseJsonWorker {
 
 		if(startBlockItem == null){
 			JSONObject result = new JSONObject();
-			result.put("index", 1);
+			result.put("index", lastKeyLength);
 			result.put("blockItem", null);
 			result.put("keyWord", targetKeyWord);
 			result.put("keyType", "single"); // 关键字在一个单元格里面
+			result.put("subKeyWord", endKey);
 			return result;
 		}
 
@@ -164,11 +166,13 @@ public class ParseJsonWorker {
 		}
 
 
+		logger.info(" find targetBlockItem  blockItem {} ", JSON.toJSON(targetBlockItem));
 		JSONObject result = new JSONObject();
 		result.put("index", 1);
 		result.put("blockItem", targetBlockItem);
 		result.put("keyWord", targetKeyWord);
 		result.put("keyType", "split"); // 关键字不在一个单元格里面
+		result.put("subKeyWord", endKey);
 		return result;
 
 	}
@@ -195,15 +199,26 @@ public class ParseJsonWorker {
 		// case 1. 关键字和值 在一个单元格里面
 
 		JSONObject resultItem = new JSONObject();
+
 		resultItem.put("name", item.get("Name"));
 
-		// key和value 在一个单元格里
-		if (index + keyWord.length() < text.length()) {
+
+		if(keyBlockItemResult.get("subKeyWord") != null ){
+			// case  1:   'key1'   'key2value'
+			int lastIndex = text.length() > index  + (int) item.get("MaxLength")
+					? index  + (int) item.get("MaxLength")
+					: text.length();
+			resultItem.put("value", text.substring(index , lastIndex));
+		}else if (index + keyWord.length() < text.length()) {
+			// case  2:   'key:value'
+			// key和value 在一个单元格里
 			int maxLineCount = (int) item.get("MaxLineCount");
 			if (maxLineCount > 1) { //多行的情况
+				logger.info("--------------   1");
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
 			} else {
+				logger.info("--------------   2  index: {}  keyword: {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + (int) item.get("MaxLength")
 						? index + keyWord.length() + (int) item.get("MaxLength")
 						: text.length();
@@ -211,6 +226,7 @@ public class ParseJsonWorker {
 			}
 		} else {
 			// value 单独在一个单元格里
+			// case  3:   'key' 'value'
 			String blockItemValue = findNextRightBlockItemValue(item, blockItem);
 
 			if (blockItemValue == null) {
@@ -306,6 +322,9 @@ public class ParseJsonWorker {
 					minDistanceBlockItem = tempBlockItem;
 				}
 			}
+		}
+		if(minDistanceBlockItem == null){
+			return null;
 		}
 		return minDistanceBlockItem.getString("text");
 	}

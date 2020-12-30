@@ -20,7 +20,7 @@ public class BusinessLicenseTypeTest {
     CommonServiceImpl commonServiceImpl;
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/business_license001.json";
-//    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/business_license002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/business_license002.json";
 
 
 
@@ -44,6 +44,26 @@ public class BusinessLicenseTypeTest {
         assert  checkKeyValueMap(resultArray, "经营范围", "电缆桥架、配电箱、母线槽制造销售。");
 
     }
+
+    @Test
+    public void parse002() {
+
+        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
+        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/business_license.yaml");
+        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        logger.info(resultArray.toJSONString());
+        assert  checkKeyValueMap(resultArray, "注册号", "61040361");
+        assert  checkKeyValueMap(resultArray, "名称", "杨凌中港西餐厅");
+        assert  checkKeyValueMap(resultArray, "类型", "个体");
+        assert  checkKeyValueMap(resultArray, "经营场所", "陕西省杨凌示范区康乐路名都酒店二楼");
+        assert  checkKeyValueMap(resultArray, "组成形式", "个人经营");
+        assert  checkKeyValueMap(resultArray, "成立日期", "2016年10月10日");
+        assert  checkKeyValueMap(resultArray, "经营范围", "餐饮、西餐、预包装食品：服务兼零售。（依法须经批准的理经相关部门批准后方可开展经营活动）");
+
+    }
+
 
 
     private boolean checkKeyValueMap(JSONArray array, String name, String value){
