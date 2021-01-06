@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import cn.nwcdcloud.commons.constant.CommonConstants;
@@ -34,6 +35,8 @@ import software.amazon.awssdk.utils.StringUtils;
 
 @Service
 public class SageMakerServiceImpl implements SageMakerService {
+	@Value("${instanceCount}")
+	private int instanceCount;
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -88,7 +91,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		Result result = new Result();
 		SageMakerClient client = SageMakerClient.create();
 		ProductionVariant productionVariant = ProductionVariant.builder().instanceType(instanceType)
-				.initialInstanceCount(1).modelName(modelName).variantName("AllTraffic").build();
+				.initialInstanceCount(instanceCount).modelName(modelName).variantName("AllTraffic").build();
 		CreateEndpointConfigRequest request = CreateEndpointConfigRequest.builder().endpointConfigName(endpointName)
 				.productionVariants(new ProductionVariant[] { productionVariant }).build();
 		client.createEndpointConfig(request);
@@ -100,7 +103,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		String roleArn = getRoleArn();
 		if (StringUtils.isBlank(roleArn)) {
 			result.setCode(20);
-			result.setMsg("获取SageMaker Role为空，请打开SageMaker控制台后重新执行");
+			result.setMsg("获取SageMaker Role为空，请打开SageMaker控制台，然后依次点击 笔记本实例 -> 创建笔记本实例 -> 创建新的角色 后重新执行");
 			return result;
 		}
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
