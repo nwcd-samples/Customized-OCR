@@ -72,9 +72,14 @@ $(function(){
 function getStatus(){
 	$.get("inference/getEndpointStatus",
 		  function(result) {
-			  console.log("获取status:"+result);
-			  changeStatus(result);
-		  });
+		      if (result.code == 1) {
+			      console.log("获取status:"+result.data);
+			      changeStatus(result.data);
+		      }else{
+				  alert(result.msg);
+		      }
+		  },
+		  "json");
 }
 
 function changeStatus(status){

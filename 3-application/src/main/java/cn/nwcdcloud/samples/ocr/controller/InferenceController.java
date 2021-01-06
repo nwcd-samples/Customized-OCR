@@ -54,7 +54,7 @@ public class InferenceController {
 	@GetMapping("/getEndpointStatus")
 	@ResponseBody
 	public String getEndpointStatus() {
-		String result = sageMakerService.getEndpointStatus(endpointName);
+		String result = sageMakerService.getEndpointStatus(endpointName).toString();
 		return result;
 	}
 

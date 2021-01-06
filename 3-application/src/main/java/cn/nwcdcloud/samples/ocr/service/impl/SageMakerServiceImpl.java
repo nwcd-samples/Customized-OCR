@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
 import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
@@ -37,6 +40,7 @@ import software.amazon.awssdk.utils.StringUtils;
 public class SageMakerServiceImpl implements SageMakerService {
 	@Value("${instanceCount}")
 	private int instanceCount;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -133,16 +137,28 @@ public class SageMakerServiceImpl implements SageMakerService {
 	}
 
 	@Override
-	public String getEndpointStatus(String endpointName) {
-		String result = "None";
-		SageMakerClient client = SageMakerClient.create();
-		DescribeEndpointRequest request = DescribeEndpointRequest.builder().endpointName(endpointName).build();
+	public Result getEndpointStatus(String endpointName) {
+		Result result = new Result();
+		String status = "None";
 		try {
+			SageMakerClient client = SageMakerClient.create();
+			DescribeEndpointRequest request = DescribeEndpointRequest.builder().endpointName(endpointName).build();
 			DescribeEndpointResponse response = client.describeEndpoint(request);
-			result = response.endpointStatusAsString();
+			status = response.endpointStatusAsString();
+		} catch (SdkClientException e) {
+			result.setCode(10);
+			result.setMsg("未设置访问密钥，请先进行配置，然后重启web服务");
+			return result;
 		} catch (SageMakerException e) {
-			result = "None";
+			logger.warn("获取endpoint时报错", e);
+			if (e.getMessage().indexOf("The request signature") != -1) {
+				result.setCode(10);
+				result.setMsg("访问密钥设置错误或已失效，请重新进行配置，然后重启web服务");
+				return result;
+			}
+			status = "None";
 		}
+		result.setData(status);
 		return result;
 	}
 
