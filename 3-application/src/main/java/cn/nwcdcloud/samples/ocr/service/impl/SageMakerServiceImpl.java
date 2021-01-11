@@ -7,19 +7,16 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
+import cn.nwcdcloud.samples.ocr.service.IamService;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.core.exception.SdkClientException;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.iam.IamClient;
-import software.amazon.awssdk.services.iam.model.ListRolesRequest;
-import software.amazon.awssdk.services.iam.model.ListRolesResponse;
-import software.amazon.awssdk.services.iam.model.Role;
 import software.amazon.awssdk.services.sagemaker.SageMakerClient;
 import software.amazon.awssdk.services.sagemaker.model.ContainerDefinition;
 import software.amazon.awssdk.services.sagemaker.model.CreateEndpointConfigRequest;
@@ -34,13 +31,14 @@ import software.amazon.awssdk.services.sagemaker.model.SageMakerException;
 import software.amazon.awssdk.services.sagemakerruntime.SageMakerRuntimeClient;
 import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointRequest;
 import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointResponse;
-import software.amazon.awssdk.utils.StringUtils;
 
 @Service
 public class SageMakerServiceImpl implements SageMakerService {
 	@Value("${instanceCount}")
 	private int instanceCount;
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	@Autowired
+	private IamService iamService;
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -103,37 +101,29 @@ public class SageMakerServiceImpl implements SageMakerService {
 	}
 
 	private Result createModel(String imageUri, String endpointName) {
-		Result result = new Result();
-		String roleArn = getRoleArn();
-		if (StringUtils.isBlank(roleArn)) {
-			result.setCode(20);
-			result.setMsg("获取SageMaker Role为空，请打开SageMaker控制台，然后依次点击 笔记本实例 -> 创建笔记本实例 -> 创建新的角色 后重新执行");
+		Result result = iamService.getRoleArn();
+		if (result.getCode() != CommonConstants.NORMAL) {
 			return result;
 		}
+		String roleArn = (String) result.getData();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
 		String modelName = endpointName + "-inference-" + df.format(new Date());
 		SageMakerClient client = SageMakerClient.create();
 		ContainerDefinition container = ContainerDefinition.builder().image(imageUri).build();
 		CreateModelRequest request = CreateModelRequest.builder().modelName(modelName).executionRoleArn(roleArn)
 				.primaryContainer(container).build();
-		client.createModel(request);
+		try {
+			client.createModel(request);
+		} catch (Exception e) {
+			logger.error("创建endpoint出错", e);
+			result.setCode(22);
+//			result.setMsg(
+//					"aws configure配置默认region和image region不一致，请修改configure默认region或修改application.properties中image region，然后重启服务");
+			result.setMsg("创建endpoint出错");
+			return result;
+		}
 		result.setData(modelName);
 		return result;
-	}
-
-	private String getRoleArn() {
-		String roleArn = "";
-		// IAM必须明确指定Region为cn-north-1
-		IamClient client = IamClient.builder().region(Region.CN_NORTH_1).build();
-		ListRolesRequest request = ListRolesRequest.builder().pathPrefix("/service-role").build();
-		ListRolesResponse response = client.listRoles(request);
-		for (Role role : response.roles()) {
-			if (role.roleName().startsWith("AmazonSageMaker-ExecutionRole-")) {
-				roleArn = role.arn();
-				break;
-			}
-		}
-		return roleArn;
 	}
 
 	@Override
@@ -147,14 +137,21 @@ public class SageMakerServiceImpl implements SageMakerService {
 			status = response.endpointStatusAsString();
 		} catch (SdkClientException e) {
 			result.setCode(10);
-			result.setMsg("未设置访问密钥，请先进行配置，然后重启web服务");
+			result.setMsg("未设置访问密钥，请先进行配置");
 			return result;
 		} catch (SageMakerException e) {
-			logger.warn("获取endpoint时报错", e);
 			if (e.getMessage().indexOf("The request signature") != -1) {
 				result.setCode(10);
-				result.setMsg("访问密钥设置错误或已失效，请重新进行配置，然后重启web服务");
+				result.setMsg("访问密钥设置错误或已失效，请重新进行配置");
 				return result;
+			}
+			if (e.getMessage().indexOf("is not authorized to perform") != -1) {
+				result.setCode(10);
+				result.setMsg("当前访问密钥无权访问SageMaker endpoint，请重新进行配置");
+				return result;
+			}
+			if (e.getMessage().indexOf("Could not find endpoint") == -1) {
+				logger.warn("获取endpoint时报错", e);
 			}
 			status = "None";
 		}

@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.nwcdcloud.commons.lang.Result;
+import cn.nwcdcloud.samples.ocr.service.IamService;
 import cn.nwcdcloud.samples.ocr.service.S3Service;
 
 @Controller
 public class IndexController {
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private IamService iamService;
 	@Value("${bucketName}")
 	private String bucketName;
 	@Value("${prefix}")
@@ -49,18 +53,18 @@ public class IndexController {
 		return mv;
 	}
 
-	@GetMapping("/license")
-	public ModelAndView license() {
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("uploadType", uploadType);
-		return mv;
-	}
-
 	@PostMapping("/generatePresignedUrl")
 	@ResponseBody
 	public String generatePresignedUrl() {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd/HH-mm-ss-SSS");
 		String keyName = prefix + df.format(new Date()) + ".jpg";
 		return s3Service.generatePresignedUrl(null, bucketName, keyName, 10).toString();
+	}
+
+	@PostMapping("/createRole")
+	@ResponseBody
+	public String createRole() {
+		Result result = iamService.createRole();
+		return result.toString();
 	}
 }

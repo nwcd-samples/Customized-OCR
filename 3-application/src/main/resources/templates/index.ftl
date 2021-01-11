@@ -19,12 +19,14 @@
         <div class="col-sm">
 
             <div style="margin-top:20px">
-                OCR推理服务状态: <b id="status">None</b>
+                OCR推理服务状态: <b id="status">获取状态中</b>
             </div>
 
             <div style="margin-top:20px">
                 <input type="button" id="deploy" onclick="deploy();" value="创建OCR推理服务" disabled="disabled">
                 <input type="button" id="remove" onclick="remove();" value="删除OCR推理服务" disabled="disabled">
+                <input type="button" id="remove" onclick="createRole();" value="创建Role" style="display:none;"><br>
+                PS:创建OCR推理服务大约需要7分钟。OCR推理服务创建后开始计费，不使用时，请及时删除。
             </div>
 
 
@@ -76,6 +78,7 @@ function getStatus(){
 			      console.log("获取status:"+result.data);
 			      changeStatus(result.data);
 		      }else{
+		    	  $("#status").html("获取状态失败");
 				  alert(result.msg);
 		      }
 		  },
@@ -89,6 +92,11 @@ function changeStatus(status){
 	case "None":
 		$("#deploy").attr("disabled",false);
 		$("#remove").attr("disabled",true);
+		break;
+	case "Deleting":
+		$("#deploy").attr("disabled",true);
+		$("#remove").attr("disabled",true);
+		setTimeout("getStatus()",3*1000);
 		break;
 	case "Creating":
 		$("#deploy").attr("disabled",true);
@@ -126,6 +134,18 @@ function remove(){
 		$.post('inference/remove');
 		setTimeout("getStatus()",2*1000);
 	}
+}
+
+function createRole(){
+	$.post("createRole",
+		  function(result) {
+		      if (result.code == 1) {
+			      alert("创建成功");
+		      }else{
+				  alert(result.msg);
+		      }
+		  },
+		  "json");
 }
 </script>
 </body>
