@@ -340,14 +340,21 @@ public class ParseJsonWorker {
 	private String findMultiLineBlockItemValue(JSONObject blockItem, int maxLineCount, boolean isContainSelf) {
 
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
+
+
 		for (int i = 0; i < this.blockItemList.size(); i++) {
+
 			JSONObject curItem = blockItemList.get(i);
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
+
+
+
 			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
 					&& curItem.getInteger("bottom") < blockItem.getInteger("bottom")
 							+ maxLineCount * (blockItem.getInteger("height") + 3)) {
+				logger.info("========================*************  {} ", curItem.getString("text"));
 				contentBlockItemList.add(curItem);
 			}
 		}
@@ -364,6 +371,7 @@ public class ParseJsonWorker {
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
 		}
 
+		logger.info(stringBuilder.toString()  );
 		return stringBuilder.toString();
 
 	}
