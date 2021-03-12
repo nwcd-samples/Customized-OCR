@@ -34,7 +34,6 @@ public class CommonServiceImpl implements CommonService {
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList));
 
-		// TODO 需要返回多张图片结果
 		logger.debug(resultArray.toJSONString());
 		result.setData(resultArray.toJSONString());
 		return result;

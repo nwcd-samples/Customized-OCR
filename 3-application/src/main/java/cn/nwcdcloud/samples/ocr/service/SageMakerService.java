@@ -21,5 +21,5 @@ public interface SageMakerService {
 	 *         Creating 创建中
 	 * 
 	 */
-	String getEndpointStatus(String endpointName);
+	Result getEndpointStatus(String endpointName);
 }

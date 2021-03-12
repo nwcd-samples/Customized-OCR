@@ -29,11 +29,11 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 - Web服务在本地服务器运行，请使用AWS CLI设置访问密钥、默认区域。
 - Web服务在EC2上运行，推荐使用角色方式，也可以采用访问密钥方式，需设置默认区域。
 #### 下载Web运行包
-下载地址：https://nwcd-samples.s3.cn-northwest-1.amazonaws.com.cn/nico/v0.1.0/ocr-0.1.0.jar  
+下载地址：https://nwcd-samples.s3.cn-northwest-1.amazonaws.com.cn/nico/v0.2.0/ocr-0.2.0.jar  
 存放本地时，建议存放到英文目录下，不含空格。
 #### 运行Web服务
-命令：`java -jar ocr-0.1.0.jar`  
-如果需要把上传的文件存放到S3，请使用命令：`java -jar ocr-0.1.0.jar --uploadType=s3 --bucketName=<BucketName>`  
+命令：`java -jar ocr-0.2.0.jar`  
+如果需要把上传的文件存放到S3，请使用命令：`java -jar ocr-0.2.0.jar --uploadType=s3 --bucketName=<BucketName>`  
 注意：文件上传到S3时，需要设置该存储桶的跨源资源共享(CORS)，参见常见问题的[如何设置S3存储桶跨源资源共享(CORS)](#如何设置S3存储桶跨源资源共享cors)  
 启动成功会输出以下类似内容：
 ```
