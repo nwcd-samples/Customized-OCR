@@ -6,7 +6,7 @@
 欢迎联系参与方案共建和提交方案需求, 也欢迎在 github 项目issue中留言反馈bugs。
 
 ## 项目说明
-本项目基于[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)，实现在SageMaker上的部署推理，提供文本识别功能。  
+本项目在SageMaker上部署推理，提供文本识别功能。  
 返回格式为[AWS Textract](https://docs.aws.amazon.com/textract/latest/dg/what-is.html)。
 
 ## 识别效果展示
@@ -46,7 +46,7 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 ![](image/web-index.jpg)
 点击 **创建OCR推理服务** 按钮，OCR推理服务状态变为：Creating；预计7分钟左右，OCR推理服务状态变为：InService，这时即可进行推理。
 #### 使用PostMan测试身份证
-选择**POST**方式，地址为http://127.0.0.1/inference/predict/id，Body选择binary方式，选择一个身份证图片，发送后即可看到返回结果。
+选择**POST**方式，地址为http://127.0.0.1/inference/predict/id ，Body选择binary方式，选择一个身份证图片，发送后即可看到返回结果。
 ![](image/postman.png)
 #### 清理环境
 点击 **删除OCR推理服务** 按钮。  
