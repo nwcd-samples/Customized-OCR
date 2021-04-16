@@ -146,6 +146,7 @@ public class BlockItemUtils {
         blockItem.put("id", rawBlockItem.getString("Id"));
         blockItem.put("newPoly", newPolyArray);
         blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
+        blockItem.put("Confidence", rawBlockItem.getString("Confidence"));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
 
 //        logger.info("    {} ", blockItem.toJSONString());

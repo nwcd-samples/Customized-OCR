@@ -2,6 +2,10 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.io.FileNotFoundException;
 
+import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
+import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,19 +21,19 @@ public class IdServiceImplTest {
     @Before
     public void setUp() throws Exception {
 
-//        logger.info("-------------- setUp");
-//        String jsonArrayPath=this.getClass().getResource(ID_SAMPLE_JSON_ARRAY_FILE).getFile().toString();
-//        JSONArray jsonArray = FileUtils.readJsonArray(jsonArrayPath);//前面两行是读取文件
-//        logger.info("-------------- jsonArray size: " + jsonArray.size());
-//        assert (jsonArray.size()>=1);
-//
-//
-//
-//
-//        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
-//        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-//
-//        assert (jsonObject != null);
+        logger.info("-------------- setUp");
+        String jsonArrayPath=this.getClass().getResource(ID_SAMPLE_JSON_ARRAY_FILE).getFile().toString();
+        JSONArray jsonArray = FileUtils.readJsonArray(jsonArrayPath);//前面两行是读取文件
+        logger.info("-------------- jsonArray size: " + jsonArray.size());
+        assert (jsonArray.size()>=1);
+
+
+
+
+        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+
+        assert (jsonObject != null);
 
 
 
@@ -39,9 +43,9 @@ public class IdServiceImplTest {
     public void parse() {
 
 //
-//        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
-//        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-//        BlockItemUtil.getBlockItemList(jsonObject, 1124, 800);
+        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
     }
 
     @Test

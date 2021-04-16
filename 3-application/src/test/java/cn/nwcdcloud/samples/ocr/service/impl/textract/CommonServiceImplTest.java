@@ -26,22 +26,7 @@ public class CommonServiceImplTest {
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_3 = "/sample/id003.json";
 //	private static final String ID_SAMPLE_JSON_ARRAY_FILE = "/sample/id001_array.json";
 
-	@Test
-	public void parse() {
-//        String jsonArrayPath=this.getClass().getResource(ID_SAMPLE_JSON_ARRAY_FILE).getFile().toString();
-//        JSONArray jsonArray = FileUtils.readJsonArray(jsonArrayPath);//前面两行是读取文件
-////        commonServiceImpl.parse(jsonArray);
-//
-//        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
-//        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-//        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-//        ParseJsonUtils parseJsonUtil = new ParseJsonUtils(1124, 800, blockItemList);
-//        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
-//
-//        logger.info(resultArray.toJSONString());
-//
 
-	}
 
 	@Test
 	public void parseId001() {
@@ -49,7 +34,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/identity_card.yaml");
+		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
 		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "代用名");
@@ -67,7 +52,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/identity_card.yaml");
+		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
 		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "李四");
@@ -85,7 +70,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/identity_card.yaml");
+		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
 		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "韦小宝");

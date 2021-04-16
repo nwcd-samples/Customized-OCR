@@ -201,6 +201,7 @@ public class ParseJsonWorker {
 		JSONObject resultItem = new JSONObject();
 
 		resultItem.put("name", item.get("Name"));
+		resultItem.put("score", blockItem.getString("Confidence"));
 
 
 		if(keyBlockItemResult.get("subKeyWord") != null ){
@@ -354,7 +355,7 @@ public class ParseJsonWorker {
 			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
 					&& curItem.getInteger("bottom") < blockItem.getInteger("bottom")
 							+ maxLineCount * (blockItem.getInteger("height") + 3)) {
-				logger.info("========================*************  {} ", curItem.getString("text"));
+//				logger.info("========================*************  {} ", curItem.getString("text"));
 				contentBlockItemList.add(curItem);
 			}
 		}
