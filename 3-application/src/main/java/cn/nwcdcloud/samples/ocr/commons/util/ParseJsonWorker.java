@@ -30,6 +30,7 @@ public class ParseJsonWorker {
 		Map configMap = readConfig(this.configFilePath);
 
 		ParseTableWorker tableWorker = new ParseTableWorker();
+		ParseTablesWorker tablesWorker = new ParseTablesWorker();
 		JSONArray resultArray = new JSONArray();
 		List targetList = (ArrayList) configMap.get("Targets");
 		for (Object item : targetList) {
@@ -42,6 +43,11 @@ public class ParseJsonWorker {
 				}
 			}else if ("table".equals(newItem.get("RecognitionType"))) {
 				List<JSONObject> resultList = tableWorker.parse(newItem, blockItemList);
+				if(resultList != null){
+					resultArray.addAll(resultList);
+				}
+			}else if ("tables".equals(newItem.get("RecognitionType"))) {
+				List<JSONObject> resultList = tablesWorker.parse(newItem, blockItemList);
 				if(resultList != null){
 					resultArray.addAll(resultList);
 				}
