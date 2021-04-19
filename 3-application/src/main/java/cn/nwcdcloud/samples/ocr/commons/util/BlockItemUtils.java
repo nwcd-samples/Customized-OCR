@@ -302,4 +302,20 @@ public class BlockItemUtils {
         return oldString.replaceAll(" ", "");
     }
 
+    /**
+     * 找到最右边元素的 右边坐标
+     * @param blockItemList
+     * @return
+     */
+    public static int findRightMostPoz(List<JSONObject> blockItemList){
+        int rightMost = 0;
+        for (JSONObject item : blockItemList){
+            if(item.getInteger("right")> rightMost){
+                rightMost = item.getInteger("right");
+            }
+        }
+        return rightMost;
+
+    }
+
 }

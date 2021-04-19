@@ -3,10 +3,9 @@ TemplateName: 'table-ocr-template'
 Targets:
   - Name: "测试表格"
     RecognitionType: "tables"
-    ColumnCount: 3              # 表格的列数
-    MainColumnIndex: 0          # 用来做行切分的 '列' 的索引
-    MaxRowHeightRatio: 2.5           # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
-    MaxRowCount: 5              # 最大行数
+    MainColumnIndex: 0                  # 用来做行切分的 '列' 的索引
+    MaxRowHeightRatio: 2.5              # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
+    MaxRowCount: 5                      # 最大行数
     Columns:
         # 表格的显示名称
       - Column: "扣款代码"
@@ -14,8 +13,11 @@ Targets:
         # 列的序号
         Index: 0
 
+        # 通过  start end 两个列 对表格的表头进行定位
+        IndexType: "start"
+
         # 可能出现的关键字
-        KeyWordList: ["扣款代码"]
+        KeyWordList: ["扣代码","扣款代码"]
 
         #  char  or  digit
         TargetValueType: "char"
@@ -26,30 +28,32 @@ Targets:
         # 3:  以Column 左边Column元素的右边作为分界点    范围最远
 
 
-        MarginLeftType: 2
+        MarginLeftType: 1
         # 在MarginLeftType 基础上， 往左移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveLeftRatio: 0.1
+        MoveLeftRatio: 0.2
 
         # MarginRightType 说明
-        # 1:  以Column 左边作为列的划分                 范围最近
+        # 1:  以Column 右边作为列的划分                 范围最近
         # 2:  以Column 到下一个Column 中点             中间范围
-        # 3:  以Column 左边Column元素的右边作为分界点    范围最远
+        # 3:  以Column 右边Column元素的左边作为分界点    范围最远
 
-        MarginRightType: 2
+        MarginRightType: 1
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveRightRatio: 0.1
+        MoveRightRatio: 0.2
 
       - Column: "费用项目"
         Index: 1
+        IndexType: "default"
         KeyWordList: ["费用项目"]
         TargetValueType: "char"
-        MarginLeftType: 3
-        MoveLeftRatio: 0.5
+        MarginLeftType: 2
+        MoveLeftRatio: 0.3
         MarginRightType: 2
-        MoveRightRatio: 0.0
+        MoveRightRatio: 0.3
 
       - Column: "扣款项目名称"
         Index: 2
+        IndexType: "default"
         KeyWordList: ["扣款项目名称"]
         TargetValueType: "char"
         MarginLeftType: 2
@@ -59,9 +63,10 @@ Targets:
 
       - Column: "扣款金额"
         Index: 3
-        KeyWordList: ["扣款金额"]
+        IndexType: "end"
+        KeyWordList: ["扣款额","扣款金额"]
         TargetValueType: "char"
         MarginLeftType: 2
-        MoveLeftRatio: 0.1
-        MarginRightType: 2
+        MoveLeftRatio: 0
+        MarginRightType: 3
         MoveRightRatio: 0.1
