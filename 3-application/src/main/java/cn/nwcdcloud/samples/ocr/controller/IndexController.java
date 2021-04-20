@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.IamService;
 import cn.nwcdcloud.samples.ocr.service.S3Service;
+import software.amazon.awssdk.utils.StringUtils;
 
 @Controller
 public class IndexController {
@@ -35,6 +36,7 @@ public class IndexController {
 		mapOcrType.put("id", "身份证识别");
 		mapOcrType.put("invoice", "发票识别");
 		mapOcrType.put("business_license", "营业执照识别");
+		mapOcrType.put("table", "表格识别");
 	}
 
 	@GetMapping("/")
@@ -48,7 +50,11 @@ public class IndexController {
 	public ModelAndView id(String type) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("type", type);
-		mv.addObject("title", mapOcrType.get(type));
+		String title = mapOcrType.get(type);
+		if (StringUtils.isBlank(title)) {
+			title = "OCR识别";
+		}
+		mv.addObject("title", type);
 		mv.addObject("uploadType", uploadType);
 		return mv;
 	}

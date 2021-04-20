@@ -45,6 +45,7 @@
 					<input type="file" id="upload" onchange="showImg();">
 					<input type="button" value="识别" onclick="inference('${type}',false);"  class="btn btn-outline-success my-2 my-sm-0">
 					<input type="button" value="仅显示JSON" onclick="inference('${type}',true);"  class="btn btn-outline-success my-2 my-sm-0">
+					<input type="button" value="仅解析" onclick="onlyAnalysis('${type}');"  class="btn btn-outline-success my-2 my-sm-0">
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
 					</div>

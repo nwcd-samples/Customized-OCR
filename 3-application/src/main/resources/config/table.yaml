@@ -1,0 +1,7 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "费用列表"
+    RecognitionType: "table"
+    KeyWordStartList: ["费用项目"]
+    KeyWordEndList: ["扣款金额"]

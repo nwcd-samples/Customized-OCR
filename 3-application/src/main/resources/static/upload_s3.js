@@ -25,6 +25,11 @@ function generatePresignedUrl(type,showJson){
 function upload(type,data,showJson){
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
+	if(!file){
+	    $("#loading-icon").hide();
+		alert("请先选择需要识别的图片");
+		return false;
+	}
 	$.ajax({
 		url : data.url, 
 		type : 'PUT', 
@@ -43,6 +48,7 @@ function upload(type,data,showJson){
 	});
 }
 
+var globalData;
 function predict(type,keyName,showJson){
 	var url = "/inference/predict";
 	if(showJson){
@@ -57,8 +63,8 @@ function predict(type,keyName,showJson){
 					  $("#loading-icon").hide();
 			    	  alert(result.data);
 			      }else{
-				      data = JSON.parse(result.data);
-			    	  analysis(type,data);
+			    	  globalData = JSON.parse(result.data);
+			    	  analysis(type,globalData);
 			      }
 		      }else{
 		    	  alert(result.msg);
@@ -80,4 +86,14 @@ function analysis(type,fullData){
 			    $("#loading-icon").hide();
 			},
 			"json");
+}
+
+function onlyAnalysis(type){
+	if(globalData){
+		console.log("直接解析");
+		analysis(type,globalData);
+	}else{
+		console.log("没有data，需要推理");
+		inference(type,false);
+	}
 }

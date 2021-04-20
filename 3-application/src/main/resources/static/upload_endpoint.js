@@ -6,10 +6,16 @@ function inference(type,showJson){
 	predict(type,showJson);
 }
 
+var globalData;
 function predict(type,showJson){
     $("#loading-icon").show();
 	var upload = document.getElementById('upload');
 	var file = upload.files[0];
+	if(!file){
+	    $("#loading-icon").hide();
+		alert("请先选择需要识别的图片");
+		return false;
+	}
 	var url = "/inference/predict";
 	if(showJson){
 		url += "/"+type;
@@ -32,8 +38,8 @@ function predict(type,showJson){
 				    $("#loading-icon").hide();
 		    		alert(result.data);
 		    	}else{
-			    	data = JSON.parse(result.data);
-			    	analysis(type,data);
+		    		globalData = JSON.parse(result.data);
+			    	analysis(type,globalData);
 		    	}
 		    }else{
 		    	alert(result.msg);
@@ -59,4 +65,14 @@ function analysis(type,fullData){
 			    $("#loading-icon").hide();
 			},
 			"json");
+}
+
+function onlyAnalysis(type){
+	if(globalData){
+		console.log("直接解析");
+		analysis(type,globalData);
+	}else{
+		console.log("没有data，需要推理");
+		inference(type,false);
+	}
 }

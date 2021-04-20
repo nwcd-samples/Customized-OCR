@@ -164,7 +164,7 @@ public class ParseTableWorker {
         for(int i=0; i< blockItemList.size(); i++){
             JSONObject tempItem = blockItemList.get(i);
 //            logger.info("tempItem    y [{}] -- {}   ", tempItem.getInteger("y"), tempItem.getString("text"));
-            if(tempItem.getInteger("y") <  lastBlockItemPozY + 2* tempItem.getInteger("height")){
+            if(tempItem.getInteger("y") <  lastBlockItemPozY + 4* tempItem.getInteger("height")){
                 newBlockItemList.add(tempItem);
                 lastBlockItemPozY = tempItem.getInteger("y");
             }else {
