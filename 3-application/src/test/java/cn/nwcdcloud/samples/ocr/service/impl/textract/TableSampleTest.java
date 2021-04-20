@@ -32,9 +32,10 @@ public class TableSampleTest {
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 2000, blockItemList, "config/table_sample.yaml");
-        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 //        logger.info("   {} ", resultArray.size());
-        logger.info(resultArray.toJSONString());
+        logger.info(resultObject.toJSONString());
 
     }
 

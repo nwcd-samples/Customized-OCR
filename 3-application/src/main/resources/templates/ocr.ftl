@@ -44,7 +44,9 @@
                 <form class="form-inline">
 					<input type="file" id="upload" onchange="showImg();">
 					<input type="button" value="识别" onclick="inference('${type}',false);"  class="btn btn-outline-success my-2 my-sm-0">
+					&nbsp;
 					<input type="button" value="仅显示JSON" onclick="inference('${type}',true);"  class="btn btn-outline-success my-2 my-sm-0">
+					&nbsp;
 					<input type="button" value="仅解析" onclick="onlyAnalysis('${type}');"  class="btn btn-outline-success my-2 my-sm-0">
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
@@ -75,6 +77,7 @@
             </div>
 
             <div style="500px">
+                <h4> 键值对列表</h4>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
@@ -89,6 +92,28 @@
                     </tr>
 
                     </tbody>
+                </table>
+            </div>
+
+
+            <div   v-for=" table  of table_list" >
+                <h4>表格名称： <span  v-text="table.name" ></span></h4>
+
+                <table  class="table" >
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"  v-for="head of table.heads">
+                        <span v-text="head"></span>
+                    </th>
+                </tr>
+                </thead>
+
+                    <tr v-for="row of table.rowList">
+                        <td v-for="cell of row">
+                            <span v-text="cell.text"></span>
+                            <!-- <small  v-text="cell.confidence" ></small> -->
+                        </td>
+                    </tr>
                 </table>
             </div>
 

@@ -35,7 +35,8 @@ public class CommonServiceImplTest {
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
 		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
-		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
+		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "代用名");
 		assert checkKeyValueMap(resultArray, "性别", "男");
@@ -53,7 +54,8 @@ public class CommonServiceImplTest {
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
 		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
-		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
+		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "李四");
 		assert checkKeyValueMap(resultArray, "性别", "男");
@@ -71,7 +73,8 @@ public class CommonServiceImplTest {
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
 		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
-		JSONArray resultArray = parseJsonUtil.extractValue(blockItemList);
+		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "韦小宝");
 		assert checkKeyValueMap(resultArray, "性别", "男");

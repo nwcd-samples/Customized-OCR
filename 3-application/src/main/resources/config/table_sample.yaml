@@ -1,10 +1,22 @@
 TemplateName: 'table-ocr-template'
 
 Targets:
-  - Name: "测试表格"
+  - Name: "打印人"
+    RecognitionType: "horizontal"
+    KeyWordList: ["打印人", "打印人：", "打印人:"]
+    MinLength: 2
+    MaxLength: 30
+    MaxLineCount: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.40
+    YRangeMin: 0.0
+    YRangeMax: 0.50
+
+  - Name: "扣款明细"
     RecognitionType: "tables"
     # 用来做行切分的 '列' 的索引
-    MainColumnIndex: 1
+    MainColumnIndex: 0
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
     MaxRowHeightRatio: 2.5
     # 最大行数

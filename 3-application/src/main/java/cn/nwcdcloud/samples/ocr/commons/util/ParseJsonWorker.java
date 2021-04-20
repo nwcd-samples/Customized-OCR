@@ -26,12 +26,16 @@ public class ParseJsonWorker {
 		this.configFilePath = configFilePath;
 	}
 
-	public JSONArray extractValue(List<JSONObject> blockItemList) {
+	public JSONObject extractValue(List<JSONObject> blockItemList) {
 		Map configMap = readConfig(this.configFilePath);
 
 		ParseTableWorker tableWorker = new ParseTableWorker();
 		ParseTablesWorker tablesWorker = new ParseTablesWorker();
-		JSONArray resultArray = new JSONArray();
+		JSONArray keyValueArray = new JSONArray();
+		JSONArray tableArray = new JSONArray();
+		JSONObject jsonResult = new JSONObject();
+
+
 		List targetList = (ArrayList) configMap.get("Targets");
 		for (Object item : targetList) {
 			// 识别单个元素
@@ -39,21 +43,20 @@ public class ParseJsonWorker {
 			if ("horizontal".equals(newItem.get("RecognitionType"))) {
 				JSONObject resultItem = doHorizontal(newItem, blockItemList);
 				if(resultItem != null) {
-					resultArray.add(resultItem);
-				}
-			}else if ("table".equals(newItem.get("RecognitionType"))) {
-				List<JSONObject> resultList = tableWorker.parse(newItem, blockItemList);
-				if(resultList != null){
-					resultArray.addAll(resultList);
+					keyValueArray.add(resultItem);
 				}
 			}else if ("tables".equals(newItem.get("RecognitionType"))) {
-				List<JSONArray> resultList = tablesWorker.parse(newItem, blockItemList);
-				if(resultList != null){
-					resultArray.addAll(resultList);
+				JSONObject result = tablesWorker.parse(newItem, blockItemList);
+				if(result != null){
+					tableArray.add(result);
 				}
 			}
 		}
-		return resultArray;
+
+		jsonResult.put("keyValueList", keyValueArray);
+		jsonResult.put("tableList", tableArray);
+
+		return jsonResult;
 	}
 
 	/**
@@ -207,7 +210,7 @@ public class ParseJsonWorker {
 		JSONObject resultItem = new JSONObject();
 
 		resultItem.put("name", item.get("Name"));
-		resultItem.put("score", blockItem.getString("Confidence"));
+		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
 		if(keyBlockItemResult.get("subKeyWord") != null ){

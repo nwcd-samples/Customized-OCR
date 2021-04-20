@@ -32,7 +32,7 @@ public class PackingListTest {
 
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 2000, blockItemList, "config/packing_list.yaml");
-        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        JSONObject  resultArray =  parseJsonUtil.extractValue(blockItemList);
 
 
     }

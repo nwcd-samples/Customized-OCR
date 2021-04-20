@@ -14,7 +14,7 @@ public class ParseTablesWorker {
     /**
      * 处理表格元素
      */
-    public List<JSONArray> parse(HashMap rootMap, List<JSONObject> blockItemList) {
+    public JSONObject parse(HashMap rootMap, List<JSONObject> blockItemList) {
 
         //step 0. 找到用来定位的两个列元素  Start  End
         List<JSONObject> res = findTableHeadColumns(rootMap, blockItemList);
@@ -67,13 +67,25 @@ public class ParseTablesWorker {
         List<JSONObject> rowList = findRowSplitByMainColumn( blockItemList, columnBlockItemList.get(mainColumnIndex));
         //step 3. 所有列通过行划分， 找到对应元素，
 
+        String tableName = rootMap.get("Name").toString();
+        int rowCount = rowList.size();
+        int columnCount = columnBlockItemList.size();
         List<JSONArray> resultList = findCellByColumnAndRow(blockItemList, rowList, columnBlockItemList, mainColumnIndex);
 
+        JSONArray headTitleArray = new JSONArray();
+        for(JSONObject item : columnBlockItemList){
+            headTitleArray.add(item.getString("text"));
+        }
         //step 4. 判断行结尾的情况
+        JSONObject resultObject = new JSONObject();
+        resultObject.put("name", tableName);
+        resultObject.put("rowCount", rowCount);
+        resultObject.put("columnCount", columnCount);
+        resultObject.put("rowList", resultList);
+        resultObject.put("heads", headTitleArray);
 
 
-
-        return resultList;
+        return resultObject;
     }
 
     /**
@@ -386,9 +398,7 @@ public class ParseTablesWorker {
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");
                         }
-
                     }
-
                 }
             }
 

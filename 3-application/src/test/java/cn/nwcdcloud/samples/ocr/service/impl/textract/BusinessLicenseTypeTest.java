@@ -31,7 +31,8 @@ public class BusinessLicenseTypeTest {
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/business_license.yaml");
-        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "名称", "河北晟途电器有限公司");
         assert  checkKeyValueMap(resultArray, "类型", "有限责任公司（自然人投资或控股）");
@@ -52,7 +53,8 @@ public class BusinessLicenseTypeTest {
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/business_license.yaml");
-        JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "注册号", "61040361");
         assert  checkKeyValueMap(resultArray, "名称", "杨凌中港西餐厅");
