@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
 
 public class CommonServiceImplTest {
 	private static final Logger logger = LoggerFactory.getLogger(CommonServiceImplTest.class);
@@ -34,7 +34,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
+		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, blockItemList, "config/id.yaml");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());
@@ -53,7 +53,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
+		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, blockItemList, "config/id.yaml");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());
@@ -72,7 +72,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/id.yaml");
+		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, blockItemList, "config/id.yaml");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());

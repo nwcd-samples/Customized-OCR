@@ -27,7 +27,6 @@ Targets:
     MaxLength: 1
     MaxLineCount: 1
     TargetValueType: "char"
-    XRangeMin: 0.0
     XRangeMax: 0.30
     YRangeMin: 0.10
     YRangeMax: 0.40
@@ -37,9 +36,7 @@ Targets:
     KeyWordList: ["民族"]
     MinLength: 1
     MaxLength: 6
-    MaxLineCount: 1
     TargetValueType: "char"
-    XRangeMin: 0.0
     XRangeMax: 0.5
     YRangeMin: 0.10
     YRangeMax: 0.50
@@ -50,9 +47,7 @@ Targets:
     KeyWordList: ["出生"]
     MinLength: 10
     MaxLength: 20
-    MaxLineCount: 1
     TargetValueType: "char"
-    XRangeMin: 0.0
     XRangeMax: 0.70
     YRangeMin: 0.20
     YRangeMax: 0.60
@@ -66,7 +61,6 @@ Targets:
     MaxLength: 30
     MaxLineCount: 3
     TargetValueType: "char"
-    XRangeMin: 0.0
     XRangeMax: 0.90
     YRangeMin: 0.10
     YRangeMax: 0.80
@@ -76,9 +70,6 @@ Targets:
     KeyWordList: ["公民身份号码", "公民身份证号码"]
     MinLength: 10
     MaxLength: 20
-    MaxLineCount: 1
     TargetValueType: "char"
-    XRangeMin: 0.0
     XRangeMax: 0.70
     YRangeMin: 0.50
-    YRangeMax: 1.0

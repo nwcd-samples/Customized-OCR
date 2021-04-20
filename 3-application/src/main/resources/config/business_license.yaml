@@ -98,6 +98,11 @@ Targets:
     XRangeMax: 0.60
     YRangeMin: 0.2
     YRangeMax: 0.6
+    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
+    TopOffsetRadio: 2.0
+    BottomOffsetRadio: 2.0
+    LeftOffsetRadio: -2.0
+    RightOffsetRadio: 5.0
 
   - Name: "注册资本"
     RecognitionType: "horizontal"
@@ -123,6 +128,10 @@ Targets:
     XRangeMax: 0.80
     YRangeMin: 0.3
     YRangeMax: 0.7
+    TopOffsetRadio: 2.0
+    BottomOffsetRadio: 2.0
+    LeftOffsetRadio: -2.0
+    RightOffsetRadio: 5.0
 
 
   - Name: "营业期限"

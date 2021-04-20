@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
 
 
 public class InvoiceTypeTest {
@@ -33,7 +33,7 @@ public class InvoiceTypeTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/invoice.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/invoice.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());

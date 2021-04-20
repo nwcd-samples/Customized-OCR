@@ -2,8 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
-import com.alibaba.fastjson.JSONArray;
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class RangeTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 1200);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 1200, blockItemList, "config/range.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 1200, blockItemList, "config/range.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         logger.info(resultObject.toJSONString());
     }

@@ -233,10 +233,12 @@ public class ParseTablesWorker {
 //        MarginRightType: 2
 //        MoveRightRatio: 0.1
 
-        int marginLeftType = Integer.valueOf(infoMap.get("MarginLeftType").toString());
-        int marginRightType = Integer.valueOf(infoMap.get("MarginRightType").toString());
-        float moveLeftRatio = Float.valueOf(infoMap.get("MoveLeftRatio").toString());
-        float moveRightRatio = Float.valueOf(infoMap.get("MoveRightRatio").toString());
+        int marginLeftType = Integer.valueOf(infoMap.getOrDefault("MarginLeftType", 2).toString());
+        int marginRightType = Integer.valueOf(infoMap.getOrDefault("MarginRightType", 2).toString());
+
+        float moveLeftRatio = Float.valueOf(infoMap.getOrDefault("MoveLeftRatio", "0.0").toString());
+        float moveRightRatio = Float.valueOf(infoMap.getOrDefault("MoveRightRatio", "0.0").toString());
+
 
 
 

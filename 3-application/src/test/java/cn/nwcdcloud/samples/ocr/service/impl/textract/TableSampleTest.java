@@ -2,7 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class TableSampleTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 2000, blockItemList, "config/table_sample.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, blockItemList, "config/table_sample.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 //        logger.info("   {} ", resultArray.size());

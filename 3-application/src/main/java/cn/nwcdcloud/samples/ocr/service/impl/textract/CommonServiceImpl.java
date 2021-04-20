@@ -2,6 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
 import cn.nwcdcloud.samples.ocr.service.CommonService;
 
 @Service
@@ -24,7 +24,7 @@ public class CommonServiceImpl implements CommonService {
 
 		JSONObject jsonObject = (JSONObject) jsonArray.getJSONObject(0);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1124, 800, blockItemList, "config/" + type + ".yaml");
+		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, blockItemList, "config/" + type + ".yaml");
 
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList));

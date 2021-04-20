@@ -66,10 +66,6 @@ Targets:
         IndexType: "default"
         KeyWordList: ["扣款项目名称"]
         TargetValueType: "char"
-        MarginLeftType: 2
-        MoveLeftRatio: 0.1
-        MarginRightType: 2
-        MoveRightRatio: 0.1
 
       - Column: "扣款金额"
         IndexType: "end"

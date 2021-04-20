@@ -1,73 +1,36 @@
 package cn.nwcdcloud.samples.ocr.commons.util;
 
-import java.io.InputStream;
-import java.util.*;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.ho.yaml.Yaml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import java.io.InputStream;
+import java.util.*;
 
-public class ParseJsonWorker {
-	private final Logger logger = LoggerFactory.getLogger(ParseJsonWorker.class);
+public class ParseHorizontalWorker {
+	private final Logger logger = LoggerFactory.getLogger(ParseHorizontalWorker.class);
 
 	private int pageWidth;
 	private int pageHeight;
 	private List<JSONObject> blockItemList;
-	private String configFilePath;
 
-	public ParseJsonWorker(int pageWidth, int pageHeight, List<JSONObject> blockItemList, String configFilePath) {
+	public ParseHorizontalWorker(int pageWidth, int pageHeight, List<JSONObject> blockItemList) {
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
 		this.blockItemList = blockItemList;
-		this.configFilePath = configFilePath;
 	}
 
-	public JSONObject extractValue(List<JSONObject> blockItemList) {
-		Map configMap = readConfig(this.configFilePath);
-
-
-		ParseTablesWorker tablesWorker = new ParseTablesWorker();
-		JSONArray keyValueArray = new JSONArray();
-		JSONArray tableArray = new JSONArray();
-		JSONObject jsonResult = new JSONObject();
-
-
-		List targetList = (ArrayList) configMap.get("Targets");
-		for (Object item : targetList) {
-			// 识别单个元素
-			HashMap newItem = (HashMap) item;
-			if ("horizontal".equals(newItem.get("RecognitionType"))) {
-				JSONObject resultItem = doHorizontal(newItem, blockItemList);
-				if(resultItem != null) {
-					keyValueArray.add(resultItem);
-				}
-			}else if ("tables".equals(newItem.get("RecognitionType"))) {
-				JSONObject result = tablesWorker.parse(newItem, blockItemList);
-				if(result != null){
-					tableArray.add(result);
-				}
-			}
-		}
-
-		jsonResult.put("keyValueList", keyValueArray);
-		jsonResult.put("tableList", tableArray);
-
-		return jsonResult;
-	}
 
 	/**
 	 * 定位关键字
-	 * 
+	 *
 	 * @param item
 	 * @param blockItemList
 	 */
 	private JSONObject findKeyBlockItem(HashMap item, List<JSONObject> blockItemList) {
-//        logger.info("name: {}  key-word-list: {}", item.get("name") , item.get("key-word-list"));
-//        logger.info("recognition-type: {} ", item.get("recognition-type"));
 
 		List keyWordList = (List) item.get("KeyWordList");
 
@@ -192,7 +155,7 @@ public class ParseJsonWorker {
 	 * @param blockItemList
 	 * @return
 	 */
-	private JSONObject doHorizontal(HashMap item, List<JSONObject> blockItemList) {
+	public JSONObject parse(HashMap item, List<JSONObject> blockItemList) {
 		JSONObject keyBlockItemResult = findKeyBlockItem(item, blockItemList);
 		JSONObject blockItem = keyBlockItemResult.getJSONObject("blockItem");
 		if (blockItem == null) {
@@ -224,7 +187,7 @@ public class ParseJsonWorker {
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
 			logger.info("------------------- 2");
-			int maxLineCount = (int) item.get("MaxLineCount");
+			int maxLineCount =  Integer.valueOf(item.getOrDefault("MaxLineCount", 1).toString());
 			if (maxLineCount > 1) { //多行的情况
 				logger.info("------------------- 3");
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
@@ -259,39 +222,28 @@ public class ParseJsonWorker {
 		return resultItem;
 	}
 
-	/**
-	 * 读取配置文件
-	 * 
-	 * @param configPath
-	 * @return
-	 */
 
-	private Map readConfig(String configPath) {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(configPath);
-
-		Map rootMap = null;
-		try {
-			rootMap = Yaml.loadType(is, HashMap.class);
-
-		} catch (Exception e) {
-			logger.error("读取配置文件出错:{}" + configPath, e);
-		}
-		return rootMap;
-	}
 
 	/**
 	 * 检测目标元素 坐标范围的合法性
-	 * 
+	 *
 	 * @param item
 	 * @param blockItem
 	 * @return
 	 */
 	private boolean isValidRange(HashMap item, JSONObject blockItem) {
-		int left = (int) ((double) item.get("XRangeMin") * this.pageWidth);
-		int right = (int) ((double) item.get("XRangeMax") * this.pageWidth);
 
-		int top = (int) ((double) item.get("YRangeMin") * this.pageHeight);
-		int bottom = (int) ((double) item.get("YRangeMax") * this.pageHeight);
+
+		double xRangeMin = Double.valueOf(item.getOrDefault("XRangeMin", 0).toString());
+		double xRangeMax = Double.valueOf(item.getOrDefault("XRangeMax", 1).toString());
+		double yRangeMin = Double.valueOf(item.getOrDefault("YRangeMin", 0).toString());
+		double yRangeMax = Double.valueOf(item.getOrDefault("YRangeMax", 1).toString());
+
+		int left = (int) (xRangeMin * this.pageWidth);
+		int right = (int) (xRangeMax * this.pageWidth);
+
+		int top = (int) (yRangeMin * this.pageHeight);
+		int bottom = (int) (yRangeMax * this.pageHeight);
 //        logger.info("x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
 //        logger.info("x: {}    y: {} ", blockItem.getInteger("x"),
 //                blockItem.getInteger("y"));
@@ -313,25 +265,13 @@ public class ParseJsonWorker {
 		int minDistance = 1000000;
 		JSONObject minDistanceBlockItem = null;
 
-		int maxLineCount = (int) item.get("MaxLineCount");
-		double topOffsetRadio = 1.2f;
-		double bottomOffsetRadio = 1.2f;
-		double leftOffsetRadio = 0f;
-		double rightOffsetRadio = 5f;
+//		int maxLineCount = (int) item.get("MaxLineCount");
+		int maxLineCount =  Integer.valueOf(item.getOrDefault("MaxLineCount", 1).toString());
 
-		if (item.containsKey("TopOffsetRadio")){
-			topOffsetRadio = (double) item.get("TopOffsetRadio");
-		}
-		if(item.containsKey("BottomOffsetRadio")){
-			bottomOffsetRadio = (double) item.get("BottomOffsetRadio");
-		}
-		if(item.containsKey("LeftOffsetRadio")){
-			leftOffsetRadio = (double) item.get("LeftOffsetRadio");
-		}
-		if(item.containsKey("RightOffsetRadio")){
-			rightOffsetRadio = (double) item.get("RightOffsetRadio");
-		}
-
+		double topOffsetRadio = (double) item.getOrDefault("TopOffsetRadio", 1.2d);
+		double bottomOffsetRadio = (double) item.getOrDefault("BottomOffsetRadio", 1.2d);
+		double leftOffsetRadio = (double) item.getOrDefault("LeftOffsetRadio", 0.0d);
+		double rightOffsetRadio = (double) item.getOrDefault("RightOffsetRadio", 5d);
 
 		// 如果是多行， 找右边多行的元素，进行文本合并
 		if (maxLineCount > 1) {
@@ -376,7 +316,7 @@ public class ParseJsonWorker {
 
 	/**
 	 * 找到多行的元素
-	 * 
+	 *
 	 * @param blockItem
 	 * @param maxLineCount
 	 * @param isContainSelf 是否包含元素本身， 处理Key和Value 在一起的情况
@@ -407,14 +347,14 @@ public class ParseJsonWorker {
 			public int compare(JSONObject jsonObject, JSONObject t1) {
 				return jsonObject.getInteger("y") - t1.getInteger("y");
 			}
-		}); // 按年龄排序
+		}); // 按y大小排序
 
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
 		}
 
-		logger.info(stringBuilder.toString()  );
+//		logger.info(stringBuilder.toString()  );
 		return stringBuilder.toString();
 
 	}

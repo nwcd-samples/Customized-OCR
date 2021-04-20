@@ -2,7 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseJsonWorker;
+import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -30,10 +30,10 @@ public class BusinessLicenseTypeTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/business_license.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/business_license.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-        logger.info(resultArray.toJSONString());
+        logger.info(resultObject.toJSONString());
         assert  checkKeyValueMap(resultArray, "名称", "河北晟途电器有限公司");
         assert  checkKeyValueMap(resultArray, "类型", "有限责任公司（自然人投资或控股）");
         assert  checkKeyValueMap(resultArray, "住所", "河北省廊坊市文安县大围河回族满族乡南辛庄村");
@@ -52,7 +52,7 @@ public class BusinessLicenseTypeTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 900, blockItemList, "config/business_license.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/business_license.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
