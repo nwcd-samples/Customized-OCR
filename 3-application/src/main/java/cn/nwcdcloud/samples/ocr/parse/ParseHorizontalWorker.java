@@ -1,13 +1,10 @@
-package cn.nwcdcloud.samples.ocr.commons.util;
+package cn.nwcdcloud.samples.ocr.parse;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.ho.yaml.Yaml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
 import java.util.*;
 
 public class ParseHorizontalWorker {
@@ -176,11 +173,12 @@ public class ParseHorizontalWorker {
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
+		int maxLength = Integer.valueOf(item.getOrDefault("MaxLength", 10).toString());
 		if(keyBlockItemResult.get("subKeyWord") != null ){
 			logger.info("------------------- 1");
 			// case  1:   'key1'   'key2value'
-			int lastIndex = text.length() > index  + (int) item.get("MaxLength")
-					? index  + (int) item.get("MaxLength")
+			int lastIndex = text.length() > index  + maxLength
+					? index  + maxLength
 					: text.length();
 			resultItem.put("value", text.substring(index , lastIndex));
 		}else if (index + keyWord.length() < text.length()) {
@@ -194,8 +192,8 @@ public class ParseHorizontalWorker {
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
 			} else {
 				logger.info("--------------   4  index: {}  keyword length : {} ", index, keyWord.length());
-				int lastIndex = text.length() > index + keyWord.length() + (int) item.get("MaxLength")
-						? index + keyWord.length() + (int) item.get("MaxLength")
+				int lastIndex = text.length() > index + keyWord.length() + maxLength
+						? index + keyWord.length() + maxLength
 						: text.length();
 				resultItem.put("value", text.substring(index + keyWord.length(), lastIndex));
 			}

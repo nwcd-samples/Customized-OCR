@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import cn.nwcdcloud.commons.lang.Result;
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.FileUtils;
 import cn.nwcdcloud.samples.ocr.service.IamService;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;

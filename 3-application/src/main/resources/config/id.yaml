@@ -4,7 +4,9 @@ Targets:
   - Name: "姓名"
     RecognitionType: "horizontal"
     KeyWordList: ["姓名", "名字"]
-    MinLength: 2
+    # MinLength
+    MinLength: 1
+    # MaxLength 默认值为 10
     MaxLength: 6
     MaxLineCount: 1
     TargetValueType: "char"
@@ -35,7 +37,6 @@ Targets:
     RecognitionType: "horizontal"
     KeyWordList: ["民族"]
     MinLength: 1
-    MaxLength: 6
     TargetValueType: "char"
     XRangeMax: 0.5
     YRangeMin: 0.10

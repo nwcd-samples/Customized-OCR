@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.parse.FileUtils;
 
 public class CommonServiceImplTest {
 	private static final Logger logger = LoggerFactory.getLogger(CommonServiceImplTest.class);

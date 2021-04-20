@@ -1,8 +1,9 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
+import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.parse.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,6 +34,13 @@ public class RangeTest {
         ParseFactory parseJsonUtil = new ParseFactory(1200, 1200, blockItemList, "config/range.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        assert keyValueList.size()>0;
+
+        JSONObject object = (JSONObject) keyValueList.get(0);
+        logger.info(object.toJSONString());
+        assert "180.00".equals(object.getString("value"));
     }
 
 }

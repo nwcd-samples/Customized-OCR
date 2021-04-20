@@ -2,8 +2,8 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.io.FileNotFoundException;
 
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.parse.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;

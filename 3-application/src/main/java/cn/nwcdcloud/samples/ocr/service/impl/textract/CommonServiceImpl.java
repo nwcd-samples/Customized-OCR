@@ -2,7 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
-import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.commons.lang.Result;
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.service.CommonService;
 
 @Service

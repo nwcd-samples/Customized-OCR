@@ -1,8 +1,8 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
-import cn.nwcdcloud.samples.ocr.commons.util.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.FileUtils;
-import cn.nwcdcloud.samples.ocr.commons.util.ParseFactory;
+import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
+import cn.nwcdcloud.samples.ocr.parse.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -34,7 +34,16 @@ public class TableSampleTest {
         ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, blockItemList, "config/table_sample.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-//        logger.info("   {} ", resultArray.size());
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+
+        JSONObject table = (JSONObject) tableArray.get(0);
+        assert "扣款明细".equals(table.getString("name"));
+        assert 5 == table.getInteger("rowCount");
+        assert 4 == table.getInteger("columnCount");
+        assert 4 == table.getJSONArray("heads").size();
+
+
         logger.info(resultObject.toJSONString());
 
     }
