@@ -1,6 +1,18 @@
 TemplateName: 'table-ocr-template'
 
 Targets:
+  - Name: "公司名称"
+    RecognitionType: "horizontal"
+    KeyWordList: ["公司名称"]
+    TargetValueType: "char"
+    MaxLength: 30
+
+  - Name: "纳税人识别号"
+    RecognitionType: "horizontal"
+    KeyWordList: ["纳税人识别号"]
+    TargetValueType: "char"
+    MaxLength: 30
+
   - Name: "打印人"
     RecognitionType: "horizontal"
     KeyWordList: ["打印人", "打印人：", "打印人:"]
@@ -13,7 +25,37 @@ Targets:
     YRangeMin: 0.0
     YRangeMax: 0.50
 
-  - Name: "扣款明细"
+  - Name: "分店"
+    RecognitionType: "horizontal"
+    KeyWordList: ["分店"]
+    TargetValueType: "char"
+    MaxLength: 30
+
+  - Name: "打印时间"
+    RecognitionType: "horizontal"
+    KeyWordList: ["打印时间"]
+    TargetValueType: "char"
+    MaxLength: 20
+
+  - Name: "结算单号"
+    RecognitionType: "horizontal"
+    KeyWordList: ["结算单号"]
+    TargetValueType: "char"
+    MaxLength: 20
+
+  - Name: "结算年月"
+    RecognitionType: "horizontal"
+    KeyWordList: ["结算年月"]
+    TargetValueType: "char"
+    MaxLength: 20
+
+  - Name: "供应商名称"
+    RecognitionType: "horizontal"
+    KeyWordList: ["供应商名称"]
+    TargetValueType: "char"
+    MaxLength: 40
+
+  - Name: "结算费用单明细"
     RecognitionType: "tables"
     # 用来做行切分的 '列' 的索引
     MainColumnIndex: 0

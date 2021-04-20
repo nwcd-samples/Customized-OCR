@@ -17,14 +17,16 @@ import cn.nwcdcloud.samples.ocr.service.CommonService;
 @Service
 public class CommonServiceImpl implements CommonService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final static int PAGE_WIDTH = 1200;
+	private final static int PAGE_HEIGHT = 1600;
 
 	@Override
 	public Result parse(String type, JSONArray jsonArray) {
 		Result result = new Result();
 
 		JSONObject jsonObject = (JSONObject) jsonArray.getJSONObject(0);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, blockItemList, "config/" + type + ".yaml");
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, blockItemList, "config/" + type + ".yaml");
 
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList));

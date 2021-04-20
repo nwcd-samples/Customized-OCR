@@ -24,12 +24,12 @@ public class ParseHorizontalWorker {
 	/**
 	 * 定位关键字
 	 *
-	 * @param item
+	 * @param configMap
 	 * @param blockItemList
 	 */
-	private JSONObject findKeyBlockItem(HashMap item, List<JSONObject> blockItemList) {
+	private JSONObject findKeyBlockItem(HashMap configMap, List<JSONObject> blockItemList) {
 
-		List keyWordList = (List) item.get("KeyWordList");
+		List keyWordList = (List) configMap.get("KeyWordList");
 
 		// case1. key， 单个元素里面包含了关键字， 或者以关键字开头
 		boolean findFlag = false;
@@ -50,7 +50,7 @@ public class ParseHorizontalWorker {
 //				logger.debug(" Text:  {}   key: {}   {} ", blockText, keyWord, index);
 
 				// 判断范围
-				if (!isValidRange(item, blockItem)) {
+				if (!isValidRange(configMap, blockItem)) {
 					continue;
 				}
 				findFlag = true;
@@ -61,7 +61,7 @@ public class ParseHorizontalWorker {
 			}
 			if(!findFlag ){
 				//如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
-				 JSONObject result = findResultBySplitKeywords(item, blockItemList, keyWord);
+				 JSONObject result = findResultBySplitKeywords(configMap, blockItemList, keyWord);
 				 if(result.getJSONObject("blockItem") != null){
 				 	return result;
 				 }
@@ -81,14 +81,14 @@ public class ParseHorizontalWorker {
 
 	/**
 	 * 如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
-	 * @param item
+	 * @param configMap
 	 * @param blockItemList
 	 * @return
 	 */
-	private JSONObject findResultBySplitKeywords(HashMap item, List<JSONObject> blockItemList, String targetKeyWord){
+	private JSONObject findResultBySplitKeywords(HashMap configMap, List<JSONObject> blockItemList, String targetKeyWord){
 
 		if(targetKeyWord == null || targetKeyWord.length()<2){
-			logger.warn("关键字设置不正确 {} ", JSON.toJSON(item));
+			logger.warn("关键字设置不正确 {} ", JSON.toJSON(configMap));
 			return null;
 		}
 
@@ -148,15 +148,15 @@ public class ParseHorizontalWorker {
 
 	/**
 	 * 处理单个水平元素
-	 * @param item
+	 * @param configMap
 	 * @param blockItemList
 	 * @return
 	 */
-	public JSONObject parse(HashMap item, List<JSONObject> blockItemList) {
-		JSONObject keyBlockItemResult = findKeyBlockItem(item, blockItemList);
+	public JSONObject parse(HashMap configMap, List<JSONObject> blockItemList) {
+		JSONObject keyBlockItemResult = findKeyBlockItem(configMap, blockItemList);
 		JSONObject blockItem = keyBlockItemResult.getJSONObject("blockItem");
 		if (blockItem == null) {
-			logger.warn("doHorizontal   没有找到 : text {}  ", item.get("Name"));
+			logger.warn("doHorizontal   没有找到 : text {}  ", configMap.get("Name"));
 			return null;
 		}
 
@@ -169,13 +169,12 @@ public class ParseHorizontalWorker {
 
 		JSONObject resultItem = new JSONObject();
 
-		resultItem.put("name", item.get("Name"));
+		resultItem.put("name", configMap.get("Name"));
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
-		int maxLength = Integer.valueOf(item.getOrDefault("MaxLength", 10).toString());
+		int maxLength = Integer.valueOf(configMap.getOrDefault("MaxLength", 10).toString());
 		if(keyBlockItemResult.get("subKeyWord") != null ){
-			logger.info("------------------- 1");
 			// case  1:   'key1'   'key2value'
 			int lastIndex = text.length() > index  + maxLength
 					? index  + maxLength
@@ -184,24 +183,21 @@ public class ParseHorizontalWorker {
 		}else if (index + keyWord.length() < text.length()) {
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
-			logger.info("------------------- 2");
-			int maxLineCount =  Integer.valueOf(item.getOrDefault("MaxLineCount", 1).toString());
+			int maxLineCount =  Integer.valueOf(configMap.getOrDefault("MaxLineCount", 1).toString());
 			if (maxLineCount > 1) { //多行的情况
-				logger.info("------------------- 3");
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
 			} else {
-				logger.info("--------------   4  index: {}  keyword length : {} ", index, keyWord.length());
+//				logger.info("--------------   4  index: {}  keyword length : {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + maxLength
 						? index + keyWord.length() + maxLength
 						: text.length();
 				resultItem.put("value", text.substring(index + keyWord.length(), lastIndex));
 			}
 		} else {
-			logger.info("------------------- 5");
 			// value 单独在一个单元格里
 			// case  3:   'key' 'value'
-			String blockItemValue = findNextRightBlockItemValue(item, blockItem);
+			String blockItemValue = findNextRightBlockItemValue(configMap, blockItem);
 
 			if (blockItemValue == null) {
 				return null;
@@ -220,22 +216,19 @@ public class ParseHorizontalWorker {
 		return resultItem;
 	}
 
-
-
 	/**
-	 * 检测目标元素 坐标范围的合法性
+	 * 检测目标元素 坐标范围 是否符合配置文件的要求
 	 *
-	 * @param item
+	 * @param configMap
 	 * @param blockItem
 	 * @return
 	 */
-	private boolean isValidRange(HashMap item, JSONObject blockItem) {
+	private boolean isValidRange(HashMap configMap, JSONObject blockItem) {
 
-
-		double xRangeMin = Double.valueOf(item.getOrDefault("XRangeMin", 0).toString());
-		double xRangeMax = Double.valueOf(item.getOrDefault("XRangeMax", 1).toString());
-		double yRangeMin = Double.valueOf(item.getOrDefault("YRangeMin", 0).toString());
-		double yRangeMax = Double.valueOf(item.getOrDefault("YRangeMax", 1).toString());
+		double xRangeMin = Double.valueOf(configMap.getOrDefault("XRangeMin", 0).toString());
+		double xRangeMax = Double.valueOf(configMap.getOrDefault("XRangeMax", 1).toString());
+		double yRangeMin = Double.valueOf(configMap.getOrDefault("YRangeMin", 0).toString());
+		double yRangeMax = Double.valueOf(configMap.getOrDefault("YRangeMax", 1).toString());
 
 		int left = (int) (xRangeMin * this.pageWidth);
 		int right = (int) (xRangeMax * this.pageWidth);
@@ -255,21 +248,24 @@ public class ParseHorizontalWorker {
 		return true;
 	}
 
-	/**
-	 * 找到右边一个单元格
-	 */
 
-	private String findNextRightBlockItemValue(HashMap item, JSONObject blockItem) {
-		int minDistance = 1000000;
+	/**
+	 * 找到[key]元素右边一个[value]单元格
+	 *
+	 * @param configMap
+	 * @param blockItem
+	 * @return
+	 */
+	private String findNextRightBlockItemValue(HashMap configMap, JSONObject blockItem) {
+		int minDistance = Integer.MAX_VALUE;
 		JSONObject minDistanceBlockItem = null;
 
-//		int maxLineCount = (int) item.get("MaxLineCount");
-		int maxLineCount =  Integer.valueOf(item.getOrDefault("MaxLineCount", 1).toString());
+		int maxLineCount =  Integer.valueOf(configMap.getOrDefault("MaxLineCount", 1).toString());
 
-		double topOffsetRadio = (double) item.getOrDefault("TopOffsetRadio", 1.2d);
-		double bottomOffsetRadio = (double) item.getOrDefault("BottomOffsetRadio", 1.2d);
-		double leftOffsetRadio = (double) item.getOrDefault("LeftOffsetRadio", 0.0d);
-		double rightOffsetRadio = (double) item.getOrDefault("RightOffsetRadio", 5d);
+		double topOffsetRadio = (double) configMap.getOrDefault("TopOffsetRadio", 1.2d);
+		double bottomOffsetRadio = (double) configMap.getOrDefault("BottomOffsetRadio", 1.2d);
+		double leftOffsetRadio = (double) configMap.getOrDefault("LeftOffsetRadio", 0.0d);
+		double rightOffsetRadio = (double) configMap.getOrDefault("RightOffsetRadio", 5d);
 
 		// 如果是多行， 找右边多行的元素，进行文本合并
 		if (maxLineCount > 1) {
@@ -297,6 +293,7 @@ public class ParseHorizontalWorker {
 					&&  tempBlockItem.getInteger("right") <= rightBorder
 			) {
 
+				// 在上下左右范围内， 找到离 key 元素 最近的元素 作为value 。
 				int tempDistance = Math.abs(blockItem.getInteger("y") - tempBlockItem.getInteger("y"))
 						+ Math.abs(blockItem.getInteger("right") - tempBlockItem.getInteger("left"));
 
@@ -326,7 +323,6 @@ public class ParseHorizontalWorker {
 
 
 		for (int i = 0; i < this.blockItemList.size(); i++) {
-
 			JSONObject curItem = blockItemList.get(i);
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
@@ -335,7 +331,7 @@ public class ParseHorizontalWorker {
 			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
 					&& curItem.getInteger("bottom") < blockItem.getInteger("bottom")
 							+ maxLineCount * (blockItem.getInteger("height") + 3)) {
-//				logger.info("========================*************  {} ", curItem.getString("text"));
+				//FIXME:  多行的时候， 可以设置行高的参数， 现在hard code， 行高 * (height + 3)
 				contentBlockItemList.add(curItem);
 			}
 		}
@@ -351,11 +347,7 @@ public class ParseHorizontalWorker {
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
 		}
-
-//		logger.info(stringBuilder.toString()  );
 		return stringBuilder.toString();
-
 	}
-
 
 }

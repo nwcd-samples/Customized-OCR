@@ -26,16 +26,72 @@ public class ParseTablesWorker {
         JSONObject columnEndBlockItem = res.get(1);
 
 
+        // 找出定位元素的上下界， 用来寻找表头元素列表。
         int top = (columnStartBlockItem.getInteger("top") < columnEndBlockItem.getInteger("top") ?
                 columnStartBlockItem.getInteger("top"): columnEndBlockItem.getInteger("top") );
         int bottom = (columnStartBlockItem.getInteger("bottom") > columnEndBlockItem.getInteger("bottom") ?
                 columnStartBlockItem.getInteger("bottom"):columnEndBlockItem.getInteger("bottom"));
 
+        //FIXME:  还需要考虑一个页面里面有多个相同表格的情况
         //step 1. 查找表头元素
+        List<JSONObject> columnBlockItemList = findColumnBlockItem(rootMap, blockItemList, columnStartBlockItem, columnEndBlockItem, top, bottom);
+
+        //step 2. 调整列元素的左右分割区间
+        adjustColumnBlockItemMargin(columnBlockItemList, blockItemList);
+
+        //step 3. 通过主列 往下迭代找元素， 找到行划分。
+        int mainColumnIndex = (int) rootMap.getOrDefault("MainColumnIndex", 0);
+
+        if(mainColumnIndex >= columnBlockItemList.size()){
+            throw new IllegalArgumentException(" 主列设置错误， 最大列数为"+columnBlockItemList.size()+" , 设置的值= "+ mainColumnIndex);
+        }
+        logger.info(" 主列： {}   Text [{}] ", mainColumnIndex,  columnBlockItemList.get(mainColumnIndex).getString("text"));
+
+        List<JSONObject> rowList = findRowSplitByMainColumn( blockItemList, columnBlockItemList.get(mainColumnIndex));
+        //step 3. 所有列通过行划分， 找到对应元素，
+
+        int rowCount = rowList.size();
+        int columnCount = columnBlockItemList.size();
+        List<JSONArray> resultList = findCellByColumnAndRow(blockItemList, rowList, columnBlockItemList, mainColumnIndex);
+
+        JSONArray headTitleArray = new JSONArray();
+        for(JSONObject item : columnBlockItemList){
+            headTitleArray.add(item.getString("text"));
+        }
+        //step 4. FIXME: 判断行结尾的情况, 设置每个cell 是否能为空，然后同一行的Cell 一起进行判断， 符合标准的才算是一行。
+
+        JSONObject resultObject = new JSONObject();
+        resultObject.put("name", rootMap.get("Name").toString());
+        resultObject.put("rowCount", rowCount);
+        resultObject.put("columnCount", columnCount);
+        resultObject.put("rowList", resultList);
+        resultObject.put("heads", headTitleArray);
+        return resultObject;
+    }
+
+    /**
+     * 寻找表头元素
+     * @param rootMap
+     * @param blockItemList
+     * @param columnStartBlockItem     Start  定位元素
+     * @param columnEndBlockItem       End    定位元素
+     * @param top   上界坐标值
+     * @param bottom  下界坐标值
+     * @return
+     */
+    private List<JSONObject> findColumnBlockItem(HashMap rootMap, List<JSONObject> blockItemList, JSONObject columnStartBlockItem, JSONObject columnEndBlockItem, int top, int bottom) {
         List<JSONObject> columnBlockItemList = new ArrayList<>();
-        List columnList = (ArrayList) rootMap.get("Columns");
+        if(!rootMap.containsKey("Columns")){
+            throw new IllegalArgumentException(" Table 类型， 需要配置  'Columns' 元素");
+        }
+
+        List columnList = (ArrayList) rootMap.getOrDefault("Columns", new ArrayList<>());
+        if(columnList == null || columnList.size() == 0){
+            throw new IllegalArgumentException(" Table 类型， 需要配置  'Columns' 元素");
+        }
         for (Object item : columnList) {
             HashMap newItem = (HashMap) item;
+            // start 和 end 元素， 已经找到
             if ("start".equals(newItem.get("IndexType"))) {
                 columnStartBlockItem.put("info", newItem);
                 columnBlockItemList.add(columnStartBlockItem);
@@ -49,47 +105,22 @@ public class ParseTablesWorker {
                     blockItem.put("info", newItem);
                     columnBlockItemList.add(blockItem);
                 }else{
-                    logger.warn("没有找到表头元素  : "+ newItem);
+                    logger.warn("没有找到表头元素  : "+ newItem );
+                    for(String  key: keyList){
+                        logger.warn("\t 未找到 【{}】 ",  key  );
+                    }
                 }
             }
         }
-        //step 2. 调整列元素的左右分割区间
-        adjustColumnBlockItemMargin(columnBlockItemList, blockItemList);
-
-        //step 3. 通过主列 往下迭代找元素， 找到行划分。
-        int mainColumnIndex = (int) rootMap.get("MainColumnIndex");
-
-        if(mainColumnIndex >= columnBlockItemList.size()){
-            throw new IllegalArgumentException(" 主列设置错误， 最大列数为"+columnBlockItemList.size()+" , 设置的值= "+ mainColumnIndex);
-        }
-        logger.info(" 主列： {}   Text [{}] ", mainColumnIndex,  columnBlockItemList.get(mainColumnIndex).getString("text"));
-
-        List<JSONObject> rowList = findRowSplitByMainColumn( blockItemList, columnBlockItemList.get(mainColumnIndex));
-        //step 3. 所有列通过行划分， 找到对应元素，
-
-        String tableName = rootMap.get("Name").toString();
-        int rowCount = rowList.size();
-        int columnCount = columnBlockItemList.size();
-        List<JSONArray> resultList = findCellByColumnAndRow(blockItemList, rowList, columnBlockItemList, mainColumnIndex);
-
-        JSONArray headTitleArray = new JSONArray();
-        for(JSONObject item : columnBlockItemList){
-            headTitleArray.add(item.getString("text"));
-        }
-        //step 4. 判断行结尾的情况
-        JSONObject resultObject = new JSONObject();
-        resultObject.put("name", tableName);
-        resultObject.put("rowCount", rowCount);
-        resultObject.put("columnCount", columnCount);
-        resultObject.put("rowList", resultList);
-        resultObject.put("heads", headTitleArray);
-
-
-        return resultObject;
+        return columnBlockItemList;
     }
+
 
     /**
      * 寻找两个用于定位的表头元素。
+     * @param rootMap
+     * @param blockItemList
+     * @return
      */
     private List<JSONObject> findTableHeadColumns(HashMap rootMap, List<JSONObject> blockItemList) {
 
@@ -97,28 +128,27 @@ public class ParseTablesWorker {
         List keyWordEndList = null;
 
         List columnList = (ArrayList) rootMap.get("Columns");
-        int startFindCount = 0;
-        int endFindCount = 0;
         for (Object item : columnList) {
             HashMap newItem = (HashMap) item;
             System.out.println(item);
             if ("start".equals(newItem.get("IndexType"))) {
-                startFindCount ++;
-                keyWordStartList = (List) newItem.get("KeyWordList");
+                keyWordStartList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
             } else if ("end".equals(newItem.get("IndexType"))) {
-                endFindCount ++;
-                keyWordEndList = (List) newItem.get("KeyWordList");
+                keyWordEndList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
             }
         }
-
-        if(startFindCount ==0 || endFindCount== 0){
-            throw new IllegalArgumentException("没有配置 IndexType， 'start' 和 'end' 两个属性， 用来定位表头 ");
+        if (keyWordStartList == null ) {
+            throw new IllegalArgumentException("没有配置 IndexType: 'start' 用来定位表头, 请检查配置文件 ");
         }
-
-        if (keyWordStartList == null || keyWordEndList == null) {
-            logger.warn("没有找到 'start' 和 'end' 两个属性的表头元素，  请检查关键字设置");
+        if (keyWordStartList.size() == 0) {
+            throw new IllegalArgumentException("没有配置 KeyWordList, 请检查配置文件 ");
         }
-
+        if (keyWordEndList == null ) {
+            throw new IllegalArgumentException("没有配置 IndexType: 'end' 用来定位表头, 请检查配置文件 ");
+        }
+        if (keyWordEndList.size() == 0) {
+            throw new IllegalArgumentException("没有配置 KeyWordList, 请检查配置文件 ");
+        }
 
         for (int i = 0; i < keyWordStartList.size(); i++) {
             String startKey = keyWordStartList.get(i).toString();
@@ -233,11 +263,11 @@ public class ParseTablesWorker {
 //        MarginRightType: 2
 //        MoveRightRatio: 0.1
 
-        int marginLeftType = Integer.valueOf(infoMap.getOrDefault("MarginLeftType", 2).toString());
-        int marginRightType = Integer.valueOf(infoMap.getOrDefault("MarginRightType", 2).toString());
+        int marginLeftType = Integer.parseInt(infoMap.getOrDefault("MarginLeftType", 2).toString());
+        int marginRightType = Integer.parseInt(infoMap.getOrDefault("MarginRightType", 2).toString());
 
-        float moveLeftRatio = Float.valueOf(infoMap.getOrDefault("MoveLeftRatio", "0.0").toString());
-        float moveRightRatio = Float.valueOf(infoMap.getOrDefault("MoveRightRatio", "0.0").toString());
+        float moveLeftRatio = Float.parseFloat(infoMap.getOrDefault("MoveLeftRatio", "0.0").toString());
+        float moveRightRatio = Float.parseFloat(infoMap.getOrDefault("MoveRightRatio", "0.0").toString());
 
 
 
@@ -288,7 +318,7 @@ public class ParseTablesWorker {
         rightBorder += currentItem.getInteger("width") * moveRightRatio;
         currentItem.put("leftBorder", leftBorder);
         currentItem.put("rightBorder",rightBorder);
-        logger.info("{} :  width={} original [{}, {}]  border:[{}, {}]  left:[t={}, r={}], right:[t={}, r={}]  ", currentItem.getString("text"),
+        logger.debug("{} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ", currentItem.getString("text"),
                 currentItem.getInteger("width"),
                 currentItem.getInteger("left"),
                 currentItem.getInteger("right"),
@@ -342,10 +372,8 @@ public class ParseTablesWorker {
             if(i == resList.size()-1){
                 bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 5;
             }else{
-
                 bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + 5;
             }
-
 
             logger.info("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
                     item.getInteger("bottom"),
@@ -394,7 +422,7 @@ public class ParseTablesWorker {
                        item.getInteger("bottom")< bottom &&
                        item.getInteger("left")> left &&
                        item.getInteger("right") < right){
-                        logger.info("[left={}, right={}], [top={}, bottom={}] , [{}]", left , right, top, bottom, item.getString("text"));
+//                        logger.info("[left={}, right={}], [top={}, bottom={}] , [{}]", left , right, top, bottom, item.getString("text"));
 
                         cell.text += item.getString("text");
                         if(item.getFloat("Confidence") < cell.confidence){

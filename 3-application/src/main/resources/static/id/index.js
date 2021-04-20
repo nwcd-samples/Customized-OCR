@@ -1,5 +1,5 @@
 var page_width=900;  //默认页面宽度
-var page_height=900;  //默认页面高度 会根据元素内容自动跳转
+var page_height=1200;  //默认页面高度 会根据元素内容自动跳转
 var canvas_width = page_width
 var canvas_height = page_height
 
@@ -68,8 +68,8 @@ function parse_data(data){
 
 
     // 提取页面里面的元素
-    item_list = init_config_map()   // 初始化配置文件 ， TODO: 修改成从数据库读取
-    vue.result_list = extract_value(vue.blockItemList, item_list)
+//    item_list = init_config_map()   // 初始化配置文件 ， TODO: 修改成从数据库读取
+//    vue.result_list = extract_value(vue.blockItemList, item_list)
 }
 /**
 解析单页的数据
@@ -233,7 +233,7 @@ function draw_block_inside(blockItem){
    $('#myCanvas').drawText({
      layer: true,
      fillStyle: '#36c',
-     fontSize: '12pt',
+     fontSize: '11pt',
      text: blockItem['text'],
      autosave: true,
      x: blockItem['x'] - $('#myCanvas').measureText('myText').width / 2, y: blockItem['y'],
@@ -249,7 +249,7 @@ function redraw_canvas(){
     $('#myCanvas').remove(); // this is my <canvas> element
     $('#myCanvasParent').append('<canvas id="myCanvas" height="'+canvas_height+'" width="'+canvas_width+'" style="border:1px solid #000000;"></canvas>');
 
-    console.log("---------------------------redraw_canvas  ")
+    console.log("---------------------------redraw_canvas  canvas_height ", canvas_height)
     for(i =0 ; i<vue.blockItemList.length; i++){
         draw_block_inside(vue.blockItemList[i] )
     }

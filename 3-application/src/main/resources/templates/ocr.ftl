@@ -43,11 +43,11 @@
             <nav class="navbar navbar-light bg-light">
                 <form class="form-inline">
 					<input type="file" id="upload" onchange="showImg();">
-					<input type="button" value="识别" onclick="inference('${type}',false);"  class="btn btn-outline-success my-2 my-sm-0">
+					<a type="button"   onclick="inference('${type}',false);" class="btn btn-outline-success my-2 my-sm-0" >识别</a>
 					&nbsp;
-					<input type="button" value="仅显示JSON" onclick="inference('${type}',true);"  class="btn btn-outline-success my-2 my-sm-0">
+					<a type="button" value="" onclick="inference('${type}',true);"  class="btn btn-outline-success my-2 my-sm-0">仅显示JSON</a>
 					&nbsp;
-					<input type="button" value="仅解析" onclick="onlyAnalysis('${type}');"  class="btn btn-outline-success my-2 my-sm-0">
+					<a type="button" value="" onclick="onlyAnalysis('${type}');"  class="btn btn-outline-success my-2 my-sm-0">仅解析</a>
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
 					</div>
@@ -60,7 +60,7 @@
 
     <div class="row" >
         <div class="col-md-7" class="overflow-auto" id="myCanvasParent" >
-            <canvas id="myCanvas" width="900" height="800"
+            <canvas id="myCanvas" width="900" height="1200"
                   style="border:1px solid #000000;">
         </canvas>
         </div>
@@ -72,12 +72,11 @@
             </div>
 
             <div>
-
                 <span>&nbsp;</span>
             </div>
 
-            <div style="500px">
-                <h4> 键值对列表</h4>
+            <div  >
+                <h5> 键值对列表</h5>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
@@ -87,8 +86,8 @@
                     </thead>
                     <tbody>
                     <tr v-for="(result, index) of result_list" >
-                        <td><span v-text="result.name"></span></td>
-                        <td><span v-text="result.value"></span></td>
+                        <td><small v-text="result.name"></small></td>
+                        <td><small v-text="result.value"></small></td>
                     </tr>
 
                     </tbody>
@@ -97,7 +96,7 @@
 
 
             <div   v-for=" table  of table_list" >
-                <h4>表格名称： <span  v-text="table.name" ></span></h4>
+                <h5>表格名称： <b><span  v-text="table.name" ></span></b></h5>
 
                 <table  class="table" >
                 <thead class="thead-dark">
@@ -110,7 +109,7 @@
 
                     <tr v-for="row of table.rowList">
                         <td v-for="cell of row">
-                            <span v-text="cell.text"></span>
+                            <small v-text="cell.text"></small>
                             <!-- <small  v-text="cell.confidence" ></small> -->
                         </td>
                     </tr>
@@ -150,10 +149,8 @@
 </div>
 
 </body>
-<script src="/static/id/config_file.js"></script>
 <script src="/static/util.js"></script>
 <script src="/static/id/ui.js"></script>
-<script src="/static/id/extract.js"></script>
 <script src="/static/id/index.js"></script>
 <script src="/static/id/utils.js"></script>
 

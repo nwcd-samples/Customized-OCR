@@ -24,6 +24,7 @@ public class InferenceServiceImpl implements InferenceService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private static Map<String, TextractService> mapTextractService = new HashMap<>();
 
+	@Override
 	public void addTextractService(String key, TextractService textractService) {
 		mapTextractService.put(key, textractService);
 	}

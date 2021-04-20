@@ -20,28 +20,34 @@ public class TableSampleTest {
     CommonServiceImpl commonServiceImpl;
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/table_sample.json";
-//    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/cost_table002.json";
-
-
-
+    private static final String  CONFIG_FILE_PATH =  "config/table_sample.yaml" ;
+    private final static int PAGE_WIDTH = 1200;
+    private final static int PAGE_HEIGHT = 2000;
     @Test
     public void parseId001() {
 
 
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, blockItemList, "config/table_sample.yaml");
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, blockItemList, CONFIG_FILE_PATH);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
 
         JSONObject table = (JSONObject) tableArray.get(0);
-        assert "扣款明细".equals(table.getString("name"));
+        assert "结算费用单明细".equals(table.getString("name"));
         assert 5 == table.getInteger("rowCount");
         assert 4 == table.getInteger("columnCount");
         assert 4 == table.getJSONArray("heads").size();
+
+        JSONArray rowList = table.getJSONArray("rowList");
+        assert 5 == rowList.size();
+
+        JSONArray cellArray= (JSONArray) rowList.get(1);
+        JSONObject cell = (JSONObject) cellArray.get(1);
+        assert "信用卡手续费-内-货扣".equals(cell.getString("text"));
 
 
         logger.info(resultObject.toJSONString());
