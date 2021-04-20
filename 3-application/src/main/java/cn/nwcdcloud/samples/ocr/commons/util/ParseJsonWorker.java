@@ -47,7 +47,7 @@ public class ParseJsonWorker {
 					resultArray.addAll(resultList);
 				}
 			}else if ("tables".equals(newItem.get("RecognitionType"))) {
-				List<JSONObject> resultList = tablesWorker.parse(newItem, blockItemList);
+				List<JSONArray> resultList = tablesWorker.parse(newItem, blockItemList);
 				if(resultList != null){
 					resultArray.addAll(resultList);
 				}

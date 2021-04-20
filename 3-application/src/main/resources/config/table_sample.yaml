@@ -3,15 +3,15 @@ TemplateName: 'table-ocr-template'
 Targets:
   - Name: "测试表格"
     RecognitionType: "tables"
-    MainColumnIndex: 0                  # 用来做行切分的 '列' 的索引
-    MaxRowHeightRatio: 2.5              # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
-    MaxRowCount: 5                      # 最大行数
+    # 用来做行切分的 '列' 的索引
+    MainColumnIndex: 1
+    # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
+    MaxRowHeightRatio: 2.5
+    # 最大行数
+    MaxRowCount: 5
     Columns:
         # 表格的显示名称
       - Column: "扣款代码"
-
-        # 列的序号
-        Index: 0
 
         # 通过  start end 两个列 对表格的表头进行定位
         IndexType: "start"
@@ -42,7 +42,6 @@ Targets:
         MoveRightRatio: 0.2
 
       - Column: "费用项目"
-        Index: 1
         IndexType: "default"
         KeyWordList: ["费用项目"]
         TargetValueType: "char"
@@ -52,7 +51,6 @@ Targets:
         MoveRightRatio: 0.3
 
       - Column: "扣款项目名称"
-        Index: 2
         IndexType: "default"
         KeyWordList: ["扣款项目名称"]
         TargetValueType: "char"
@@ -62,7 +60,6 @@ Targets:
         MoveRightRatio: 0.1
 
       - Column: "扣款金额"
-        Index: 3
         IndexType: "end"
         KeyWordList: ["扣款额","扣款金额"]
         TargetValueType: "char"

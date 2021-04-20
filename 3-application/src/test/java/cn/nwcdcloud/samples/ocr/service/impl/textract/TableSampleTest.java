@@ -34,7 +34,7 @@ public class TableSampleTest {
         ParseJsonWorker parseJsonUtil = new ParseJsonWorker(1200, 2000, blockItemList, "config/table_sample.yaml");
         JSONArray  resultArray =  parseJsonUtil.extractValue(blockItemList);
 //        logger.info("   {} ", resultArray.size());
-//        logger.info(resultArray.toJSONString());
+        logger.info(resultArray.toJSONString());
 
     }
 
