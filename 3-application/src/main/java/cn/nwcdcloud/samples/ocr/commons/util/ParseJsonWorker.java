@@ -29,7 +29,7 @@ public class ParseJsonWorker {
 	public JSONObject extractValue(List<JSONObject> blockItemList) {
 		Map configMap = readConfig(this.configFilePath);
 
-		ParseTableWorker tableWorker = new ParseTableWorker();
+
 		ParseTablesWorker tablesWorker = new ParseTablesWorker();
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
@@ -214,6 +214,7 @@ public class ParseJsonWorker {
 
 
 		if(keyBlockItemResult.get("subKeyWord") != null ){
+			logger.info("------------------- 1");
 			// case  1:   'key1'   'key2value'
 			int lastIndex = text.length() > index  + (int) item.get("MaxLength")
 					? index  + (int) item.get("MaxLength")
@@ -222,19 +223,21 @@ public class ParseJsonWorker {
 		}else if (index + keyWord.length() < text.length()) {
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
+			logger.info("------------------- 2");
 			int maxLineCount = (int) item.get("MaxLineCount");
 			if (maxLineCount > 1) { //多行的情况
-				logger.info("--------------   1");
+				logger.info("------------------- 3");
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
 			} else {
-				logger.info("--------------   2  index: {}  keyword: {} ", index, keyWord.length());
+				logger.info("--------------   4  index: {}  keyword length : {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + (int) item.get("MaxLength")
 						? index + keyWord.length() + (int) item.get("MaxLength")
 						: text.length();
 				resultItem.put("value", text.substring(index + keyWord.length(), lastIndex));
 			}
 		} else {
+			logger.info("------------------- 5");
 			// value 单独在一个单元格里
 			// case  3:   'key' 'value'
 			String blockItemValue = findNextRightBlockItemValue(item, blockItem);
@@ -307,22 +310,54 @@ public class ParseJsonWorker {
 	 */
 
 	private String findNextRightBlockItemValue(HashMap item, JSONObject blockItem) {
-
 		int minDistance = 1000000;
 		JSONObject minDistanceBlockItem = null;
 
 		int maxLineCount = (int) item.get("MaxLineCount");
+		double topOffsetRadio = 1.2f;
+		double bottomOffsetRadio = 1.2f;
+		double leftOffsetRadio = 0f;
+		double rightOffsetRadio = 5f;
+
+		if (item.containsKey("TopOffsetRadio")){
+			topOffsetRadio = (double) item.get("TopOffsetRadio");
+		}
+		if(item.containsKey("BottomOffsetRadio")){
+			bottomOffsetRadio = (double) item.get("BottomOffsetRadio");
+		}
+		if(item.containsKey("LeftOffsetRadio")){
+			leftOffsetRadio = (double) item.get("LeftOffsetRadio");
+		}
+		if(item.containsKey("RightOffsetRadio")){
+			rightOffsetRadio = (double) item.get("RightOffsetRadio");
+		}
+
+
 		// 如果是多行， 找右边多行的元素，进行文本合并
 		if (maxLineCount > 1) {
 			return findMultiLineBlockItemValue(blockItem, maxLineCount, false);
 		}
+		int topBorder = blockItem.getInteger("top") - (int) (topOffsetRadio * blockItem.getInteger("height"));
+		int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
+		int leftBorder = blockItem.getInteger("right") + (int) (leftOffsetRadio * blockItem.getInteger("width"));
+		int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
+		logger.info("{}  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
+				blockItem.getString("text"), blockItem.getInteger("top"), blockItem.getInteger("bottom"),
+
+				blockItem.getInteger("left"), blockItem.getInteger("right"),
+				topBorder, bottomBorder, leftBorder, rightBorder);
+
 
 		for (int i = 0; i < this.blockItemList.size(); i++) {
 			JSONObject tempBlockItem = this.blockItemList.get(i);
 
-			int yAbs = Math.abs(tempBlockItem.getInteger("y") - blockItem.getInteger("y"));
+//			int yAbs = Math.abs(tempBlockItem.getInteger("y") - blockItem.getInteger("y"));
 			if (tempBlockItem.getInteger("left") > blockItem.getInteger("x")
-					&& yAbs < 2 * blockItem.getInteger("height")) {
+					&&  tempBlockItem.getInteger("top") >= topBorder
+			        &&  tempBlockItem.getInteger("bottom") <= bottomBorder
+					&&  tempBlockItem.getInteger("left") >= leftBorder
+					&&  tempBlockItem.getInteger("right") <= rightBorder
+			) {
 
 				int tempDistance = Math.abs(blockItem.getInteger("y") - tempBlockItem.getInteger("y"))
 						+ Math.abs(blockItem.getInteger("right") - tempBlockItem.getInteger("left"));
@@ -358,8 +393,6 @@ public class ParseJsonWorker {
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
-
-
 
 			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
 					&& curItem.getInteger("bottom") < blockItem.getInteger("bottom")
