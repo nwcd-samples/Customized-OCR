@@ -28,7 +28,7 @@ public class ParseFactory {
 
 
 		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(pageWidth, pageHeight, blockItemList);
-		ParseTablesWorker tablesWorker = new ParseTablesWorker();
+		ParseTablesWorker tablesWorker = new ParseTablesWorker(pageWidth, pageHeight);
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
 		JSONObject jsonResult = new JSONObject();

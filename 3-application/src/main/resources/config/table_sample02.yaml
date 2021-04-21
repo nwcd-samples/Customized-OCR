@@ -41,6 +41,10 @@ Targets:
         MarginRightType: 1
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
         MoveRightRatio: 0.5
+        XRangeMin: 0.5
+        XRangeMax: 0.9
+        YRangeMin: 0.0
+        YRangeMax: 0.50
 
       - Column: "Invoice Date"
         IndexType: "end"
@@ -50,3 +54,7 @@ Targets:
         MoveLeftRatio: 0.1
         MarginRightType: 1
         MoveRightRatio: 0.1
+        XRangeMin: 0.6
+        XRangeMax: 0.95
+        YRangeMin: 0.0
+        YRangeMax: 0.4

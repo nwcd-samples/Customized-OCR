@@ -10,6 +10,13 @@ import java.util.*;
 public class ParseTablesWorker {
 
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
+    private int pageWidth;
+    private int pageHeight;
+
+    public ParseTablesWorker(int pageWidth, int pageHeight) {
+        this.pageWidth = pageWidth;
+        this.pageHeight = pageHeight;
+    }
 
     /**
      * 处理表格元素
@@ -129,16 +136,20 @@ public class ParseTablesWorker {
     private List<JSONObject> findTableHeadColumns(HashMap rootMap, List<JSONObject> blockItemList) {
 
         List keyWordStartList = null;
-        List keyWordEndList = null;
+        List keyWordEndList =null;
 
+        HashMap startConfig = null;
+        HashMap endConfig = null;
         List columnList = (ArrayList) rootMap.get("Columns");
         for (Object item : columnList) {
             HashMap newItem = (HashMap) item;
-            System.out.println(item);
+
             if ("start".equals(newItem.get("IndexType"))) {
                 keyWordStartList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
+                startConfig = newItem;
             } else if ("end".equals(newItem.get("IndexType"))) {
                 keyWordEndList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
+                endConfig = newItem;
             }
         }
         if (keyWordStartList == null ) {
@@ -158,7 +169,7 @@ public class ParseTablesWorker {
             String startKey = keyWordStartList.get(i).toString();
             for (int j = 0; j < keyWordEndList.size(); j++) {
                 String endKey = keyWordEndList.get(j).toString();
-                List<JSONObject> resList = findTableByKeys(blockItemList, startKey, endKey);
+                List<JSONObject> resList = findTableByKeys(blockItemList, startKey, endKey, startConfig, endConfig);
                 if (resList != null && resList.size() == 2) {
                     return resList;
                 }
@@ -176,7 +187,7 @@ public class ParseTablesWorker {
      * @param endKey
      * @return
      */
-    private List<JSONObject> findTableByKeys(List<JSONObject> blockItemList, String startKey, String endKey) {
+    private List<JSONObject> findTableByKeys(List<JSONObject> blockItemList, String startKey, String endKey, HashMap startConfig, HashMap endConfig) {
 
         JSONObject startBlockItem = null;
         JSONObject endBlockItem = null;
@@ -192,6 +203,7 @@ public class ParseTablesWorker {
             } else if (endKey.equals(text)) {
                 endBlockItem = tempBlockItem;
             }
+
         }
         if (startBlockItem == null || endBlockItem == null) {
             logger.info(" 没有找到匹配的关键字  start key [{}]   end key [{}]-----------  ", startKey, endKey);
@@ -201,6 +213,11 @@ public class ParseTablesWorker {
         logger.info(" 找到匹配的关键字  start key [{}]   end key [{}]-----------  ", startKey, endKey);
         res.add(startBlockItem);
         res.add(endBlockItem);
+
+        if (!BlockItemUtils.isValidRange(startConfig, startBlockItem, this.pageWidth,  this.pageHeight)
+                ||!BlockItemUtils.isValidRange(endConfig, endBlockItem, this.pageWidth,  this.pageHeight)) {
+            return null;
+        }
 
         return res;
     }

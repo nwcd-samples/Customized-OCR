@@ -76,7 +76,7 @@ Targets:
     YRangeMax: 0.90
 
 
-  - Name: "价税合计"
+  - Name: "价税合计（大写）"
     RecognitionType: "horizontal"
     KeyWordList: ["价税合计（大写）"]
     MinLength: 40

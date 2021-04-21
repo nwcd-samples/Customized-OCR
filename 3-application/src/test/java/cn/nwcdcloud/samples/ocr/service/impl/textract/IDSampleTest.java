@@ -13,14 +13,15 @@ import javax.annotation.Resource;
 import java.util.List;
 
 
-public class TableSample02Test {
-    private static final Logger logger = LoggerFactory.getLogger(TableSample02Test.class);
+public class IDSampleTest {
+    private static final Logger logger = LoggerFactory.getLogger(IDSampleTest.class);
 
     @Resource
     CommonServiceImpl commonServiceImpl;
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/table_sample02.json";
-    private static final String  CONFIG_FILE_PATH =  "config/table_sample02.yaml" ;
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/id001.json";
+    private static final String  CONFIG_FILE_PATH_1 =  "config/id.yaml" ;
+    private static final String  CONFIG_FILE_PATH_2 =  "config/id02.yaml" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
     @Test
@@ -30,19 +31,16 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
-        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_1);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
-        logger.info("   {} ", tableArray.toJSONString());
+        logger.info(resultObject.toJSONString());
 
-        for(JSONObject object: tableArray.toJavaList(JSONObject.class)){
-            JSONArray array = (JSONArray) object.getJSONArray("rowList").get(0);
-            JSONObject o1 = (JSONObject)array.get(0);
-            JSONObject o2 = (JSONObject) array.get(1);
-            assert o1.getString("text").equals("5600753");
-            assert o2.getString("text").equals("2/8/2018");
+        for(JSONObject item : resultArray.toJavaList(JSONObject.class)){
+            logger.info("{}   {} ", item.getString("name"), item.getString("value"));
         }
+
     }
 
 

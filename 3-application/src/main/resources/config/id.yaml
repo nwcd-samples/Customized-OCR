@@ -1,64 +1,11 @@
-TemplateName: 'identity-card-ocr-template'
-
+TemplateName: 'identity-card'
 Targets:
   - Name: "姓名"
-    RecognitionType: "horizontal"
-    KeyWordList: ["姓名", "名字"]
-    # MinLength
-    MinLength: 1
-    # MaxLength 默认值为 10
-    MaxLength: 6
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.0
-    YRangeMax: 0.30
-    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
-    TopOffsetRadio: 1.5
-    # 相对于自身高度， Value Block 往下偏移的倍数  bottom - height * TopOffsetRadio
-    BottomOffsetRadio: 1.5
-    LeftOffsetRadio: -1.0
-      #Value Block 右边界  >=  item.right + item.width * RightOffsetRadio
-    RightOffsetRadio: 10.0
-
   - Name: "性别"
-    KeyWordList: ["性别"]
     MaxLength: 1
-    MaxLineCount: 1
-
   - Name: "民族"
-    RecognitionType: "horizontal"
-    KeyWordList: ["民族"]
-    MinLength: 1
-    TargetValueType: "char"
-    XRangeMax: 0.5
-    YRangeMin: 0.10
-    YRangeMax: 0.50
-
-
-  - Name: "出生"
-    RecognitionType: "horizontal"
+  - Name: "出生日期"
     KeyWordList: ["出生"]
-    MinLength: 10
-    MaxLength: 20
-    TargetValueType: "char"
-    XRangeMax: 0.70
-    YRangeMin: 0.20
-    YRangeMax: 0.60
-    LeftOffsetRadio: -0.5
-    RightOffsetRadio: 5.0
-
   - Name: "住址"
-    RecognitionType: "horizontal"
-    KeyWordList: ["住址", "往址"]
-    MinLength: 4
-    MaxLength: 30
-    MaxLineCount: 3
-    TargetValueType: "char"
-    XRangeMax: 0.90
-    YRangeMin: 0.10
-    YRangeMax: 0.80
-
-  - Name: "公民身份号码"
-    KeyWordList: ["公民身份号码", "公民身份证号码"]
+    MaxLineCount: 2
+  - Name: "公民身份证号码"

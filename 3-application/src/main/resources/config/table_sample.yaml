@@ -94,6 +94,10 @@ Targets:
         MarginRightType: 1
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
         MoveRightRatio: 0.2
+        XRangeMin: 0.1
+        XRangeMax: 1.0
+        YRangeMin: 0.1
+        YRangeMax: 1.0
 
       - Column: "费用项目"
         IndexType: "default"
@@ -117,3 +121,7 @@ Targets:
         MoveLeftRatio: 0
         MarginRightType: 3
         MoveRightRatio: 0.1
+        XRangeMin: 0.5
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.7

@@ -45,7 +45,7 @@ public class InvoiceTypeTest {
         assert  checkKeyValueMap(resultArray, "销售方-纳税人识别号", "91110108MA01GOFB09");
         assert  checkKeyValueMap(resultArray, "销售方-开户行及账号", "招商银行股份有限公司北京东三环支行110936504210806");
 
-        assert  checkKeyValueMap(resultArray, "价税合计", "肆佰柒拾肆圆柒角玖分");
+        assert  checkKeyValueMap(resultArray, "价税合计（大写）", "肆佰柒拾肆圆柒角玖分");
         assert  checkKeyValueMap(resultArray, "价税合计-小写", "￥474.79");
         assert  checkKeyValueMap(resultArray, "发票代码", "011002000311");
 
