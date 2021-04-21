@@ -338,11 +338,11 @@ public class BlockItemUtils {
 
         int top = (int) (yRangeMin * pageHeight);
         int bottom = (int) (yRangeMax * pageHeight);
-        logger.debug("isValidRange pageWidth: {}    pageHeight: {} ",  pageWidth, pageHeight);
-        logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}]", xRangeMin, xRangeMax, yRangeMin, yRangeMax);
-        logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
-        logger.debug("isValidRange x: {}    y: {} ", blockItem.getInteger("x"),
-                blockItem.getInteger("y"));
+//        logger.debug("isValidRange pageWidth: {}    pageHeight: {} ",  pageWidth, pageHeight);
+//        logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}]", xRangeMin, xRangeMax, yRangeMin, yRangeMax);
+//        logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
+//        logger.debug("isValidRange x: {}    y: {} ", blockItem.getInteger("x"),
+//                blockItem.getInteger("y"));
 
         int x = blockItem.getInteger("x");
         int y = blockItem.getInteger("y");

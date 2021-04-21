@@ -2,7 +2,6 @@ TemplateName: 'business-license-ocr-template'
 
 Targets:
   - Name: "统一社会信用代码"
-    RecognitionType: "horizontal"
     KeyWordList: ["统一社会信用代码"]
     MinLength: 20
     MaxLength: 20
@@ -14,7 +13,6 @@ Targets:
     YRangeMax: 0.50
 
   - Name: "注册号"
-    RecognitionType: "horizontal"
     KeyWordList: ["注册号"]
     MinLength: 20
     MaxLength: 20
@@ -26,7 +24,6 @@ Targets:
     YRangeMax: 0.50
 
   - Name: "名称"
-    RecognitionType: "horizontal"
     KeyWordList: ["名称"]
     MinLength: 20
     MaxLength: 30
@@ -38,7 +35,6 @@ Targets:
     YRangeMax: 0.60
 
   - Name: "类型"
-    RecognitionType: "horizontal"
     KeyWordList: ["类型"]
     MinLength: 20
     MaxLength: 30
@@ -50,7 +46,6 @@ Targets:
     YRangeMax: 0.80
 
   - Name: "住所"
-    RecognitionType: "horizontal"
     KeyWordList: ["住所"]
     MinLength: 20
     MaxLength: 30
@@ -62,7 +57,6 @@ Targets:
     YRangeMax: 0.60
 
   - Name: "经营场所"
-    RecognitionType: "horizontal"
     KeyWordList: ["经营场所"]
     MinLength: 20
     MaxLength: 30
@@ -74,7 +68,6 @@ Targets:
     YRangeMax: 0.80
 
   - Name: "组成形式"
-    RecognitionType: "horizontal"
     KeyWordList: ["组成形式"]
     MinLength: 20
     MaxLength: 30
@@ -88,7 +81,6 @@ Targets:
 
 
   - Name: "法定代表人"
-    RecognitionType: "horizontal"
     KeyWordList: ["法定代表人"]
     MinLength: 20
     MaxLength: 20
@@ -101,11 +93,10 @@ Targets:
     # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
     TopOffsetRadio: 2.0
     BottomOffsetRadio: 2.0
-    LeftOffsetRadio: -2.0
+    LeftOffsetRadio: 2.0
     RightOffsetRadio: 5.0
 
   - Name: "注册资本"
-    RecognitionType: "horizontal"
     KeyWordList: ["注册资本"]
     MinLength: 20
     MaxLength: 20
@@ -118,7 +109,6 @@ Targets:
 
 
   - Name: "成立日期"
-    RecognitionType: "horizontal"
     KeyWordList: ["成立日期", "注册日期"]
     MinLength: 20
     MaxLength: 20
@@ -130,12 +120,11 @@ Targets:
     YRangeMax: 0.7
     TopOffsetRadio: 2.0
     BottomOffsetRadio: 2.0
-    LeftOffsetRadio: -2.0
+    LeftOffsetRadio: 2.0
     RightOffsetRadio: 5.0
 
 
   - Name: "营业期限"
-    RecognitionType: "horizontal"
     KeyWordList: ["营业期限"]
     MinLength: 20
     MaxLength: 20
@@ -148,7 +137,6 @@ Targets:
 
 
   - Name: "经营范围"
-    RecognitionType: "horizontal"
     KeyWordList: ["经营范围"]
     MinLength: 20
     MaxLength: 20

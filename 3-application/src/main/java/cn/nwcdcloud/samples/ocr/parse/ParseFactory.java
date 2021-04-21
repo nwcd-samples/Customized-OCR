@@ -38,13 +38,13 @@ public class ParseFactory {
 		for (Object item : targetList) {
 			// 识别单个元素
 			HashMap newItem = (HashMap) item;
-			String recognitionType = newItem.getOrDefault("RecognitionType", "horizontal").toString();
-			if ("horizontal".equals(recognitionType)) {
+			String recognitionType = newItem.getOrDefault("RecognitionType", "default").toString();
+			if ("default".equals(recognitionType)) {
 				JSONObject resultItem = horizontalWorker.parse(newItem, blockItemList);
 				if(resultItem != null) {
 					keyValueArray.add(resultItem);
 				}
-			}else if ("tables".equals(recognitionType)) {
+			}else if ("table".equals(recognitionType)) {
 				JSONObject result = tablesWorker.parse(newItem, blockItemList);
 				if(result != null){
 					tableArray.add(result);

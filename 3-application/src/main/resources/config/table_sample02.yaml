@@ -3,7 +3,7 @@ TemplateName: 'table-ocr-template'
 Targets:
 
   - Name: "Invoice Date"
-    RecognitionType: "tables"
+    RecognitionType: "table"
     # 用来做行切分的 '列' 的索引
     MainColumnIndex: 0
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
@@ -12,13 +12,13 @@ Targets:
     MaxRowCount: 5
     Columns:
         # 表格的显示名称
-      - Column: "Invoice#"
+      - ColumnName: "Invoice#"
 
-        # 通过  start end 两个列 对表格的表头进行定位
-        IndexType: "start"
+        # 通过  begin end 两个列 对表格的表头进行定位
+        IndexType: "begin"
 
         # 可能出现的关键字
-        KeyWordList: ["Invoice#"]
+        #        KeyWordList: ["Invoice#"]
 
         #  char  or  digit
         TargetValueType: "char"
@@ -46,15 +46,14 @@ Targets:
         YRangeMin: 0.0
         YRangeMax: 0.50
 
-      - Column: "Invoice Date"
+      - ColumnName: "Invoice Date"
         IndexType: "end"
-        KeyWordList: ["Invoice Date"]
         TargetValueType: "char"
         MarginLeftType: 2
         MoveLeftRatio: 0.1
         MarginRightType: 1
         MoveRightRatio: 0.1
-        XRangeMin: 0.6
-        XRangeMax: 0.95
+        XRangeMin: 0.2
+        XRangeMax: 0.7
         YRangeMin: 0.0
         YRangeMax: 0.4
