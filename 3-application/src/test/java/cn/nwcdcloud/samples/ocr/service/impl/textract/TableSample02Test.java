@@ -36,12 +36,22 @@ public class TableSample02Test {
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
 
-        for(JSONObject object: tableArray.toJavaList(JSONObject.class)){
+        for(int i=0; i<tableArray.size(); i++ ){
+            JSONObject object = (JSONObject) tableArray.get(i);
             JSONArray array = (JSONArray) object.getJSONArray("rowList").get(0);
             JSONObject o1 = (JSONObject)array.get(0);
             JSONObject o2 = (JSONObject) array.get(1);
-            assert o1.getString("text").equals("5600753");
-            assert o2.getString("text").equals("2/8/2018");
+            logger.info(o1.toJSONString());
+            logger.info(o2.toJSONString());
+            if (i==0){
+                assert o1.getString("text").equals("5600753");
+                assert o2.getString("text").equals("2/8/2018");
+            }else {
+                assert o1.getString("text").equals("4511846139");
+                assert o2.getString("text").equals("5600753");
+
+            }
+//
         }
     }
 

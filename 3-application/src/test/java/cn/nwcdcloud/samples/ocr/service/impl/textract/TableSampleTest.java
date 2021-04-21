@@ -46,6 +46,7 @@ public class TableSampleTest {
 
         JSONArray cellArray= (JSONArray) rowList.get(1);
         JSONObject cell = (JSONObject) cellArray.get(1);
+        logger.info(cell.toJSONString());
         assert "信用卡手续费-内-货扣".equals(cell.getString("text"));
 
 

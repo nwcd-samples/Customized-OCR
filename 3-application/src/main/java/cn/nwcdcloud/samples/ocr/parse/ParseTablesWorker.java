@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -155,9 +156,11 @@ public class ParseTablesWorker {
 
             if ("begin".equals(newItem.get("IndexType"))) {
                 keyWordStartList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
+                keyWordStartList.add(newItem.get("ColumnName"));
                 startConfig = newItem;
             } else if ("end".equals(newItem.get("IndexType"))) {
                 keyWordEndList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
+                keyWordEndList.add(newItem.get("ColumnName"));
                 endConfig = newItem;
             }
         }
@@ -226,6 +229,7 @@ public class ParseTablesWorker {
 
         if (!BlockItemUtils.isValidRange(startConfig, startBlockItem, this.pageWidth,  this.pageHeight)
                 ||!BlockItemUtils.isValidRange(endConfig, endBlockItem, this.pageWidth,  this.pageHeight)) {
+            logger.warn(" 位置检测 不正确 , 请检查配置  XRangeMin  YRangeMin...");
             return null;
         }
 
@@ -461,8 +465,9 @@ public class ParseTablesWorker {
 
         for(int i=0; i<rowList.size(); i++){
             JSONObject rowItem = rowList.get(i);
-            int top = rowItem.getInteger("topBorder");
-            int bottom = rowItem.getInteger("bottomBorder");
+            //FIXME: 上下会有一些误差值， 后面修改成可以调节的值， 暂时硬编码。
+            int top = rowItem.getInteger("topBorder") -20;
+            int bottom = rowItem.getInteger("bottomBorder")+20;
             logger.info("      ");
             for (int j=0; j< columnList.size(); j ++ ){
 
@@ -483,8 +488,8 @@ public class ParseTablesWorker {
                        item.getInteger("bottom")<= bottom &&
                        item.getInteger("left")>= left &&
                        item.getInteger("right") <= right){
-//                        logger.debug("[left={}, right={}], [top={}, bottom={}] , [{}]", left , right, top, bottom, item.getString("text"));
-                        cell.text += item.getString("text");
+                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}] ",item.getString("text"), left , right, top, bottom );
+                        cell.text += (" " + item.getString("text"));
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");
                         }
@@ -499,7 +504,13 @@ public class ParseTablesWorker {
             JSONArray rowArray =  new JSONArray();
             for(int j=0; j< columnCount; j++){
                 JSONObject object = new JSONObject();
-                object.put("text", tableArray[i][j].text);
+                String text  = tableArray[i][j].text;
+                if(text== null){
+                    text = "";
+                }else{
+                    text = text.trim();
+                }
+                object.put("text", text);
                 object.put("confidence", tableArray[i][j].confidence);
                 System.out.printf("| %20s ",tableArray[i][j].text);
                 rowArray.add(object);
