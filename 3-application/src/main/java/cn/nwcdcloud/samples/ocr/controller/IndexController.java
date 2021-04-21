@@ -52,9 +52,9 @@ public class IndexController {
 		mv.addObject("type", type);
 		String title = mapOcrType.get(type);
 		if (StringUtils.isBlank(title)) {
-			title = "OCR识别";
+			title = type;
 		}
-		mv.addObject("title", type);
+		mv.addObject("title", title);
 		mv.addObject("uploadType", uploadType);
 		return mv;
 	}
