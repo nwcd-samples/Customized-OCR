@@ -55,7 +55,7 @@ public class ParseHorizontalWorker {
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
-		int maxLength = Integer.valueOf(configMap.getOrDefault("MaxLength", 10).toString());
+		int maxLength = Integer.valueOf(configMap.getOrDefault("LengthMax", 10).toString());
 		if(keyBlockItemResult.get("subKeyWord") != null ){
 			// case  1:   'key1'   'key2value'
 			int lastIndex = text.length() > index  + maxLength
@@ -65,7 +65,7 @@ public class ParseHorizontalWorker {
 		}else if (index + keyWord.length() < text.length()) {
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
-			int maxLineCount =  Integer.valueOf(configMap.getOrDefault("MaxLineCount", 1).toString());
+			int maxLineCount =  Integer.valueOf(configMap.getOrDefault("LineCountMax", 1).toString());
 			if (maxLineCount > 1) { //多行的情况
 				String mergeValue = findMultiLineBlockItemValue(blockItem, maxLineCount, true);
 				resultItem.put("value", mergeValue.substring(keyWord.length()));
@@ -241,7 +241,7 @@ public class ParseHorizontalWorker {
 		int minDistance = Integer.MAX_VALUE;
 		JSONObject minDistanceBlockItem = null;
 
-		int maxLineCount =  Integer.valueOf(configMap.getOrDefault("MaxLineCount", 1).toString());
+		int maxLineCount =  Integer.valueOf(configMap.getOrDefault("LineCountMax", 1).toString());
 
 		double topOffsetRadio = (double) configMap.getOrDefault("TopOffsetRadio", 1.2d);
 		double bottomOffsetRadio = (double) configMap.getOrDefault("BottomOffsetRadio", 1.2d);

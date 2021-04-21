@@ -320,7 +320,7 @@ public class ParseTablesWorker {
 
                 throw new IllegalArgumentException(" marginLeftType 类型配置不正确 ");
         }
-        leftBorder -= currentItem.getInteger("width") * moveLeftRatio;
+        leftBorder += currentItem.getInteger("width") * moveLeftRatio;
 
 //        # MarginRightType 说明
 //        # 1:  以Column 右边作为列的划分                 范围最近

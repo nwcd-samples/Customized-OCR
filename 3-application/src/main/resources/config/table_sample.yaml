@@ -5,19 +5,19 @@ Targets:
     RecognitionType: "horizontal"
     KeyWordList: ["公司名称"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "纳税人识别号"
     RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "打印人"
     RecognitionType: "horizontal"
     KeyWordList: ["打印人", "打印人：", "打印人:"]
-    MinLength: 2
-    MaxLength: 30
+    LengthMin: 2
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -29,31 +29,31 @@ Targets:
     RecognitionType: "horizontal"
     KeyWordList: ["分店"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "打印时间"
     RecognitionType: "horizontal"
     KeyWordList: ["打印时间"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "结算单号"
     RecognitionType: "horizontal"
     KeyWordList: ["结算单号"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "结算年月"
     RecognitionType: "horizontal"
     KeyWordList: ["结算年月"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "供应商名称"
     RecognitionType: "horizontal"
     KeyWordList: ["供应商名称"]
     TargetValueType: "char"
-    MaxLength: 40
+    LengthMax: 40
 
   - Name: "结算费用单明细"
     RecognitionType: "table"
@@ -84,7 +84,7 @@ Targets:
 
         MarginLeftType: 1
         # 在MarginLeftType 基础上， 往左移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveLeftRatio: 0.2
+        MoveLeftRatio: -0.2
 
         # MarginRightType 说明
         # 1:  以Column 右边作为列的划分                 范围最近
@@ -104,7 +104,7 @@ Targets:
         KeyWordList: ["费用项目"]
         TargetValueType: "char"
         MarginLeftType: 2
-        MoveLeftRatio: 0.3
+        MoveLeftRatio: -0.3
         MarginRightType: 2
         MoveRightRatio: 0.3
 
@@ -122,7 +122,7 @@ Targets:
         KeyWordList: ["扣款额","扣款金额"]
         TargetValueType: "char"
         MarginLeftType: 2
-        MoveLeftRatio: 0
+        MoveLeftRatio: -0.2
         MarginRightType: 3
         MoveRightRatio: 0.1
         XRangeMin: 0.5

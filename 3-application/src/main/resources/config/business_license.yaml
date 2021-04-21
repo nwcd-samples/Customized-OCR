@@ -3,8 +3,8 @@ TemplateName: 'business-license-ocr-template'
 Targets:
   - Name: "统一社会信用代码"
     KeyWordList: ["统一社会信用代码"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.3
@@ -14,8 +14,8 @@ Targets:
 
   - Name: "注册号"
     KeyWordList: ["注册号"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.3
@@ -25,8 +25,8 @@ Targets:
 
   - Name: "名称"
     KeyWordList: ["名称"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -36,8 +36,8 @@ Targets:
 
   - Name: "类型"
     KeyWordList: ["类型"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -47,8 +47,8 @@ Targets:
 
   - Name: "住所"
     KeyWordList: ["住所"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -58,8 +58,8 @@ Targets:
 
   - Name: "经营场所"
     KeyWordList: ["经营场所"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -69,8 +69,8 @@ Targets:
 
   - Name: "组成形式"
     KeyWordList: ["组成形式"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -82,8 +82,8 @@ Targets:
 
   - Name: "法定代表人"
     KeyWordList: ["法定代表人"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -98,8 +98,8 @@ Targets:
 
   - Name: "注册资本"
     KeyWordList: ["注册资本"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -110,8 +110,8 @@ Targets:
 
   - Name: "成立日期"
     KeyWordList: ["成立日期", "注册日期"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -126,8 +126,8 @@ Targets:
 
   - Name: "营业期限"
     KeyWordList: ["营业期限"]
-    MinLength: 20
-    MaxLength: 20
+    LengthMin: 20
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -138,9 +138,9 @@ Targets:
 
   - Name: "经营范围"
     KeyWordList: ["经营范围"]
-    MinLength: 20
-    MaxLength: 20
-    MaxLineCount: 4
+    LengthMin: 20
+    LengthMax: 40
+    LineCountMax: 4
     TargetValueType: "char"
     XRangeMin: 0.0
     XRangeMax: 0.80

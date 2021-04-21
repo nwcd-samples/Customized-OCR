@@ -4,11 +4,11 @@ Targets:
   - Name: "姓名"
     RecognitionType: "default"
     KeyWordList: ["姓名", "名字"]
-    # MinLength
-    MinLength: 1
-    # MaxLength 默认值为 10
-    MaxLength: 6
-    MaxLineCount: 1
+    # LengthMin
+    LengthMin: 1
+    # LengthMax 默认值为 10
+    LengthMax: 6
+    LineCountMax: 1
     TargetValueType: "char"
     XRangeMin: 0.0
     XRangeMax: 0.30
@@ -24,13 +24,13 @@ Targets:
 
   - Name: "性别"
     KeyWordList: ["性别"]
-    MaxLength: 1
-    MaxLineCount: 1
+    LengthMax: 1
+    LineCountMax: 1
 
   - Name: "民族"
     RecognitionType: "default"
     KeyWordList: ["民族"]
-    MinLength: 1
+    LengthMin: 1
     TargetValueType: "char"
     XRangeMax: 0.5
     YRangeMin: 0.10
@@ -40,8 +40,8 @@ Targets:
   - Name: "出生"
     RecognitionType: "default"
     KeyWordList: ["出生"]
-    MinLength: 10
-    MaxLength: 20
+    LengthMin: 10
+    LengthMax: 20
     TargetValueType: "char"
     XRangeMax: 0.70
     YRangeMin: 0.20
@@ -52,9 +52,9 @@ Targets:
   - Name: "住址"
     RecognitionType: "default"
     KeyWordList: ["住址", "往址"]
-    MinLength: 4
-    MaxLength: 30
-    MaxLineCount: 3
+    LengthMin: 4
+    LengthMax: 30
+    LineCountMax: 3
     TargetValueType: "char"
     XRangeMax: 0.90
     YRangeMin: 0.10

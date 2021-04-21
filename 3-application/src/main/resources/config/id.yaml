@@ -2,10 +2,10 @@ TemplateName: 'identity-card'
 Targets:
   - Name: "姓名"
   - Name: "性别"
-    MaxLength: 1
+    LengthMax: 1
   - Name: "民族"
   - Name: "出生日期"
     KeyWordList: ["出生"]
   - Name: "住址"
-    MaxLineCount: 2
+    LineCountMax: 2
   - Name: "公民身份证号码"

@@ -5,8 +5,8 @@ Targets:
   - Name: "境内收货人"
     RecognitionType: "horizontal"
     KeyWordList: ["境内收货人"]
-    MinLength: 20
-    MaxLength: 30
+    LengthMin: 20
+    LengthMax: 30
     MaxLineCount: 2
     TargetValueType: "char"
     XRangeMin: 0.0

@@ -3,8 +3,8 @@ TemplateName: 'hospital-ocr-template'
 Targets:
   - Name: "交易流水号"
     KeyWordList: ["交易流水号"]
-    MinLength: 18
-    MaxLength: 25
+    LengthMin: 18
+    LengthMax: 25
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -14,8 +14,8 @@ Targets:
     
   - Name: "上传NO"
     KeyWordList: ["上传NO："]
-    MinLength: 12
-    MaxLength: 12
+    LengthMin: 12
+    LengthMax: 12
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.5
@@ -25,8 +25,8 @@ Targets:
     
   - Name: "姓名"
     KeyWordList: ["姓名"]
-    MinLength: 2
-    MaxLength: 6
+    LengthMin: 2
+    LengthMax: 6
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -36,8 +36,8 @@ Targets:
 
   - Name: "性别"
     KeyWordList: ["性别","性别：","性别:"]
-    MinLength: 1
-    MaxLength: 1
+    LengthMin: 1
+    LengthMax: 1
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -47,8 +47,8 @@ Targets:
 
   - Name: "医保类型"
     KeyWordList: ["医保类型","医保类型：","医保类型:"]
-    MinLength: 2
-    MaxLength: 6
+    LengthMin: 2
+    LengthMax: 6
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -59,8 +59,8 @@ Targets:
 
   - Name: "社会保障号码"
     KeyWordList: ["社会保障号码","社会保障号码：","社会保障号码:"]
-    MinLength: 10
-    MaxLength: 20
+    LengthMin: 10
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -70,8 +70,8 @@ Targets:
 
   - Name: "合计"
     KeyWordList: ["合计","合计（大写）："]
-    MinLength: 2
-    MaxLength: 30
+    LengthMin: 2
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -81,8 +81,8 @@ Targets:
 
   - Name: "基金"
     KeyWordList: ["基金"]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -92,8 +92,8 @@ Targets:
     
   - Name: "个人支付金额"
     KeyWordList: ["个人支付金额","个人支付金额：","个人支付金额:"]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -103,8 +103,8 @@ Targets:
 
   - Name: "自付一"
     KeyWordList: ["自付一："]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -114,8 +114,8 @@ Targets:
     
   - Name: "自付二"
     KeyWordList: ["自付二："]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
