@@ -23,11 +23,11 @@ public class ParseFactory {
 		this.configFilePath = configFilePath;
 	}
 
-	public JSONObject extractValue(List<JSONObject> blockItemList) {
+	public JSONObject extractValue( List<JSONObject> blockItemList) {
 		Map configMap = readConfig(this.configFilePath);
 
 
-		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(pageWidth, pageHeight, blockItemList);
+		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(pageWidth, pageHeight);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(pageWidth, pageHeight);
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
@@ -36,10 +36,11 @@ public class ParseFactory {
 
 		List targetList = (ArrayList) configMap.get("Targets");
 		for (Object item : targetList) {
-			// 识别单个元素
+
 			HashMap newItem = (HashMap) item;
 			String recognitionType = newItem.getOrDefault("RecognitionType", "default").toString();
 			if ("default".equals(recognitionType)) {
+				// 识别单个key-value元素
 				JSONObject resultItem = horizontalWorker.parse(newItem, blockItemList);
 				if(resultItem != null) {
 					keyValueArray.add(resultItem);
