@@ -1,0 +1,60 @@
+TemplateName: 'table-ocr-template'
+
+Targets:
+  - Name: "结算费用单明细"
+    RecognitionType: "table"
+    MainColumnIndex: 5
+    MaxRowHeightRatio: 5.0
+    Columns:
+
+      - ColumnName: "单据号"
+        MarginLeftType: 3
+        MoveLeftRatio: -1
+        MarginRightType: 2
+        MoveRightRatio: 0.5
+
+      - ColumnName: "店号"
+        MarginLeftType: 1
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5
+
+      - ColumnName: "部门"
+        MarginLeftType: 1
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5
+
+      - ColumnName: "费用分类"
+        MarginLeftType: 1
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5
+
+
+      - ColumnName: "扣费类型"
+        MarginLeftType: 2
+        MoveLeftRatio: -0.5
+        MarginRightType: 2
+        MoveRightRatio: 0.5
+
+
+      - ColumnName: "应收金额"
+        IndexType: "begin"
+        MarginLeftType: 1
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5
+
+      - ColumnName: "应缴金额"
+        IndexType: "end"
+        MarginLeftType: 1
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5
+
+      - ColumnName: "摘要"
+        MarginLeftType: 2
+        MoveLeftRatio: -0.5
+        MarginRightType: 1
+        MoveRightRatio: 0.5

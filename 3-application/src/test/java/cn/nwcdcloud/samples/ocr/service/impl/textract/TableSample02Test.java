@@ -19,15 +19,18 @@ public class TableSample02Test {
     @Resource
     CommonServiceImpl commonServiceImpl;
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/table_sample02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/table_sample02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/table_sample03.json";
     private static final String  CONFIG_FILE_PATH =  "config/table_sample02.yaml" ;
+    private static final String  CONFIG_FILE_PATH_3 =  "config/table_sample03.yaml" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
+
     @Test
     public void parseId001() {
 
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
         ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH);
@@ -56,6 +59,20 @@ public class TableSample02Test {
     }
 
 
+    @Test
+    public void parseId003() {
+
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_3);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+
+    }
 
 
 
