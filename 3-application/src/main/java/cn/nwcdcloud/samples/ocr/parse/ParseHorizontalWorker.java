@@ -29,7 +29,12 @@ public class ParseHorizontalWorker {
 	 */
 	private JSONObject findKeyBlockItem(HashMap configMap, List<JSONObject> blockItemList) {
 
-		List keyWordList = (List) configMap.get("KeyWordList");
+		if(!configMap.containsKey("Name")){
+			throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
+		}
+
+		List keyWordList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
+//		keyWordList.add(configMap.get("Name"));
 
 		// case1. key， 单个元素里面包含了关键字， 或者以关键字开头
 		boolean findFlag = false;

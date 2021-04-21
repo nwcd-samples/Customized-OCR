@@ -23,15 +23,9 @@ Targets:
     RightOffsetRadio: 10.0
 
   - Name: "性别"
-    RecognitionType: "horizontal"
     KeyWordList: ["性别"]
-    MinLength: 1
     MaxLength: 1
     MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMax: 0.30
-    YRangeMin: 0.10
-    YRangeMax: 0.40
 
   - Name: "民族"
     RecognitionType: "horizontal"
@@ -67,10 +61,4 @@ Targets:
     YRangeMax: 0.80
 
   - Name: "公民身份号码"
-    RecognitionType: "horizontal"
     KeyWordList: ["公民身份号码", "公民身份证号码"]
-    MinLength: 10
-    MaxLength: 20
-    TargetValueType: "char"
-    XRangeMax: 0.70
-    YRangeMin: 0.50

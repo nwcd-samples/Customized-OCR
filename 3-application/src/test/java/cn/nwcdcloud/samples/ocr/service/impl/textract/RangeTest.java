@@ -31,7 +31,7 @@ public class RangeTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 1200);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 1200, blockItemList, "config/range.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 1200, "config/range.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");

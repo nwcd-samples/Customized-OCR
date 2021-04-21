@@ -20,6 +20,9 @@ public class ParseTablesWorker {
         List<JSONObject> res = findTableHeadColumns(rootMap, blockItemList);
         if (res == null || res.size() != 2) {
             logger.warn(" 没有找到表头定位的元素   ");
+            if(res!=null ){
+                logger.warn("  元素个数 ： {} ", res.size());
+            }
             return null;
         }
         JSONObject columnStartBlockItem = res.get(0);
@@ -47,7 +50,8 @@ public class ParseTablesWorker {
         }
         logger.info(" 主列： {}   Text [{}] ", mainColumnIndex,  columnBlockItemList.get(mainColumnIndex).getString("text"));
 
-        List<JSONObject> rowList = findRowSplitByMainColumn( blockItemList, columnBlockItemList.get(mainColumnIndex));
+        List<JSONObject> rowList = findRowSplitByMainColumn( rootMap, blockItemList, columnBlockItemList.get(mainColumnIndex));
+
         //step 3. 所有列通过行划分， 找到对应元素，
 
         int rowCount = rowList.size();
@@ -176,10 +180,13 @@ public class ParseTablesWorker {
 
         JSONObject startBlockItem = null;
         JSONObject endBlockItem = null;
+        startKey = startKey.replaceAll(" ", "");
+        endKey = endKey.replaceAll(" ", "");
 
         for (int i = 0; i < blockItemList.size(); i++) {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
+
             if (startKey.equals(text)) {
                 startBlockItem = tempBlockItem;
             } else if (endKey.equals(text)) {
@@ -187,6 +194,7 @@ public class ParseTablesWorker {
             }
         }
         if (startBlockItem == null || endBlockItem == null) {
+            logger.info(" 没有找到匹配的关键字  start key [{}]   end key [{}]-----------  ", startKey, endKey);
             return null;
         }
         List<JSONObject> res = new ArrayList<>();
@@ -334,35 +342,49 @@ public class ParseTablesWorker {
      * @param blockItemList
      * @param mainColumnBlockItem
      */
-    private List<JSONObject> findRowSplitByMainColumn(List<JSONObject> blockItemList , JSONObject mainColumnBlockItem){
+    private List<JSONObject> findRowSplitByMainColumn(HashMap configMap, List<JSONObject> blockItemList , JSONObject mainColumnBlockItem){
 
 
         List<JSONObject> resList = new ArrayList<>();
+        int left = mainColumnBlockItem.getInteger("leftBorder");
+        int right = mainColumnBlockItem.getInteger("rightBorder");
+        int top = mainColumnBlockItem.getInteger("top");
+
+        //根据主列的 top  left  right 向下查找元素
         for (int i=0; i< blockItemList.size(); i++){
-
-            int left = mainColumnBlockItem.getInteger("leftBorder");
-            int right = mainColumnBlockItem.getInteger("rightBorder");
-
-
             JSONObject item = blockItemList.get(i);
-            if(item.getInteger("top") > mainColumnBlockItem.getInteger("bottom") &&
-                    item.getInteger("left")> left && item.getInteger("right")< right ){
+            if(item.getInteger("top") >  top
+                    && item.getInteger("left")> left
+                    && item.getInteger("right")< right &&
+                    !item.getString("text").equals(mainColumnBlockItem.getString("text"))
+                    ){
                 resList.add(item);
             }
         }
+
         resList.sort(new Comparator<JSONObject>() {
             @Override
             public int compare(JSONObject jsonObject, JSONObject t1) {
                 return jsonObject.getInteger("top") - t1.getInteger("top");
             }
         });
+        // 排除掉Y值 增加过快的行。
+        double maxRowHeightRatio = Double.valueOf(configMap.getOrDefault("MaxRowHeightRatio", "0.0").toString());
 
+        int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
+        logger.debug("最高行高度  {} ", maxRowHeight);
+
+
+
+        List<JSONObject> newResList = new ArrayList<>();
         for(int i =0; i< resList.size(); i++){
             JSONObject item = resList.get(i);
 
+            boolean skipItemFlag = false;
             int topBorder = 0;
             if(i ==0){
-                topBorder = mainColumnBlockItem.getInteger("bottom");
+                topBorder = (item.getInteger("top") < mainColumnBlockItem.getInteger("bottom")?item.getInteger("top")
+                        :mainColumnBlockItem.getInteger("bottom"));
             }else {
                 // 该block 与上一行的block 求中点 ， 再往上移动若干像素， 控制误差。
                 topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - 5  ;
@@ -372,18 +394,34 @@ public class ParseTablesWorker {
             if(i == resList.size()-1){
                 bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 5;
             }else{
-                bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + 5;
+                //如果下一行高度差过大
+//                logger.debug("  bottom ={}  maxRowHeight={}  top={} ", item.getInteger("bottom")  ,  maxRowHeight, resList.get(i+1).getInteger("top"));
+                if(item.getInteger("bottom")  + maxRowHeight < resList.get(i+1).getInteger("top") ){
+                    bottomBorder =  item.getInteger("bottom")  + maxRowHeight;
+                    skipItemFlag = true;
+                }else{
+                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + 5;
+
+                }
             }
 
-            logger.info("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
-                    item.getInteger("bottom"),
-                    topBorder, bottomBorder);
+//            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
+//                    item.getInteger("bottom"),
+//                    topBorder, bottomBorder);
 
             item.put("topBorder", topBorder);
             item.put("bottomBorder", bottomBorder);
+            newResList.add(item);
+            if(skipItemFlag){
+                break;
+            }
         }
 
-        return resList;
+        for (JSONObject item: newResList){
+            logger.debug(" 行划分 {} [top={}, bottom={}]  {} ",item.getString("text"),
+                    item.getInteger("topBorder"), item.getInteger("bottomBorder"),  item.toJSONString());
+        }
+        return newResList;
     }
 
     /**
@@ -418,11 +456,12 @@ public class ParseTablesWorker {
 
                 for(JSONObject item: blockItemList){
 
-                    if(item.getInteger("top")> top &&
-                       item.getInteger("bottom")< bottom &&
-                       item.getInteger("left")> left &&
-                       item.getInteger("right") < right){
-//                        logger.info("[left={}, right={}], [top={}, bottom={}] , [{}]", left , right, top, bottom, item.getString("text"));
+
+                    if(item.getInteger("top")>= top &&
+                       item.getInteger("bottom")<= bottom &&
+                       item.getInteger("left")>= left &&
+                       item.getInteger("right") <= right){
+                        logger.info("[left={}, right={}], [top={}, bottom={}] , [{}]", left , right, top, bottom, item.getString("text"));
 
                         cell.text += item.getString("text");
                         if(item.getFloat("Confidence") < cell.confidence){

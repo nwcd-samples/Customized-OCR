@@ -15,13 +15,11 @@ public class ParseFactory {
 
 	private int pageWidth;
 	private int pageHeight;
-	private List<JSONObject> blockItemList;
 	private String configFilePath;
 
-	public ParseFactory(int pageWidth, int pageHeight, List<JSONObject> blockItemList, String configFilePath) {
+	public ParseFactory(int pageWidth, int pageHeight, String configFilePath) {
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
-		this.blockItemList = blockItemList;
 		this.configFilePath = configFilePath;
 	}
 
@@ -40,12 +38,13 @@ public class ParseFactory {
 		for (Object item : targetList) {
 			// 识别单个元素
 			HashMap newItem = (HashMap) item;
-			if ("horizontal".equals(newItem.get("RecognitionType"))) {
+			String recognitionType = newItem.getOrDefault("RecognitionType", "horizontal").toString();
+			if ("horizontal".equals(recognitionType)) {
 				JSONObject resultItem = horizontalWorker.parse(newItem, blockItemList);
 				if(resultItem != null) {
 					keyValueArray.add(resultItem);
 				}
-			}else if ("tables".equals(newItem.get("RecognitionType"))) {
+			}else if ("tables".equals(recognitionType)) {
 				JSONObject result = tablesWorker.parse(newItem, blockItemList);
 				if(result != null){
 					tableArray.add(result);
