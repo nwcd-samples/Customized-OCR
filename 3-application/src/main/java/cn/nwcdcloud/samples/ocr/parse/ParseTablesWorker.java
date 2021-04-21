@@ -52,7 +52,7 @@ public class ParseTablesWorker {
         adjustColumnBlockItemMargin(columnBlockItemList, blockItemList);
 
         //step 3. 通过主列 往下迭代找元素， 找到行划分。
-        int mainColumnIndex = (int) rootMap.getOrDefault("MainColumnIndex", 0);
+        int mainColumnIndex = findMainColumnIndex(columnBlockItemList);
 
         if(mainColumnIndex >= columnBlockItemList.size()){
             throw new IllegalArgumentException(" 主列设置错误， 最大列数为"+columnBlockItemList.size()+" , 设置的值= "+ mainColumnIndex);
@@ -103,31 +103,31 @@ public class ParseTablesWorker {
             throw new IllegalArgumentException(" Table 类型， 需要配置  'Columns' 元素");
         }
         for (Object item : columnList) {
-            HashMap newItem = (HashMap) item;
-            if(!newItem.containsKey("ColumnName")){
+            HashMap configMap = (HashMap) item;
+            if(!configMap.containsKey("ColumnName")){
                 throw new IllegalArgumentException("需要设置 ColumnsName ");
             }
             // begin 和 end 元素， 已经找到
-            if ("begin".equals(newItem.get("IndexType"))) {
-                columnStartBlockItem.put("info", newItem);
+            if ("begin".equals(configMap.get("IndexType"))) {
+                columnStartBlockItem.put("config", configMap);
                 columnBlockItemList.add(columnStartBlockItem);
-            } else if ("end".equals(newItem.get("IndexType"))) {
-                columnEndBlockItem.put("info", newItem);
+            } else if ("end".equals(configMap.get("IndexType"))) {
+                columnEndBlockItem.put("config", configMap);
                 columnBlockItemList.add(columnEndBlockItem);
             }else{
-                List<String> keyList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
-                keyList.add(newItem.get("ColumnName").toString());
+                List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
+                keyList.add(configMap.get("ColumnName").toString());
                 JSONObject blockItem = findColumnByKeyList(blockItemList, keyList, top, bottom);
                 if(blockItem != null){
 //                    BlockItemUtils.isValidRange
-                    if(!BlockItemUtils.isValidRange(newItem, blockItem, this.pageWidth, this.pageWidth)){
-                        logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", blockItem.getString("text"), newItem );
+                    if(!BlockItemUtils.isValidRange(configMap, blockItem, this.pageWidth, this.pageWidth)){
+                        logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", blockItem.getString("text"), configMap );
                         continue;
                     }
-                    blockItem.put("info", newItem);
+                    blockItem.put("config", configMap);
                     columnBlockItemList.add(blockItem);
                 }else{
-                    logger.warn("没有找到表头元素  : "+ newItem );
+                    logger.warn("没有找到表头元素  : "+ configMap );
                     for(String  key: keyList){
                         logger.warn("\t 未找到 【{}】 ",  key  );
                     }
@@ -165,18 +165,13 @@ public class ParseTablesWorker {
                 endConfig = newItem;
             }
         }
-        if (keyWordStartList == null ) {
+        if (startConfig == null ) {
             throw new IllegalArgumentException("没有配置 IndexType: 'begin' 用来定位表头, 请检查配置文件 ");
         }
-//        if (keyWordStartList.size() == 0) {
-//            throw new IllegalArgumentException("没有配置 KeyWordList, 请检查配置文件 ");
-//        }
-        if (keyWordEndList == null ) {
+
+        if (endConfig == null ) {
             throw new IllegalArgumentException("没有配置 IndexType: 'end' 用来定位表头, 请检查配置文件 ");
         }
-//        if (keyWordEndList.size() == 0) {
-//            throw new IllegalArgumentException("没有配置 KeyWordList, 请检查配置文件 ");
-//        }
 
         for (int i = 0; i < keyWordStartList.size(); i++) {
             String startKey = keyWordStartList.get(i).toString();
@@ -189,6 +184,7 @@ public class ParseTablesWorker {
                 }
             }
         }
+
         return null;
     }
 
@@ -250,8 +246,8 @@ public class ParseTablesWorker {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
             for (String key: keyList){
-                if (key.equals(text) && tempBlockItem.getInteger("top") >= top - 30
-                        && tempBlockItem.getInteger("bottom") < bottom + 30) {
+                if (key.equals(text) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
+                        && tempBlockItem.getInteger("bottom") < bottom + ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX) {
                     return tempBlockItem;
                 }
             }
@@ -297,57 +293,49 @@ public class ParseTablesWorker {
     }
 
     private void adjustSingleItem(int leftColumnRight, int rightColumnLeft, JSONObject currentItem){
-        HashMap infoMap = (HashMap) currentItem.get("info");
+        HashMap infoMap = (HashMap) currentItem.get("config");
 
-        int marginLeftType = Integer.parseInt(infoMap.getOrDefault("MarginLeftType", 2).toString());
-        int marginRightType = Integer.parseInt(infoMap.getOrDefault("MarginRightType", 2).toString());
+        String marginLeftType = infoMap.getOrDefault("MarginLeftType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
+        String marginRightType = infoMap.getOrDefault("MarginRightType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
 
-        float moveLeftRatio = Float.parseFloat(infoMap.getOrDefault("MoveLeftRatio", "0.0").toString());
-        float moveRightRatio = Float.parseFloat(infoMap.getOrDefault("MoveRightRatio", "0.0").toString());
+        float moveLeftRatio = Float.parseFloat(infoMap.getOrDefault("MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
+        float moveRightRatio = Float.parseFloat(infoMap.getOrDefault("MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
 
 //        # MarginLeftType 说明
-//        # 1:  以Column 左边作为列的划分                 范围最近
-//        # 2:  以Column 到下一个Column 中点             中间范围
-//        # 3:  以Column 左边Column元素的右边作为分界点    范围最远
+//        # near:  以Column 左边作为列的划分                 范围最近
+//        # middle:  以Column 到下一个Column 中点             中间范围
+//        # far:  以Column 左边Column元素的右边作为分界点    范围最远
 
         int leftBorder = 0;
-        switch (marginLeftType){
-            case 1:
-                leftBorder = currentItem.getInteger("left");
-                break;
-            case 2:
-                leftBorder = (currentItem.getInteger("left") + leftColumnRight)/2 ;
-                break;
-            case 3:
-                leftBorder = leftColumnRight ;
-                break;
-            default:
-
-                throw new IllegalArgumentException(" marginLeftType 类型配置不正确 ");
+        if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
+            leftBorder = currentItem.getInteger("left");
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginLeftType)){
+            leftBorder = (currentItem.getInteger("left") + leftColumnRight)/2 ;
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginLeftType)){
+            leftBorder = leftColumnRight ;
+        }else {
+            throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginLeftType 类型配置不正确 只能为 near, middle, far 三种类型 ");
         }
+
         leftBorder += currentItem.getInteger("width") * moveLeftRatio;
 
 //        # MarginRightType 说明
-//        # 1:  以Column 右边作为列的划分                 范围最近
-//        # 2:  以Column 到下一个Column 中点             中间范围
-//        # 3:  以Column 右边Column元素的左边作为分界点    范围最远
+//        # near:  以Column 右边作为列的划分                 范围最近
+//        # middle:  以Column 到下一个Column 中点             中间范围
+//        # far:  以Column 右边Column元素的左边作为分界点    范围最远
 
         int rightBorder = 0;
-        switch (marginRightType){
-            case 1:
-                rightBorder = currentItem.getInteger("right");
-                break;
-            case 2:
-                rightBorder = (currentItem.getInteger("right") + rightColumnLeft) /2;
-                break;
-            case 3:
-                rightBorder = rightColumnLeft;
-                break;
-            default:
-                throw new IllegalArgumentException(" marginRightType 类型配置不正确 ");
+        if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
+            rightBorder = currentItem.getInteger("right");
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginLeftType)){
+            rightBorder = (currentItem.getInteger("right") + rightColumnLeft) /2;
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginLeftType)){
+            rightBorder = rightColumnLeft;
+        }else {
+            throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginRightType 类型配置不正确 只能为 near, middle, far 三种类型 ");
         }
-
         rightBorder += currentItem.getInteger("width") * moveRightRatio;
+
         currentItem.put("leftBorder", leftBorder);
         currentItem.put("rightBorder",rightBorder);
         logger.debug("{} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ", currentItem.getString("text"),
@@ -374,10 +362,13 @@ public class ParseTablesWorker {
         int right = mainColumnBlockItem.getInteger("rightBorder");
         int top = mainColumnBlockItem.getInteger("top");
 
+
         //根据主列的 top  left  right 向下查找元素
         for (int i=0; i< blockItemList.size(); i++){
             JSONObject item = blockItemList.get(i);
-            if(item.getInteger("top") >  top
+//            logger.info("### top: [{}]  item top: [{}]  [{}]", top, item.getInteger("top"), item.getString("text"));
+            if(
+                    item.getInteger("top") >  top
                     && item.getInteger("left")> left
                     && item.getInteger("right")< right &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))
@@ -397,7 +388,7 @@ public class ParseTablesWorker {
         int maxRowCount = Integer.valueOf(configMap.getOrDefault("MaxRowCount",  ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
         int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
-        logger.debug("最高行高度  {} ", maxRowHeight);
+        logger.debug("最高行高度  {}  找到行元素个数={} ", maxRowHeight, resList.size());
 
 
 
@@ -413,12 +404,12 @@ public class ParseTablesWorker {
                         : mainColumnBlockItem.getInteger("bottom"));
             }else {
                 // 该block 与上一行的block 求中点 ， 再往上移动若干像素， 控制误差。
-                topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN  ;
+                topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - 3  ;
             }
 
             int bottomBorder = 0;
             if(i == resList.size()-1){
-                bottomBorder = item.getInteger("bottom") + item.getInteger("height") + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;
+                bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 3;
             }else{
                 //如果距离下一行高度差过大, 停止循环
                 //logger.debug("  bottom ={}  maxRowHeight={}  top={} ", item.getInteger("bottom")  ,  maxRowHeight, resList.get(i+1).getInteger("top"));
@@ -431,9 +422,9 @@ public class ParseTablesWorker {
                 }
             }
 
-//            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
-//                    item.getInteger("bottom"),
-//                    topBorder, bottomBorder);
+            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
+                    item.getInteger("bottom"),
+                    topBorder, bottomBorder);
 
             item.put("topBorder", topBorder);
             item.put("bottomBorder", bottomBorder);
@@ -536,6 +527,27 @@ public class ParseTablesWorker {
             }
         }
         return resList;
+
+    }
+
+    private int findMainColumnIndex( List<JSONObject>  columnBlockItemList){
+
+        int mainColumnIndex = ConfigConstants.TABLE_MAIN_COLUMN_INDEX;
+        int count = 0;
+        for(int i=0; i< columnBlockItemList.size(); i++){
+            JSONObject item = columnBlockItemList.get(i);
+            HashMap config = (HashMap) item.get("config");
+            if((boolean)config.getOrDefault("IsMainColumn", false)){
+                count ++;
+                mainColumnIndex = i;
+            }
+//            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("IsMainColumn", false));
+        }
+
+        if (count > 1){
+            throw new IllegalArgumentException(" 'IsMainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
+        }
+        return mainColumnIndex;
     }
 
 }

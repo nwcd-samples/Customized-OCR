@@ -4,79 +4,57 @@ Targets:
 
   - Name: "Invoice Date"
     RecognitionType: "table"
-    # 用来做行切分的 '列' 的索引
-    MainColumnIndex: 0
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
-    MaxRowHeightRatio: 2.0
+    MaxRowHeightRatio: 3.0
     # 最大行数
     MaxRowCount: 5
     Columns:
       # 表格的显示名称
       - ColumnName: "Invoice#"
-
+        IsMainColumn: true
         # 通过  begin end 两个列 对表格的表头进行定位
         IndexType: "begin"
 
         # 可能出现的关键字
         #        KeyWordList: ["Invoice#"]
 
-        #  char  or  digit
-        TargetValueType: "char"
 
-        # MarginLeftType 说明
-        # 1:  以Column 左边作为列的划分                 范围最近
-        # 2:  以Column 到下一个Column 中点             中间范围
-        # 3:  以Column 左边Column元素的右边作为分界点    范围最远
-
-
-        MarginLeftType: 1
+        MarginLeftType: "near"
         # 在MarginLeftType 基础上， 往左移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveLeftRatio: 0.5
+        MoveLeftRatio: -0.2
 
-        # MarginRightType 说明
-        # 1:  以Column 右边作为列的划分                 范围最近
-        # 2:  以Column 到下一个Column 中点             中间范围
-        # 3:  以Column 右边Column元素的左边作为分界点    范围最远
-
-        MarginRightType: 1
+        MarginRightType: "near"
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveRightRatio: 0.5
-        XRangeMin: 0.5
-        XRangeMax: 0.9
-        YRangeMin: 0.0
-        YRangeMax: 0.50
+        MoveRightRatio: 0.2
+
 
       - ColumnName: "Invoice Date"
         IndexType: "end"
-        TargetValueType: "char"
-        MarginLeftType: 2
+        MarginLeftType: "middle"
         MoveLeftRatio: 0.1
-        MarginRightType: 1
+        MarginRightType: "near"
         MoveRightRatio: 0.1
-        XRangeMin: 0.2
-        XRangeMax: 0.7
-        YRangeMin: 0.0
-        YRangeMax: 0.4
+
 
   - Name: "Customer PO"
       RecognitionType: "table"
-      MainColumnIndex: 0
       MaxRowHeightRatio: 2.0
       Columns:
         - ColumnName: "CustomerPO"
           IndexType: "begin"
           KeyWordList: ["CustomerPO"]
-          MarginLeftType: 1
+          IsMainColumn: true
+          MarginLeftType: "near"
           MoveLeftRatio: -0.5
-          MarginRightType: 1
+          MarginRightType: "near"
           MoveRightRatio: 0.5
 
         - ColumnName: "SalesOrderNo."
         - ColumnName: "ShipDate"
         - ColumnName: "PaymentTerms"
-            MarginLeftType: 2
+            MarginLeftType: "middle"
             MoveLeftRatio: 0
-            MarginRightType: 2
+            MarginRightType: "middle"
             MoveRightRatio: 0
 
         - ColumnName: "VesseID"
@@ -86,9 +64,9 @@ Targets:
         - ColumnName: "BOLNumber"
           IndexType: "end"
           KeyWordList: ["BOLNumber"]
-          MarginLeftType: 2
+          MarginLeftType: "middle"
           MoveLeftRatio: 0
-          MarginRightType: 1
+          MarginRightType: "near"
           MoveRightRatio: 0.5
 
 
