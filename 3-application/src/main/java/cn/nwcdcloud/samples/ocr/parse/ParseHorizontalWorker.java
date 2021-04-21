@@ -55,7 +55,7 @@ public class ParseHorizontalWorker {
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
-		int maxLength = Integer.valueOf(configMap.getOrDefault("LengthMax", 10).toString());
+		int maxLength = Integer.valueOf(configMap.getOrDefault("LengthMax", 20).toString());
 		if(keyBlockItemResult.get("subKeyWord") != null ){
 			// case  1:   'key1'   'key2value'
 			int lastIndex = text.length() > index  + maxLength
