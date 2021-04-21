@@ -26,7 +26,7 @@ public class CommonServiceImpl implements CommonService {
 
 		JSONObject jsonObject = (JSONObject) jsonArray.getJSONObject(0);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
-		ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, blockItemList, "config/" + type + ".yaml");
+		ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, "config/" + type + ".yaml");
 
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList));

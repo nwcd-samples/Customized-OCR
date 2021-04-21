@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -317,5 +318,40 @@ public class BlockItemUtils {
         return rightMost;
 
     }
+
+    /**
+     * 检测目标元素 坐标范围 是否符合配置文件的要求
+     *
+     * @param configMap
+     * @param blockItem
+     * @return
+     */
+    public static boolean isValidRange(HashMap configMap, JSONObject blockItem, int pageWidth, int pageHeight) {
+
+        double xRangeMin = Double.valueOf(configMap.getOrDefault("XRangeMin", 0).toString());
+        double xRangeMax = Double.valueOf(configMap.getOrDefault("XRangeMax", 1).toString());
+        double yRangeMin = Double.valueOf(configMap.getOrDefault("YRangeMin", 0).toString());
+        double yRangeMax = Double.valueOf(configMap.getOrDefault("YRangeMax", 1).toString());
+
+        int left = (int) (xRangeMin * pageWidth);
+        int right = (int) (xRangeMax * pageWidth);
+
+        int top = (int) (yRangeMin * pageHeight);
+        int bottom = (int) (yRangeMax * pageHeight);
+//        logger.debug("isValidRange pageWidth: {}    pageHeight: {} ",  pageWidth, pageHeight);
+//        logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}]", xRangeMin, xRangeMax, yRangeMin, yRangeMax);
+//        logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
+//        logger.debug("isValidRange x: {}    y: {} ", blockItem.getInteger("x"),
+//                blockItem.getInteger("y"));
+
+        int x = blockItem.getInteger("x");
+        int y = blockItem.getInteger("y");
+
+        if (x > right || x < left || y < top || y > bottom) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

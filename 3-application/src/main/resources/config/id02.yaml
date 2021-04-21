@@ -1,0 +1,64 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "姓名"
+    RecognitionType: "default"
+    KeyWordList: ["姓名", "名字"]
+    # LengthMin
+    LengthMin: 1
+    # LengthMax 默认值为 10
+    LengthMax: 6
+    LineCountMax: 1
+    TargetValueType: "char"
+    XRangeMin: 0.0
+    XRangeMax: 0.30
+    YRangeMin: 0.0
+    YRangeMax: 0.30
+    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
+    TopOffsetRadio: 1.5
+    # 相对于自身高度， Value Block 往下偏移的倍数  bottom - height * TopOffsetRadio
+    BottomOffsetRadio: 1.5
+    LeftOffsetRadio: 1.0
+    #Value Block 右边界  >=  item.right + item.width * RightOffsetRadio
+    RightOffsetRadio: 10.0
+
+  - Name: "性别"
+    KeyWordList: ["性别"]
+    LengthMax: 1
+    LineCountMax: 1
+
+  - Name: "民族"
+    RecognitionType: "default"
+    KeyWordList: ["民族"]
+    LengthMin: 1
+    TargetValueType: "char"
+    XRangeMax: 0.5
+    YRangeMin: 0.10
+    YRangeMax: 0.50
+
+
+  - Name: "出生"
+    RecognitionType: "default"
+    KeyWordList: ["出生"]
+    LengthMin: 10
+    LengthMax: 20
+    TargetValueType: "char"
+    XRangeMax: 0.70
+    YRangeMin: 0.20
+    YRangeMax: 0.60
+    LeftOffsetRadio: 0.5
+    RightOffsetRadio: 5.0
+
+  - Name: "住址"
+    RecognitionType: "default"
+    KeyWordList: ["住址", "往址"]
+    LengthMin: 4
+    LengthMax: 30
+    LineCountMax: 3
+    TargetValueType: "char"
+    XRangeMax: 0.90
+    YRangeMin: 0.10
+    YRangeMax: 0.80
+
+  - Name: "公民身份号码"
+    KeyWordList: ["公民身份号码", "公民身份证号码"]

@@ -2,10 +2,9 @@ TemplateName: 'hospital-ocr-template'
 
 Targets:
   - Name: "交易流水号"
-    RecognitionType: "horizontal"
     KeyWordList: ["交易流水号"]
-    MinLength: 18
-    MaxLength: 25
+    LengthMin: 18
+    LengthMax: 25
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -14,10 +13,9 @@ Targets:
     YRangeMax: 0.30
     
   - Name: "上传NO"
-    RecognitionType: "horizontal"
     KeyWordList: ["上传NO："]
-    MinLength: 12
-    MaxLength: 12
+    LengthMin: 12
+    LengthMax: 12
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.5
@@ -26,10 +24,9 @@ Targets:
     YRangeMax: 0.30
     
   - Name: "姓名"
-    RecognitionType: "horizontal"
     KeyWordList: ["姓名"]
-    MinLength: 2
-    MaxLength: 6
+    LengthMin: 2
+    LengthMax: 6
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -38,10 +35,9 @@ Targets:
     YRangeMax: 0.30
 
   - Name: "性别"
-    RecognitionType: "horizontal"
     KeyWordList: ["性别","性别：","性别:"]
-    MinLength: 1
-    MaxLength: 1
+    LengthMin: 1
+    LengthMax: 1
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -50,10 +46,9 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "医保类型"
-    RecognitionType: "horizontal"
     KeyWordList: ["医保类型","医保类型：","医保类型:"]
-    MinLength: 2
-    MaxLength: 6
+    LengthMin: 2
+    LengthMax: 6
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -63,10 +58,9 @@ Targets:
 
 
   - Name: "社会保障号码"
-    RecognitionType: "horizontal"
     KeyWordList: ["社会保障号码","社会保障号码：","社会保障号码:"]
-    MinLength: 10
-    MaxLength: 20
+    LengthMin: 10
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -75,10 +69,9 @@ Targets:
     YRangeMax: 0.60
 
   - Name: "合计"
-    RecognitionType: "horizontal"
     KeyWordList: ["合计","合计（大写）："]
-    MinLength: 2
-    MaxLength: 30
+    LengthMin: 2
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -87,10 +80,9 @@ Targets:
     YRangeMax: 0.80
 
   - Name: "基金"
-    RecognitionType: "horizontal"
     KeyWordList: ["基金"]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -99,10 +91,9 @@ Targets:
     YRangeMax: 1.0
     
   - Name: "个人支付金额"
-    RecognitionType: "horizontal"
     KeyWordList: ["个人支付金额","个人支付金额：","个人支付金额:"]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -111,10 +102,9 @@ Targets:
     YRangeMax: 1.0
 
   - Name: "自付一"
-    RecognitionType: "horizontal"
     KeyWordList: ["自付一："]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -123,10 +113,9 @@ Targets:
     YRangeMax: 1.0
     
   - Name: "自付二"
-    RecognitionType: "horizontal"
     KeyWordList: ["自付二："]
-    MinLength: 1
-    MaxLength: 10
+    LengthMin: 1
+    LengthMax: 10
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0

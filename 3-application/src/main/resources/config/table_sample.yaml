@@ -5,19 +5,19 @@ Targets:
     RecognitionType: "horizontal"
     KeyWordList: ["公司名称"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "纳税人识别号"
     RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "打印人"
     RecognitionType: "horizontal"
     KeyWordList: ["打印人", "打印人：", "打印人:"]
-    MinLength: 2
-    MaxLength: 30
+    LengthMin: 2
+    LengthMax: 30
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -29,34 +29,34 @@ Targets:
     RecognitionType: "horizontal"
     KeyWordList: ["分店"]
     TargetValueType: "char"
-    MaxLength: 30
+    LengthMax: 30
 
   - Name: "打印时间"
     RecognitionType: "horizontal"
     KeyWordList: ["打印时间"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "结算单号"
     RecognitionType: "horizontal"
     KeyWordList: ["结算单号"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "结算年月"
     RecognitionType: "horizontal"
     KeyWordList: ["结算年月"]
     TargetValueType: "char"
-    MaxLength: 20
+    LengthMax: 20
 
   - Name: "供应商名称"
     RecognitionType: "horizontal"
     KeyWordList: ["供应商名称"]
     TargetValueType: "char"
-    MaxLength: 40
+    LengthMax: 40
 
   - Name: "结算费用单明细"
-    RecognitionType: "tables"
+    RecognitionType: "table"
     # 用来做行切分的 '列' 的索引
     MainColumnIndex: 0
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
@@ -65,10 +65,10 @@ Targets:
     MaxRowCount: 5
     Columns:
         # 表格的显示名称
-      - Column: "扣款代码"
+      - ColumnName: "扣款代码"
 
-        # 通过  start end 两个列 对表格的表头进行定位
-        IndexType: "start"
+        # 通过  begin end 两个列 对表格的表头进行定位
+        IndexType: "begin"
 
         # 可能出现的关键字
         KeyWordList: ["扣代码","扣款代码"]
@@ -84,7 +84,7 @@ Targets:
 
         MarginLeftType: 1
         # 在MarginLeftType 基础上， 往左移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveLeftRatio: 0.2
+        MoveLeftRatio: -0.2
 
         # MarginRightType 说明
         # 1:  以Column 右边作为列的划分                 范围最近
@@ -94,26 +94,38 @@ Targets:
         MarginRightType: 1
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
         MoveRightRatio: 0.2
+        XRangeMin: 0.1
+        XRangeMax: 1.0
+        YRangeMin: 0.1
+        YRangeMax: 1.0
 
-      - Column: "费用项目"
+      - ColumnName: "费用项目"
         IndexType: "default"
         KeyWordList: ["费用项目"]
         TargetValueType: "char"
         MarginLeftType: 2
-        MoveLeftRatio: 0.3
+        MoveLeftRatio: -0.3
         MarginRightType: 2
         MoveRightRatio: 0.3
 
-      - Column: "扣款项目名称"
+      - ColumnName: "扣款项目名称"
         IndexType: "default"
         KeyWordList: ["扣款项目名称"]
         TargetValueType: "char"
+        XRangeMin: 0.2
+        XRangeMax: 0.9
+        YRangeMin: 0.1
+        YRangeMax: 0.8
 
-      - Column: "扣款金额"
+      - ColumnName: "扣款金额"
         IndexType: "end"
         KeyWordList: ["扣款额","扣款金额"]
         TargetValueType: "char"
         MarginLeftType: 2
-        MoveLeftRatio: 0
+        MoveLeftRatio: -0.2
         MarginRightType: 3
         MoveRightRatio: 0.1
+        XRangeMin: 0.5
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.7

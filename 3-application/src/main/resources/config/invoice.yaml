@@ -2,10 +2,10 @@ TemplateName: 'invoice-ocr-template'
 
 Targets:
   - Name: "购买方-名称"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["称：","称:"]
-    MinLength: 16
-    MaxLength: 20
+    LengthMin: 16
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -14,10 +14,10 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "购买方-纳税人识别号"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["纳税人识别号"]
-    MinLength: 16
-    MaxLength: 20
+    LengthMin: 16
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -26,10 +26,10 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "购买方-开户行及账号"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["开户行及账号"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -39,10 +39,10 @@ Targets:
 
 
   - Name: "销售方-名称"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["称：","称:"]
-    MinLength: 16
-    MaxLength: 20
+    LengthMin: 16
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -51,10 +51,10 @@ Targets:
     YRangeMax: 0.90
 
   - Name: "销售方-纳税人识别号"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["纳税人识别号"]
-    MinLength: 16
-    MaxLength: 20
+    LengthMin: 16
+    LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -64,10 +64,10 @@ Targets:
 
 
   - Name: "销售方-开户行及账号"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["开户行及账号"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -76,11 +76,11 @@ Targets:
     YRangeMax: 0.90
 
 
-  - Name: "价税合计"
-    RecognitionType: "horizontal"
+  - Name: "价税合计（大写）"
+    RecognitionType: "default"
     KeyWordList: ["价税合计（大写）"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -89,10 +89,10 @@ Targets:
     YRangeMax: 0.80
 
   - Name: "价税合计-小写"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["（小写）"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.6
@@ -101,10 +101,10 @@ Targets:
     YRangeMax: 0.70
 
   - Name: "发票代码"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["发票代码"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.6
@@ -112,10 +112,10 @@ Targets:
     YRangeMin: 0.00
     YRangeMax: 0.30
   - Name: "发票号码"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["发票号码"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.6
@@ -124,10 +124,10 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "开票日期"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["开票日期"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.6
@@ -136,10 +136,10 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "校验码"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["校验码"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.6
@@ -148,10 +148,10 @@ Targets:
     YRangeMax: 0.50
 
   - Name: "机器编码"
-    RecognitionType: "horizontal"
+    RecognitionType: "default"
     KeyWordList: ["机器编码"]
-    MinLength: 40
-    MaxLength: 40
+    LengthMin: 40
+    LengthMax: 40
     MaxLineCount: 1
     TargetValueType: "char"
     XRangeMin: 0.0
@@ -159,7 +159,4 @@ Targets:
     YRangeMin: 0.10
     YRangeMax: 0.50
 
-  - Name: "明细"
-    RecognitionType: "table"
-    KeyWordStartList: ["货物或应税劳务、服务名称"]
-    KeyWordEndList: ["金额"]
+

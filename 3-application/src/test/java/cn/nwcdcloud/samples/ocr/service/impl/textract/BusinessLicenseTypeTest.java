@@ -30,7 +30,7 @@ public class BusinessLicenseTypeTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/business_license.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, "config/business_license.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultObject.toJSONString());
@@ -52,7 +52,7 @@ public class BusinessLicenseTypeTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/business_license.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, "config/business_license.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());

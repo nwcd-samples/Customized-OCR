@@ -32,8 +32,8 @@ public class InvoiceTypeTest {
 
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 900);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 900, blockItemList, "config/invoice.yaml");
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "config/invoice.yaml");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
@@ -45,7 +45,7 @@ public class InvoiceTypeTest {
         assert  checkKeyValueMap(resultArray, "销售方-纳税人识别号", "91110108MA01GOFB09");
         assert  checkKeyValueMap(resultArray, "销售方-开户行及账号", "招商银行股份有限公司北京东三环支行110936504210806");
 
-        assert  checkKeyValueMap(resultArray, "价税合计", "肆佰柒拾肆圆柒角玖分");
+        assert  checkKeyValueMap(resultArray, "价税合计（大写）", "肆佰柒拾肆圆柒角玖分");
         assert  checkKeyValueMap(resultArray, "价税合计-小写", "￥474.79");
         assert  checkKeyValueMap(resultArray, "发票代码", "011002000311");
 
