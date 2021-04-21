@@ -34,12 +34,11 @@ RUN conda install -y python=$PYTHON_VERSION
 RUN pip install flask gevent gunicorn boto3 -i https://opentuna.cn/pypi/web/simple && \
         rm -rf /root/.cache
 
-RUN conda install paddlepaddle-gpu==2.0.0rc0 cudatoolkit=10.1 -c paddle
+RUN conda install paddlepaddle-gpu==2.0.2 cudatoolkit=10.1 -c paddle
+COPY aws /root/.aws
 WORKDIR /opt/ml/code
 COPY dockersource ./
 RUN pip install -r requirements.txt -i https://opentuna.cn/pypi/web/simple
-RUN pip install awscli==1.18.181 -i https://opentuna.cn/pypi/web/simple && aws configure set default.region cn-northwest-1
-
         
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
