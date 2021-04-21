@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
 import java.util.*;
 
@@ -64,7 +65,7 @@ public class ParseTablesWorker {
 
         int rowCount = rowList.size();
         int columnCount = columnBlockItemList.size();
-        List<JSONArray> resultList = findCellByColumnAndRow(blockItemList, rowList, columnBlockItemList, mainColumnIndex);
+        List<JSONArray> resultList = findCellByColumnAndRow(blockItemList, rowList, columnBlockItemList);
 
         JSONArray headTitleArray = new JSONArray();
         for(JSONObject item : columnBlockItemList){
@@ -392,7 +393,8 @@ public class ParseTablesWorker {
             }
         });
         // 排除掉Y值 增加过快的行。
-        double maxRowHeightRatio = Double.valueOf(configMap.getOrDefault("MaxRowHeightRatio", "0.0").toString());
+        double maxRowHeightRatio = Double.valueOf(configMap.getOrDefault("MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO).toString());
+        int maxRowCount = Integer.valueOf(configMap.getOrDefault("MaxRowCount",  ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
         int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
         logger.debug("最高行高度  {} ", maxRowHeight);
@@ -400,30 +402,31 @@ public class ParseTablesWorker {
 
 
         List<JSONObject> newResList = new ArrayList<>();
-        for(int i =0; i< resList.size(); i++){
+        for(int i =0; i< resList.size() && i<maxRowCount; i++){
             JSONObject item = resList.get(i);
 
             boolean skipItemFlag = false;
             int topBorder = 0;
             if(i ==0){
-                topBorder = (item.getInteger("top") < mainColumnBlockItem.getInteger("bottom")?item.getInteger("top")
-                        :mainColumnBlockItem.getInteger("bottom"));
+                topBorder = (item.getInteger("top") < mainColumnBlockItem.getInteger("bottom")
+                        ? item.getInteger("top")
+                        : mainColumnBlockItem.getInteger("bottom"));
             }else {
                 // 该block 与上一行的block 求中点 ， 再往上移动若干像素， 控制误差。
-                topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - 5  ;
+                topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN  ;
             }
 
             int bottomBorder = 0;
             if(i == resList.size()-1){
-                bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 5;
+                bottomBorder = item.getInteger("bottom") + item.getInteger("height") + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;
             }else{
-                //如果下一行高度差过大
-//                logger.debug("  bottom ={}  maxRowHeight={}  top={} ", item.getInteger("bottom")  ,  maxRowHeight, resList.get(i+1).getInteger("top"));
+                //如果距离下一行高度差过大, 停止循环
+                //logger.debug("  bottom ={}  maxRowHeight={}  top={} ", item.getInteger("bottom")  ,  maxRowHeight, resList.get(i+1).getInteger("top"));
                 if(item.getInteger("bottom")  + maxRowHeight < resList.get(i+1).getInteger("top") ){
                     bottomBorder =  item.getInteger("bottom")  + maxRowHeight;
                     skipItemFlag = true;
                 }else{
-                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + 5;
+                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;
 
                 }
             }
@@ -436,13 +439,15 @@ public class ParseTablesWorker {
             item.put("bottomBorder", bottomBorder);
             newResList.add(item);
             if(skipItemFlag){
-                break;
+                break;//下一行过远 停止循环
             }
         }
 
         for (JSONObject item: newResList){
-            logger.debug(" 行划分 {} [top={}, bottom={}]  {} ",item.getString("text"),
-                    item.getInteger("topBorder"), item.getInteger("bottomBorder"),  item.toJSONString());
+            logger.debug(" 行划分 {} Border [top={}, bottom={}]   self[top={}, bottom={}]  {} ",item.getString("text"),
+                    item.getInteger("topBorder"), item.getInteger("bottomBorder"),
+                    item.getInteger("top"), item.getInteger("bottom"),
+                    item.toJSONString());
         }
         return newResList;
     }
@@ -452,11 +457,10 @@ public class ParseTablesWorker {
      * @param blockItemList
      * @param rowList
      * @param columnList
-     * @param mainColumnIndex
      * @return
      */
     private List<JSONArray> findCellByColumnAndRow(List<JSONObject> blockItemList,
-                                List<JSONObject> rowList, List<JSONObject> columnList, int mainColumnIndex){
+                                List<JSONObject> rowList, List<JSONObject> columnList){
 
 
         int rowCount = rowList.size();
@@ -465,9 +469,8 @@ public class ParseTablesWorker {
 
         for(int i=0; i<rowList.size(); i++){
             JSONObject rowItem = rowList.get(i);
-            //FIXME: 上下会有一些误差值， 后面修改成可以调节的值， 暂时硬编码。
-            int top = rowItem.getInteger("topBorder") -20;
-            int bottom = rowItem.getInteger("bottomBorder")+20;
+            int top = rowItem.getInteger("topBorder") - ConfigConstants.PARSE_CELL_ERROR_RANGE_TOP;
+            int bottom = rowItem.getInteger("bottomBorder") + ConfigConstants.PARSE_CELL_ERROR_RANGE_BOTTOM;
             logger.info("      ");
             for (int j=0; j< columnList.size(); j ++ ){
 
@@ -500,8 +503,18 @@ public class ParseTablesWorker {
         }
 
         List<JSONArray> resList = new ArrayList<>();
+
+        if(ConfigConstants.DEBUG_FLAG){
+            for(int i=0; i<columnList.size(); i++ ){
+                System.out.printf("| %20s ",columnList.get(i).getString("text"));
+            }
+            System.out.println("");
+        }
+
         for (int i=0; i< rowCount; i++){
             JSONArray rowArray =  new JSONArray();
+
+
             for(int j=0; j< columnCount; j++){
                 JSONObject object = new JSONObject();
                 String text  = tableArray[i][j].text;
@@ -512,25 +525,17 @@ public class ParseTablesWorker {
                 }
                 object.put("text", text);
                 object.put("confidence", tableArray[i][j].confidence);
-                System.out.printf("| %20s ",tableArray[i][j].text);
+                if(ConfigConstants.DEBUG_FLAG) {
+                    System.out.printf("| %20s ", tableArray[i][j].text);
+                }
                 rowArray.add(object);
             }
             resList.add(rowArray);
-            System.out.println("  ");
+            if(ConfigConstants.DEBUG_FLAG){
+                System.out.println("  ");
+            }
         }
         return resList;
-    }
-
-    /**
-     * Cell类 封装页面使用
-     */
-    private class Cell{
-        public Cell() {
-            text = "";
-            confidence = 1.0f;
-        }
-        String text;
-        float confidence;
     }
 
 }

@@ -1,6 +1,34 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
 public interface ConfigConstants {
+
+    boolean DEBUG_FLAG = true;
     int PAGE_WIDTH = 1200;
     int PAGE_HEIGHT = 1200;
+
+    //  LengthMax 每个元素最大字符数
+    int ITEM_LENGTH_MAX = 20;
+    // LineCountMax  Value 元素可以有多行
+    int ITEM_LINE_COUNT_MAX = 1;
+
+
+    double ITEM_OFFSET_TOP_RADIO = 1.2;
+    double ITEM_OFFSET_BOTTOM_RADIO = 1.2;
+    double ITEM_OFFSET_LEFT_RADIO = 0;
+    double ITEM_OFFSET_RIGHT_RADIO = 5;
+
+    // 解析表格 定位 cell元素， 上下设置一个误差范围
+    int PARSE_CELL_ERROR_RANGE_TOP      = 20;
+    int PARSE_CELL_ERROR_RANGE_BOTTOM   = 20;
+    int PARSE_CELL_ERROR_RANGE_MIN      = 10;
+
+    // 表格解析的最大的行数
+    int TABLE_MAX_ROW_COUNT = 10;
+    // 表格用来迭代查找行的比率   nextItem.top <=  item.bottom +  ratio * item.height
+    double TABLE_MAX_ROW_HEIGHT_RATIO = 2.0;
+
+
+    String PARSE_KEY_TYPE_SINGLE = "single" ;
+    // 比较极端的情况  例如 【名    称】 两个字符离的比较远， 识别成了两个元素， 用'名' 和'称' 两个字同时去匹配。
+    String PARSE_KEY_TYPE_MULTIPLE = "multiple" ;
 }

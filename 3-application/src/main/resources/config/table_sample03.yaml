@@ -1,9 +1,11 @@
 TemplateName: 'table-ocr-template'
 
 Targets:
+  - Name: "供应商"
+  - Name: "供应商名称"
   - Name: "结算费用单明细"
     RecognitionType: "table"
-    MainColumnIndex: 5
+    MainColumnIndex: 7
     MaxRowHeightRatio: 5.0
     Columns:
 
@@ -39,6 +41,20 @@ Targets:
         MoveRightRatio: 0.5
 
 
+      - ColumnName: "方式"
+        MarginLeftType: 2
+        MoveLeftRatio: -0.5
+        MarginRightType: 2
+        MoveRightRatio: 0.5
+
+
+      - ColumnName: "征收日期"
+        MarginLeftType: 2
+        MoveLeftRatio: -0.5
+        MarginRightType: 2
+        MoveRightRatio: 0.5
+
+
       - ColumnName: "应收金额"
         IndexType: "begin"
         MarginLeftType: 1
@@ -54,7 +70,7 @@ Targets:
         MoveRightRatio: 0.5
 
       - ColumnName: "摘要"
-        MarginLeftType: 2
-        MoveLeftRatio: -0.5
+        MarginLeftType: 3
+        MoveLeftRatio: -0.1
         MarginRightType: 1
         MoveRightRatio: 0.5

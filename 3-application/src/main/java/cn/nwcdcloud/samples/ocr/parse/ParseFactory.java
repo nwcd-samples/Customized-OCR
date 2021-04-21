@@ -49,6 +49,9 @@ public class ParseFactory {
 				if(result != null){
 					tableArray.add(result);
 				}
+			}else {
+
+				throw  new IllegalArgumentException(" 没有  '"+recognitionType+"' 的识别类型， 请检查 RecognitionType 配置 ");
 			}
 		}
 
@@ -77,6 +80,18 @@ public class ParseFactory {
 			logger.error("读取配置文件出错:{}" + configPath, e);
 		}
 		return rootMap;
+	}
+
+	/**
+	 * Cell类 封装页面使用
+	 */
+	public static class Cell{
+		public Cell() {
+			text = "";
+			confidence = 1.0f;
+		}
+		public String text;
+		public float confidence;
 	}
 
 }

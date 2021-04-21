@@ -3,7 +3,6 @@ TemplateName: 'packing-list-ocr-template'
 Targets:
 
   - Name: "境内收货人"
-    RecognitionType: "horizontal"
     KeyWordList: ["境内收货人"]
     LengthMin: 20
     LengthMax: 30

@@ -2,19 +2,16 @@ TemplateName: 'table-ocr-template'
 
 Targets:
   - Name: "公司名称"
-    RecognitionType: "horizontal"
     KeyWordList: ["公司名称"]
     TargetValueType: "char"
     LengthMax: 30
 
   - Name: "纳税人识别号"
-    RecognitionType: "horizontal"
     KeyWordList: ["纳税人识别号"]
     TargetValueType: "char"
     LengthMax: 30
 
   - Name: "打印人"
-    RecognitionType: "horizontal"
     KeyWordList: ["打印人", "打印人：", "打印人:"]
     LengthMin: 2
     LengthMax: 30
@@ -26,31 +23,26 @@ Targets:
     YRangeMax: 0.50
 
   - Name: "分店"
-    RecognitionType: "horizontal"
     KeyWordList: ["分店"]
     TargetValueType: "char"
     LengthMax: 30
 
   - Name: "打印时间"
-    RecognitionType: "horizontal"
     KeyWordList: ["打印时间"]
     TargetValueType: "char"
     LengthMax: 20
 
   - Name: "结算单号"
-    RecognitionType: "horizontal"
     KeyWordList: ["结算单号"]
     TargetValueType: "char"
     LengthMax: 20
 
   - Name: "结算年月"
-    RecognitionType: "horizontal"
     KeyWordList: ["结算年月"]
     TargetValueType: "char"
     LengthMax: 20
 
   - Name: "供应商名称"
-    RecognitionType: "horizontal"
     KeyWordList: ["供应商名称"]
     TargetValueType: "char"
     LengthMax: 40

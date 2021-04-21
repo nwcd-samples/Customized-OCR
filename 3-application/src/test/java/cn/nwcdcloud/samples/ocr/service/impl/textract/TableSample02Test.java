@@ -71,6 +71,24 @@ public class TableSample02Test {
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
+        assert  tableArray.size() == 1;
+
+        JSONObject table = tableArray.getJSONObject(0);
+        assert table != null;
+
+        assert table.getInteger("rowCount") == 8;
+        assert table.getInteger("columnCount") == 10;
+
+        JSONArray rowList = table.getJSONArray("rowList");
+
+        assert rowList.size() == 8;
+
+        logger.info(rowList.get(3).toString());
+        JSONArray row3 = rowList.getJSONArray(3);
+
+        assert row3.size() == 10;
+        JSONObject item3_4 = row3.getJSONObject(4);
+        assert "银联手续费".equals(item3_4.getString("text"));
 
     }
 

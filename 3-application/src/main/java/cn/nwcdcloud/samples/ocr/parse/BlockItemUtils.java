@@ -20,7 +20,7 @@ public class BlockItemUtils {
 //        logger.info(jsonObject.toJSONString());
 //        logger.info(jsonObject.getJSONObject("DocumentMetadata").toJSONString());
         Integer pageCount = jsonObject.getJSONObject("DocumentMetadata").getInteger("Pages");
-        logger.info("页数： {} ",  pageCount);
+//        logger.debug("页数： {} ",  pageCount);
 
         if(pageCount<=0){
             logger.warn("该文档 没有内容");
@@ -40,7 +40,7 @@ public class BlockItemUtils {
      */
     private static List<JSONObject> parseDataByPageCount(int pageCount, JSONArray jsonArray,  int pageWidth, int pageHeight){
         List<JSONObject> blockList = new ArrayList<JSONObject>();
-        logger.info(" 共有Blocks {} 个元素 ", jsonArray.size());
+        logger.debug(" 共有Blocks {} 个元素 ", jsonArray.size());
 
         for(int i=0; i<jsonArray.size(); i++){
             JSONObject blockItem = jsonArray.getJSONObject(i);
@@ -95,7 +95,7 @@ public class BlockItemUtils {
      */
     private static List<Double> computeDegree(JSONObject blockItem){
 
-        logger.info(blockItem.getJSONObject("Geometry").getJSONArray("Polygon").toJSONString());
+        logger.debug(blockItem.getJSONObject("Geometry").getJSONArray("Polygon").toJSONString());
 
         JSONArray pointArray = blockItem.getJSONObject("Geometry").getJSONArray("Polygon");
 
@@ -105,7 +105,7 @@ public class BlockItemUtils {
         double tan = (pointB.getDouble("Y")  - pointA.getDouble("Y") )/
                 (pointB.getDouble("X")  - pointA.getDouble("X"));
 
-        logger.info("倾斜角度 {} ", tan);
+        logger.debug("倾斜角度 {} ", tan);
         double theta = Math.atan(tan);
         List<Double> matrix =new ArrayList<Double>();
         matrix.add(Math.cos(theta));
@@ -219,7 +219,7 @@ public class BlockItemUtils {
         pageMargin.put("height_rate", 1.0/(pageBottom - pageTop));
         pageMargin.put("width_rate", 1.0/(pageRight - pageLeft));
 
-        logger.info("page margin    {} ", pageMargin.toJSONString());
+        logger.debug("page margin    {} ", pageMargin.toJSONString());
         return pageMargin;
 
     }
