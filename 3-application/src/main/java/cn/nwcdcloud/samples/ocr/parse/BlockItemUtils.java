@@ -353,5 +353,36 @@ public class BlockItemUtils {
         return true;
     }
 
+    public static boolean checkKeyValueMap(JSONArray array, String name, String value){
+        for(int i=0; i< array.size(); i++){
+            String tempValue = array.getJSONObject(i).getString("value");
+            String tempName = array.getJSONObject(i).getString("name");
+            if(value.equals(tempValue)  &&  name.equals(tempName)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public static String generateBlockItemString(JSONObject blockItem){
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(blockItem == null){
+            return "Block Item is null. ";
+        }
+
+        stringBuilder.append("top="+ blockItem.getString("top") +", ");
+        stringBuilder.append("bottom="+ blockItem.getString("bottom") +", ");
+        stringBuilder.append("left="+ blockItem.getString("left") +", ");
+        stringBuilder.append("right="+ blockItem.getString("right") +", ");
+        stringBuilder.append("【"+ blockItem.getString("text") +"】");
+
+
+        return stringBuilder.toString();
+
+    }
+
 
 }

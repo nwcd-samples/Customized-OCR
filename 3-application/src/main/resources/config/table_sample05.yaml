@@ -1,0 +1,42 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "收货单位"
+  - Name: "装车单号"
+  - Name: "提货单号"
+  - Name: "运输方式"
+  - Name: "车牌号"
+  - Name: "交货地点"
+  - Name: "结算单费用明细"
+    RecognitionType: "table"
+    Columns:
+      - ColumnName: "序号"
+        Location: true
+        MarginRightType: "far"
+      - ColumnName: "合同号"
+        MarginLeftType: "far"
+        MoveLeftRatio: -0.3
+        MarginRightType: "far"
+      - ColumnName: "产品名称"
+        MarginLeftType: "far"
+        MarginRightType: "far"
+      - ColumnName: "技术标准"
+        MarginLeftType: "near"
+        MarginRightType: "far"
+      - ColumnName: "规格"
+        MarginLeftType: "far"
+        MarginRightType: "far"
+      - ColumnName: "牌号"
+        MarginLeftType: "near"
+        MarginRightType: "far"
+      - ColumnName: "材料号"
+        MarginLeftType: "far"
+        MarginRightType: "far"
+      - ColumnName: "卷数"
+        MarginLeftType: "near"
+        MarginRightType: "near"
+      - ColumnName: "重量"
+        MainColumn: true
+        Location: true
+        MarginLeftType: "near"
+        MoveRightRatio: 1

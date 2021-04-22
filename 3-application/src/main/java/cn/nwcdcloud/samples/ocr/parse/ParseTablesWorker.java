@@ -286,6 +286,23 @@ public class ParseTablesWorker {
         }
     }
 
+    /**
+     * 根据设置的属性  near、middle、 far 三个属性， 进行列的划分。
+     *
+     * MarginLeftType 说明:
+     *  near:  以Column 左边作为列的划分                范围最近
+     *  middle:  以Column 到下一个Column 中点          中间范围
+     *  far:  以Column 左边Column元素的右边作为分界点    范围最远
+     *
+     * MarginRightType 说明
+     *   near:  以Column 右边作为列的划分               范围最近
+     *   middle:  以Column 到下一个Column 中点         中间范围
+     *   far:  以Column 右边Column元素的左边作为分界点    范围最远
+     *
+     * @param leftColumnRight  左边元素的右边界
+     * @param rightColumnLeft  右边元素的左边界
+     * @param currentItem      当前元素
+     */
     private void adjustSingleItem(int leftColumnRight, int rightColumnLeft, JSONObject currentItem){
         HashMap infoMap = (HashMap) currentItem.get("config");
 
@@ -294,11 +311,6 @@ public class ParseTablesWorker {
 
         float moveLeftRatio = Float.parseFloat(infoMap.getOrDefault("MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
         float moveRightRatio = Float.parseFloat(infoMap.getOrDefault("MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
-
-//        # MarginLeftType 说明
-//        # near:  以Column 左边作为列的划分                 范围最近
-//        # middle:  以Column 到下一个Column 中点             中间范围
-//        # far:  以Column 左边Column元素的右边作为分界点    范围最远
 
         int leftBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
@@ -314,10 +326,7 @@ public class ParseTablesWorker {
 
         leftBorder += currentItem.getInteger("width") * moveLeftRatio;
 
-//        # MarginRightType 说明
-//        # near:  以Column 右边作为列的划分                 范围最近
-//        # middle:  以Column 到下一个Column 中点             中间范围
-//        # far:  以Column 右边Column元素的左边作为分界点    范围最远
+
 
         int rightBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginRightType)){
@@ -380,14 +389,11 @@ public class ParseTablesWorker {
                 return jsonObject.getInteger("top") - t1.getInteger("top");
             }
         });
-        // 排除掉Y值 增加过快的行。
         double maxRowHeightRatio = Double.valueOf(configMap.getOrDefault("MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO).toString());
         int maxRowCount = Integer.valueOf(configMap.getOrDefault("MaxRowCount",  ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
         int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
-        logger.debug("最高行高度  {}  找到行元素个数={} ", maxRowHeight, resList.size());
-
-
+        logger.debug("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
 
         List<JSONObject> newResList = new ArrayList<>();
         for(int i =0; i< resList.size() && i<maxRowCount; i++){
@@ -529,6 +535,12 @@ public class ParseTablesWorker {
 
     }
 
+    /**
+     * 寻找用来定位主列元素， 主列是用来进行行划分的， 可能会出现一个单元格里面有多行文字的情况。
+     * 主列一般都是不为空， 单行， 长度固定， 可以用来定义一行的元素。
+      * @param columnBlockItemList
+     * @return
+     */
     private int findMainColumnIndex( List<JSONObject>  columnBlockItemList){
 
         int mainColumnIndex = ConfigConstants.TABLE_MAIN_COLUMN_INDEX;

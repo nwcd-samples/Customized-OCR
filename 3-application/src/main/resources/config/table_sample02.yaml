@@ -7,7 +7,7 @@ Targets:
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
     MaxRowHeightRatio: 3.0
     # 最大行数
-    MaxRowCount: 5
+    MaxRowCount: 3
     Columns:
       # 表格的显示名称
       - ColumnName: "Invoice#"
@@ -21,11 +21,11 @@ Targets:
 
         MarginLeftType: "near"
         # 在MarginLeftType 基础上， 往左移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveLeftRatio: -0.2
+        MoveLeftRatio: -0.1
 
         MarginRightType: "near"
         # 在MarginRightType 基础上  往右移动的比率， 可以为负值。 比率需要乘以Column 的宽度
-        MoveRightRatio: 0.2
+        MoveRightRatio: 0.1
 
 
       - ColumnName: "Invoice Date"

@@ -31,9 +31,11 @@ public class ParseHorizontalWorker {
 		}
 		ParseItemResult parseItemResult = findKeyBlockItem(configMap, blockItemList);
 		if (parseItemResult.blockItem == null) {
-			logger.warn("doHorizontal   没有找到 : text {}  ", configMap.get("Name"));
+			logger.warn("Parse key-value   没有找到 : text {}  ", configMap.get("Name"));
 			return null;
 		}
+
+		logger.info("找到关键字  {} " ,  BlockItemUtils.generateBlockItemString(parseItemResult.blockItem));
 
 		int index = parseItemResult.index;
 		JSONObject blockItem = parseItemResult.blockItem;
@@ -44,7 +46,7 @@ public class ParseHorizontalWorker {
 		}
 
 		String keyWord = parseItemResult.keyWord;
-		logger.debug("index {}  text {} text length: {}   keyWord {} ", index, text, text.length(), keyWord);
+//		logger.debug("index {}  text {} text length: {}   keyWord {} ", index, text, text.length(), keyWord);
 
 		// case 1. 关键字和值 在一个单元格里面
 
@@ -56,13 +58,15 @@ public class ParseHorizontalWorker {
 
 		int maxLength = Integer.parseInt(configMap.getOrDefault("LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 		if(parseItemResult.subKeyWord != null ){
+//			logger.debug("----------- case  1.     key  value  分开");
 			// case  1:   'key1'   'key2value'  [姓        名：张三]    解决关键字分成两块的情况
-			logger.debug("'key1'   'key2value' 分类的情况   第二个key = {}    text: {} ", parseItemResult.subKeyWord , text);
+//			logger.debug("'key1'   'key2value' 分类的情况   第二个key = {}    text: {} ", parseItemResult.subKeyWord , text);
 			int lastIndex = text.length() > index  + maxLength
 					? index  + maxLength
 					: text.length();
 			resultItem.put("value", text.substring(index , lastIndex));
 		}else if (index + keyWord.length() < text.length()) {
+//			logger.debug("----------- case  2.     key：value 在一个单元格");
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
 			int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
@@ -71,7 +75,7 @@ public class ParseHorizontalWorker {
 				resultItem.put("value", cell.text.substring(keyWord.length()));
 				resultItem.put("confidence", cell.confidence);
 			} else {
-				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
+//				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + maxLength
 						? index + keyWord.length() + maxLength
 						: text.length();
@@ -80,9 +84,11 @@ public class ParseHorizontalWorker {
 		} else {
 			// value 单独在一个单元格里
 			// case  3:   'key'   'value'
+//			logger.debug("----------- case  3.     'key'   'value'  分开 ");
 			ParseFactory.Cell cell = findNextRightBlockItemValue(blockItemList,  configMap, blockItem);
 
 			if (cell == null || cell.text == null) {
+				logger.info("没有找到Value  {} " , BlockItemUtils.generateBlockItemString(blockItem));
 				return null;
 			}
 			resultItem.put("value", cell.text);
@@ -149,7 +155,8 @@ public class ParseHorizontalWorker {
 			}
 
 		}
-        logger.debug("关键字查找  findFlag:  {}   index: {}  keyType:   {} ", findFlag, targetIndex,  targetBlockItem);
+//        logger.debug("关键字查找【{}】 findFlag:  {}   index: {}  keyType:   {} ", targetBlockItem.getString("text"),
+//				findFlag, targetIndex,  targetBlockItem);
 
 		ParseItemResult parseItemResult = new ParseItemResult();
 		parseItemResult.index = targetIndex;
@@ -184,7 +191,7 @@ public class ParseHorizontalWorker {
 		JSONObject startBlockItem = null;
 
 
-		logger.debug("关键字=[{}] 被分成了两个， 一起进行查找，  firstKey=[{}] , endKey=[{}]", targetKeyWord , startKey, endKey);
+//		logger.debug("关键字=[{}] 被分成了两个， 一起进行查找，  firstKey=[{}] , endKey=[{}]", targetKeyWord , startKey, endKey);
 		// 找到开始的关键字
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject blockItem = blockItemList.get(i);
@@ -258,9 +265,10 @@ public class ParseHorizontalWorker {
 		}
 		int topBorder = blockItem.getInteger("top") - (int) (topOffsetRadio * blockItem.getInteger("height"));
 		int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
-		int leftBorder = blockItem.getInteger("right") - (int) (leftOffsetRadio * blockItem.getInteger("width"));
+		//ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
+		int leftBorder = blockItem.getInteger("x") - (int) (leftOffsetRadio * blockItem.getInteger("width") );
 		int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
-		logger.debug("{}  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
+		logger.debug("key-value 分离，关键字【{}】- value 的边界范围  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
 				blockItem.getString("text"), blockItem.getInteger("top"), blockItem.getInteger("bottom"),
 				blockItem.getInteger("left"), blockItem.getInteger("right"),
 				topBorder, bottomBorder, leftBorder, rightBorder);
@@ -270,8 +278,7 @@ public class ParseHorizontalWorker {
 			JSONObject tempBlockItem = blockItemList.get(i);
 
 //			int yAbs = Math.abs(tempBlockItem.getInteger("y") - blockItem.getInteger("y"));
-			if (tempBlockItem.getInteger("left") > blockItem.getInteger("x")
-					&&  tempBlockItem.getInteger("top") >= topBorder
+			if (    tempBlockItem.getInteger("top") >= topBorder
 			        &&  tempBlockItem.getInteger("bottom") <= bottomBorder
 					&&  tempBlockItem.getInteger("left") >= leftBorder
 					&&  tempBlockItem.getInteger("right") <= rightBorder

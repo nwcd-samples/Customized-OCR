@@ -20,9 +20,11 @@ public class TableSample02Test {
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/table_sample02.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/table_sample03.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/table_sample04.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/table_sample05.json";
     private static final String  CONFIG_FILE_PATH =  "table_sample02" ;
     private static final String  CONFIG_FILE_PATH_3 =  "table_sample03" ;
     private static final String  CONFIG_FILE_PATH_4 =  "table_sample04" ;
+    private static final String  CONFIG_FILE_PATH_5 =  "table_sample05" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
 
@@ -106,6 +108,44 @@ public class TableSample02Test {
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
+
+
+    }
+
+    @Test
+    public void parseId005() {
+
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_5).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_5);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+
+        assert  tableArray.size() == 1;
+
+        JSONObject table = tableArray.getJSONObject(0);
+        assert table != null;
+
+        logger.info(table.getInteger("rowCount").toString());
+        logger.info(table.getInteger("columnCount").toString());
+        assert table.getInteger("rowCount") == 8;
+        assert table.getInteger("columnCount") == 9;
+
+        JSONArray rowList = table.getJSONArray("rowList");
+
+        assert rowList.size() == 8;
+
+        logger.info(rowList.get(3).toString());
+        JSONArray row3 = rowList.getJSONArray(3);
+
+        assert row3.size() == 9;
+        JSONObject item3_4 = row3.getJSONObject(4);
+        logger.info(item3_4.getString("text"));
+        assert "2.000*1250.00".equals(item3_4.getString("text"));
 
 
     }
