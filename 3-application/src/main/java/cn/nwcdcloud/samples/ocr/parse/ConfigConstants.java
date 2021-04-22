@@ -12,10 +12,10 @@ public interface ConfigConstants {
     int ITEM_LINE_COUNT_MAX = 1;
 
 
-    double ITEM_OFFSET_TOP_RADIO = 1.2;
-    double ITEM_OFFSET_BOTTOM_RADIO = 1.2;
+    double ITEM_OFFSET_TOP_RADIO = 1.5;
+    double ITEM_OFFSET_BOTTOM_RADIO = 1.5;
     double ITEM_OFFSET_LEFT_RADIO = 0;
-    double ITEM_OFFSET_RIGHT_RADIO = 5;
+    double ITEM_OFFSET_RIGHT_RADIO = 10;
 
     // 解析表格 定位 cell元素， 上下设置一个误差范围
     int PARSE_CELL_ERROR_RANGE_TOP      = 20;
@@ -25,7 +25,7 @@ public interface ConfigConstants {
     int PARSE_CELL_ERROR_RANGE_MAX      = 30;
 
     // 表格解析的最大的行数
-    int TABLE_MAX_ROW_COUNT = 10;
+    int TABLE_MAX_ROW_COUNT = 20;
     // 表格用来迭代查找行的比率   nextItem.top <=  item.bottom +  ratio * item.height
     double TABLE_MAX_ROW_HEIGHT_RATIO = 2.0;
 
