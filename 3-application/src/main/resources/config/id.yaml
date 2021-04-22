@@ -8,4 +8,4 @@ Targets:
     KeyWordList: ["出生"]
   - Name: "住址"
     LineCountMax: 2
-  - Name: "公民身份证号码"
+  - Name: "公民身份号码"

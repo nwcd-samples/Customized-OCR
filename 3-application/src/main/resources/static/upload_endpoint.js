@@ -3,14 +3,13 @@ function showImg(){
 }
 
 function inference(type,showJson){
-	predict(type,showJson);
+	var file = document.getElementById('upload').files[0];
+	predict(type,showJson,file);
 }
 
 var globalData;
-function predict(type,showJson){
+function predict(type,showJson,file){
     $("#loading-icon").show();
-	var upload = document.getElementById('upload');
-	var file = upload.files[0];
 	if(!file){
 	    $("#loading-icon").hide();
 		alert("请先选择需要识别的图片");

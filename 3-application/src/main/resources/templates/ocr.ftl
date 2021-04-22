@@ -153,6 +153,23 @@
 <script src="/static/id/ui.js"></script>
 <script src="/static/id/index.js"></script>
 <script src="/static/id/utils.js"></script>
-
+<script type="text/javascript">
+$("body").on('paste', function (event) {
+    //详细可查看clipboardData属性的使用方式
+    var data = (event.clipboardData || event.originalEvent.clipboardData);
+    var items = data.items;
+    for(var index in items){
+        var item = items[index];
+        //该功能仅在endpoint方式下使用
+        if (item.kind == 'file' && "${uploadType}" == "endpoint") {
+        	imageFile = item.getAsFile();
+        	console.log(imageFile);
+        	$("#showImg").attr("src",window.URL.createObjectURL(imageFile));
+        	predict("${type}",false,imageFile)
+            break;
+        }
+    }
+});
+</script>
 
 </html>

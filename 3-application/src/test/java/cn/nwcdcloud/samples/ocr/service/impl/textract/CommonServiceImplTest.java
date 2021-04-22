@@ -2,9 +2,6 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +11,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.parse.FileUtils;
+import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 
 public class CommonServiceImplTest {
 	private static final Logger logger = LoggerFactory.getLogger(CommonServiceImplTest.class);
-
-	@Resource
-	CommonServiceImpl commonServiceImpl;
-
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_1 = "/sample/id001.json";
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_2 = "/sample/id002.json";
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_3 = "/sample/id003.json";

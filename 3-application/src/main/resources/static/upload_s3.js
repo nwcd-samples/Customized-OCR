@@ -23,8 +23,7 @@ function generatePresignedUrl(type,showJson){
 }
 
 function upload(type,data,showJson){
-	var upload = document.getElementById('upload');
-	var file = upload.files[0];
+	var file = document.getElementById('upload').files[0];
 	if(!file){
 	    $("#loading-icon").hide();
 		alert("请先选择需要识别的图片");

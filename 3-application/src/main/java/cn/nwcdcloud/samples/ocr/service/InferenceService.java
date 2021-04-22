@@ -10,6 +10,4 @@ public interface InferenceService {
 	Result predict(String type, String endpointName, String body);
 
 	Result predict(String type, String endpointName, String contentType, InputStream inputStream);
-
-	void addTextractService(String key, TextractService textractService);
 }
