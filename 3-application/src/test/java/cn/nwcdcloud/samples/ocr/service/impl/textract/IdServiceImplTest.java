@@ -45,7 +45,7 @@ public class IdServiceImplTest {
 //
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
+        BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
     }
 
     @Test

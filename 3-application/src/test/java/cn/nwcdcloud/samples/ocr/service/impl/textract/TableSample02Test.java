@@ -19,8 +19,8 @@ public class TableSample02Test {
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/table_sample02.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/table_sample03.json";
-    private static final String  CONFIG_FILE_PATH =  "config/table_sample02.yaml" ;
-    private static final String  CONFIG_FILE_PATH_3 =  "config/table_sample03.yaml" ;
+    private static final String  CONFIG_FILE_PATH =  "table_sample02" ;
+    private static final String  CONFIG_FILE_PATH_3 =  "table_sample03" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
 

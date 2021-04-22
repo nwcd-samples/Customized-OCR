@@ -537,15 +537,15 @@ public class ParseTablesWorker {
         for(int i=0; i< columnBlockItemList.size(); i++){
             JSONObject item = columnBlockItemList.get(i);
             HashMap config = (HashMap) item.get("config");
-            if((boolean)config.getOrDefault("IsMainColumn", false)){
+            if((boolean)config.getOrDefault("MainColumn", false)){
                 count ++;
                 mainColumnIndex = i;
             }
-//            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("IsMainColumn", false));
+//            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("MainColumn", false));
         }
 
         if (count > 1){
-            throw new IllegalArgumentException(" 'IsMainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
+            throw new IllegalArgumentException(" 'MainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
         }
         return mainColumnIndex;
     }

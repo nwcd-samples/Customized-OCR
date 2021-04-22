@@ -18,8 +18,8 @@ public class IDSampleTest {
     private static final Logger logger = LoggerFactory.getLogger(IDSampleTest.class);
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/id001.json";
-    private static final String  CONFIG_FILE_PATH_1 =  "config/id.yaml" ;
-    private static final String  CONFIG_FILE_PATH_2 =  "config/id02.yaml" ;
+    private static final String  CONFIG_FILE_PATH_1 =  "id" ;
+    private static final String  CONFIG_FILE_PATH_2 =  "id02" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
     @Test

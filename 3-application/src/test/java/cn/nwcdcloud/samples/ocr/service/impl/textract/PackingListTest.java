@@ -29,7 +29,7 @@ public class PackingListTest {
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "config/packing_list.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "packing_list");
         JSONObject  resultArray =  parseJsonUtil.extractValue(blockItemList);
 
 

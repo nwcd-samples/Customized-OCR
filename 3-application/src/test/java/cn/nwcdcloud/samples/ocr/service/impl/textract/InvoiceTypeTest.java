@@ -28,7 +28,7 @@ public class InvoiceTypeTest {
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "config/invoice.yaml");
+        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "invoice");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
