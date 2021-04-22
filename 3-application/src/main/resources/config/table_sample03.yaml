@@ -55,7 +55,7 @@ Targets:
 
 
       - ColumnName: "应收金额"
-        IndexType: "begin"
+        Location: true
         MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
@@ -63,7 +63,7 @@ Targets:
         MoveRightRatio: 0.5
 
       - ColumnName: "应缴金额"
-        IndexType: "end"
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"

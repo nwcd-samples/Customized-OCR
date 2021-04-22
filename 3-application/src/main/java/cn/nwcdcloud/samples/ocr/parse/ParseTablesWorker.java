@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
 import java.util.*;
@@ -26,27 +25,18 @@ public class ParseTablesWorker {
     public JSONObject parse(HashMap rootMap, List<JSONObject> blockItemList) {
 
         //step 0. 找到用来定位的两个列元素  Start  End
-        List<JSONObject> res = findTableHeadColumns(rootMap, blockItemList);
-        if (res == null || res.size() != 2) {
+        List<JSONObject> locationColumnList = findTableHeadColumns(rootMap, blockItemList);
+        if (locationColumnList == null || locationColumnList.size() == 0) {
             logger.warn(" 没有找到表头定位的元素   ");
-            if(res!=null ){
-                logger.warn("  表头定位元素 元素个数 ： {} ", res.size());
+            if(locationColumnList != null ){
+                logger.warn("  表头定位元素 元素个数 ： {} ", locationColumnList.size());
             }
             return null;
         }
-        JSONObject columnStartBlockItem = res.get(0);
-        JSONObject columnEndBlockItem = res.get(1);
-
-
-        // 找出定位元素的上下界， 用来寻找表头元素列表。
-        int top = (columnStartBlockItem.getInteger("top") < columnEndBlockItem.getInteger("top") ?
-                columnStartBlockItem.getInteger("top"): columnEndBlockItem.getInteger("top") );
-        int bottom = (columnStartBlockItem.getInteger("bottom") > columnEndBlockItem.getInteger("bottom") ?
-                columnStartBlockItem.getInteger("bottom"):columnEndBlockItem.getInteger("bottom"));
 
         //FIXME:  还需要考虑一个页面里面有多个相同表格的情况
         //step 1. 查找表头元素
-        List<JSONObject> columnBlockItemList = findColumnBlockItem(rootMap, blockItemList, columnStartBlockItem, columnEndBlockItem, top, bottom);
+        List<JSONObject> columnBlockItemList = findColumnBlockItem(rootMap, blockItemList, locationColumnList);
 
         //step 2. 调整列元素的左右分割区间
         adjustColumnBlockItemMargin(columnBlockItemList, blockItemList);
@@ -86,13 +76,25 @@ public class ParseTablesWorker {
      * 寻找表头元素
      * @param rootMap
      * @param blockItemList
-     * @param columnStartBlockItem     Start  定位元素
-     * @param columnEndBlockItem       End    定位元素
-     * @param top   上界坐标值
-     * @param bottom  下界坐标值
      * @return
      */
-    private List<JSONObject> findColumnBlockItem(HashMap rootMap, List<JSONObject> blockItemList, JSONObject columnStartBlockItem, JSONObject columnEndBlockItem, int top, int bottom) {
+    private List<JSONObject> findColumnBlockItem(HashMap rootMap, List<JSONObject> blockItemList, List<JSONObject> locationColumnList) {
+
+        int topBorder = this.pageHeight;
+        int bottomBorder = 0;
+
+        for(int i=0; i< locationColumnList.size(); i++){
+            JSONObject item = locationColumnList.get(i);
+            int top = item.getInteger("top");
+            int bottom = item.getInteger("bottom");
+            if(top < topBorder){
+                topBorder = top;
+            }
+            if(bottom > bottomBorder){
+                bottomBorder = bottom;
+            }
+        }
+
         List<JSONObject> columnBlockItemList = new ArrayList<>();
         if(!rootMap.containsKey("Columns")){
             throw new IllegalArgumentException(" Table 类型， 需要配置  'Columns' 元素");
@@ -107,30 +109,22 @@ public class ParseTablesWorker {
             if(!configMap.containsKey("ColumnName")){
                 throw new IllegalArgumentException("需要设置 ColumnsName ");
             }
-            // begin 和 end 元素， 已经找到
-            if ("begin".equals(configMap.get("IndexType"))) {
-                columnStartBlockItem.put("config", configMap);
-                columnBlockItemList.add(columnStartBlockItem);
-            } else if ("end".equals(configMap.get("IndexType"))) {
-                columnEndBlockItem.put("config", configMap);
-                columnBlockItemList.add(columnEndBlockItem);
-            }else{
-                List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
-                keyList.add(configMap.get("ColumnName").toString());
-                JSONObject blockItem = findColumnByKeyList(blockItemList, keyList, top, bottom);
-                if(blockItem != null){
+
+            List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
+            keyList.add(configMap.get("ColumnName").toString());
+            JSONObject blockItem = findColumnByKeyList(blockItemList, keyList, topBorder, bottomBorder);
+            if(blockItem != null){
 //                    BlockItemUtils.isValidRange
-                    if(!BlockItemUtils.isValidRange(configMap, blockItem, this.pageWidth, this.pageWidth)){
-                        logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", blockItem.getString("text"), configMap );
-                        continue;
-                    }
-                    blockItem.put("config", configMap);
-                    columnBlockItemList.add(blockItem);
-                }else{
-                    logger.warn("没有找到表头元素  : "+ configMap );
-                    for(String  key: keyList){
-                        logger.warn("\t 未找到 【{}】 ",  key  );
-                    }
+                if(!BlockItemUtils.isValidRange(configMap, blockItem, this.pageWidth, this.pageWidth)){
+                    logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", blockItem.getString("text"), configMap );
+                    continue;
+                }
+                blockItem.put("config", configMap);
+                columnBlockItemList.add(blockItem);
+            }else{
+                logger.warn("没有找到表头元素  : "+ configMap );
+                for(String  key: keyList){
+                    logger.warn("\t 未找到 【{}】 ",  key  );
                 }
             }
         }
@@ -146,46 +140,42 @@ public class ParseTablesWorker {
      */
     private List<JSONObject> findTableHeadColumns(HashMap rootMap, List<JSONObject> blockItemList) {
 
-        List keyWordStartList = null;
-        List keyWordEndList =null;
 
-        HashMap startConfig = null;
-        HashMap endConfig = null;
         List columnList = (ArrayList) rootMap.get("Columns");
+        List<JSONObject> locationColumnList = new ArrayList();
         for (Object item : columnList) {
-            HashMap newItem = (HashMap) item;
+            HashMap configMap = (HashMap) item;
 
-            if ("begin".equals(newItem.get("IndexType"))) {
-                keyWordStartList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
-                keyWordStartList.add(newItem.get("ColumnName"));
-                startConfig = newItem;
-            } else if ("end".equals(newItem.get("IndexType"))) {
-                keyWordEndList = (List) newItem.getOrDefault("KeyWordList", new ArrayList<>());
-                keyWordEndList.add(newItem.get("ColumnName"));
-                endConfig = newItem;
+            if((boolean)configMap.getOrDefault("Location", false) == true){
+
+               List<String> keyWordList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
+               keyWordList.add(configMap.get("ColumnName").toString());
+                //keyword 名称进行排重操作
+               Set<String> keySet = new HashSet<>(keyWordList);
+               keyWordList = new ArrayList<>(keySet);
+
+
+               JSONObject object = new JSONObject();
+               object.put("keyWordList", keyWordList);
+               object.put("config", configMap);
+               locationColumnList.add(object);
             }
-        }
-        if (startConfig == null ) {
-            throw new IllegalArgumentException("没有配置 IndexType: 'begin' 用来定位表头, 请检查配置文件 ");
+
         }
 
-        if (endConfig == null ) {
-            throw new IllegalArgumentException("没有配置 IndexType: 'end' 用来定位表头, 请检查配置文件 ");
+
+        if (locationColumnList == null  ) {
+            throw new IllegalArgumentException("没有配置  'Location ' 用来定位表头, 请检查配置文件 ");
         }
 
-        for (int i = 0; i < keyWordStartList.size(); i++) {
-            String startKey = keyWordStartList.get(i).toString();
-            for (int j = 0; j < keyWordEndList.size(); j++) {
-                String endKey = keyWordEndList.get(j).toString();
-                //查找开始和结束的表头定位元素
-                List<JSONObject> resList = findTableByKeys(blockItemList, startKey, endKey, startConfig, endConfig);
-                if (resList != null && resList.size() == 2) {
-                    return resList;
-                }
-            }
+        if (locationColumnList.size() < 1 ) {
+            throw new IllegalArgumentException("请检查 'Column '配置属性 'Location'个数， 至少为两个");
         }
 
-        return null;
+
+        //FIXME: 验证 高度有效性
+
+        return findTableByKeys(blockItemList, locationColumnList);
     }
 
 
@@ -193,44 +183,47 @@ public class ParseTablesWorker {
      * 通过两个关键字进行元素的查找。
      *
      * @param blockItemList
-     * @param startKey
-     * @param endKey
      * @return
      */
-    private List<JSONObject> findTableByKeys(List<JSONObject> blockItemList, String startKey, String endKey, HashMap startConfig, HashMap endConfig) {
+    private List<JSONObject> findTableByKeys(List<JSONObject> blockItemList, List<JSONObject> locationColumnList) {
 
-        JSONObject startBlockItem = null;
-        JSONObject endBlockItem = null;
-        startKey = startKey.replaceAll(" ", "");
-        endKey = endKey.replaceAll(" ", "");
 
-        for (int i = 0; i < blockItemList.size(); i++) {
-            JSONObject tempBlockItem = blockItemList.get(i);
-            String text = tempBlockItem.getString("text").trim();
+        List<JSONObject> resultItemList = new ArrayList<>();
+        for(JSONObject locationColumn : locationColumnList){
+            List<String> keyWords = (List<String>) locationColumn.get("keyWordList");
+            HashMap config = (HashMap) locationColumn.get("config");
+            boolean findFlag = false;
+            for(String keyWord: keyWords){
+                keyWord = keyWord.replaceAll(" ", "");
+                for (int i = 0; i < blockItemList.size(); i++) {
+                    JSONObject tempBlockItem = blockItemList.get(i);
+                    String text = tempBlockItem.getString("text").trim();
+                    if (keyWord.equals(text.replaceAll(" ", ""))) {
 
-            if (startKey.equals(text)) {
-                startBlockItem = tempBlockItem;
-            } else if (endKey.equals(text)) {
-                endBlockItem = tempBlockItem;
+                        //检查范围
+                        if(BlockItemUtils.isValidRange(config, tempBlockItem, this.pageWidth,  this.pageHeight)){
+                            resultItemList.add(tempBlockItem);
+                            findFlag = true;
+                        }else{
+                            logger.warn(" 位置检测 不正确 , 请检查配置  XRangeMin  YRangeMin...");
+                        }
+                    }
+                }
+                if(findFlag){
+                    continue;
+                }
             }
+            if(findFlag){
+                continue;
+            }
+        }
+        logger.debug(" 定位元素size = {} ", resultItemList.size());
+        for(JSONObject item : resultItemList){
+            logger.info("定位元素  {} ", item.toJSONString());
 
         }
-        if (startBlockItem == null || endBlockItem == null) {
-            logger.warn("【失败】没有找到匹配的关键字  start key [{}]   end key [{}]  ", startKey, endKey);
-            return null;
-        }
-        List<JSONObject> res = new ArrayList<>();
-        logger.info(" 找到匹配的定位关键字  start key [{}]   end key [{}]   ", startKey, endKey);
-        res.add(startBlockItem);
-        res.add(endBlockItem);
 
-        if (!BlockItemUtils.isValidRange(startConfig, startBlockItem, this.pageWidth,  this.pageHeight)
-                ||!BlockItemUtils.isValidRange(endConfig, endBlockItem, this.pageWidth,  this.pageHeight)) {
-            logger.warn(" 位置检测 不正确 , 请检查配置  XRangeMin  YRangeMin...");
-            return null;
-        }
-
-        return res;
+        return resultItemList;
     }
 
     /**
@@ -246,7 +239,8 @@ public class ParseTablesWorker {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
             for (String key: keyList){
-                if (key.equals(text) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
+                key = key.replaceAll(" ", "");
+                if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
                         && tempBlockItem.getInteger("bottom") < bottom + ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX) {
                     return tempBlockItem;
                 }
@@ -549,5 +543,6 @@ public class ParseTablesWorker {
         }
         return mainColumnIndex;
     }
+
 
 }

@@ -25,7 +25,7 @@ public class TableSample02Test {
     private final static int PAGE_HEIGHT = 2000;
 
     @Test
-    public void parseId001() {
+    public void parseId002() {
 
 
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();

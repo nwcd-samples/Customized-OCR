@@ -58,7 +58,7 @@ Targets:
       - ColumnName: "扣款代码"
 
         # 通过  begin end 两个列 对表格的表头进行定位
-        IndexType: "begin"
+        Location: true
 
         # 可能出现的关键字
         KeyWordList: ["扣代码","扣款代码"]
@@ -90,7 +90,6 @@ Targets:
         YRangeMax: 1.0
 
       - ColumnName: "费用项目"
-        IndexType: "default"
         KeyWordList: ["费用项目"]
         TargetValueType: "char"
         MarginLeftType: "middle"
@@ -99,7 +98,6 @@ Targets:
         MoveRightRatio: 0.3
 
       - ColumnName: "扣款项目名称"
-        IndexType: "default"
         KeyWordList: ["扣款项目名称"]
         TargetValueType: "char"
         XRangeMin: 0.2
@@ -108,7 +106,6 @@ Targets:
         YRangeMax: 0.8
 
       - ColumnName: "扣款金额"
-        IndexType: "end"
         KeyWordList: ["扣款额","扣款金额"]
         TargetValueType: "char"
         MarginLeftType: "middle"

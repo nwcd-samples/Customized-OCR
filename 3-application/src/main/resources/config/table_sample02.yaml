@@ -13,7 +13,7 @@ Targets:
       - ColumnName: "Invoice#"
         MainColumn: true
         # 通过  begin end 两个列 对表格的表头进行定位
-        IndexType: "begin"
+        Location: true
 
         # 可能出现的关键字
         #        KeyWordList: ["Invoice#"]
@@ -29,45 +29,44 @@ Targets:
 
 
       - ColumnName: "Invoice Date"
-        IndexType: "end"
-        MarginLeftType: "middle"
-        MoveLeftRatio: 0.1
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 0.1
+        MoveRightRatio: 0.5
 
 
   - Name: "Customer PO"
-      RecognitionType: "table"
-      MaxRowHeightRatio: 2.0
-      Columns:
-        - ColumnName: "CustomerPO"
-          IndexType: "begin"
-          KeyWordList: ["CustomerPO"]
-          MainColumn: true
-          MarginLeftType: "near"
-          MoveLeftRatio: -0.5
-          MarginRightType: "near"
-          MoveRightRatio: 0.5
+    RecognitionType: "table"
+    MaxRowHeightRatio: 2.0
+    Columns:
+      - ColumnName: "CustomerPO"
+        Location: true
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
 
-        - ColumnName: "SalesOrderNo."
-        - ColumnName: "ShipDate"
-        - ColumnName: "PaymentTerms"
-            MarginLeftType: "middle"
-            MoveLeftRatio: 0
-            MarginRightType: "middle"
-            MoveRightRatio: 0
-
-        - ColumnName: "VesseID"
-        - ColumnName: "IncoTerms"
-
-
-        - ColumnName: "BOLNumber"
-          IndexType: "end"
-          KeyWordList: ["BOLNumber"]
+      - ColumnName: "SalesOrderNo."
+      - ColumnName: "ShipDate"
+      - ColumnName: "PaymentTerms"
           MarginLeftType: "middle"
           MoveLeftRatio: 0
-          MarginRightType: "near"
-          MoveRightRatio: 0.5
+          MarginRightType: "middle"
+          MoveRightRatio: 0
+
+      - ColumnName: "VesseID"
+      - ColumnName: "IncoTerms"
+
+
+      - ColumnName: "BOLNumber"
+        Location: true
+        KeyWordList: ["BOLNumber"]
+        MarginLeftType: "middle"
+        MoveLeftRatio: 0
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
 
 
 
