@@ -303,6 +303,7 @@ public class ParseTablesWorker {
         int leftBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
             leftBorder = currentItem.getInteger("left");
+            leftBorder -= ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginLeftType)){
             leftBorder = (currentItem.getInteger("left") + leftColumnRight)/2 ;
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginLeftType)){
@@ -321,6 +322,7 @@ public class ParseTablesWorker {
         int rightBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginRightType)){
             rightBorder = currentItem.getInteger("right");
+            rightBorder += ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginRightType)){
             rightBorder = (currentItem.getInteger("right") + rightColumnLeft) /2;
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginRightType)){
