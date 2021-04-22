@@ -56,7 +56,7 @@ Targets:
 
       - ColumnName: "应收金额"
         IndexType: "begin"
-        IsMainColumn: true
+        MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"

@@ -11,7 +11,7 @@ Targets:
     Columns:
       # 表格的显示名称
       - ColumnName: "Invoice#"
-        IsMainColumn: true
+        MainColumn: true
         # 通过  begin end 两个列 对表格的表头进行定位
         IndexType: "begin"
 
@@ -43,7 +43,7 @@ Targets:
         - ColumnName: "CustomerPO"
           IndexType: "begin"
           KeyWordList: ["CustomerPO"]
-          IsMainColumn: true
+          MainColumn: true
           MarginLeftType: "near"
           MoveLeftRatio: -0.5
           MarginRightType: "near"
