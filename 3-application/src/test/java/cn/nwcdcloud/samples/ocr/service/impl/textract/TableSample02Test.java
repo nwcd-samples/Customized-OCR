@@ -19,8 +19,10 @@ public class TableSample02Test {
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/table_sample02.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/table_sample03.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/table_sample04.json";
     private static final String  CONFIG_FILE_PATH =  "table_sample02" ;
     private static final String  CONFIG_FILE_PATH_3 =  "table_sample03" ;
+    private static final String  CONFIG_FILE_PATH_4 =  "table_sample04" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
 
@@ -86,10 +88,26 @@ public class TableSample02Test {
 
         assert row3.size() == 10;
         JSONObject item3_4 = row3.getJSONObject(4);
+        logger.info(item3_4.getString("text"));
         assert "银联手续费".equals(item3_4.getString("text"));
 
     }
 
 
+    @Test
+    public void parseId004() {
+
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_4).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_4);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+
+
+    }
 
 }

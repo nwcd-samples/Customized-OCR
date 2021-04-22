@@ -37,7 +37,7 @@ Targets:
         MarginLeftType: "middle"
         MoveLeftRatio: -0.5
         MarginRightType: "middle"
-        MoveRightRatio: 0.5
+        MoveRightRatio: 0.2
 
 
       - ColumnName: "方式"

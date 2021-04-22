@@ -136,4 +136,3 @@ function show_message(message){
     $("#myModalContent").html(message)
     $('#myModal').modal('show')
 }
-

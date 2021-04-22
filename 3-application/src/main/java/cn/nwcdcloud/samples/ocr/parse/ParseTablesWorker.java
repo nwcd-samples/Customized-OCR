@@ -319,11 +319,11 @@ public class ParseTablesWorker {
 //        # far:  以Column 右边Column元素的左边作为分界点    范围最远
 
         int rightBorder = 0;
-        if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
+        if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginRightType)){
             rightBorder = currentItem.getInteger("right");
-        }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginLeftType)){
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginRightType)){
             rightBorder = (currentItem.getInteger("right") + rightColumnLeft) /2;
-        }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginLeftType)){
+        }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginRightType)){
             rightBorder = rightColumnLeft;
         }else {
             throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginRightType 类型配置不正确 只能为 near, middle, far 三种类型 ");
@@ -332,7 +332,8 @@ public class ParseTablesWorker {
 
         currentItem.put("leftBorder", leftBorder);
         currentItem.put("rightBorder",rightBorder);
-        logger.debug("{} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ", currentItem.getString("text"),
+        logger.debug("【DEBUG】列划分 {} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ",
+                currentItem.getString("text"),
                 currentItem.getInteger("width"),
                 currentItem.getInteger("left"),
                 currentItem.getInteger("right"),
@@ -416,9 +417,9 @@ public class ParseTablesWorker {
                 }
             }
 
-            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
-                    item.getInteger("bottom"),
-                    topBorder, bottomBorder);
+//            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
+//                    item.getInteger("bottom"),
+//                    topBorder, bottomBorder);
 
             item.put("topBorder", topBorder);
             item.put("bottomBorder", bottomBorder);
@@ -429,7 +430,7 @@ public class ParseTablesWorker {
         }
 
         for (JSONObject item: newResList){
-            logger.debug(" 行划分 {} Border [top={}, bottom={}]   self[top={}, bottom={}]  {} ",item.getString("text"),
+            logger.debug("【DEBUG】行划分 {} Border [top={}, bottom={}]   self[top={}, bottom={}]  {} ",item.getString("text"),
                     item.getInteger("topBorder"), item.getInteger("bottomBorder"),
                     item.getInteger("top"), item.getInteger("bottom"),
                     item.toJSONString());
@@ -456,7 +457,7 @@ public class ParseTablesWorker {
             JSONObject rowItem = rowList.get(i);
             int top = rowItem.getInteger("topBorder") - ConfigConstants.PARSE_CELL_ERROR_RANGE_TOP;
             int bottom = rowItem.getInteger("bottomBorder") + ConfigConstants.PARSE_CELL_ERROR_RANGE_BOTTOM;
-            logger.info("      ");
+//            logger.info("      row ");
             for (int j=0; j< columnList.size(); j ++ ){
 
                 Cell cell = tableArray[i][j];
@@ -468,15 +469,17 @@ public class ParseTablesWorker {
                 JSONObject columnItem = columnList.get(j);
                 int left = columnItem.getInteger("leftBorder");
                 int right = columnItem.getInteger("rightBorder");
-
+//                logger.info(" cell : [{}]     row[{}]   cell[{}]  [left={}, right={}] ", i, j, left , right);
                 for(JSONObject item: blockItemList){
 
 
                     if(item.getInteger("top")>= top &&
                        item.getInteger("bottom")<= bottom &&
                        item.getInteger("left")>= left &&
-                       item.getInteger("right") <= right){
-                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}] ",item.getString("text"), left , right, top, bottom );
+                       item.getInteger("right") <= right+10
+                    ){
+//                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}]   ",
+//                                item.getString("text"), left , right, top, bottom );
                         cell.text += (" " + item.getString("text"));
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");

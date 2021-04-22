@@ -1,0 +1,22 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "结算单号"
+  - Name: "结算年月"
+  - Name: "合同号"
+  - Name: "分店"
+  - Name: "纳税人识别号"
+  - Name: "结算单费用明细"
+    RecognitionType: "table"
+    Columns:
+      - ColumnName: "扣款代码"
+        Location: true
+
+      - ColumnName: "费用项目"
+        MarginRightType: "far"
+
+      - ColumnName: "扣款项目名称"
+        MarginRightType: "far"
+
+      - ColumnName: "扣款金额"
+        Location: true
