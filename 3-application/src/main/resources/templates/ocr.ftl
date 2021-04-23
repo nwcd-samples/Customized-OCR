@@ -48,6 +48,8 @@
 					<a type="button" value="" onclick="inference('${type}',true);"  class="btn btn-outline-success my-2 my-sm-0">仅显示JSON</a>
 					&nbsp;
 					<a type="button" value="" onclick="onlyAnalysis('${type}');"  class="btn btn-outline-success my-2 my-sm-0">仅解析</a>
+					&nbsp;
+					<a type="button" value="" onclick="loadLocalJson();"  class="btn btn-outline-success my-2 my-sm-0">载入本地JSON</a>
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
 					</div>
@@ -172,9 +174,22 @@ $("body").on('paste', function (event) {
 });
 
 function showImg(){
-	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
+	var file = document.getElementById('upload').files[0];
+	var extName = file.name.toLowerCase();
+	if(extName.endsWith(".png") || extName.endsWith(".jpg") || extName.endsWith(".jpeg") || extName.endsWith(".bmp")){
+		$("#showImg").attr("src",window.URL.createObjectURL(file));
+	}
 }
 
+function loadLocalJson(){
+	var reader = new FileReader();
+    reader.onload = function() 
+    {
+    	analysis("${type}",JSON.parse(this.result));
+    }
+    var f = document.getElementById("upload").files[0];
+    reader.readAsText(f);
+}
 </script>
 
 </html>
