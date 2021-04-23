@@ -170,6 +170,11 @@ $("body").on('paste', function (event) {
         }
     }
 });
+
+function showImg(){
+	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
+}
+
 </script>
 
 </html>

@@ -1,7 +1,3 @@
-function showImg(){
-	$("#showImg").attr("src",window.URL.createObjectURL(document.getElementById('upload').files[0]));
-}
-
 function inference(type,showJson){
 	var file = document.getElementById('upload').files[0];
 	predict(type,showJson,file);
