@@ -234,14 +234,13 @@ public class ParseTablesWorker {
                 if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
                         && tempBlockItem.getInteger("bottom") < bottom + ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX) {
 
-                    //FIXME: 检测元素范围
+                    //检测元素坐标范围 , 同一个关键字  可能出现在多个表格中。
                     if(BlockItemUtils.isValidRange(configMap, tempBlockItem, this.pageWidth,  this.pageHeight)){
                         return tempBlockItem;
                     }else {
-                        logger.debug("【DEBUG】 找到表头定位元素， 但是位置不匹配 {} ", BlockItemUtils.generateBlockItemString(tempBlockItem));
+                        logger.debug("【DEBUG】 找到表头定位元素【{}】， 但是位置不匹配 {} ",tempBlockItem.getString("text"),
+                                BlockItemUtils.generateBlockItemString(tempBlockItem));
                     }
-
-
                 }
             }
         }

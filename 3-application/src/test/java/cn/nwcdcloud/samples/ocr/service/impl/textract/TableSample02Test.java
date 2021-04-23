@@ -164,8 +164,75 @@ public class TableSample02Test {
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
 
+        logger.info(" {}  ", tableArray.size());
+        assert tableArray !=null;
+        assert tableArray.size() == 2;
+
+        JSONObject table1 = tableArray.getJSONObject(0);
+
+        logger.info(table1.toJSONString());
+        assert table1.getInteger("rowCount") == 4;
+        assert table1.getInteger("columnCount") == 3;
 
 
+        JSONArray rowList1 = table1.getJSONArray("rowList");
+
+        assert rowList1.size() == 4;
+
+        assert "西药费".equals(rowList1.getJSONArray(0).getJSONObject(0).getString("text"));
+        assert "752.56".equals(rowList1.getJSONArray(0).getJSONObject(1).getString("text"));
+        assert "752、55".equals(rowList1.getJSONArray(0).getJSONObject(2).getString("text"));
+
+
+
+        assert "化验费".equals(rowList1.getJSONArray(1).getJSONObject(0).getString("text"));
+        assert "1742.00".equals(rowList1.getJSONArray(1).getJSONObject(1).getString("text"));
+        assert "1742.00".equals(rowList1.getJSONArray(1).getJSONObject(2).getString("text"));
+//        assert rowList1.getJSONObject(0).getString("name").equals("西药费");
+
+        logger.info(" {} ", rowList1.getJSONArray(2));
+
+        assert "".equals(rowList1.getJSONArray(2).getJSONObject(0).getString("text"));
+        assert "500.00".equals(rowList1.getJSONArray(2).getJSONObject(1).getString("text"));
+        assert "500.00".equals(rowList1.getJSONArray(2).getJSONObject(2).getString("text"));
+
+
+
+        assert "床位费".equals(rowList1.getJSONArray(3).getJSONObject(0).getString("text"));
+        assert "350".equals(rowList1.getJSONArray(3).getJSONObject(1).getString("text"));
+        assert "".equals(rowList1.getJSONArray(3).getJSONObject(2).getString("text"));
+
+
+
+        JSONObject table2 = tableArray.getJSONObject(1);
+        logger.info(table2.toJSONString());
+        assert table2.getInteger("rowCount") == 4;
+        assert table2.getInteger("columnCount") == 3;
+
+
+        JSONArray rowList2 = table2.getJSONArray("rowList");
+        assert rowList2.size() == 4;
+
+        logger.info(" {} ", rowList2.getJSONArray(0));
+        logger.info(" {} ", rowList2.getJSONArray(1));
+        logger.info(" {} ", rowList2.getJSONArray(2));
+        logger.info(" {} ", rowList2.getJSONArray(3));
+
+        assert "检查费".equals(rowList2.getJSONArray(0).getJSONObject(0).getString("text"));
+        assert "471.00".equals(rowList2.getJSONArray(0).getJSONObject(1).getString("text"));
+        assert "471.00".equals(rowList2.getJSONArray(0).getJSONObject(2).getString("text"));
+
+        assert "护理费".equals(rowList2.getJSONArray(1).getJSONObject(0).getString("text"));
+        assert "12948".equals(rowList2.getJSONArray(1).getJSONObject(1).getString("text"));
+        assert "129.48".equals(rowList2.getJSONArray(1).getJSONObject(2).getString("text"));
+
+        assert "治疗费".equals(rowList2.getJSONArray(2).getJSONObject(0).getString("text"));
+        assert "198.05".equals(rowList2.getJSONArray(2).getJSONObject(1).getString("text"));
+        assert "".equals(rowList2.getJSONArray(2).getJSONObject(2).getString("text"));
+
+        assert "转他".equals(rowList2.getJSONArray(3).getJSONObject(0).getString("text"));
+        assert "45.00".equals(rowList2.getJSONArray(3).getJSONObject(1).getString("text"));
+        assert "".equals(rowList2.getJSONArray(3).getJSONObject(2).getString("text"));
     }
 
 }
