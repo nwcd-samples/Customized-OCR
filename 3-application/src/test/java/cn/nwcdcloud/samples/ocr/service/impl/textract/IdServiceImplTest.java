@@ -39,9 +39,4 @@ public class IdServiceImplTest {
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
     }
-
-    @Test
-    public void readConfig() throws FileNotFoundException {
-
-    }
 }

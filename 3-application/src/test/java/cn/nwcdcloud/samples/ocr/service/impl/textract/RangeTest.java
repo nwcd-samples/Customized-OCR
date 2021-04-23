@@ -1,7 +1,9 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
+import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,18 +20,15 @@ public class RangeTest {
     private static final Logger logger = LoggerFactory.getLogger(RangeTest.class);
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/range.json";
-//    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/cost_table002.json";
-
 
 
     @Test
     public void parseId001() {
 
-
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "range");
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "range");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");

@@ -2,6 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,8 @@ public class CommonServiceImplTest {
 
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, "id02");
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT,"id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 //		logger.info(resultArray.toJSONString());
@@ -46,8 +47,8 @@ public class CommonServiceImplTest {
 
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, "id02");
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 //		logger.info(resultArray.toJSONString());

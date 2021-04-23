@@ -24,17 +24,13 @@ public class ParseTablesWorker {
      */
     public JSONObject parse(HashMap rootMap, List<JSONObject> blockItemList) {
 
-        //step 0. 找到用来定位的两个列元素  Start  End
+        //step 0. 找到用来定位的列元素 最少有一个， 可以有多个， 不建议太多，太多以后， 出错的可能会比较大， 会有匹配不到的问题。
         List<JSONObject> locationColumnList = findTableHeadColumns(rootMap, blockItemList);
         if (locationColumnList == null || locationColumnList.size() == 0) {
-            logger.warn(" 没有找到表头定位的元素   ");
-            if(locationColumnList != null ){
-                logger.warn("  表头定位元素 元素个数 ： {} ", locationColumnList.size());
-            }
+            logger.warn(" 没有找到表头定位的元素   请检查配置文件， 或者关键字配置");
             return null;
         }
 
-        //FIXME:  还需要考虑一个页面里面有多个相同表格的情况
         //step 1. 查找表头元素
         List<JSONObject> columnBlockItemList = findColumnBlockItem(rootMap, blockItemList, locationColumnList);
 
@@ -51,7 +47,7 @@ public class ParseTablesWorker {
 
         List<JSONObject> rowList = findRowSplitByMainColumn( rootMap, blockItemList, columnBlockItemList.get(mainColumnIndex));
 
-        //step 3. 所有列通过行划分， 找到对应元素，
+        //step 4. 所有列通过行划分， 找到对应元素，
 
         int rowCount = rowList.size();
         int columnCount = columnBlockItemList.size();
@@ -61,7 +57,7 @@ public class ParseTablesWorker {
         for(JSONObject item : columnBlockItemList){
             headTitleArray.add(item.getString("text"));
         }
-        //step 4. FIXME: 判断行结尾的情况, 设置每个cell 是否能为空，然后同一行的Cell 一起进行判断， 符合标准的才算是一行。
+        //step 5. TODO: 判断行结尾的情况, 设置每个cell 是否能为空，然后同一行的Cell 一起进行判断， 符合标准的才算是一行。
 
         JSONObject resultObject = new JSONObject();
         resultObject.put("name", rootMap.get("Name").toString());
@@ -73,7 +69,7 @@ public class ParseTablesWorker {
     }
 
     /**
-     * 寻找表头元素
+     * 寻找表头元素, 会判断表头的坐标范围， 一个页面里面， 可能会有多个重复的表格出现。
      * @param rootMap
      * @param blockItemList
      * @return
@@ -170,10 +166,12 @@ public class ParseTablesWorker {
         return findTableByKeys(blockItemList, locationColumnList);
     }
 
+
     /**
      * 通过两个关键字进行元素的查找。
      *
      * @param blockItemList
+     * @param locationColumnList
      * @return
      */
     private List<JSONObject> findTableByKeys(List<JSONObject> blockItemList, List<JSONObject> locationColumnList) {
@@ -183,7 +181,7 @@ public class ParseTablesWorker {
         for(JSONObject locationColumn : locationColumnList){
             List<String> keyWords = (List<String>) locationColumn.get("keyWordList");
             HashMap config = (HashMap) locationColumn.get("config");
-            boolean findFlag = false;
+            boolean findFlag = false;  // 找到一个符合要求的元素 就退出循环， 关键字和位置都符合要求。
             for(String keyWord: keyWords){
                 keyWord = keyWord.replaceAll(" ", "");
                 for (int i = 0; i < blockItemList.size(); i++) {

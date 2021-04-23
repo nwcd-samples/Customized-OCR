@@ -2,6 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,27 +29,21 @@ public class PackingListTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "packing_list");
-        JSONObject  resultArray =  parseJsonUtil.extractValue(blockItemList);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "packing_list");
+        JSONObject  resultObject =  parseJsonUtil.extractValue(blockItemList);
+//        {"tableList":[],"keyValueList":[{"confidence":"0.9940133","name":"境内收货人","value":"（914401013210409001）"}]}
+        logger.info(resultObject.toJSONString());
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info(resultObject.toJSONString());
 
-
-    }
-
-
-    private boolean checkKeyValueMap(JSONArray array, String name, String value){
-        for(int i=0; i< array.size(); i++){
-            String tempValue = array.getJSONObject(i).getString("value");
-            String tempName = array.getJSONObject(i).getString("name");
-//            logger.info("{}        {}    {} ", key, value, tempValue);
-            if(value.equals(tempValue)  &&  name.equals(tempName)){
-                return true;
-            }
+        for(JSONObject item : resultArray.toJavaList(JSONObject.class)){
+            logger.info("{}   {} ", item.getString("name"), item.getString("value"));
         }
-        return false;
+
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "境内收货人", "（914401013210409001）");
 
     }
-
-
 
 }
