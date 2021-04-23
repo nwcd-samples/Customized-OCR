@@ -1,0 +1,69 @@
+TemplateName: 'identity-card-ocr-template'
+
+Targets:
+  - Name: "收费项目一"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 2.0
+    Columns:
+      - ColumnName: "收费项目"
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
+        XRangeMin: 0.0
+        XRangeMax: 0.3
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.1
+        XRangeMax: 0.5
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "个人支付金额"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 0.2
+        Location: true
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+        YRangeMin: 0.1
+        YRangeMax: 0.9
+
+
+  - Name: "收费项目二"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 2.0
+    Columns:
+      - ColumnName: "收费项目"
+        Location: true
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
+        XRangeMin: 0.5
+        XRangeMax: 0.8
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        XRangeMin: 0.6
+        XRangeMax: 0.9
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "个人支付金额"
+        Location: true
+        XRangeMin: 0.6
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.8

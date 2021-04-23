@@ -2,6 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +21,13 @@ public class InvoiceTypeTest {
     private static final String  ID_SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/invoice01.json";
     private static final String  ID_SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/invoice02.json";
 
-
-
     @Test
     public void parse001() {
 
         String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1200, 2000);
-        ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "invoice");
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "invoice");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 //        logger.info(resultArray.toJSONString());

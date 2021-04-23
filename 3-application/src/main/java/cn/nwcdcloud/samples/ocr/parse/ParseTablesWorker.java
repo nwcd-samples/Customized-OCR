@@ -112,13 +112,8 @@ public class ParseTablesWorker {
 
             List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
             keyList.add(configMap.get("ColumnName").toString());
-            JSONObject blockItem = findColumnByKeyList(blockItemList, keyList, topBorder, bottomBorder);
+            JSONObject blockItem = findColumnByKeyList(configMap, blockItemList, keyList, topBorder, bottomBorder);
             if(blockItem != null){
-//                    BlockItemUtils.isValidRange
-                if(!BlockItemUtils.isValidRange(configMap, blockItem, this.pageWidth, this.pageWidth)){
-                    logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", blockItem.getString("text"), configMap );
-                    continue;
-                }
                 blockItem.put("config", configMap);
                 columnBlockItemList.add(blockItem);
             }else{
@@ -128,6 +123,11 @@ public class ParseTablesWorker {
                 }
             }
         }
+        logger.debug(" 定位元素size = {} ", columnBlockItemList.size());
+        for(JSONObject item : columnBlockItemList){
+            logger.info("【DEBUG】找到表头元素  {} ", BlockItemUtils.generateBlockItemString(item) );
+        }
+
         return columnBlockItemList;
     }
 
@@ -191,12 +191,13 @@ public class ParseTablesWorker {
                     String text = tempBlockItem.getString("text").trim();
                     if (keyWord.equals(text.replaceAll(" ", ""))) {
 
-                        //检查范围
+                        //Column 列头元素范围检测
                         if(BlockItemUtils.isValidRange(config, tempBlockItem, this.pageWidth,  this.pageHeight)){
                             resultItemList.add(tempBlockItem);
                             findFlag = true;
+//                            logger.warn("找到列头定位元素 【{}】   {} ", tempBlockItem.getString("text"), BlockItemUtils.generateBlockItemString(tempBlockItem) );
                         }else{
-                            logger.warn(" 位置检测 不正确 , 请检查配置  XRangeMin  YRangeMin...");
+                            logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", tempBlockItem.getString("text"), config );
                         }
                     }
                 }
@@ -210,8 +211,7 @@ public class ParseTablesWorker {
         }
         logger.debug(" 定位元素size = {} ", resultItemList.size());
         for(JSONObject item : resultItemList){
-            logger.info("定位元素  {} ", item.toJSONString());
-
+            logger.info("【DEBUG】找到表头定位元素  {} ", BlockItemUtils.generateBlockItemString(item) );
         }
 
         return resultItemList;
@@ -225,7 +225,7 @@ public class ParseTablesWorker {
      * @param bottom
      * @return
      */
-    private JSONObject findColumnByKeyList(List<JSONObject> blockItemList, List<String> keyList, int top, int bottom) {
+    private JSONObject findColumnByKeyList(HashMap configMap, List<JSONObject> blockItemList, List<String> keyList, int top, int bottom) {
         for (int i = 0; i < blockItemList.size(); i++) {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
@@ -233,7 +233,15 @@ public class ParseTablesWorker {
                 key = key.replaceAll(" ", "");
                 if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
                         && tempBlockItem.getInteger("bottom") < bottom + ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX) {
-                    return tempBlockItem;
+
+                    //FIXME: 检测元素范围
+                    if(BlockItemUtils.isValidRange(configMap, tempBlockItem, this.pageWidth,  this.pageHeight)){
+                        return tempBlockItem;
+                    }else {
+                        logger.debug("【DEBUG】 找到表头定位元素， 但是位置不匹配 {} ", BlockItemUtils.generateBlockItemString(tempBlockItem));
+                    }
+
+
                 }
             }
         }

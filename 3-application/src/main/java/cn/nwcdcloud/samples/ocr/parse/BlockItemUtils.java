@@ -338,16 +338,17 @@ public class BlockItemUtils {
 
         int top = (int) (yRangeMin * pageHeight);
         int bottom = (int) (yRangeMax * pageHeight);
-//        logger.debug("isValidRange pageWidth: {}    pageHeight: {} ",  pageWidth, pageHeight);
-//        logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}]", xRangeMin, xRangeMax, yRangeMin, yRangeMax);
-//        logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
-//        logger.debug("isValidRange x: {}    y: {} ", blockItem.getInteger("x"),
-//                blockItem.getInteger("y"));
+
 
         int x = blockItem.getInteger("x");
         int y = blockItem.getInteger("y");
 
         if (x > right || x < left || y < top || y > bottom) {
+            logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}] page[width={},height={} ]", xRangeMin, xRangeMax, yRangeMin, yRangeMax,pageWidth, pageHeight);
+            logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
+            logger.debug("isValidRange 【{}】 元素的中心点:[x={}, y={}] ", blockItem.getString("text"), blockItem.getInteger("x"),
+            blockItem.getInteger("y"));
+
             return false;
         }
         return true;
@@ -377,7 +378,7 @@ public class BlockItemUtils {
         stringBuilder.append("bottom="+ blockItem.getString("bottom") +", ");
         stringBuilder.append("left="+ blockItem.getString("left") +", ");
         stringBuilder.append("right="+ blockItem.getString("right") +", ");
-        stringBuilder.append("【"+ blockItem.getString("text") +"】");
+        stringBuilder.append("【"+ blockItem.getString("text") +"】 "+ blockItem.getString("id"));
 
 
         return stringBuilder.toString();
