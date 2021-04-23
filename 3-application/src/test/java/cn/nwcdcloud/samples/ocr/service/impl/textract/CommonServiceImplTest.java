@@ -31,7 +31,7 @@ public class CommonServiceImplTest {
 		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, "id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-		logger.info(resultArray.toJSONString());
+//		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "代用名");
 		assert checkKeyValueMap(resultArray, "性别", "男");
 		assert checkKeyValueMap(resultArray, "民族", "汉");
@@ -50,7 +50,7 @@ public class CommonServiceImplTest {
 		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, "id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-		logger.info(resultArray.toJSONString());
+//		logger.info(resultArray.toJSONString());
 		assert checkKeyValueMap(resultArray, "姓名", "李四");
 		assert checkKeyValueMap(resultArray, "性别", "男");
 		assert checkKeyValueMap(resultArray, "民族", "汉");

@@ -3,6 +3,7 @@ package cn.nwcdcloud.samples.ocr.service.impl;
 import java.io.InputStream;
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,6 @@ public class InferenceServiceImpl implements InferenceService {
 
 	@Autowired
 	private SageMakerService sageMakerService;
-	private final static int PAGE_WIDTH = 1200;
-	private final static int PAGE_HEIGHT = 1600;
 	@Value("${templateDir}")
 	private String templateDir;
 
@@ -39,8 +38,8 @@ public class InferenceServiceImpl implements InferenceService {
 		}
 		Result result = new Result();
 		JSONObject jsonObject = json.getJSONObject(0);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
-		ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, type, templateDir);
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, type, templateDir);
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList));
 		if (logger.isDebugEnabled()) {

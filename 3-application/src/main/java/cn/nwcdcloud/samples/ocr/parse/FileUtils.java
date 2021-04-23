@@ -27,7 +27,7 @@ public class FileUtils {
 		// 获取json
 		try {
 			JSONObject jsonObject = JSONObject.parseObject(result);
-			System.out.println(JSON.toJSONString(jsonObject));
+//			System.out.println(JSON.toJSONString(jsonObject));
 			return jsonObject;
 		} catch (JSONException e) {
 			logger.error(e.getMessage());
@@ -44,7 +44,7 @@ public class FileUtils {
 		// 获取json
 		try {
 			JSONArray jsonArray = JSONObject.parseArray(result);
-			System.out.println(JSON.toJSONString(jsonArray));
+//			System.out.println(JSON.toJSONString(jsonArray));
 			return jsonArray;
 		} catch (JSONException e) {
 			logger.error(e.getMessage());

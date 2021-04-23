@@ -75,10 +75,12 @@ public class ParseFactory {
 		return jsonResult;
 	}
 
+
 	/**
 	 * 读取配置文件
-	 * 
-	 * @param configPath
+	 *
+	 * @param configType
+	 * @param templateDir
 	 * @return
 	 */
 

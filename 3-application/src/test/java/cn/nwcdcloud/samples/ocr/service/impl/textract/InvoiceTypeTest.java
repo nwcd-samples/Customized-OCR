@@ -31,7 +31,7 @@ public class InvoiceTypeTest {
         ParseFactory parseJsonUtil = new ParseFactory(1200, 2000, "invoice");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-        logger.info(resultArray.toJSONString());
+//        logger.info(resultArray.toJSONString());
         assert  checkKeyValueMap(resultArray, "购买方-名称", "北京西云数据科技有限公司");
         assert  checkKeyValueMap(resultArray, "购买方-纳税人识别号", "91110105MA01M3778H");
         assert  checkKeyValueMap(resultArray, "购买方-开户行及账号", "中国工商银行股份有限公司北京东四支行0200004109200060094");

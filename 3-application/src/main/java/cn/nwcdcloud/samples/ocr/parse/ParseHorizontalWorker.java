@@ -31,7 +31,7 @@ public class ParseHorizontalWorker {
 		}
 		ParseItemResult parseItemResult = findKeyBlockItem(configMap, blockItemList);
 		if (parseItemResult.blockItem == null) {
-			logger.warn("Parse key-value   没有找到 : text {}  ", configMap.get("Name"));
+//			logger.warn("Parse key-value   没有找到 : text {}  ", configMap.get("Name"));
 			return null;
 		}
 
@@ -88,7 +88,7 @@ public class ParseHorizontalWorker {
 			ParseFactory.Cell cell = findNextRightBlockItemValue(blockItemList,  configMap, blockItem);
 
 			if (cell == null || cell.text == null) {
-				logger.info("没有找到Value  {} " , BlockItemUtils.generateBlockItemString(blockItem));
+//				logger.debug("没有找到Value  {} " , BlockItemUtils.generateBlockItemString(blockItem));
 				return null;
 			}
 			resultItem.put("value", cell.text);
@@ -254,11 +254,10 @@ public class ParseHorizontalWorker {
 
 		int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", 1).toString());
 
-		double topOffsetRadio = (double) configMap.getOrDefault("TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
-		double bottomOffsetRadio = (double) configMap.getOrDefault("BottomOffsetRadio",  ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
-		double leftOffsetRadio = (double) configMap.getOrDefault("LeftOffsetRadio",  ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
-		double rightOffsetRadio = (double) configMap.getOrDefault("RightOffsetRadio",  ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
-
+		double topOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
+		double bottomOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
+		double leftOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
+		double rightOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
 		// 如果是多行， 找右边多行的元素，进行文本合并
 		if (maxLineCount > 1) {
 			return findMultiLineBlockItemValue(blockItemList, blockItem, maxLineCount, false);

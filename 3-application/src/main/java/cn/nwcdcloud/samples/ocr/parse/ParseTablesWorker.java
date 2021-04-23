@@ -146,9 +146,9 @@ public class ParseTablesWorker {
         for (Object item : columnList) {
             HashMap configMap = (HashMap) item;
 
-            if((boolean)configMap.getOrDefault("Location", false) == true){
+            if((boolean)configMap.getOrDefault("Location", false)){
 
-               List<String> keyWordList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
+               List keyWordList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
                keyWordList.add(configMap.get("ColumnName").toString());
                 //keyword 名称进行排重操作
                Set<String> keySet = new HashSet<>(keyWordList);
@@ -164,20 +164,11 @@ public class ParseTablesWorker {
         }
 
 
-        if (locationColumnList == null  ) {
+        if (locationColumnList == null  || locationColumnList.size() ==0 ) {
             throw new IllegalArgumentException("没有配置  'Location ' 用来定位表头, 请检查配置文件 ");
         }
-
-        if (locationColumnList.size() < 1 ) {
-            throw new IllegalArgumentException("请检查 'Column '配置属性 'Location'个数， 至少为两个");
-        }
-
-
-        //FIXME: 验证 高度有效性
-
         return findTableByKeys(blockItemList, locationColumnList);
     }
-
 
     /**
      * 通过两个关键字进行元素的查找。
@@ -309,8 +300,8 @@ public class ParseTablesWorker {
         String marginLeftType = infoMap.getOrDefault("MarginLeftType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
         String marginRightType = infoMap.getOrDefault("MarginRightType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
 
-        float moveLeftRatio = Float.parseFloat(infoMap.getOrDefault("MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
-        float moveRightRatio = Float.parseFloat(infoMap.getOrDefault("MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
+        float moveLeftRatio = Float.valueOf(infoMap.getOrDefault("MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
+        float moveRightRatio = Float.valueOf(infoMap.getOrDefault("MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
 
         int leftBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
@@ -389,9 +380,9 @@ public class ParseTablesWorker {
                 return jsonObject.getInteger("top") - t1.getInteger("top");
             }
         });
-        double maxRowHeightRatio = Double.valueOf(configMap.getOrDefault("MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO).toString());
-        int maxRowCount = Integer.valueOf(configMap.getOrDefault("MaxRowCount",  ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
+        double maxRowHeightRatio = BlockItemUtils.getDoubleValueFromConfig(configMap, "MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO);
+        int maxRowCount = BlockItemUtils.getIntegerValueFromConfig(configMap, "MaxRowCount", ConfigConstants.TABLE_MAX_ROW_COUNT);
         int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
         logger.debug("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
 

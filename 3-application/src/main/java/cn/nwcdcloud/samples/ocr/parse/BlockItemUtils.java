@@ -384,5 +384,14 @@ public class BlockItemUtils {
 
     }
 
+    public static  Double getDoubleValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+        return  Double.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+    }
+    public static  Float getFloatValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+        return  Float.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+    }
+    public static  Integer getIntegerValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+        return  Integer.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+    }
 
 }

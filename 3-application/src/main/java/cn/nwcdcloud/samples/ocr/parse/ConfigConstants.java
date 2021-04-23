@@ -4,7 +4,7 @@ public interface ConfigConstants {
 
     boolean DEBUG_FLAG = true;
     int PAGE_WIDTH = 1200;
-    int PAGE_HEIGHT = 1200;
+    int PAGE_HEIGHT = 2000;
 
     //  LengthMax 每个元素最大字符数
     int ITEM_LENGTH_MAX = 20;
