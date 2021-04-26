@@ -88,6 +88,10 @@ Targets:
 |MoveLeftRatio|三级|否|float|0.0|左分界线在MarginLeftType基础上移动的比率，向左为负，向右为正。<br>移动距离为headColumn.width * MoveLeftRatio|
 |MarginRightType|三级|否|enumeration|middle|可选值为near、middle、far<br>near：以当前Column的右边作为分界线，范围最近<br>middle：以当前Column和右边Column的中点作为分界线，范围适中<br>far：以右边Column的左边作为分界线，范围最远|
 |MoveRightRatio|三级|否|float|0.0|右分界线在MarginRightType基础上移动的比率，向左为负，向右为正。<br>移动距离为headColumn.width * MoveRightRatio|
+|XRangeMin|三级|否|float|0.0|key在页面上纵坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
+|XRangeMax|三级|否|float|1.0|key在页面上纵坐标的最大值|
+|YRangeMin|三级|否|float|0.0|key在页面上横坐标的最小值|
+|YRangeMax|三级|否|float|1.0|key在页面上横坐标的最大值|
 
 ## 3 示例
 ```YAML

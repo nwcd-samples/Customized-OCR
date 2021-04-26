@@ -75,7 +75,6 @@ public class ParseFactory {
 		return jsonResult;
 	}
 
-
 	/**
 	 * 读取配置文件
 	 *
@@ -85,23 +84,30 @@ public class ParseFactory {
 	 */
 
 	private Map readConfig(String configType, String templateDir) {
-		String configPath = "config/" + configType + ".yaml";
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(configPath);
-		if (is == null && StringUtils.hasLength(templateDir)) {
+		InputStream is = null;
+		String configPath;
+		if (StringUtils.hasLength(templateDir)) {
 			configPath = templateDir + configType + ".yaml";
-			try {
-				is = new FileInputStream(new File(configPath));
-			} catch (FileNotFoundException e) {
-				logger.error("配置文件不存在:{}" + configPath, e);
-				return null;
+			File file = new File(configPath);
+			if (file.exists()) {
+				try {
+					is = new FileInputStream(file);
+				} catch (FileNotFoundException e) {
+					is = null;
+				}
+			} else {
+				logger.info("未找到配置文件{}", configPath);
 			}
+		}
+		if (is == null) {
+			configPath = "config/" + configType + ".yaml";
+			is = this.getClass().getClassLoader().getResourceAsStream(configPath);
 		}
 		Map rootMap = null;
 		try {
 			rootMap = Yaml.loadType(is, HashMap.class);
-
 		} catch (Exception e) {
-			logger.error("读取配置文件出错:{}" + configPath, e);
+			logger.error("读取配置文件出错:" + configType, e);
 		}
 		return rootMap;
 	}
