@@ -1,0 +1,104 @@
+TemplateName: 'hospital-ocr-template'
+
+Targets:
+  - Name: "票控盘号"
+  - Name: "业务流水号"
+  - Name: "医疗机构类型"
+  - Name: "病历号"
+  - Name: "机打票号"
+  - Name: "住院时间"
+  - Name: "住院天数"
+  - Name: "住院号"
+  - Name: "姓名"
+  - Name: "性别"
+  - Name: "医保类型"
+  - Name: "社会保障卡号"
+  - Name: "合计（大写）"
+  - Name: "已"
+  - Name: "预缴金额"
+  - Name: "补缴金额"
+  - Name: "退费金额"
+    YRangeMin: 0.5
+  - Name: "基金支付"
+  - Name: "个人账户支付"
+  - Name: "个人支付金额"
+  - Name: "收款单位（章）"
+  - Name: "收款人"
+  - Name: "收费项目一"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 1.5
+    Columns:
+      - ColumnName: "收费项目"
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
+        XRangeMin: 0.0
+        XRangeMax: 0.2
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        KeyWordList: ["全额"]
+        MainColumn: true
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.1
+        XRangeMax: 0.3
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+
+
+  - Name: "收费项目二"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 1.5
+    Columns:
+      - ColumnName: "收费项目"
+        Location: true
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.5
+        XRangeMin: 0.3
+        XRangeMax: 0.5
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        KeyWordList: ["全额"]
+        MarginRightType: "near"
+        MoveRightRatio: 1.5
+        Location: true
+        XRangeMin: 0.5
+        XRangeMax: 0.6
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+  - Name: "收费项目三"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 1.5
+    Columns:
+      - ColumnName: "收费项目"
+        Location: true
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "far"
+        XRangeMin: 0.6
+        XRangeMax: 0.8
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        KeyWordList: ["全额"]
+        Location: true
+        XRangeMin: 0.8
+        XRangeMax: 0.9
+        YRangeMin: 0.2
+        YRangeMax: 0.8

@@ -23,11 +23,16 @@ public class TableSample02Test {
     private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/table_sample05.json";
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI =  "/sample/table_multi.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_02 =  "/sample/table_multi02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_03 =  "/sample/table_multi03.json";
+
     private static final String  CONFIG_FILE_PATH =  "table_sample02" ;
     private static final String  CONFIG_FILE_PATH_3 =  "table_sample03" ;
     private static final String  CONFIG_FILE_PATH_4 =  "table_sample04" ;
     private static final String  CONFIG_FILE_PATH_5 =  "table_sample05" ;
     private static final String  CONFIG_FILE_PATH_MULTI =  "table_multi" ;
+    private static final String  CONFIG_FILE_PATH_MULTI_02 =  "table_multi02" ;
+    private static final String  CONFIG_FILE_PATH_MULTI_03 =  "table_multi03" ;
     private final static int PAGE_WIDTH = 1200;
     private final static int PAGE_HEIGHT = 2000;
 
@@ -234,5 +239,53 @@ public class TableSample02Test {
         assert "45.00".equals(rowList2.getJSONArray(3).getJSONObject(1).getString("text"));
         assert "".equals(rowList2.getJSONArray(3).getJSONObject(2).getString("text"));
     }
+
+    @Test
+    public void parseIdMultiTable02() {
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI_02).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_MULTI_02);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+
+        assert tableArray.size() == 3;
+
+        JSONObject table0 = tableArray.getJSONObject(0);
+        logger.info(table0.toJSONString());
+        assert table0.getInteger("rowCount") == 4;
+        assert table0.getInteger("columnCount") == 2;
+
+
+        JSONObject table1 = tableArray.getJSONObject(1);
+        logger.info(table1.toJSONString());
+        assert table1.getInteger("rowCount") == 4;
+        assert table1.getInteger("columnCount") == 2;
+
+
+
+        JSONObject table2 = tableArray.getJSONObject(2);
+        logger.info(table2.toJSONString());
+        assert table2.getInteger("rowCount") == 3;
+        assert table2.getInteger("columnCount") == 2;
+    }
+
+
+
+    @Test
+    public void parseIdMultiTable03() {
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI_03).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, PAGE_WIDTH, PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(PAGE_WIDTH, PAGE_HEIGHT, CONFIG_FILE_PATH_MULTI_03);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info(resultArray.toJSONString());
+
+
+    }
+
 
 }

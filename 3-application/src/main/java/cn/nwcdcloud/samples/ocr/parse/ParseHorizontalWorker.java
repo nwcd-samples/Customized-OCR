@@ -149,7 +149,7 @@ public class ParseHorizontalWorker {
 			if(!findFlag ){
 				//如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
 				ParseItemResult result = findResultBySplitKeywords(configMap, blockItemList, keyWord);
-				 if(result.blockItem != null){
+				 if(result != null && result.blockItem != null){
 				 	return result;
 				 }
 			}
@@ -179,7 +179,7 @@ public class ParseHorizontalWorker {
 	private ParseItemResult findResultBySplitKeywords(HashMap configMap, List<JSONObject> blockItemList, String targetKeyWord){
 
 		if(targetKeyWord == null || targetKeyWord.length()<2){
-			logger.warn("关键字设置不正确 {} ", JSON.toJSON(configMap));
+			logger.warn("关键字【{}】长度不够， 不需要进行拆分 ", JSON.toJSON(configMap));
 			return null;
 		}
 
