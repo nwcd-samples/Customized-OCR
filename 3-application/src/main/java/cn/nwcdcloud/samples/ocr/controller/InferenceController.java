@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +67,7 @@ public class InferenceController {
 			if ("application/json".equalsIgnoreCase(contentType)) {
 				String body = getRequestContent(request);
 				return sageMakerService.invokeEndpoint(endpointName, body).toString();
-			} else if (contentType.startsWith("image")) {
+			} else if (StringUtils.hasLength(contentType) && contentType.startsWith("image")) {
 				return sageMakerService.invokeEndpoint(endpointName, contentType, request.getInputStream()).toString();
 			} else {
 				String keyName = request.getParameter("keyName");
@@ -93,7 +94,7 @@ public class InferenceController {
 			if ("application/json".equalsIgnoreCase(contentType)) {
 				String body = getRequestContent(request);
 				return inferenceService.predict(type, endpointName, body).toString();
-			} else if (contentType.startsWith("image")) {
+			} else if (StringUtils.hasLength(contentType) && contentType.startsWith("image")) {
 				return inferenceService.predict(type, endpointName, contentType, request.getInputStream()).toString();
 			} else {
 				String keyName = request.getParameter("keyName");

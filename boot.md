@@ -15,4 +15,4 @@
 |uploadType|endpoint|上传文件类别，可选值为：endpoint、s3，分别表示上传图片到web服务和s3，如果配置为s3，则必须配置bucketName|
 |bucketName|无|uploadType为s3时，需要配置bucketName|
 |prefix|ocr/|uploadType为s3时，上传文件的前缀|
-|templateDir|/data/ocr/config/|外部模板文件存放路径|
+|templateDir|/data/ocr/config/|自定义模板文件存放路径。如果自定义模板和内置模板都定义了同一类别，优先使用自定义模板|

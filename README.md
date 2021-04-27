@@ -46,9 +46,12 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 在浏览器中输入服务器地址：`http://127.0.0.1`，出现以下界面。
 ![](image/web-index.jpg)
 点击 **创建OCR推理服务** 按钮，OCR推理服务状态变为：Creating；预计7分钟左右，OCR推理服务状态变为：InService，这时即可进行推理。
-#### 使用PostMan测试身份证
+#### 使用PostMan测试发送图片方式
 选择**POST**方式，地址为http://127.0.0.1/inference/predict/id ，Body选择binary方式，选择一个身份证图片，发送后即可看到返回结果。
 ![](image/postman.png)
+#### 使用PostMan测试识别S3中图片方式
+选择**POST**方式，地址为http://127.0.0.1/inference/predict/id?keyName=filePath  
+这里filePath是图片在S3中的地址，不包含bucketName，bucketName在启动jar时指定。
 #### 清理环境
 点击 **删除OCR推理服务** 按钮。  
 ### 使用JupyterLab方式推理
