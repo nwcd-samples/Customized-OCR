@@ -62,6 +62,7 @@ function predict(type,keyName,showJson){
 			    	  analysis(type,globalData);
 			      }
 		      }else{
+				  $("#loading-icon").hide();
 		    	  alert(result.msg);
 		      }
 		  },

@@ -31,6 +31,7 @@ import software.amazon.awssdk.services.sagemaker.model.SageMakerException;
 import software.amazon.awssdk.services.sagemakerruntime.SageMakerRuntimeClient;
 import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointRequest;
 import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointResponse;
+import software.amazon.awssdk.services.sagemakerruntime.model.ModelErrorException;
 
 @Service
 public class SageMakerServiceImpl implements SageMakerService {
@@ -59,8 +60,17 @@ public class SageMakerServiceImpl implements SageMakerService {
 		InvokeEndpointRequest request = InvokeEndpointRequest.builder().endpointName(endpointName)
 				.contentType(contentType).body(requestBody).build();
 		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
-		InvokeEndpointResponse response = client.invokeEndpoint(request);
-		result.setData(response.body().asUtf8String());
+		try {
+			InvokeEndpointResponse response = client.invokeEndpoint(request);
+			result.setData(response.body().asUtf8String());
+		} catch (ModelErrorException e) {
+			if (e.getMessage().indexOf("413 Request Entity Too Large") != -1) {
+				result.setCode(25);
+				result.setMsg("待识别图片过大，上限为5MB");
+				return result;
+			}
+			throw e;
+		}
 		return result;
 	}
 
@@ -117,8 +127,6 @@ public class SageMakerServiceImpl implements SageMakerService {
 		} catch (Exception e) {
 			logger.error("创建endpoint出错", e);
 			result.setCode(22);
-//			result.setMsg(
-//					"aws configure配置默认region和image region不一致，请修改configure默认region或修改application.properties中image region，然后重启服务");
 			result.setMsg("创建endpoint出错");
 			return result;
 		}

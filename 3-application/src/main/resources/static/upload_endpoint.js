@@ -37,6 +37,7 @@ function predict(type,showJson,file){
 			    	analysis(type,globalData);
 		    	}
 		    }else{
+			    $("#loading-icon").hide();
 		    	alert(result.msg);
 		    }
 		}, 
