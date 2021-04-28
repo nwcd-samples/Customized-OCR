@@ -3,6 +3,7 @@ package cn.nwcdcloud.samples.ocr.parse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,6 +109,14 @@ public class ParseFactory {
 			rootMap = Yaml.loadType(is, HashMap.class);
 		} catch (Exception e) {
 			logger.error("读取配置文件出错:" + configType, e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					logger.warn("关闭配置文件出错{}", configType);
+				}
+			}
 		}
 		return rootMap;
 	}

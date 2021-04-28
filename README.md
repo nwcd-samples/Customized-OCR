@@ -77,3 +77,6 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
     }
 ]
 ```
+
+### 查看SageMaker日志
+在SageMaker Web控制台，选择推理->终端节点，点击ocr终端节点，在详情页面的**监控**部分，点击**查看日志**，或直接访问[CloudWatch Logs连接](https://cn-northwest-1.console.amazonaws.cn/cloudwatch/home?region=cn-northwest-1#logsV2:log-groups/log-group/$252Faws$252Fsagemaker$252FEndpoints$252Focr)，如果在北京区域运行OCR终端节点，需要切换区域。再点击对应日志即可。 

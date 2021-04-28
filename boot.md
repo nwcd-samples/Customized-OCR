@@ -10,7 +10,7 @@
 |server.port|80|http服务端口号|
 |imageUri|048912060910.dkr.ecr.cn-northwest-1.amazonaws.com.cn/nwcd/ocr-inference:2.0.2-2.0-cpu|OCR推理服务镜像，根据需要选择CPU或GPU，如果使用北京region，把 cn-northwest-1 改为 cn-north-1<br>可选值如下：<br>048912060910.dkr.ecr.cn-northwest-1.amazonaws.com.cn/nwcd/ocr-inference:2.0.2-2.0-cpu<br>048912060910.dkr.ecr.cn-northwest-1.amazonaws.com.cn/nwcd/ocr-inference:2.0.2-2.0-gpu<br>048912060910.dkr.ecr.cn-north-1.amazonaws.com.cn/nwcd/ocr-inference:2.0.2-2.0-cpu<br>048912060910.dkr.ecr.cn-north-1.amazonaws.com.cn/nwcd/ocr-inference:2.0.2-2.0-gpu|
 |endpointName|ocr|SageMaker中endpoint名称|
-|instanceType|ml.m5.large|SageMaker中endpoint推理机型，如果imageUri使用GPU版本，这里需要使用GPU机型|
+|instanceType|ml.m5.large|SageMaker中endpoint推理机型，如果imageUri使用GPU版本，这里需要使用GPU机型<br>可选机型参见https://www.amazonaws.cn/sagemaker/pricing/ ，展开模型部署可见列表|
 |instanceCount|1|SageMaker中endpoint推理初始机器数|
 |uploadType|endpoint|上传文件类别，可选值为：endpoint、s3，分别表示上传图片到web服务和s3，如果配置为s3，则必须配置bucketName|
 |bucketName|无|uploadType为s3时，需要配置bucketName|
