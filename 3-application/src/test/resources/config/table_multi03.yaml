@@ -15,6 +15,7 @@ Targets:
   - Name: "社会保障卡号"
   - Name: "合计（大写）"
   - Name: "已"
+  - Name: "勾"
   - Name: "预缴金额"
   - Name: "补缴金额"
   - Name: "退费金额"

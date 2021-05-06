@@ -71,11 +71,18 @@ public class ParseHorizontalWorker {
 			// key和value 在一个单元格里
 			int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 			if (maxLineCount > 1) { //多行的情况
-				ParseFactory.Cell cell = findMultiLineBlockItemValue(blockItemList, blockItem, maxLineCount, true);
-				resultItem.put("value", cell.text.substring(keyWord.length()));
-				resultItem.put("confidence", cell.confidence);
+				ParseFactory.Cell cell = findMultiLineBlockItemValue(configMap, blockItemList, blockItem, maxLineCount, true);
+
+				if( cell.text.length() < keyWord.length()){
+					resultItem.put("value", cell.text);
+					resultItem.put("confidence", cell.confidence);
+				}else{
+					resultItem.put("value", cell.text.substring(keyWord.length()));
+					resultItem.put("confidence", cell.confidence);
+				}
+
 			} else {
-//				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
+				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + maxLength
 						? index + keyWord.length() + maxLength
 						: text.length();
@@ -254,34 +261,26 @@ public class ParseHorizontalWorker {
 
 		int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", 1).toString());
 
-		double topOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
-		double bottomOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
-		double leftOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
-		double rightOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
-		// 如果是多行， 找右边多行的元素，进行文本合并
-		if (maxLineCount > 1) {
-			return findMultiLineBlockItemValue(blockItemList, blockItem, maxLineCount, false);
-		}
-		int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
-		int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
-		//ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
-		int leftBorder = blockItem.getInteger("x") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
-		int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
+		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(configMap, blockItem);
 		logger.debug("key-value 分离，关键字【{}】- value 的边界范围  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
 				blockItem.getString("text"), blockItem.getInteger("top"), blockItem.getInteger("bottom"),
 				blockItem.getInteger("left"), blockItem.getInteger("right"),
-				topBorder, bottomBorder, leftBorder, rightBorder);
+				borderItem.getInteger("topBorder"),
+				borderItem.getInteger("bottomBorder"),
+				borderItem.getInteger("leftBorder"),
+				borderItem.getInteger("rightBorder"));
+
+		// 如果是多行， 找右边多行的元素，进行文本合并
+		if (maxLineCount > 1) {
+			return findMultiLineBlockItemValue(configMap, blockItemList, blockItem, maxLineCount, false);
+		}
+
 
 
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject tempBlockItem = blockItemList.get(i);
-
-//			int yAbs = Math.abs(tempBlockItem.getInteger("y") - blockItem.getInteger("y"));
-			if (    tempBlockItem.getInteger("top") >= topBorder
-			        &&  tempBlockItem.getInteger("bottom") <= bottomBorder
-					&&  tempBlockItem.getInteger("left") >= leftBorder
-					&&  tempBlockItem.getInteger("right") <= rightBorder
-			) {
+				// 检查候选元素的范围 是否符合要求
+			if ( BlockItemUtils.checkBlockItemRangeValidation(tempBlockItem, borderItem) ) {
 
 				// 在上下左右范围内， 找到离 key 元素 最近的元素 作为value, 寻找直线距离最近的元素
 				int tempDistance = (int)(Math.pow((double) (blockItem.getInteger("y") - tempBlockItem.getInteger("y")), 2)
@@ -310,21 +309,25 @@ public class ParseHorizontalWorker {
 	 * @param isContainSelf 是否包含元素本身， 处理Key和Value 在一起的情况
 	 * @return
 	 */
-	private ParseFactory.Cell findMultiLineBlockItemValue(List<JSONObject> blockItemList, JSONObject blockItem, int maxLineCount, boolean isContainSelf) {
+	private ParseFactory.Cell findMultiLineBlockItemValue(HashMap configMap, List<JSONObject> blockItemList, JSONObject blockItem, int maxLineCount, boolean isContainSelf) {
 
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
-
+		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(configMap, blockItem);
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject curItem = blockItemList.get(i);
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
 
-			if (curItem.getInteger("top") > blockItem.getInteger("top") - blockItem.getInteger("height")
-					&& curItem.getInteger("bottom") <
+			if (curItem.getInteger("bottom") <
 					blockItem.getInteger("bottom")+ maxLineCount * (blockItem.getInteger("height") + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
-				contentBlockItemList.add(curItem);
+				//范围的判断
+
+				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, borderItem)){
+					contentBlockItemList.add(curItem);
+				}
+
 			}
 		}
 
@@ -348,6 +351,7 @@ public class ParseHorizontalWorker {
 		ParseFactory.Cell cell = new ParseFactory.Cell();
 		cell.text = stringBuilder.toString();
 		cell.confidence = minConfidence;
+		logger.debug(" cell text  [{}]   ",cell.text );
 		return cell ;
 	}
 

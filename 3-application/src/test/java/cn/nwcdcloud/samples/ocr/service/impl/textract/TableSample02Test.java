@@ -284,6 +284,12 @@ public class TableSample02Test {
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info(resultArray.toJSONString());
 
+        for(int i=0; i< resultArray.size(); i++){
+            JSONObject object = resultArray.getJSONObject(i);
+            logger.info(object.toJSONString());
+
+        }
+
 
     }
 

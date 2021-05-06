@@ -19,6 +19,7 @@ public class BusinessLicenseTypeTest {
     private static final Logger logger = LoggerFactory.getLogger(BusinessLicenseTypeTest.class);
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/business_license001.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/business_license002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/business_license003.json";
 
 
 
@@ -32,6 +33,12 @@ public class BusinessLicenseTypeTest {
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultObject.toJSONString());
+
+        for(int i=0; i< resultArray.size(); i++){
+            String tempValue = resultArray.getJSONObject(i).getString("value");
+            String tempName = resultArray.getJSONObject(i).getString("name");
+            logger.info("[{}] [{}]", tempName, tempValue);
+        }
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "名称", "河北晟途电器有限公司");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "类型", "有限责任公司（自然人投资或控股）");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "住所", "河北省廊坊市文安县大围河回族满族乡南辛庄村");
@@ -41,6 +48,7 @@ public class BusinessLicenseTypeTest {
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "成立日期", "2015年05月28日");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "营业期限", "2015年05月28日至2035年05月");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "经营范围", "电缆桥架、配电箱、母线槽制造销售。");
+
 
     }
 
@@ -66,6 +74,25 @@ public class BusinessLicenseTypeTest {
 
 
 
+
+    @Test
+    public void parse003() {
+
+        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "business_license03");
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        logger.info(resultArray.toJSONString());
+
+        for(int i=0; i< resultArray.size(); i++){
+            String tempValue = resultArray.getJSONObject(i).getString("value");
+            String tempName = resultArray.getJSONObject(i).getString("name");
+            logger.info("[{}]    \t    [{}]",tempName, tempValue );
+        }
+
+    }
 
 
 

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 解析Textract返回的json数据， 生成元素列表， 供后续进行结构化提取
@@ -393,6 +394,41 @@ public class BlockItemUtils {
     }
     public static  Integer getIntegerValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
         return  Integer.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+    }
+
+    public static JSONObject getBlockItemBorder(HashMap configMap, JSONObject blockItem){
+
+        double topOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
+        double bottomOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
+        double leftOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
+        double rightOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
+
+
+        int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
+        int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
+        //ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
+        int leftBorder = blockItem.getInteger("x") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
+        int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
+
+
+        JSONObject result = new JSONObject();
+        result.put("topBorder", topBorder);
+        result.put("bottomBorder", bottomBorder);
+        result.put("leftBorder", leftBorder);
+        result.put("rightBorder", rightBorder);
+        return result;
+    }
+
+    public static boolean checkBlockItemRangeValidation(JSONObject valueBlockItem, JSONObject borderItem){
+        int topBorder = borderItem.getInteger("topBorder");
+        int bottomBorder = borderItem.getInteger("bottomBorder");
+        int leftBorder = borderItem.getInteger("leftBorder");
+        int rightBorder = borderItem.getInteger("rightBorder");
+
+        return valueBlockItem.getInteger("top") >= topBorder
+                &&  valueBlockItem.getInteger("bottom") <= bottomBorder
+                &&  valueBlockItem.getInteger("left") >= leftBorder
+                &&  valueBlockItem.getInteger("right") <= rightBorder;
     }
 
 }

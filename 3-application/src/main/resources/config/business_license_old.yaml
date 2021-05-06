@@ -22,3 +22,7 @@ Targets:
     LengthMax: 20
   - Name: "经营范围"
     LineCountMax: 4
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: -1.0
+    RightOffsetRadio: 5
+    BottomOffsetRadio: 3.0

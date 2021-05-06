@@ -66,8 +66,8 @@ public class CommonServiceImplTest {
 
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, 1124, 800);
-		ParseFactory parseJsonUtil = new ParseFactory(1124, 800, "id02");
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());

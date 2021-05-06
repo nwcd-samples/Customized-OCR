@@ -56,6 +56,10 @@ Targets:
     XRangeMax: 0.90
     YRangeMin: 0.10
     YRangeMax: 0.80
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: -1.0
+    RightOffsetRadio: 5
+    BottomOffsetRadio: 3.0
 
   - Name: "公民身份号码"
     KeyWordList: ["公民身份号码", "公民身份证号码"]
