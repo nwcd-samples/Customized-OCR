@@ -4,15 +4,23 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
+import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
+import cn.nwcdcloud.samples.ocr.constant.ImageType;
+import cn.nwcdcloud.samples.ocr.constant.OcrConstants;
 import cn.nwcdcloud.samples.ocr.service.IamService;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
 import software.amazon.awssdk.core.SdkBytes;
@@ -40,6 +48,10 @@ public class SageMakerServiceImpl implements SageMakerService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private IamService iamService;
+	@Autowired
+	private Cache<String, Object> cacheImageByte;
+	@Autowired
+	private Cache<String, String> cacheImageJson;
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -49,7 +61,8 @@ public class SageMakerServiceImpl implements SageMakerService {
 				.contentType("application/json").body(requestBody).build();
 		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
 		InvokeEndpointResponse response = client.invokeEndpoint(request);
-		result.setData(response.body().asUtf8String());
+		String data = addImageInfoJson(response.body().asUtf8String(), body);
+		result.setData(data);
 		return result;
 	}
 
@@ -62,16 +75,58 @@ public class SageMakerServiceImpl implements SageMakerService {
 		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
 		try {
 			InvokeEndpointResponse response = client.invokeEndpoint(request);
-			result.setData(response.body().asUtf8String());
+			String data = addImageInfoByte(response.body().asUtf8String(), requestBody.asByteArray());
+			result.setData(data);
 		} catch (ModelErrorException e) {
 			if (e.getMessage().indexOf("413 Request Entity Too Large") != -1) {
 				result.setCode(25);
-				result.setMsg("待识别图片过大，上限为5MB");
+				result.setMsg("待识别图片过大，上限为10MB");
 				return result;
 			}
 			throw e;
 		}
 		return result;
+	}
+
+	/**
+	 * 直接传输图片的只有1个
+	 * 
+	 * @param original
+	 * @param imageType
+	 * @param imageId
+	 * @return
+	 */
+	private String addImageInfoByte(final String original, byte[] content) {
+		JSONArray jsonArray = JSON.parseArray(original);
+		JSONObject jsonObject = jsonArray.getJSONObject(0);
+		String imageId = getUUID();
+		cacheImageByte.put(imageId, content);
+		jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.Byte.getId());
+		jsonObject.put(OcrConstants.IMAGE_ID, imageId);
+		return jsonArray.toJSONString();
+	}
+
+	/**
+	 * JSON格式的可能有多个
+	 * 
+	 * @param original
+	 * @param imageId
+	 * @return
+	 */
+	private String addImageInfoJson(final String original, String content) {
+		JSONObject jsonContent = JSON.parseObject(content);
+		JSONArray jsonArray = JSON.parseArray(original);
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+			JSONObject jsonData = new JSONObject();
+			jsonData.put("bucket", jsonContent.getString("bucket"));
+			jsonData.put("image_uri", jsonContent.getJSONArray("image_uri").get(i));
+			String imageId = getUUID();
+			cacheImageJson.put(imageId, jsonData.toJSONString());
+			jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.JSON.getId());
+			jsonObject.put(OcrConstants.IMAGE_ID, imageId);
+		}
+		return jsonArray.toJSONString();
 	}
 
 	@Override
@@ -177,5 +232,9 @@ public class SageMakerServiceImpl implements SageMakerService {
 				.build();
 		client.deleteEndpointConfig(request2);
 		return result;
+	}
+
+	private String getUUID() {
+		return UUID.randomUUID().toString().replace("-", "").toUpperCase();
 	}
 }

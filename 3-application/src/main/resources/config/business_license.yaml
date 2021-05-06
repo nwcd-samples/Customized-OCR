@@ -1,148 +1,32 @@
 TemplateName: 'business-license-ocr-template'
 
 Targets:
+  - Name: "二维码"
+    RecognitionType: "qrcode"
+    XRangeMin: 0.70
+    XRangeMax: 0.85
+    YRangeMin: 0.25
+    YRangeMax: 0.40
   - Name: "统一社会信用代码"
-    KeyWordList: ["统一社会信用代码"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.3
-    XRangeMax: 0.80
-    YRangeMin: 0.0
-    YRangeMax: 0.50
-
-  - Name: "注册号"
-    KeyWordList: ["注册号"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.3
-    XRangeMax: 0.80
-    YRangeMin: 0.0
-    YRangeMax: 0.50
-
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: 1.0
+    RightOffsetRadio: 0.5
+    BottomOffsetRadio: 4.0
   - Name: "名称"
-    KeyWordList: ["名称"]
-    LengthMin: 20
-    LengthMax: 30
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.3
-    YRangeMax: 0.60
+    KeyWordList: ["称"]
+    RightOffsetRadio: 20
 
   - Name: "类型"
-    KeyWordList: ["类型"]
-    LengthMin: 20
-    LengthMax: 30
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.1
-    YRangeMax: 0.80
-
-  - Name: "住所"
-    KeyWordList: ["住所"]
-    LengthMin: 20
-    LengthMax: 30
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.30
-    YRangeMin: 0.3
-    YRangeMax: 0.60
-
-  - Name: "经营场所"
-    KeyWordList: ["经营场所"]
-    LengthMin: 20
-    LengthMax: 30
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.2
-    YRangeMax: 0.80
-
-  - Name: "组成形式"
-    KeyWordList: ["组成形式"]
-    LengthMin: 20
-    LengthMax: 30
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.2
-    YRangeMax: 0.80
-
-
+    KeyWordList: ["型"]
+    RightOffsetRadio: 20
 
   - Name: "法定代表人"
-    KeyWordList: ["法定代表人"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.60
-    YRangeMin: 0.2
-    YRangeMax: 0.6
-    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
-    TopOffsetRadio: 2.0
-    BottomOffsetRadio: 2.0
-    LeftOffsetRadio: 2.0
-    RightOffsetRadio: 5.0
-
-  - Name: "注册资本"
-    KeyWordList: ["注册资本"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.3
-    YRangeMax: 0.7
-
-
-  - Name: "成立日期"
-    KeyWordList: ["成立日期", "注册日期"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.3
-    YRangeMax: 0.7
-    TopOffsetRadio: 2.0
-    BottomOffsetRadio: 2.0
-    LeftOffsetRadio: 2.0
-    RightOffsetRadio: 5.0
-
-
-  - Name: "营业期限"
-    KeyWordList: ["营业期限"]
-    LengthMin: 20
-    LengthMax: 20
-    MaxLineCount: 1
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.3
-    YRangeMax: 0.8
-
-
   - Name: "经营范围"
-    KeyWordList: ["经营范围"]
-    LengthMin: 20
-    LengthMax: 40
     LineCountMax: 4
-    TargetValueType: "char"
-    XRangeMin: 0.0
-    XRangeMax: 0.80
-    YRangeMin: 0.4
-    YRangeMax: 0.8
+    RightOffsetRadio: 3
+  - Name: "注册资本"
+  - Name: "成立日期"
+  - Name: "营业期限"
+  - Name: "住所"
+    KeyWordList: ["所"]
+    LineCountMax: 2

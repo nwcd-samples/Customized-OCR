@@ -14,12 +14,9 @@ Targets:
     XRangeMax: 0.30
     YRangeMin: 0.0
     YRangeMax: 0.30
-    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
-    TopOffsetRadio: 1.5
-    # 相对于自身高度， Value Block 往下偏移的倍数  bottom - height * TopOffsetRadio
+    TopOffsetRadio: -1.5
     BottomOffsetRadio: 1.5
-    LeftOffsetRadio: 1.0
-    #Value Block 右边界  >=  item.right + item.width * RightOffsetRadio
+    LeftOffsetRadio: -1.0
     RightOffsetRadio: 10.0
 
   - Name: "性别"
@@ -46,7 +43,7 @@ Targets:
     XRangeMax: 0.70
     YRangeMin: 0.20
     YRangeMax: 0.60
-    LeftOffsetRadio: 0.5
+    LeftOffsetRadio: -0.5
     RightOffsetRadio: 5.0
 
   - Name: "住址"

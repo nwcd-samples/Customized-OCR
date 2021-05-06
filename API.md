@@ -51,7 +51,7 @@ Targets:
 |TemplateName|一级|否|string|无|本文件自描述|
 |Targets|一级|是|list|无|所有要提取内容|
 |Name|二级|是|string|无|返回关键字，同时也会把此Name作为keyword搜索|
-|RecognitionType|二级|否|enumeration|default|识别类型，可选值为：default、table<br>分别代表普通的key/value形式、表格形式|
+|RecognitionType|二级|否|enumeration|default|识别类型，可选值为：default、table、qrcode<br>分别代表普通的key/value形式、表格形式、二维码（含条形码）形式|
 
 ### 2.1 key/value
 当RecognitionType的值为default时，可选参数如下：  
@@ -60,16 +60,16 @@ Targets:
 | ----  | ---- | ---- | ---- | ---- | ---- |
 |KeyWordList|二级|否|list|无|待搜索的关键字，可以让返回的关键字和待搜索的关键字不同|
 |LengthMin|二级|否|int|1|value最小匹配长度|
-|LengthMax|二级|否|int|20|value最大匹配长度|
+|LengthMax|二级|否|int|40|value最大匹配长度|
 |LineCountMax|二级|否|int|1|最大匹配行数|
 |TargetValueType|二级|否|enumeration|string|value类型，可选值为：string、currency、number|
 |XRangeMin|二级|否|float|0.0|key在页面上纵坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
 |XRangeMax|二级|否|float|1.0|key在页面上纵坐标的最大值|
 |YRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值|
 |YRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
-|TopOffsetRadio|二级|否|float|1.0|valueItem.top >= keyItem.top - keyItem.height * TopOffsetRadio|
+|TopOffsetRadio|二级|否|float|-1.0|valueItem.top >= keyItem.top + keyItem.height * TopOffsetRadio|
 |BottomOffsetRadio|二级|否|float|1.0|valueItem.bottom <= keyItem.bottom + keyItem.height * BottomOffsetRadio|
-|LeftOffsetRadio|二级|否|float|0.0|valueItem.left >= keyItem.right - keyItem.width * LeftOffsetRadio|
+|LeftOffsetRadio|二级|否|float|0.0|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
 |RightOffsetRadio|二级|否|float|10.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
 
 ### 2.2 表格
@@ -93,6 +93,16 @@ Targets:
 |YRangeMin|三级|否|float|0.0|key在页面上横坐标的最小值|
 |YRangeMax|三级|否|float|1.0|key在页面上横坐标的最大值|
 
+### 2.3 二维码（含条形码）
+当RecognitionType的值为qrcode时，可选参数如下：  
+
+| 参数名 | 层级 | 是否必填 | 类型 | 默认值 | 说明 |
+| ----  | ---- | ---- | ---- | ---- | ---- |
+|XRangeMin|二级|否|float|0.0|二维码在页面上纵坐标的最小值，建议设置这4个参数，以便准确识别|
+|XRangeMax|二级|否|float|1.0|二维码在页面上纵坐标的最大值|
+|YRangeMin|二级|否|float|0.0|二维码在页面上横坐标的最小值|
+|YRangeMax|二级|否|float|1.0|二维码在页面上横坐标的最大值|
+
 ## 3 示例
 ```YAML
 TemplateName: 'table'
@@ -106,20 +116,16 @@ Targets:
   - Name: "结算单号"
   - Name: "结算年月"
   - Name: "供应商名称"
-    MaxLength: 40
   - Name: "结算费用单明细"
     RecognitionType: "table"
     Columns:
       - ColumnName: "扣款代码"
         Location: true
         MoveRightRatio: 0.2
-
       - ColumnName: "费用项目"
-        MoveLeftRatio: 0.3
+        MoveLeftRatio: -0.3
         MoveRightRatio: 0.3
-
       - ColumnName: "扣款项目名称"
-
       - ColumnName: "扣款金额"
         Location: true
         KeyWordList: ["扣款额"]

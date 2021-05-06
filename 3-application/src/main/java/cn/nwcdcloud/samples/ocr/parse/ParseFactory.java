@@ -1,22 +1,31 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
+import org.ehcache.Cache;
 import org.ho.yaml.Yaml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
+import cn.nwcdcloud.commons.util.ApplicationUtils;
+import cn.nwcdcloud.samples.ocr.constant.ImageType;
+import cn.nwcdcloud.samples.ocr.service.S3Service;
+import software.amazon.awssdk.core.SdkBytes;
 
 public class ParseFactory {
 	private final Logger logger = LoggerFactory.getLogger(ParseFactory.class);
@@ -40,18 +49,22 @@ public class ParseFactory {
 	}
 
 	public JSONObject extractValue(List<JSONObject> blockItemList) {
-		Map configMap = readConfig(this.configType, this.templateDir);
+		return extractValue(blockItemList, 0, null);
+	}
 
+	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageId) {
+		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
 		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(pageWidth, pageHeight);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(pageWidth, pageHeight);
+		ParseQRCodeWorker qrcodeWorker = new ParseQRCodeWorker();
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
 		JSONObject jsonResult = new JSONObject();
+		BufferedImage image = null;
 
-		List targetList = (ArrayList) configMap.get("Targets");
-		for (Object item : targetList) {
-
-			HashMap newItem = (HashMap) item;
+		@SuppressWarnings("unchecked")
+		List<HashMap<String, Object>> targetList = (List<HashMap<String, Object>>) configMap.get("Targets");
+		for (HashMap<String, Object> newItem : targetList) {
 			String recognitionType = newItem.getOrDefault("RecognitionType", "default").toString();
 			if ("default".equals(recognitionType)) {
 				// 识别单个key-value元素
@@ -64,16 +77,57 @@ public class ParseFactory {
 				if (result != null) {
 					tableArray.add(result);
 				}
+			} else if ("qrcode".equals(recognitionType)) {
+				if (image == null) {
+					image = getImage(imageType, imageId);
+				}
+				JSONObject resultItem = qrcodeWorker.parse(newItem, image);
+				if (resultItem != null) {
+					keyValueArray.add(resultItem);
+				}
 			} else {
-
 				throw new IllegalArgumentException(" 没有  '" + recognitionType + "' 的识别类型， 请检查 RecognitionType 配置 ");
 			}
 		}
-
 		jsonResult.put("keyValueList", keyValueArray);
 		jsonResult.put("tableList", tableArray);
-
 		return jsonResult;
+	}
+
+	private BufferedImage getImage(int imageType, String imageId) {
+		if (imageType == ImageType.Byte.getId()) {
+			Cache<String, byte[]> cacheImageByte = ApplicationUtils.getBean("cacheImageByte");
+			try {
+				byte[] imageByte = cacheImageByte.get(imageId);
+				if (imageByte == null) {
+					return null;
+				}
+				return ImageIO.read(SdkBytes.fromByteArray(imageByte).asInputStream());
+			} catch (Exception e) {
+				logger.warn("载入图片信息出错", e);
+				return null;
+			}
+		}
+		if (imageType == ImageType.JSON.getId()) {
+			Cache<String, String> cacheImageJson = ApplicationUtils.getBean("cacheImageJson");
+			S3Service s3Service = ApplicationUtils.getBean(S3Service.class);
+			try {
+				String content = cacheImageJson.get(imageId);
+				if (!StringUtils.hasLength(content)) {
+					return null;
+				}
+				logger.debug("获取图片内容:{}", content);
+				JSONObject jsonContent = JSON.parseObject(content);
+				String bucket = jsonContent.getString("bucket");
+				String keyName = jsonContent.getString("image_uri");
+				byte[] imageByte = s3Service.getContent(null, bucket, keyName);
+				return ImageIO.read(SdkBytes.fromByteArray(imageByte).asInputStream());
+			} catch (Exception e) {
+				logger.warn("载入图片信息出错", e);
+				return null;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -83,8 +137,8 @@ public class ParseFactory {
 	 * @param templateDir
 	 * @return
 	 */
-
-	private Map readConfig(String configType, String templateDir) {
+	@SuppressWarnings("unchecked")
+	private Map<String, ?> readConfig(String configType, String templateDir) {
 		InputStream is = null;
 		String configPath;
 		if (StringUtils.hasLength(templateDir)) {
@@ -104,7 +158,7 @@ public class ParseFactory {
 			configPath = "config/" + configType + ".yaml";
 			is = this.getClass().getClassLoader().getResourceAsStream(configPath);
 		}
-		Map rootMap = null;
+		Map<String, ?> rootMap = null;
 		try {
 			rootMap = Yaml.loadType(is, HashMap.class);
 		} catch (Exception e) {
@@ -133,5 +187,4 @@ public class ParseFactory {
 		public String text;
 		public float confidence;
 	}
-
 }

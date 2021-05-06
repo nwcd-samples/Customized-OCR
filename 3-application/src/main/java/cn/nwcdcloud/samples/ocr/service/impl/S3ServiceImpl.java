@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.S3Service;
+import software.amazon.awssdk.core.ResponseBytes;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -36,7 +41,6 @@ public class S3ServiceImpl implements S3Service {
 
 		PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
 				.signatureDuration(Duration.ofMinutes(expTime)).putObjectRequest(objectRequest).build();
-
 		try {
 			PresignedPutObjectRequest presignedRequest = S3Presigner.create().presignPutObject(presignRequest);
 			URL url = presignedRequest.url();
@@ -50,7 +54,17 @@ public class S3ServiceImpl implements S3Service {
 			result.setMsg("获取presignedURL出错");
 		}
 		return result;
+	}
 
+	public byte[] getContent(String region, String bucketName, String keyName) {
+		if (StringUtils.isBlank(region)) {
+			region = "cn-northwest-1";
+		}
+		S3Client s3 = S3Client.builder().region(Region.of(region)).build();
+		GetObjectRequest objectRequest = GetObjectRequest.builder().key(keyName).bucket(bucketName).build();
+		ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
+		byte[] data = objectBytes.asByteArray();
+		return data;
 	}
 
 }

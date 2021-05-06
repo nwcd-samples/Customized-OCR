@@ -262,10 +262,10 @@ public class ParseHorizontalWorker {
 		if (maxLineCount > 1) {
 			return findMultiLineBlockItemValue(blockItemList, blockItem, maxLineCount, false);
 		}
-		int topBorder = blockItem.getInteger("top") - (int) (topOffsetRadio * blockItem.getInteger("height"));
+		int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
 		int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
 		//ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
-		int leftBorder = blockItem.getInteger("x") - (int) (leftOffsetRadio * blockItem.getInteger("width") );
+		int leftBorder = blockItem.getInteger("x") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
 		int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
 		logger.debug("key-value 分离，关键字【{}】- value 的边界范围  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
 				blockItem.getString("text"), blockItem.getInteger("top"), blockItem.getInteger("bottom"),

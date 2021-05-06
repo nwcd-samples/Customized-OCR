@@ -7,12 +7,12 @@ public interface ConfigConstants {
     int PAGE_HEIGHT = 2000;
 
     //  LengthMax 每个元素最大字符数
-    int ITEM_LENGTH_MAX = 20;
+    int ITEM_LENGTH_MAX = 40;
     // LineCountMax  Value 元素可以有多行
     int ITEM_LINE_COUNT_MAX = 1;
 
 
-    double ITEM_OFFSET_TOP_RADIO = 1.0;
+    double ITEM_OFFSET_TOP_RADIO = -1.0;
     double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
     double ITEM_OFFSET_LEFT_RADIO = 0;
     double ITEM_OFFSET_RIGHT_RADIO = 10;

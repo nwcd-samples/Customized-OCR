@@ -11,11 +11,7 @@ Targets:
     XRangeMax: 1.0
     YRangeMin: 0.2
     YRangeMax: 1.0
-    # 相对于自身高度， Value Block 往上偏移的倍数  top + height * TopOffsetRadio
-    TopOffsetRadio: 0.5
-    # 相对于自身高度， Value Block 往下偏移的倍数  bottom - height * TopOffsetRadio
+    TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
-    #Value Block 左边界  >=  item.right + item.width * LeftOffsetRadio
     LeftOffsetRadio: 0.0
-    #Value Block 右边界  >=  item.right + item.width * RightOffsetRadio
     RightOffsetRadio: 5.0

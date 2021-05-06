@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
+import cn.nwcdcloud.samples.ocr.constant.OcrConstants;
 import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import cn.nwcdcloud.samples.ocr.service.InferenceService;
@@ -38,10 +39,13 @@ public class InferenceServiceImpl implements InferenceService {
 		}
 		Result result = new Result();
 		JSONObject jsonObject = json.getJSONObject(0);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
-		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, type, templateDir);
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH,
+				ConfigConstants.PAGE_HEIGHT);
+		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, type,
+				templateDir);
 		JSONArray resultArray = new JSONArray();
-		resultArray.add(parseJsonUtil.extractValue(blockItemList));
+		resultArray.add(parseJsonUtil.extractValue(blockItemList, jsonObject.getIntValue(OcrConstants.IMAGE_TYPE),
+				jsonObject.getString(OcrConstants.IMAGE_ID)));
 		if (logger.isDebugEnabled()) {
 			logger.debug(resultArray.toJSONString());
 		}
