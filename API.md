@@ -69,8 +69,8 @@ Targets:
 |YRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
 |TopOffsetRadio|二级|否|float|-1.0|valueItem.top >= keyItem.top + keyItem.height * TopOffsetRadio|
 |BottomOffsetRadio|二级|否|float|1.0|valueItem.bottom <= keyItem.bottom + keyItem.height * BottomOffsetRadio|
-|LeftOffsetRadio|二级|否|float|0.0|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
-|RightOffsetRadio|二级|否|float|10.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
+|LeftOffsetRadio|二级|否|float|0|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
+|RightOffsetRadio|二级|否|float|30.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
 
 ### 2.2 表格
 当RecognitionType的值为table时，可选参数如下：  
