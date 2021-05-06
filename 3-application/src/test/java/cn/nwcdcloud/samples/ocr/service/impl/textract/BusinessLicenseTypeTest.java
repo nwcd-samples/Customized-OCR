@@ -92,6 +92,17 @@ public class BusinessLicenseTypeTest {
             logger.info("[{}]    \t    [{}]",tempName, tempValue );
         }
 
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "名称", "北京万裕久鑫科技有限公司");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "类型", "有限责任公司（自然人独资）");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "法定代表人", "邓明生");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "经营范围", "技术开发、技术推广、技术转让、技术服务、技术咨询计算机系统服务：基础软件服务：应用软件服务；软件开发：软件咨询：设计、制作、代理、发布广告。（市场主体依法自主选择经营项目，开展经营活动；依法须经批准的项目，经相关部门批准后依批准的内容开展经营活动不得从事国家和本市产业政策禁止和限制类项目的经营活");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "注册资本", "100万元");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "成立日期", "2017年03月31日");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "营业期限", "2017年03月31日至2047年03月30日");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "住所", "北京市昌平区回龙观东大街338号创客广场A5-026");
+
+
+
     }
 
 

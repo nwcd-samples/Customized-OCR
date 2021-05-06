@@ -82,7 +82,7 @@ public class ParseHorizontalWorker {
 				}
 
 			} else {
-				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
+//				logger.debug(" Key Value 在同一个单元格内 index: {}  keyword length : {} ", index, keyWord.length());
 				int lastIndex = text.length() > index + keyWord.length() + maxLength
 						? index + keyWord.length() + maxLength
 						: text.length();
@@ -320,8 +320,10 @@ public class ParseHorizontalWorker {
 				continue;
 			}
 
+			//FIXME: 行高的范围判断， 后期可以优化 和范围判断合并。
 			if (curItem.getInteger("bottom") <
-					blockItem.getInteger("bottom")+ maxLineCount * (blockItem.getInteger("height") + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
+					blockItem.getInteger("bottom")+ maxLineCount * (blockItem.getInteger("height")
+							+ ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
 				//范围的判断
 
 				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, borderItem)){
@@ -351,7 +353,6 @@ public class ParseHorizontalWorker {
 		ParseFactory.Cell cell = new ParseFactory.Cell();
 		cell.text = stringBuilder.toString();
 		cell.confidence = minConfidence;
-		logger.debug(" cell text  [{}]   ",cell.text );
 		return cell ;
 	}
 

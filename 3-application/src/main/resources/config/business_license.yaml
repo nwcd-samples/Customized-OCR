@@ -8,8 +8,8 @@ Targets:
     YRangeMin: 0.25
     YRangeMax: 0.40
   - Name: "统一社会信用代码"
-    TopOffsetRadio: -1.0
-    LeftOffsetRadio: 1.0
+    TopOffsetRadio: 1.0
+    LeftOffsetRadio: -1.0
     RightOffsetRadio: 0.5
     BottomOffsetRadio: 4.0
   - Name: "名称"

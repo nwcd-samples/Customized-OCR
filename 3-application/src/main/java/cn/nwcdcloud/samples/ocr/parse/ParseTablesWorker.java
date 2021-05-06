@@ -193,9 +193,9 @@ public class ParseTablesWorker {
                         if(BlockItemUtils.isValidRange(config, tempBlockItem, this.pageWidth,  this.pageHeight)){
                             resultItemList.add(tempBlockItem);
                             findFlag = true;
-//                            logger.warn("找到列头定位元素 【{}】   {} ", tempBlockItem.getString("text"), BlockItemUtils.generateBlockItemString(tempBlockItem) );
+//                            logger.debug("找到列头定位元素 【{}】   {} ", tempBlockItem.getString("text"), BlockItemUtils.generateBlockItemString(tempBlockItem) );
                         }else{
-                            logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", tempBlockItem.getString("text"), config );
+//                            logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", tempBlockItem.getString("text"), config );
                         }
                     }
                 }

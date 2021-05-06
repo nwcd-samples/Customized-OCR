@@ -33,7 +33,7 @@ Targets:
   - Name: "住所"
     KeyWordList: ["所"]
     LineCountMax: 2
-    TopOffsetRadio: 0
-    LeftOffsetRadio: -0.5
-    RightOffsetRadio: 1
-    BottomOffsetRadio: 1.0
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: -1.0
+    RightOffsetRadio: 40
+    BottomOffsetRadio: 3.0

@@ -345,10 +345,10 @@ public class BlockItemUtils {
         int y = blockItem.getInteger("y");
 
         if (x > right || x < left || y < top || y > bottom) {
-            logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}] page[width={},height={} ]", xRangeMin, xRangeMax, yRangeMin, yRangeMax,pageWidth, pageHeight);
-            logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
-            logger.debug("isValidRange 【{}】 元素的中心点:[x={}, y={}] ", blockItem.getString("text"), blockItem.getInteger("x"),
-            blockItem.getInteger("y"));
+//            logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}] page[width={},height={} ]", xRangeMin, xRangeMax, yRangeMin, yRangeMax,pageWidth, pageHeight);
+//            logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
+//            logger.debug("isValidRange 【{}】 元素的中心点:[x={}, y={}] ", blockItem.getString("text"), blockItem.getInteger("x"),
+//            blockItem.getInteger("y"));
 
             return false;
         }
