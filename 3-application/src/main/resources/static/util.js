@@ -153,18 +153,18 @@ function sort_block_by_left_top(a,b) {
 
 function print_block_item(message, _blockItem){
 
-    var topRadio = parseFloat(_blockItem['top']) / canvas_height;
-    var bottomRadio = parseFloat(_blockItem['bottom']) / canvas_height;
-    var leftRadio = parseFloat(_blockItem['left']) / canvas_width;
-    var rightRadio = parseFloat(_blockItem['right']) / canvas_width;
-    console.log("[%s] [%s]  [top=%d (%.3f) , bottom=%d (%.3f)]  [left=%d (%.3f), right=%d (%.3f)]",
+    var topRadio = (parseFloat(_blockItem['top']) / canvas_height).toFixed(3);
+    var bottomRadio = (parseFloat(_blockItem['bottom']) / canvas_height).toFixed(3);
+    var leftRadio = (parseFloat(_blockItem['left']) / canvas_width).toFixed(3);
+    var rightRadio = (parseFloat(_blockItem['right']) / canvas_width).toFixed(3);
+    console.log("[%s] [%s]  [top=%d (%s) , bottom=%d (%s)]  [left=%d (%s), right=%d (%s)]",
                         message, _blockItem['text'] ,
                       _blockItem['top'] ,  topRadio,
                       _blockItem['bottom'] ,bottomRadio,
                       _blockItem['left'] , leftRadio,
                       _blockItem['right'] , rightRadio )
 
-// console.log("[%s] [%s] [%s]  [top=%d(%f) , bottom=%d(%f)]  [left=%d(%f), right=%d(%f)]", message,
+// console.log("[%s] [%s] [%s]  [top=%d(%s) , bottom=%d(%s)]  [left=%d(%s), right=%d(%s)]", message,
 //                        _blockItem['id'], _blockItem['text'] ,
 //                      _blockItem['top'] ,  topRadio,
 //                      _blockItem['bottom'] ,bottomRadio,
