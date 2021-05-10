@@ -15,7 +15,7 @@ public interface ConfigConstants {
     double ITEM_OFFSET_TOP_RADIO = -1.0;
     double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
     double ITEM_OFFSET_LEFT_RADIO = -0.5;
-    double ITEM_OFFSET_RIGHT_RADIO = 10;
+    double ITEM_OFFSET_RIGHT_RADIO = 30;
 
     // 解析表格 定位 cell元素， 上下设置一个误差范围
     int PARSE_CELL_ERROR_RANGE_TOP      = 20;
