@@ -1,17 +1,14 @@
 TemplateName: 'business-license-ocr-template'
 
 Targets:
-  - Name: "二维码"
-    RecognitionType: "qrcode"
-    XRangeMax: 0.3
-    YRangeMin: 0.70
-    YRangeMax: 0.9
   - Name: "统一社会信用代码"
   - Name: "注册号"
   - Name: "名称"
     KeyWordList: ["称"]
   - Name: "类型"
+    KeyWordList: ["型"]
   - Name: "住所"
+    KeyWordList: ["所"]
   - Name: "经营场所"
   - Name: "组成形式"
   - Name: "法定代表人"

@@ -8,6 +8,6 @@ Targets:
     KeyWordList: ["出生"]
   - Name: "住址"
     LineCountMax: 2
-    RightOffsetRadio: 8
+    LeftOffsetRadio: -0.4
     BottomOffsetRadio: 3.0
   - Name: "公民身份号码"

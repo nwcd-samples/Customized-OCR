@@ -14,19 +14,24 @@ Targets:
     BottomOffsetRadio: 4.0
   - Name: "名称"
     KeyWordList: ["称"]
-    RightOffsetRadio: 20
 
   - Name: "类型"
     KeyWordList: ["型"]
-    RightOffsetRadio: 20
 
   - Name: "法定代表人"
   - Name: "经营范围"
-    LineCountMax: 4
-    RightOffsetRadio: 3
+    LineCountMax: 5
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: -1.0
+    RightOffsetRadio: 4
+    BottomOffsetRadio: 6.0
   - Name: "注册资本"
   - Name: "成立日期"
   - Name: "营业期限"
   - Name: "住所"
     KeyWordList: ["所"]
     LineCountMax: 2
+    TopOffsetRadio: -1.0
+    LeftOffsetRadio: -1.0
+    RightOffsetRadio: 40
+    BottomOffsetRadio: 3.0
