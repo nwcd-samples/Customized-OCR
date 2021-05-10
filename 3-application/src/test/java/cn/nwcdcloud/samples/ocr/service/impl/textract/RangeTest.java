@@ -38,6 +38,8 @@ public class RangeTest {
         JSONObject object = (JSONObject) keyValueList.get(0);
         logger.info(object.toJSONString());
         assert "180.00".equals(object.getString("value"));
+
+
     }
 
 }

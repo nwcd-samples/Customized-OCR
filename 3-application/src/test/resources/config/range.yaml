@@ -13,5 +13,5 @@ Targets:
     YRangeMax: 1.0
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
-    LeftOffsetRadio: 0.0
+    LeftOffsetRadio: 0.5
     RightOffsetRadio: 5.0
