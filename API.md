@@ -14,6 +14,8 @@ Targets:
     KeyWordList: ["出生"]
   - Name: "住址"
     LineCountMax: 2
+    LeftOffsetRadio: -1.0
+    BottomOffsetRadio: 3.0
   - Name: "公民身份号码"
 ```
 返回结果示例
@@ -69,7 +71,7 @@ Targets:
 |YRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
 |TopOffsetRadio|二级|否|float|-1.0|valueItem.top >= keyItem.top + keyItem.height * TopOffsetRadio|
 |BottomOffsetRadio|二级|否|float|1.0|valueItem.bottom <= keyItem.bottom + keyItem.height * BottomOffsetRadio|
-|LeftOffsetRadio|二级|否|float|0|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
+|LeftOffsetRadio|二级|否|float|-0.5|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
 |RightOffsetRadio|二级|否|float|30.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
 
 ### 2.2 表格
@@ -106,27 +108,30 @@ Targets:
 ## 3 示例
 ```YAML
 TemplateName: 'table'
+
 Targets:
   - Name: "公司名称"
   - Name: "纳税人识别号"
   - Name: "打印人"
-    KeyWordList: ["打印人：", "打印人:"]
   - Name: "分店"
   - Name: "打印时间"
   - Name: "结算单号"
   - Name: "结算年月"
   - Name: "供应商名称"
-  - Name: "结算费用单明细"
+  - Name: "结算单费用明细"
     RecognitionType: "table"
     Columns:
       - ColumnName: "扣款代码"
         Location: true
-        MoveRightRatio: 0.2
       - ColumnName: "费用项目"
-        MoveLeftRatio: -0.3
-        MoveRightRatio: 0.3
+        MarginLeftType: "near"
+        MarginRightType: "far"
+        MainColumn: true
       - ColumnName: "扣款项目名称"
+        MarginLeftType: "near"
+        MarginRightType: "far"
       - ColumnName: "扣款金额"
         Location: true
-        KeyWordList: ["扣款额"]
+        MarginLeftType: "near"
+        MoveRightRatio: 1
 ```
