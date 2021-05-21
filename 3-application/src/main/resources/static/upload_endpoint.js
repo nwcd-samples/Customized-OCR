@@ -31,9 +31,9 @@ function predict(type,showJson,file){
 		    if (result.code == 1) {
 		    	if(showJson){
 				    $("#loading-icon").hide();
-		    		alert(result.data);
+		    		alert(JSON.stringify(result.data));
 		    	}else{
-		    		globalData = JSON.parse(result.data);
+		    		globalData = result.data;
 			    	analysis(type,globalData);
 		    	}
 		    }else{
@@ -50,11 +50,11 @@ function predict(type,showJson,file){
 
 function analysis(type,fullData){
 	//console.log(fullData);
-	$.post("/inference/analysis/"+type,
+	$.get("/inference/analysis/"+type,
 			{"fullData":JSON.stringify(fullData)},
 			function(result) {
 			    if (result.code == 1) {
-			    	displayResult(fullData,JSON.parse(result.data));
+			    	displayResult(fullData,result.data);
 				}else{
 					alert(result.msg);
 				}

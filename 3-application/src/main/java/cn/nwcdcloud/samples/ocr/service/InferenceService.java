@@ -1,13 +1,9 @@
 package cn.nwcdcloud.samples.ocr.service;
 
-import java.io.InputStream;
+import com.alibaba.fastjson.JSONArray;
 
 import cn.nwcdcloud.commons.lang.Result;
 
 public interface InferenceService {
-	Result analyse(String type, String data);
-
-	Result predict(String type, String endpointName, String body);
-
-	Result predict(String type, String endpointName, String contentType, InputStream inputStream);
+	Result analyse(String type, JSONArray data);
 }

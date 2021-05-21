@@ -49,16 +49,16 @@ function predict(type,keyName,showJson){
 	if(showJson){
 		url += "/"+type;
 	}
-	$.post(url,
+	$.get(url,
 		  {"keyName":keyName},
 		  function(result) {
 			  console.log(result);
 		      if (result.code == 1) {
 			      if(showJson){
 					  $("#loading-icon").hide();
-			    	  alert(result.data);
+			    	  alert(JSON.stringify(result.data));
 			      }else{
-			    	  globalData = JSON.parse(result.data);
+			    	  globalData = result.data;
 			    	  analysis(type,globalData);
 			      }
 		      }else{
@@ -71,11 +71,11 @@ function predict(type,keyName,showJson){
 
 function analysis(type,fullData){
 	console.log(fullData);
-	$.post("/inference/analysis/"+type,
+	$.get("/inference/analysis/"+type,
 			{"fullData":JSON.stringify(fullData)},
 			function(result) {
 			    if (result.code == 1) {
-			    	displayResult(fullData,JSON.parse(result.data));
+			    	displayResult(fullData,result.data);
 				}else{
 					alert(result.msg);
 				}

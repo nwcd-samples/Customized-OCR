@@ -5,7 +5,7 @@
 
 	<groupId>cn.nwcdcloud.samples</groupId>
 	<artifactId>ocr</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>ocr</name>

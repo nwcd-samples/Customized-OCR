@@ -61,7 +61,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 				.contentType("application/json").body(requestBody).build();
 		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
 		InvokeEndpointResponse response = client.invokeEndpoint(request);
-		String data = addImageInfoJson(response.body().asUtf8String(), body);
+		JSONArray data = addImageInfoJson(response.body().asUtf8String(), body);
 		result.setData(data);
 		return result;
 	}
@@ -75,7 +75,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
 		try {
 			InvokeEndpointResponse response = client.invokeEndpoint(request);
-			String data = addImageInfoByte(response.body().asUtf8String(), requestBody.asByteArray());
+			JSONArray data = addImageInfoByte(response.body().asUtf8String(), requestBody.asByteArray());
 			result.setData(data);
 		} catch (ModelErrorException e) {
 			if (e.getMessage().indexOf("413 Request Entity Too Large") != -1) {
@@ -96,14 +96,14 @@ public class SageMakerServiceImpl implements SageMakerService {
 	 * @param imageId
 	 * @return
 	 */
-	private String addImageInfoByte(final String original, byte[] content) {
+	private JSONArray addImageInfoByte(final String original, byte[] content) {
 		JSONArray jsonArray = JSON.parseArray(original);
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 		String imageId = getUUID();
 		cacheImageByte.put(imageId, content);
 		jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.Byte.getId());
 		jsonObject.put(OcrConstants.IMAGE_ID, imageId);
-		return jsonArray.toJSONString();
+		return jsonArray;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 	 * @param imageId
 	 * @return
 	 */
-	private String addImageInfoJson(final String original, String content) {
+	private JSONArray addImageInfoJson(final String original, String content) {
 		JSONObject jsonContent = JSON.parseObject(content);
 		JSONArray jsonArray = JSON.parseArray(original);
 		for (int i = 0; i < jsonArray.size(); i++) {
@@ -126,7 +126,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 			jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.JSON.getId());
 			jsonObject.put(OcrConstants.IMAGE_ID, imageId);
 		}
-		return jsonArray.toJSONString();
+		return jsonArray;
 	}
 
 	@Override

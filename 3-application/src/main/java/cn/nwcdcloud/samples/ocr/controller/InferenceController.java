@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
 import cn.nwcdcloud.samples.ocr.service.InferenceService;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
@@ -59,69 +62,62 @@ public class InferenceController {
 		return result;
 	}
 
-	@PostMapping("/predict")
-	@ResponseBody
-	public String predict(HttpServletRequest request) {
+	private Result doPredict(HttpServletRequest request) {
 		String contentType = request.getContentType();
 		try {
 			if ("application/json".equalsIgnoreCase(contentType)) {
 				String body = getRequestContent(request);
-				return sageMakerService.invokeEndpoint(endpointName, body).toString();
+				return sageMakerService.invokeEndpoint(endpointName, body);
 			} else if (StringUtils.hasLength(contentType) && contentType.startsWith("image")) {
-				return sageMakerService.invokeEndpoint(endpointName, contentType, request.getInputStream()).toString();
+				return sageMakerService.invokeEndpoint(endpointName, contentType, request.getInputStream());
 			} else {
-				String keyName = request.getParameter("keyName");
 				JSONObject jsonRequest = new JSONObject();
-				jsonRequest.put("bucket", bucketName);
+				String tempBucketName = request.getParameter("bucketName");
+				if (StringUtils.hasLength(tempBucketName)) {
+					jsonRequest.put("bucket", tempBucketName);
+				} else {
+					jsonRequest.put("bucket", bucketName);
+				}
+				String keyName = request.getParameter("keyName");
 				jsonRequest.put("image_uri", new String[] { keyName });
 				Result result = sageMakerService.invokeEndpoint(endpointName, jsonRequest.toJSONString());
-				return result.toString();
+				return result;
 			}
 		} catch (Exception e) {
 			logger.warn("图片推理报错", e);
 			Result result = new Result();
 			result.setCode(10);
 			result.setMsg("推理报错");
-			return result.toString();
+			return result;
 		}
 	}
 
-	@PostMapping("/predict/{type}")
+	@RequestMapping("/predict")
+	@ResponseBody
+	public String predict(HttpServletRequest request) {
+		return doPredict(request).toString();
+	}
+
+	@RequestMapping("/predict/{type}")
 	@ResponseBody
 	public String predict(@PathVariable("type") String type, HttpServletRequest request) {
-		String contentType = request.getContentType();
-		try {
-			if ("application/json".equalsIgnoreCase(contentType)) {
-				String body = getRequestContent(request);
-				return inferenceService.predict(type, endpointName, body).toString();
-			} else if (StringUtils.hasLength(contentType) && contentType.startsWith("image")) {
-				return inferenceService.predict(type, endpointName, contentType, request.getInputStream()).toString();
-			} else {
-				String keyName = request.getParameter("keyName");
-				JSONObject jsonRequest = new JSONObject();
-				jsonRequest.put("bucket", bucketName);
-				jsonRequest.put("image_uri", new String[] { keyName });
-				Result result = inferenceService.predict(type, endpointName, jsonRequest.toJSONString());
-				return result.toString();
-			}
-		} catch (Exception e) {
-			logger.warn("图片推理报错", e);
-			Result result = new Result();
-			result.setCode(10);
-			result.setMsg("推理报错");
+		Result result = doPredict(request);
+		if (result.getCode() != CommonConstants.NORMAL) {
 			return result.toString();
 		}
+		return inferenceService.analyse(type, (JSONArray) result.getData()).toString();
 	}
 
-	@PostMapping("/analysis/{type}")
+	@RequestMapping("/analysis/{type}")
 	@ResponseBody
 	public String analyse(@PathVariable("type") String type, String fullData) {
-		Result result = inferenceService.analyse(type, fullData);
+		JSONArray data = JSON.parseArray(fullData);
+		Result result = inferenceService.analyse(type, data);
 		return result.toString();
 	}
 
 	private String getRequestContent(HttpServletRequest request) {
-		// 获取POST数据
+		// 获取Body数据
 		BufferedReader bufReader = null;
 		try {
 			bufReader = request.getReader();
