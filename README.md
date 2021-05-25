@@ -43,7 +43,7 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 [2020-12-12 10:55:36.524][INFO] c.n.samples.ocr.OcrApplication - Started OcrApplication in 3.14 seconds (JVM running for 4.373)
 ```
 #### 访问Web服务
-在浏览器中输入服务器地址：http://127.0.0.1/，出现以下界面。
+在浏览器中输入服务器地址：http://127.0.0.1/ ，出现以下界面。
 ![](image/web-index.jpg)
 点击 **创建OCR推理服务** 按钮，OCR推理服务状态变为：Creating；预计7分钟左右，OCR推理服务状态变为：InService，这时即可进行推理。
 #### 使用PostMan测试发送图片方式
