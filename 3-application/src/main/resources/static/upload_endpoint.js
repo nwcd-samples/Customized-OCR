@@ -50,7 +50,7 @@ function predict(type,showJson,file){
 
 function analysis(type,fullData){
 	//console.log(fullData);
-	$.get("/inference/analysis/"+type,
+	$.post("/inference/analysis/"+type,
 			{"fullData":JSON.stringify(fullData)},
 			function(result) {
 			    if (result.code == 1) {

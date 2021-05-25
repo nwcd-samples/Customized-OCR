@@ -39,7 +39,7 @@ public class InferenceServiceImpl implements InferenceService {
 				templateDir);
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList, jsonObject.getIntValue(OcrConstants.IMAGE_TYPE),
-				jsonObject.getString(OcrConstants.IMAGE_ID)));
+				jsonObject.getString(OcrConstants.IMAGE_CONTENT)));
 		if (logger.isDebugEnabled()) {
 			logger.debug(resultArray.toJSONString());
 		}

@@ -29,14 +29,4 @@ public class CacheConfig {
 				.withDispatcherConcurrency(4);
 		return cacheManager.createCache("cacheImageByte", cacheConfig);
 	}
-
-	@DependsOn("cacheManager")
-	@Bean
-	public Cache<String, String> cacheImageJson() {
-		CacheConfigurationBuilder<String, String> cacheConfig = CacheConfigurationBuilder
-				.newCacheConfigurationBuilder(String.class, String.class,
-						ResourcePoolsBuilder.newResourcePoolsBuilder().heap(20, EntryUnit.ENTRIES))
-				.withDispatcherConcurrency(4);
-		return cacheManager.createCache("cacheImageJson", cacheConfig);
-	}
 }

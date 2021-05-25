@@ -13,7 +13,7 @@
 <body class="d-flex flex-column h-100">
 <div class="container" id="main" style="800px">
 
-    <h1 class="mt-3 " style="width:100%;text-align:center;margin:30px" >NICO Web 演示</h1>
+    <h1 class="mt-3 " style="width:100%;text-align:center;margin:30px" >NICO(${version})</h1>
 
     <div class="row">
         <div class="col-sm">

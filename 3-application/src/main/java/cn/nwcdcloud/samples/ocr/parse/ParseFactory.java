@@ -52,7 +52,7 @@ public class ParseFactory {
 		return extractValue(blockItemList, 0, null);
 	}
 
-	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageId) {
+	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageContent) {
 		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
 		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(pageWidth, pageHeight);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(pageWidth, pageHeight);
@@ -79,7 +79,7 @@ public class ParseFactory {
 				}
 			} else if ("qrcode".equals(recognitionType)) {
 				if (image == null) {
-					image = getImage(imageType, imageId);
+					image = getImage(imageType, imageContent);
 				}
 				JSONObject resultItem = qrcodeWorker.parse(newItem, image);
 				if (resultItem != null) {
@@ -94,11 +94,11 @@ public class ParseFactory {
 		return jsonResult;
 	}
 
-	private BufferedImage getImage(int imageType, String imageId) {
+	private BufferedImage getImage(int imageType, String imageContent) {
 		if (imageType == ImageType.Byte.getId()) {
 			Cache<String, byte[]> cacheImageByte = ApplicationUtils.getBean("cacheImageByte");
 			try {
-				byte[] imageByte = cacheImageByte.get(imageId);
+				byte[] imageByte = cacheImageByte.get(imageContent);
 				if (imageByte == null) {
 					return null;
 				}
@@ -109,10 +109,9 @@ public class ParseFactory {
 			}
 		}
 		if (imageType == ImageType.JSON.getId()) {
-			Cache<String, String> cacheImageJson = ApplicationUtils.getBean("cacheImageJson");
 			S3Service s3Service = ApplicationUtils.getBean(S3Service.class);
 			try {
-				String content = cacheImageJson.get(imageId);
+				String content = imageContent;
 				if (!StringUtils.hasLength(content)) {
 					return null;
 				}

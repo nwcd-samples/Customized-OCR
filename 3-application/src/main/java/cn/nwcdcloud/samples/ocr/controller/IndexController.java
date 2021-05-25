@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.nwcdcloud.samples.ocr.service.ManifestService;
 import cn.nwcdcloud.samples.ocr.service.S3Service;
 import software.amazon.awssdk.utils.StringUtils;
 
@@ -21,6 +22,8 @@ import software.amazon.awssdk.utils.StringUtils;
 public class IndexController {
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ManifestService manifestService;
 	@Value("${bucketName}")
 	private String bucketName;
 	@Value("${prefix}")
@@ -38,6 +41,7 @@ public class IndexController {
 	@GetMapping("/")
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("version", manifestService.get("Implementation-Version"));
 		mv.setViewName("index");
 		return mv;
 	}

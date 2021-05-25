@@ -50,8 +50,6 @@ public class SageMakerServiceImpl implements SageMakerService {
 	private IamService iamService;
 	@Autowired
 	private Cache<String, Object> cacheImageByte;
-	@Autowired
-	private Cache<String, String> cacheImageJson;
 
 	@Override
 	public Result invokeEndpoint(String endpointName, String body) {
@@ -102,7 +100,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		String imageId = getUUID();
 		cacheImageByte.put(imageId, content);
 		jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.Byte.getId());
-		jsonObject.put(OcrConstants.IMAGE_ID, imageId);
+		jsonObject.put(OcrConstants.IMAGE_CONTENT, imageId);
 		return jsonArray;
 	}
 
@@ -121,10 +119,8 @@ public class SageMakerServiceImpl implements SageMakerService {
 			JSONObject jsonData = new JSONObject();
 			jsonData.put("bucket", jsonContent.getString("bucket"));
 			jsonData.put("image_uri", jsonContent.getJSONArray("image_uri").get(i));
-			String imageId = getUUID();
-			cacheImageJson.put(imageId, jsonData.toJSONString());
 			jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.JSON.getId());
-			jsonObject.put(OcrConstants.IMAGE_ID, imageId);
+			jsonObject.put(OcrConstants.IMAGE_CONTENT, jsonData);
 		}
 		return jsonArray;
 	}
