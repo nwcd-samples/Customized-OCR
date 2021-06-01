@@ -13,10 +13,12 @@ public class ParseTablesWorker {
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
     private int pageWidth;
     private int pageHeight;
+    private Map<String, ?> mRootConfig ;
 
-    public ParseTablesWorker(int pageWidth, int pageHeight) {
+    public ParseTablesWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
         this.pageWidth = pageWidth;
         this.pageHeight = pageHeight;
+        this.mRootConfig = rootConfig;
     }
 
     /**

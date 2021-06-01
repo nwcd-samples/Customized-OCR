@@ -12,10 +12,15 @@ public class ParseHorizontalWorker {
 
 	private int pageWidth;
 	private int pageHeight;
+	ParseDefaultValueConfig mDefaultConfig ;
 
-	public ParseHorizontalWorker(int pageWidth, int pageHeight) {
+	public ParseHorizontalWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
+
+		mDefaultConfig = new ParseDefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
+		System.out.println("===================================================" +  mDefaultConfig);
+
 	}
 
 	/**
@@ -56,7 +61,9 @@ public class ParseHorizontalWorker {
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
-		int maxLength = Integer.parseInt(configMap.getOrDefault("LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
+//		int maxLength = Integer.parseInt(configMap.getOrDefault("LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
+		int maxLength = Integer.parseInt(mDefaultConfig.getDefaultKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
+
 		if(parseItemResult.subKeyWord != null ){
 //			logger.debug("----------- case  1.     key  value  分开");
 			// case  1:   'key1'   'key2value'  [姓        名：张三]    解决关键字分成两块的情况
@@ -69,7 +76,8 @@ public class ParseHorizontalWorker {
 //			logger.debug("----------- case  2.     key：value 在一个单元格");
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
-			int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
+//			int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
+			int maxLineCount = Integer.parseInt(mDefaultConfig.getDefaultKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 			if (maxLineCount > 1) { //多行的情况
 				ParseFactory.Cell cell = findMultiLineBlockItemValue(configMap, blockItemList, blockItem, maxLineCount, true);
 

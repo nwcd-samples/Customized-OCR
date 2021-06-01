@@ -22,6 +22,11 @@ import com.google.zxing.common.HybridBinarizer;
 public class ParseQRCodeWorker {
 	private final Logger logger = LoggerFactory.getLogger(ParseQRCodeWorker.class);
 
+	private Map<String, ?> mRootConfig ;
+	public ParseQRCodeWorker(Map<String, ?> rootConfig) {
+		mRootConfig = rootConfig;
+	}
+
 	/**
 	 * 处理单个水平元素
 	 * 

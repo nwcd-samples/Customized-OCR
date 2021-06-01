@@ -1,0 +1,12 @@
+TemplateName: 'table'
+
+Targets:
+  - Name: "境内收货人-数字"
+    KeyWordList: ["境内收货人"]
+  - Name: "境内收货人-文字"
+    KeyWordList: ["境内收货人"]
+    LineCountMax: 1
+    LeftOffsetRadio: -2.0
+    BottomOffsetRadio: 4.0
+    RightOffsetRadio: 1.0
+    TopOffsetRadio: -1.0
