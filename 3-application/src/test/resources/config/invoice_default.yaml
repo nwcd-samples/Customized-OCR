@@ -3,7 +3,7 @@ TemplateName: 'invoice-ocr-template'
 DefaultValue:
   KeyValue:
     LengthMin: 1
-    LengthMax: 40
+    LengthMax: 39
     LineCountMax: 1
     TargetValueType: "string"
     XRangeMin: 0.0
@@ -16,16 +16,16 @@ DefaultValue:
     RightOffsetRadio: 30.0
   Table:
     MaxRowHeightRatio: 2.0
-    MaxRowCount: 20
+    MaxRowCount: 21
     Columns:
       MarginLeftType: "middle"
-      MoveLeftRatio: 0.0
+      MoveLeftRatio: 0.1
       MarginRightType: "middle"
       MoveRightRatio: 0.0
       XRangeMin: 0.0
       XRangeMax: 1.0
       YRangeMin: 0.0
-      YRangeMax: 1.0
+      YRangeMax: 1.1
 
 Targets:
   - Name: "二维码"

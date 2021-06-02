@@ -12,14 +12,13 @@ public class ParseHorizontalWorker {
 
 	private int pageWidth;
 	private int pageHeight;
-	ParseDefaultValueConfig mDefaultConfig ;
+	// 默认值配置类
+	DefaultValueConfig mDefaultConfig ;
 
 	public ParseHorizontalWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
 		this.pageWidth = pageWidth;
 		this.pageHeight = pageHeight;
-
-		mDefaultConfig = new ParseDefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
-		System.out.println("===================================================" +  mDefaultConfig);
+		mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
 
 	}
 
@@ -61,8 +60,7 @@ public class ParseHorizontalWorker {
 		resultItem.put("confidence", blockItem.getString("Confidence"));
 
 
-//		int maxLength = Integer.parseInt(configMap.getOrDefault("LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
-		int maxLength = Integer.parseInt(mDefaultConfig.getDefaultKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
+		int maxLength = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 
 		if(parseItemResult.subKeyWord != null ){
 //			logger.debug("----------- case  1.     key  value  分开");
@@ -76,8 +74,7 @@ public class ParseHorizontalWorker {
 //			logger.debug("----------- case  2.     key：value 在一个单元格");
 			// case  2:   'key:value'
 			// key和value 在一个单元格里
-//			int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
-			int maxLineCount = Integer.parseInt(mDefaultConfig.getDefaultKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
+			int maxLineCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 			if (maxLineCount > 1) { //多行的情况
 				ParseFactory.Cell cell = findMultiLineBlockItemValue(configMap, blockItemList, blockItem, maxLineCount, true);
 
@@ -267,9 +264,10 @@ public class ParseHorizontalWorker {
 		int minDistance = Integer.MAX_VALUE;
 		JSONObject minDistanceBlockItem = null;
 
-		int maxLineCount =  Integer.parseInt(configMap.getOrDefault("LineCountMax", 1).toString());
+		int maxLineCount =  Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 
-		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(configMap, blockItem);
+
+		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(mDefaultConfig, configMap, blockItem);
 		logger.debug("key-value 分离，关键字【{}】- value 的边界范围  original: [t={}, b={}, l={}, r={} ], border: [t={} b={}, l={}, r={} ]",
 				blockItem.getString("text"), blockItem.getInteger("top"), blockItem.getInteger("bottom"),
 				blockItem.getInteger("left"), blockItem.getInteger("right"),
@@ -321,7 +319,7 @@ public class ParseHorizontalWorker {
 
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
-		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(configMap, blockItem);
+		JSONObject borderItem = BlockItemUtils.getBlockItemBorder(mDefaultConfig, configMap, blockItem);
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject curItem = blockItemList.get(i);
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
@@ -333,7 +331,6 @@ public class ParseHorizontalWorker {
 					blockItem.getInteger("bottom")+ maxLineCount * (blockItem.getInteger("height")
 							+ ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
 				//范围的判断
-
 				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, borderItem)){
 					contentBlockItemList.add(curItem);
 				}

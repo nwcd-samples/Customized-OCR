@@ -386,22 +386,27 @@ public class BlockItemUtils {
 
     }
 
-    public static  Double getDoubleValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
-        return  Double.valueOf(configMap.getOrDefault(key, defaultValue).toString());
-    }
-    public static  Float getFloatValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
-        return  Float.valueOf(configMap.getOrDefault(key, defaultValue).toString());
-    }
-    public static  Integer getIntegerValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
-        return  Integer.valueOf(configMap.getOrDefault(key, defaultValue).toString());
-    }
+//    public static  Double getDoubleValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+//        return  Double.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+//    }
+//    public static  Float getFloatValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+//        return  Float.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+//    }
+//    public static  Integer getIntegerValueFromConfig ( HashMap configMap, String key ,  Object defaultValue){
+//        return  Integer.valueOf(configMap.getOrDefault(key, defaultValue).toString());
+//    }
 
-    public static JSONObject getBlockItemBorder(HashMap configMap, JSONObject blockItem){
+    public static JSONObject getBlockItemBorder(DefaultValueConfig mDefaultConfig,  HashMap configMap, JSONObject blockItem){
 
-        double topOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
-        double bottomOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
-        double leftOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
-        double rightOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
+        double topOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO).toString());
+        double bottomOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO).toString());
+        double leftOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO).toString());
+        double rightOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO).toString());
+
+//        double topOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO);
+//        double bottomOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO);
+//        double leftOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO);
+//        double rightOffsetRadio = BlockItemUtils.getDoubleValueFromConfig(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO);
 
 
         int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));

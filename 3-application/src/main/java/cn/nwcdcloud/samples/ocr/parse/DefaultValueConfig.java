@@ -2,13 +2,13 @@ package cn.nwcdcloud.samples.ocr.parse;
 
 import java.util.Map;
 
-public class ParseDefaultValueConfig {
+public class DefaultValueConfig {
 
     private Map<String, ?> mDefaultRootValueMap;
     private Map<String, ?> mKeyValueMap;
     private Map<String, ?> mTableValueMap;
     private Map<String, ?> mTableColumnMap;
-    public ParseDefaultValueConfig(Map<String, ?> defaultRootValueMap) {
+    public DefaultValueConfig(Map<String, ?> defaultRootValueMap) {
         mDefaultRootValueMap = defaultRootValueMap;
         if(mDefaultRootValueMap != null){
             mKeyValueMap = (Map<String, ?>) mDefaultRootValueMap.get("KeyValue");
@@ -27,7 +27,7 @@ public class ParseDefaultValueConfig {
      * @param defaultValue
      * @return
      */
-    public  Object getDefaultKeyValue(Map<String, ?> configMap, String key, Object defaultValue){
+    public  Object getKeyValue(Map<String, ?> configMap, String key, Object defaultValue){
 
         // step1. 直接获取配置的值
         if(configMap.get(key) != null && configMap.get(key)!=null){
@@ -52,7 +52,7 @@ public class ParseDefaultValueConfig {
      * @param defaultValue
      * @return
      */
-    public  Object getDefaultTableValue(Map<String, ?> configMap, String key, Object defaultValue){
+    public  Object getTableValue(Map<String, ?> configMap, String key, Object defaultValue){
 
         // step1. 直接获取配置的值
         if(configMap.get(key) != null && configMap.get(key)!=null){
@@ -62,6 +62,23 @@ public class ParseDefaultValueConfig {
         // step2.  获取模板配置的默认值
         if(mTableValueMap != null && mTableValueMap.get(key) != null){
             return mTableValueMap.get(key);
+        }
+
+        // step3. 或者预置的默认值
+        return defaultValue;
+    }
+
+
+    public  Object getTableColumnValue(Map<String, ?> configMap, String key, Object defaultValue){
+
+        // step1. 直接获取配置的值
+        if(configMap.get(key) != null && configMap.get(key)!=null){
+            return configMap.get(key);
+        }
+
+        // step2.  获取模板配置的默认值
+        if(mTableColumnMap != null && mTableColumnMap.get(key) != null){
+            return mTableColumnMap.get(key);
         }
 
         // step3. 或者预置的默认值

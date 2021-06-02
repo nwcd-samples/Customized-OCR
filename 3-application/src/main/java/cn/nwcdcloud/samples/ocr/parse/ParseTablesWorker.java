@@ -13,12 +13,12 @@ public class ParseTablesWorker {
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
     private int pageWidth;
     private int pageHeight;
-    private Map<String, ?> mRootConfig ;
+    private DefaultValueConfig mDefaultConfig ;
 
     public ParseTablesWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
         this.pageWidth = pageWidth;
         this.pageHeight = pageHeight;
-        this.mRootConfig = rootConfig;
+        this.mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
     }
 
     /**
@@ -304,11 +304,12 @@ public class ParseTablesWorker {
     private void adjustSingleItem(int leftColumnRight, int rightColumnLeft, JSONObject currentItem){
         HashMap infoMap = (HashMap) currentItem.get("config");
 
-        String marginLeftType = infoMap.getOrDefault("MarginLeftType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
-        String marginRightType = infoMap.getOrDefault("MarginRightType", ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
+        String marginLeftType = mDefaultConfig.getTableColumnValue(infoMap, "MarginLeftType" , ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
+        String marginRightType = mDefaultConfig.getTableColumnValue(infoMap, "MarginRightType" , ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
 
-        float moveLeftRatio = Float.valueOf(infoMap.getOrDefault("MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
-        float moveRightRatio = Float.valueOf(infoMap.getOrDefault("MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
+        float moveLeftRatio = Float.valueOf(mDefaultConfig.getTableColumnValue(infoMap, "MoveLeftRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_LEFT_RATIO).toString());
+        float moveRightRatio = Float.valueOf(mDefaultConfig.getTableColumnValue(infoMap, "MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
+
 
         int leftBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
@@ -388,8 +389,10 @@ public class ParseTablesWorker {
             }
         });
 
-        double maxRowHeightRatio = BlockItemUtils.getDoubleValueFromConfig(configMap, "MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO);
-        int maxRowCount = BlockItemUtils.getIntegerValueFromConfig(configMap, "MaxRowCount", ConfigConstants.TABLE_MAX_ROW_COUNT);
+        double maxRowHeightRatio = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "MaxRowHeightRatio", ConfigConstants.TABLE_MAX_ROW_HEIGHT_RATIO).toString());
+        int maxRowCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "MaxRowCount", ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
+
+
         int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
         logger.debug("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
 
