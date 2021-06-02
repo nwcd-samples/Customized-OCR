@@ -68,19 +68,24 @@ public class DefaultValueConfig {
         return defaultValue;
     }
 
+    /**
+     * 模板table 表格中用到的默认值
+     * @param configMap
+     * @param key
+     * @param defaultValue
+     * @return
+     */
 
     public  Object getTableColumnValue(Map<String, ?> configMap, String key, Object defaultValue){
 
-        // step1. 直接获取配置的值
+        // step1. 直接获取当前配置的值
         if(configMap.get(key) != null && configMap.get(key)!=null){
             return configMap.get(key);
         }
-
         // step2.  获取模板配置的默认值
         if(mTableColumnMap != null && mTableColumnMap.get(key) != null){
             return mTableColumnMap.get(key);
         }
-
         // step3. 或者预置的默认值
         return defaultValue;
     }

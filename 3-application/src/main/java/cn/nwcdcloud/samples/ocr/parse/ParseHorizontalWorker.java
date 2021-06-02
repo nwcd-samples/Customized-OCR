@@ -149,7 +149,7 @@ public class ParseHorizontalWorker {
 				int index = blockText.indexOf(keyWord);
 //				logger.debug(" Text:  {}   key: {}   {} ", blockText, keyWord, index);
 				// 判断范围
-				if (index < 0 || !BlockItemUtils.isValidRange(configMap, blockItem, this.pageWidth,  this.pageHeight)) {
+				if (index < 0 || !BlockItemUtils.isValidRange(mDefaultConfig, configMap, blockItem, this.pageWidth,  this.pageHeight)) {
 					continue;
 				}
 				findFlag = true;
