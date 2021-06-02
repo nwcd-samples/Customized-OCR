@@ -35,7 +35,7 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 命令：`java -jar ocr.jar`  
 如果需要把上传的文件存放到S3，请使用命令：`java -jar ocr.jar --uploadType=s3 --bucketName=<BucketName>`  
 更多启动参数参见[boot.md](boot.md)  
-注意：文件上传到S3时，需要设置该存储桶的跨源资源共享(CORS)，参见常见问题的[如何设置S3存储桶跨源资源共享(CORS)](#如何设置S3存储桶跨源资源共享cors)  
+注意：文件从Web页面直接上传到S3时，需要设置该存储桶的跨源资源共享(CORS)，参见常见问题的[如何设置S3存储桶跨源资源共享(CORS)](常见问题.md#如何设置S3存储桶跨源资源共享cors)  
 启动成功会输出以下类似内容：
 ```
 [2020-12-12 10:55:33.954][DEBUG] c.n.samples.ocr.OcrApplication - Running with Spring Boot v2.4.0, Spring v5.3.1
@@ -59,26 +59,3 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 ### 使用JupyterLab方式推理
 参见[2-inference/inference.ipynb](2-inference/inference.ipynb)
 
-## 常见问题
-### 如何设置S3存储桶跨源资源共享(CORS)
-进入到S3存储桶的 **权限** 页签 **跨源资源共享(CORS)** 部分，点击编辑，输入以下内容，根据自己需要进行修改
-```json
-[
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "PUT",
-            "POST"
-        ],
-        "AllowedOrigins": [
-            "*"
-        ],
-        "ExposeHeaders": []
-    }
-]
-```
-
-### 查看SageMaker日志
-在SageMaker Web控制台，选择推理->终端节点，点击ocr终端节点，在详情页面的**监控**部分，点击**查看日志**，或直接访问[CloudWatch Logs连接](https://cn-northwest-1.console.amazonaws.cn/cloudwatch/home?region=cn-northwest-1#logsV2:log-groups/log-group/$252Faws$252Fsagemaker$252FEndpoints$252Focr)，如果在北京区域运行OCR终端节点，需要切换区域。再点击对应日志即可。 
