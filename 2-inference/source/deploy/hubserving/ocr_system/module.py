@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# 该文件有修改，主要修改logger以及输出格式
 # 该文件原始路径：deploy/hubserving/ocr_system/module.py
 from __future__ import absolute_import
 from __future__ import division
@@ -25,10 +26,8 @@ from tools.infer.predict_system import TextSystem
 import uuid
 
 #原文的logger在启动多个work时会出现冲突
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler(sys.stdout))
+from my_logging import get_logger
+logger = get_logger('predictor')
 
 class OCRSystem:
     def __init__(self, use_gpu=False, enable_mkldnn=False):

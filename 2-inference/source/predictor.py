@@ -6,17 +6,15 @@ import json
 import shutil
 import time,datetime
 import random
-from deploy.hubserving.ocr_system.module import *
+from deploy.hubserving.ocr_system.module import OCRSystem
 
 DEBUG = False
+from my_logging import get_logger
+logger = get_logger('predictor')
+logger.info("test")
 
 # The flask app for serving predictions
 app = flask.Flask(__name__)
-
-import logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler(sys.stdout))
 
 @app.route('/ping', methods=['GET'])
 def ping():
@@ -69,6 +67,7 @@ def invocations():
             images.append(download_file_name)
     else:
         image_type = content_type.split('/')[-1]
+        logger.info("Received a {} image.".format(image_type))
         file_name = "data."+image_type
         download_file_name = os.path.join(current_output_dir, file_name)
         with open(download_file_name, 'ba') as f:
