@@ -167,7 +167,6 @@ function print_block_item(message, _blockItem){
     var display_text = "元素：[T="+_blockItem['top']+", "+topRadio+", B="+_blockItem['bottom']+", "+bottomRadio+", L="+_blockItem['left']+", "+leftRadio+", R="+_blockItem['right']+", "+rightRadio+" ] ["+_blockItem['text']+"] "
 
     $("#click_block_coord_span").html(display_text)
-
 // console.log("[%s] [%s] [%s]  [top=%d(%s) , bottom=%d(%s)]  [left=%d(%s), right=%d(%s)]", message,
 //                        _blockItem['id'], _blockItem['text'] ,
 //                      _blockItem['top'] ,  topRadio,
