@@ -13,15 +13,10 @@ public class ParseFixedPosition {
 
     private final Logger logger = LoggerFactory.getLogger(ParseFixedPosition.class);
 
-    private int pageWidth;
-    private int pageHeight;
     // 默认值配置类
     DefaultValueConfig mDefaultConfig ;
 
-    public ParseFixedPosition(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
-        this.pageWidth = pageWidth;
-        this.pageHeight = pageHeight;
-        logger.info( "***    pageWidth: {}   pageHeight:{} ", pageWidth, pageHeight  );
+    public ParseFixedPosition(Map<String, ?> rootConfig) {
         mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
 
     }

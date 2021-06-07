@@ -9,16 +9,11 @@ import java.util.*;
 public class ParseHorizontalWorker {
 	private final Logger logger = LoggerFactory.getLogger(ParseHorizontalWorker.class);
 
-	private int pageWidth;
-	private int pageHeight;
 	// 默认值配置类
 	DefaultValueConfig mDefaultConfig ;
 
-	public ParseHorizontalWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
-		this.pageWidth = pageWidth;
-		this.pageHeight = pageHeight;
+	public ParseHorizontalWorker(Map<String, ?> rootConfig) {
 		mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
-
 	}
 
 	/**
@@ -28,10 +23,11 @@ public class ParseHorizontalWorker {
 	 * @return  解析后的json 文件
 	 */
 	public JSONObject parse(HashMap configMap, List<JSONObject> blockItemList) {
-		//step 0. 通过关键字进行 key 元素的定位
+		//step 1. 通过关键字进行 key 元素的定位
 		if(!configMap.containsKey("Name")){
 			throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
 		}
+		// step 2. 查找关键字元素
 		ParseItemResult parseItemResult = findKeyBlockItem(configMap, blockItemList);
 		if (parseItemResult.blockItem == null) {
 //			logger.warn("Parse key-value   没有找到 : text {}  ", configMap.get("Name"));
@@ -42,44 +38,37 @@ public class ParseHorizontalWorker {
 
 		int index = parseItemResult.index;
 		JSONObject blockItem = parseItemResult.blockItem;
-		String text = parseItemResult.blockItem.getString("text");
-		if(text.endsWith(":") || text.endsWith("：")){
-			text = text.replaceAll(":", "");
-			text = text.replaceAll("：", "");
-		}
-
-		String keyWord = parseItemResult.keyWord;
 //		logger.debug("index {}  text {} text length: {}   keyWord {} ", index, text, text.length(), keyWord);
 
-		// case 1. 关键字和值 在一个单元格里面
 		JSONObject resultItem = new JSONObject();
-
 		resultItem.put("name", configMap.get("Name"));
-		resultItem.put("confidence", blockItem.getString("Confidence"));
 
-		//!parseItemResult.keySeparateFlag 是否包含自己的单元格。
+
+		//step 3. !parseItemResult.keySeparateFlag 是否包含自己的单元格。
 		ParseFactory.Cell  cell = findValueBlocksCell(blockItemList,configMap, blockItem, !parseItemResult.keySeparateFlag);
-
 
 		logger.debug("Target index: {}  text length: {}   Text: {}   keySeparateFlag: {} , cell.text: [{}]",
 				index, blockItem.getString("text").length() ,blockItem.getString("text")
 					, parseItemResult.keySeparateFlag, cell.text);
 
-		//如果key 和value 不是分离的， 需要除去开头的key。
+		//step 4.  如果key 和value 不是分离的， 需要除去开头的key。
 		String value = cell.text;
 		if(!parseItemResult.keySeparateFlag){
+			// [key:value]
 			logger.info("Index={} , value [{}], keyWord [{}]", index, value, parseItemResult.keyWord );
 			value = value.substring(index);
+			resultItem.put("confidence", blockItem.getString("Confidence"));
+		}else {
+			// [key] : [value]
+			resultItem.put("confidence", cell.confidence);
 		}
-		//最大字符限制
+		//step 5. 最大字符限制
 		int maxLength = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 		if( value.length() > maxLength){
 			value = value.substring(0, maxLength);
 		}
 
 		resultItem.put("value", BlockItemUtils.removeInvalidChar(value));
-		resultItem.put("confidence", cell.confidence);
-//		return resultItem;
 
 		return resultItem;
 	}
@@ -87,7 +76,6 @@ public class ParseHorizontalWorker {
 
 	/**
 	 * 定位关键字
-	 *
 	 * @param configMap
 	 * @param blockItemList
 	 */
@@ -136,9 +124,7 @@ public class ParseHorizontalWorker {
 				break;
 			}
 
-
 		}
-
 
 		ParseItemResult parseItemResult = new ParseItemResult();
 		parseItemResult.index = targetIndex + targetKeyWord.length() ;
@@ -176,15 +162,15 @@ public class ParseHorizontalWorker {
 
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject curItem = blockItemList.get(i);
+//			logger.debug("-------------------   1  {} " , curItem.getString("text"));
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
-
-
 			// 行高的范围判断， 后期可以优化 和范围判断合并。
 			if (curItem.getDouble("yMax") <
 					blockItem.getDouble("yMax")+ maxLineCount * (blockItem.getDouble("heightRate")
 							+ ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
+//				logger.debug("-------------------   2 {} ", curItem.getString("text"));
 				//范围的判断
 				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, rangeObject)){
 					contentBlockItemList.add(curItem);
@@ -214,10 +200,11 @@ public class ParseHorizontalWorker {
 	}
 
 	private static class ParseItemResult{
+		//关键字的其实位置， 0 表示从头开始
 		int index;
 		String keyWord;
 		JSONObject blockItem;
-		//表示当前Block 全是key， 不需要和Value 分离
+		//表示当前Block的Text是否全是key， True 表示 和Value 分离 [key][value];  False [key:value] 合在一起
 		boolean keySeparateFlag = false;
 
 	}

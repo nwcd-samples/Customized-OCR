@@ -34,8 +34,7 @@ public class InferenceServiceImpl implements InferenceService {
 		Result result = new Result();
 		JSONObject jsonObject = data.getJSONObject(0);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, type,
-				templateDir);
+		ParseFactory parseJsonUtil = new ParseFactory(type, templateDir);
 		JSONArray resultArray = new JSONArray();
 		resultArray.add(parseJsonUtil.extractValue(blockItemList, jsonObject.getIntValue(OcrConstants.IMAGE_TYPE),
 				jsonObject.getString(OcrConstants.IMAGE_CONTENT)));

@@ -28,7 +28,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT,"id02");
+		ParseFactory parseJsonUtil = new ParseFactory("id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		for(int i=0; i< resultArray.size() ; i++){
@@ -50,7 +50,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "id02");
+		ParseFactory parseJsonUtil = new ParseFactory("id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		for(int i=0; i< resultArray.size() ; i++){
@@ -72,7 +72,7 @@ public class CommonServiceImplTest {
 		String jsonObjectPath = this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
 		JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "id02");
+		ParseFactory parseJsonUtil = new ParseFactory("id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
 		logger.info(resultArray.toJSONString());

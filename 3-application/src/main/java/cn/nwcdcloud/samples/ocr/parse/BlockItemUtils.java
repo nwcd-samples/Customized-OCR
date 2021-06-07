@@ -405,27 +405,6 @@ public class BlockItemUtils {
 
     }
 
-//    public static JSONObject getBlockItemBorder(DefaultValueConfig mDefaultConfig,  HashMap configMap, JSONObject blockItem){
-//
-//        double topOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO).toString());
-//        double bottomOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO).toString());
-//        double leftOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO).toString());
-//        double rightOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO).toString());
-//
-//        int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
-//        int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
-//        //ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
-//        int leftBorder = blockItem.getInteger("right") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
-//        int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
-//
-//
-//        JSONObject result = new JSONObject();
-//        result.put("topBorder", topBorder);
-//        result.put("bottomBorder", bottomBorder);
-//        result.put("leftBorder", leftBorder);
-//        result.put("rightBorder", rightBorder);
-//        return result;
-//    }
 
     /**
      * 判断一个元素 是否在指定的范围内。
@@ -438,6 +417,8 @@ public class BlockItemUtils {
 		double rangeXMax = rangeObject.getDouble("xMax");
 		double rangeYMin = rangeObject.getDouble("yMin");
 		double rangeYMax = rangeObject.getDouble("yMax");
+
+//		logger.debug("Range: {}, {}    {}, {} ", rangeXMin , rangeXMax, rangeYMin,rangeYMax);
 
         return valueBlockItem.getDouble("xMin") >= rangeXMin
                 &&  valueBlockItem.getDouble("xMax") <= rangeXMax
@@ -517,8 +498,12 @@ public class BlockItemUtils {
     }
 
 
+    /**
+     * 删除起始的 冒号
+     * @param value
+     * @return
+     */
     public static String removeInvalidChar(String value){
-
         if(!StringUtils.hasLength(value)){
             return value;
         }
@@ -526,7 +511,6 @@ public class BlockItemUtils {
             value = value.replaceAll(":", "");
             value = value.replaceAll("：", "");
         }
-
         return value;
     }
 

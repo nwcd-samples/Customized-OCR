@@ -42,7 +42,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -75,7 +75,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_3);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_3);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -110,7 +110,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_4).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_4);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_4);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -126,7 +126,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_5).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_5);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_5);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -163,7 +163,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_MULTI);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_MULTI);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -244,7 +244,7 @@ public class TableSample02Test {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI_02).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_MULTI_02);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_MULTI_02);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
@@ -274,10 +274,10 @@ public class TableSample02Test {
 
     @Test
     public void parseIdMultiTable03() {
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI_03).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI_03).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, CONFIG_FILE_PATH_MULTI_03);
+        ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_MULTI_03);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");

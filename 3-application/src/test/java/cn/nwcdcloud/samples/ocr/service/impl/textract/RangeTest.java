@@ -27,7 +27,7 @@ public class RangeTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "range");
+        ParseFactory parseJsonUtil = new ParseFactory( "range");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");

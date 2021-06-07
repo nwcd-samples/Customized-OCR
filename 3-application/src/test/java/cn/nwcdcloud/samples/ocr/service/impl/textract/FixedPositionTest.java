@@ -27,7 +27,7 @@ public class FixedPositionTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
+        ParseFactory parseJsonUtil = new ParseFactory("fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
@@ -55,7 +55,7 @@ public class FixedPositionTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
+        ParseFactory parseJsonUtil = new ParseFactory("fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
@@ -84,7 +84,7 @@ public class FixedPositionTest {
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
+        ParseFactory parseJsonUtil = new ParseFactory( "fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");

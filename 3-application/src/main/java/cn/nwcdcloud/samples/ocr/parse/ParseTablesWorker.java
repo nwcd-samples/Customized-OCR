@@ -12,13 +12,9 @@ import java.util.*;
 public class ParseTablesWorker {
 
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
-    private int pageWidth;
-    private int pageHeight;
     private DefaultValueConfig mDefaultConfig ;
 
-    public ParseTablesWorker(Map<String, ?> rootConfig, int pageWidth, int pageHeight) {
-        this.pageWidth = pageWidth;
-        this.pageHeight = pageHeight;
+    public ParseTablesWorker(Map<String, ?> rootConfig) {
         this.mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
     }
 
@@ -79,7 +75,8 @@ public class ParseTablesWorker {
      */
     private List<JSONObject> findColumnBlockItem(HashMap rootMap, List<JSONObject> blockItemList, List<JSONObject> locationColumnList) {
 
-        int topBorder = this.pageHeight;
+        //设置一个最大值
+        int topBorder = ConfigConstants.PAGE_HEIGHT;
         int bottomBorder = 0;
 
         for(int i=0; i< locationColumnList.size(); i++){

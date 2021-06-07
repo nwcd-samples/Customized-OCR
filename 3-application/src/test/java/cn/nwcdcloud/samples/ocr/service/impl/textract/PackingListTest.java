@@ -26,11 +26,11 @@ public class PackingListTest {
     @Test
     public void parseId001() {
 
-        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
+        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "packing_list");
+        ParseFactory parseJsonUtil = new ParseFactory("packing_list");
         JSONObject  resultObject =  parseJsonUtil.extractValue(blockItemList);
 //        {"tableList":[],"keyValueList":[{"confidence":"0.9940133","name":"境内收货人","value":"（914401013210409001）"}]}
         logger.info(resultObject.toJSONString());

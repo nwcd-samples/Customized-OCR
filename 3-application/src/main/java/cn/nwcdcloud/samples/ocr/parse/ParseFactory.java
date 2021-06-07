@@ -30,20 +30,14 @@ import software.amazon.awssdk.core.SdkBytes;
 public class ParseFactory {
 	private final Logger logger = LoggerFactory.getLogger(ParseFactory.class);
 
-	private int pageWidth;
-	private int pageHeight;
 	private String configType;
 	private String templateDir;
 
-	public ParseFactory(int pageWidth, int pageHeight, String configType) {
-		this.pageWidth = pageWidth;
-		this.pageHeight = pageHeight;
+	public ParseFactory(String configType) {
 		this.configType = configType;
 	}
 
-	public ParseFactory(int pageWidth, int pageHeight, String configType, String templateDir) {
-		this.pageWidth = pageWidth;
-		this.pageHeight = pageHeight;
+	public ParseFactory(String configType, String templateDir) {
 		this.configType = configType;
 		this.templateDir = templateDir;
 	}
@@ -54,9 +48,9 @@ public class ParseFactory {
 
 	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageContent) {
 		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
-		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(configMap, pageWidth, pageHeight);
-		ParseTablesWorker tablesWorker = new ParseTablesWorker(configMap, pageWidth, pageHeight);
-		ParseFixedPosition fixedPositionWorker = new ParseFixedPosition(configMap, pageWidth, pageHeight);
+		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(configMap);
+		ParseTablesWorker tablesWorker = new ParseTablesWorker(configMap);
+		ParseFixedPosition fixedPositionWorker = new ParseFixedPosition(configMap);
 		ParseQRCodeWorker qrcodeWorker = new ParseQRCodeWorker(configMap);
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
