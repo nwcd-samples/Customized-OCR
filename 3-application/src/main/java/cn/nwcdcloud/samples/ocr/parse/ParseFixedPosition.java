@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,18 +44,25 @@ public class ParseFixedPosition {
 
 
         double confidence = 1.0;
-        StringBuilder stringBuilder = new StringBuilder();
+
+        List<JSONObject> itemList = new ArrayList<>();
         for(JSONObject blockItem : blockItemList){
             if(BlockItemUtils.isValidRange(mDefaultConfig, configMap, blockItem)){
-                stringBuilder.append(blockItem.getString("text"));
+
+                itemList.add(blockItem);
                 if(blockItem.getDouble("Confidence") < confidence){
                     confidence = blockItem.getDouble("Confidence");
                 }
             }
         }
+        itemList.sort(new BlockItemComparator());
+        StringBuilder stringBuilder = new StringBuilder();
+        for(JSONObject item : itemList){
+            stringBuilder.append(item.getString("text")).append(" ");
+        }
 
         if(StringUtils.hasLength(stringBuilder.toString())){
-            resultItem.put("value", stringBuilder.toString());
+            resultItem.put("value", stringBuilder.toString().trim());
             resultItem.put("confidence", confidence);
             return resultItem;
 

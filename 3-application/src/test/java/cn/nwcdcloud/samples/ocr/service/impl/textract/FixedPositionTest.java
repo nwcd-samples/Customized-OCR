@@ -101,7 +101,7 @@ public class FixedPositionTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "价格", "￥581.5元");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "座位号", "15车10B号");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "身份证&姓名", "1101051984****8614刘禹");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "北京南10010310680519T064144");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "10010310680519T064144 北京南");
 
 
     }
