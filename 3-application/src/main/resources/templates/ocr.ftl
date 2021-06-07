@@ -52,7 +52,13 @@
 					<div class="spinner-grow text-dark" role="status" id="loading-icon" style="display:none">
 					    <span class="sr-only">Loading...</span>
 					</div>
+                    <p  class="text-primary" style="margin-left:30px;margin-top:10px;font-size:14px">
+                        <span id="click_point_coord_span"> </span>
+                        <span id="click_block_coord_span"> </span>
+                    </p>
                 </form>
+
+
             </nav>
 
             <div>

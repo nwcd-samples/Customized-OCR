@@ -253,6 +253,8 @@ function redraw_canvas(){
         draw_block_inside(vue.blockItemList[i] )
     }
 
+    initClickEvent()
+
 }
 
 function click_item(blockItem){

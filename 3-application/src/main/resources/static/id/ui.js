@@ -20,11 +20,34 @@ $(function(){
                     url = $("#json_url_input").val()
                     //alert(url)
                     get_data()
-                }
+                },
+
              }
     })
+
+//    initClickEvent()
 });
 
+
+function initClickEvent(){
+    var myCanvas =  $('#myCanvas')
+    myCanvas.on('click', function(e) {
+        var p = getEventPosition(e);
+        $("#click_point_coord_span").html("点：[x="+p.x+", y="+p.y+"]")
+    });
+}
+
+function getEventPosition(ev){
+  var x, y;
+  if (ev.layerX || ev.layerX == 0) {
+    x = ev.layerX;
+    y = ev.layerY;
+  } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+    x = ev.offsetX;
+    y = ev.offsetY;
+  }
+  return {x: x, y: y};
+}
 
 function get_data(data){
 //    vue.tableBlockList = new Array()
