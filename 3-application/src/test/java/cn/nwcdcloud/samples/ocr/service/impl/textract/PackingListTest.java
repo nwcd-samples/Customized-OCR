@@ -29,7 +29,7 @@ public class PackingListTest {
         String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
 
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "packing_list");
         JSONObject  resultObject =  parseJsonUtil.extractValue(blockItemList);
 //        {"tableList":[],"keyValueList":[{"confidence":"0.9940133","name":"境内收货人","value":"（914401013210409001）"}]}

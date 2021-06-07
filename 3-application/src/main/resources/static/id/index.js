@@ -43,7 +43,7 @@ function parse_data(data){
     }
 
 
-    var document_zoom_out_height = page_height* document_page_height
+    var document_zoom_out_height = page_height * document_page_height
     canvas_width = page_width;
     canvas_height = document_zoom_out_height;
     reset_canvas(page_width , document_zoom_out_height)

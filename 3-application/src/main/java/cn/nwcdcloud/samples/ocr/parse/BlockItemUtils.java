@@ -16,8 +16,9 @@ import java.util.Map;
 public class BlockItemUtils {
     private static final Logger logger = LoggerFactory.getLogger(BlockItemUtils.class);
 
-    public static List<JSONObject> getBlockItemList(JSONObject jsonObject, int pageWidth, int pageHeight){
-
+    public static List<JSONObject> getBlockItemList(JSONObject jsonObject){
+        int pageWidth = ConfigConstants.PAGE_WIDTH;
+        int pageHeight  = ConfigConstants.PAGE_HEIGHT;
 //        logger.info(jsonObject.toJSONString());
 //        logger.info(jsonObject.getJSONObject("DocumentMetadata").toJSONString());
         Integer pageCount = jsonObject.getJSONObject("DocumentMetadata").getInteger("Pages");
@@ -128,6 +129,7 @@ public class BlockItemUtils {
 
         JSONArray pointArray = rawBlockItem.getJSONObject("Geometry").getJSONArray("Polygon");
 
+
         JSONArray newPolyArray = new JSONArray();
         for(int i=0; i<pointArray.size(); i++){
 
@@ -147,6 +149,7 @@ public class BlockItemUtils {
         JSONObject blockItem = new JSONObject();
         blockItem.put("id", rawBlockItem.getString("Id"));
         blockItem.put("newPoly", newPolyArray);
+//        blockItem.put("boundingBox", rawBlockItem.getJSONObject("Geometry").getJSONObject("BoundingBox"));
         blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
         blockItem.put("Confidence", rawBlockItem.getString("Confidence"));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
@@ -270,7 +273,15 @@ public class BlockItemUtils {
         blockItem.put("x", (int)((polyArray.getJSONObject(2).getDouble("x") + polyArray.getJSONObject(0).getDouble("x"))/2.0));
         blockItem.put("y", (int)((polyArray.getJSONObject(2).getDouble("y") + polyArray.getJSONObject(0).getDouble("y"))/2.0));
 
-//        logger.info("-------- {} ",blockItem.toJSONString());
+        blockItem.put("xMin",(polyArray.getJSONObject(0).getDouble("x").doubleValue() /pageWidth ));
+        blockItem.put("xMax",(polyArray.getJSONObject(1).getDouble("x").doubleValue() /pageWidth ));
+
+        //Page height 做了缩放
+        blockItem.put("yMin",(polyArray.getJSONObject(0).getDouble("y").doubleValue() /documentZoomOutHeight ));
+        blockItem.put("yMax",(polyArray.getJSONObject(2).getDouble("y").doubleValue() /documentZoomOutHeight));
+
+
+//        logger.info("{}-------- {} ",blockItem.getString("text"), blockItem.toJSONString());
 
     }
 
@@ -327,7 +338,7 @@ public class BlockItemUtils {
      * @param blockItem
      * @return
      */
-    public static boolean isValidRange(DefaultValueConfig mDefaultConfig, HashMap configMap, JSONObject blockItem, int pageWidth, int pageHeight) {
+    public static boolean isValidRange(DefaultValueConfig mDefaultConfig, HashMap configMap, JSONObject blockItem ) {
 
         double xRangeMin = Double.valueOf(mDefaultConfig.getKeyValue(configMap, "XRangeMin", ConfigConstants.PAGE_RANGE_X_MIN).toString());
         double xRangeMax = Double.valueOf(mDefaultConfig.getKeyValue(configMap, "XRangeMax", ConfigConstants.PAGE_RANGE_X_MAX).toString());
@@ -335,26 +346,28 @@ public class BlockItemUtils {
         double yRangeMax = Double.valueOf(mDefaultConfig.getKeyValue(configMap, "YRangeMax", ConfigConstants.PAGE_RANGE_Y_MAX).toString());
 
 
-        int left = (int) (xRangeMin * pageWidth);
-        int right = (int) (xRangeMax * pageWidth);
 
-        int top = (int) (yRangeMin * pageHeight);
-        int bottom = (int) (yRangeMax * pageHeight);
+//        JSONObject boundingBox = blockItem.getJSONObject("boundingBox");
+        double itemLeft = blockItem.getDouble("xMin") ;
+        double itemRight = blockItem.getDouble("xMax") ;
+        double itemTop = blockItem.getDouble("yMin")  ;
+        double itemBottom = blockItem.getDouble("yMax") ;
 
+//        logger.debug("isFixedPositionValidRange range   x: [{}, {}]  y: [{}, {}]   {}", xRangeMin, xRangeMax, yRangeMin, yRangeMax, blockItem.getString("text"));
+//        logger.debug("isFixedPositionValidRange block   x: [{}, {}]  y: [{}, {}]   {}",
+//                new java.text.DecimalFormat("#0.000").format(itemLeft),
+//                new java.text.DecimalFormat("#0.000").format(itemRight),
+//                new java.text.DecimalFormat("#0.000").format(itemTop),
+//                new java.text.DecimalFormat("#0.000").format(itemBottom),
+//                blockItem.getString("text"));
 
-        int x = blockItem.getInteger("x");
-        int y = blockItem.getInteger("y");
-
-        if (x > right || x < left || y < top || y > bottom) {
-//            logger.debug("isValidRange x min max: [{}, {}]  y min max: [{}, {}] page[width={},height={} ]", xRangeMin, xRangeMax, yRangeMin, yRangeMax,pageWidth, pageHeight);
-//            logger.debug("isValidRange x: [{}, {}]  y: [{}, {}]", left, right, top, bottom);
-//            logger.debug("isValidRange 【{}】 元素的中心点:[x={}, y={}] ", blockItem.getString("text"), blockItem.getInteger("x"),
-//            blockItem.getInteger("y"));
-
-            return false;
+        if(  itemLeft >= xRangeMin && itemRight <= xRangeMax && itemTop >= yRangeMin && itemBottom <= yRangeMax) {
+            return true;
         }
-        return true;
+        return false;
     }
+
+
 
     public static boolean checkKeyValueMap(JSONArray array, String name, String value){
         for(int i=0; i< array.size(); i++){

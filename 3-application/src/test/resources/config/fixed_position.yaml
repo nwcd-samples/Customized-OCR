@@ -1,0 +1,9 @@
+TemplateName: 'fixed position  template'
+
+Targets:
+  - Name: "始发站"
+    RecognitionType: "fixed-position"
+    XRangeMin: 0.0
+    XRangeMax: 0.5
+    YRangeMin: 0.05
+    YRangeMax: 0.20

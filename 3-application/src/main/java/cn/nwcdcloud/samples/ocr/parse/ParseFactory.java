@@ -56,9 +56,11 @@ public class ParseFactory {
 		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
 		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(configMap, pageWidth, pageHeight);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(configMap, pageWidth, pageHeight);
+		ParseFixedPosition fixedPositionWorker = new ParseFixedPosition(configMap, pageWidth, pageHeight);
 		ParseQRCodeWorker qrcodeWorker = new ParseQRCodeWorker(configMap);
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
+		JSONArray fixedPositionArray = new JSONArray();
 		JSONObject jsonResult = new JSONObject();
 		BufferedImage image = null;
 
@@ -77,7 +79,13 @@ public class ParseFactory {
 				if (result != null) {
 					tableArray.add(result);
 				}
-			} else if ("qrcode".equals(recognitionType)) {
+			}else if("fixed-position".equals(recognitionType)){
+				JSONObject result = fixedPositionWorker.parse(newItem, blockItemList);
+				if (result != null) {
+					fixedPositionArray.add(result);
+				}
+
+			}else if ("qrcode".equals(recognitionType)) {
 				if (image == null) {
 					image = getImage(imageType, imageContent);
 				}
@@ -91,6 +99,7 @@ public class ParseFactory {
 		}
 		jsonResult.put("keyValueList", keyValueArray);
 		jsonResult.put("tableList", tableArray);
+		jsonResult.put("fixedPositionList", fixedPositionArray);
 		return jsonResult;
 	}
 

@@ -74,7 +74,7 @@ Targets:
         MarginRightType: "near"
         MoveRightRatio: 1.0
         Location: true
-        XRangeMin: 0.5
+        XRangeMin: 0.4
         XRangeMax: 0.6
         YRangeMin: 0.2
         YRangeMax: 0.8
@@ -98,7 +98,7 @@ Targets:
       - ColumnName: "金额"
         KeyWordList: ["全额"]
         Location: true
-        XRangeMin: 0.8
-        XRangeMax: 0.9
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        XRangeMin: 0.7
+        XRangeMax: 1.0
+        YRangeMin: 0.3
+        YRangeMax: 0.4

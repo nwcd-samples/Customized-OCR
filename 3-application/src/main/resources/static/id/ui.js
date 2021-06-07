@@ -33,7 +33,12 @@ function initClickEvent(){
     var myCanvas =  $('#myCanvas')
     myCanvas.on('click', function(e) {
         var p = getEventPosition(e);
-        $("#click_point_coord_span").html("点：[x="+p.x+", y="+p.y+"]")
+
+
+    var xRadio = (parseFloat(p.x) / canvas_width).toFixed(3);
+    var yRadio = (parseFloat(p.y) / canvas_height).toFixed(3);
+
+        $("#click_point_coord_span").html("点：[x="+xRadio+", y="+yRadio +" ]")
     });
 }
 

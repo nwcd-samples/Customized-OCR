@@ -33,8 +33,7 @@ public class InferenceServiceImpl implements InferenceService {
 		//TODO 目前只处理第1个
 		Result result = new Result();
 		JSONObject jsonObject = data.getJSONObject(0);
-		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject, ConfigConstants.PAGE_WIDTH,
-				ConfigConstants.PAGE_HEIGHT);
+		List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
 		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, type,
 				templateDir);
 		JSONArray resultArray = new JSONArray();

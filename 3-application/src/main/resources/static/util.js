@@ -153,18 +153,21 @@ function sort_block_by_left_top(a,b) {
 
 function print_block_item(message, _blockItem){
 
+
     var topRadio = (parseFloat(_blockItem['top']) / canvas_height).toFixed(3);
     var bottomRadio = (parseFloat(_blockItem['bottom']) / canvas_height).toFixed(3);
     var leftRadio = (parseFloat(_blockItem['left']) / canvas_width).toFixed(3);
     var rightRadio = (parseFloat(_blockItem['right']) / canvas_width).toFixed(3);
-    console.log("[%s] [%s]  [top=%d (%s) , bottom=%d (%s)]  [left=%d (%s), right=%d (%s)]",
+    console.log("[%s] [%s]  [top=%d (%s) , bottom=%d (%s)]  [left=%d (%s), right=%d (%s)]  canvas[width=%s, height=%s]",
                         message, _blockItem['text'] ,
                       _blockItem['top'] ,  topRadio,
                       _blockItem['bottom'] ,bottomRadio,
                       _blockItem['left'] , leftRadio,
-                      _blockItem['right'] , rightRadio )
+                      _blockItem['right'] , rightRadio,
+                       canvas_width, canvas_height
+                       )
 
-    var display_text = "元素：[T="+_blockItem['top']+", "+topRadio+", B="+_blockItem['bottom']+", "+bottomRadio+", L="+_blockItem['left']+", "+leftRadio+", R="+_blockItem['right']+", "+rightRadio+" ] ["+_blockItem['text']+"] "
+    var display_text = "元素：[Top="+topRadio+", Bottom="+bottomRadio+", Left="+leftRadio+", Right="+rightRadio+" ] ["+_blockItem['text']+"] "
 
     $("#click_block_coord_span").html(display_text)
 // console.log("[%s] [%s] [%s]  [top=%d(%s) , bottom=%d(%s)]  [left=%d(%s), right=%d(%s)]", message,

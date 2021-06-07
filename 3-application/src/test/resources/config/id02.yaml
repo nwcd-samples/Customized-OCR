@@ -11,7 +11,7 @@ Targets:
     LineCountMax: 1
     TargetValueType: "char"
     XRangeMin: 0.0
-    XRangeMax: 0.30
+    XRangeMax: 0.40
     YRangeMin: 0.0
     YRangeMax: 0.30
     TopOffsetRadio: -1.5
