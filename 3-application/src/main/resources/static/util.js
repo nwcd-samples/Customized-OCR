@@ -167,7 +167,7 @@ function print_block_item(message, _blockItem){
                        canvas_width, canvas_height
                        )
 
-    var display_text = "元素：[Top="+topRadio+", Bottom="+bottomRadio+", Left="+leftRadio+", Right="+rightRadio+" ] ["+_blockItem['text']+"] "
+    var display_text = "元素：[xMin="+leftRadio+", xMax="+rightRadio+", yMin="+topRadio+", yMax="+bottomRadio+"] ["+_blockItem['text']+"] "
 
     $("#click_block_coord_span").html(display_text)
 // console.log("[%s] [%s] [%s]  [top=%d(%s) , bottom=%d(%s)]  [left=%d(%s), right=%d(%s)]", message,

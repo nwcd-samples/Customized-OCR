@@ -18,6 +18,7 @@ public class FixedPositionTest {
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/fixed_position_01.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/fixed_position_02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/fixed_position_03.json";
 
 
     @Test
@@ -72,6 +73,35 @@ public class FixedPositionTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "座位号", "05车020号");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "身份证&姓名", "1404241981****001X张良");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "17334300290430A029342扬州东售");
+
+
+    }
+
+
+    @Test
+    public void parse03() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
+        logger.info(keyValueList.toJSONString());
+
+        for(int i=0; i< keyValueList.size(); i++){
+            logger.info(keyValueList.get(i).toString());
+        }
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "始发站", "北京南站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "终点站", "杭州东站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "车次", "G165");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "开车时间", "2021年05月18日08:30开");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "价格", "￥581.5元");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "座位号", "15车10B号");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "身份证&姓名", "1101051984****8614刘禹");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "北京南10010310680519T064144");
 
 
     }
