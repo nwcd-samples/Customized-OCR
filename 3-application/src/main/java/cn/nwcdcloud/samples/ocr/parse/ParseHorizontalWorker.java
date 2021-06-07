@@ -326,7 +326,7 @@ public class ParseHorizontalWorker {
 				continue;
 			}
 
-			//FIXME: 行高的范围判断， 后期可以优化 和范围判断合并。
+			// 行高的范围判断， 后期可以优化 和范围判断合并。
 			if (curItem.getInteger("bottom") <
 					blockItem.getInteger("bottom")+ maxLineCount * (blockItem.getInteger("height")
 							+ ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
