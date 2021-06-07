@@ -10,7 +10,7 @@ DefaultValue:
     XRangeMax: 1.0
     YRangeMin: 0.0
     YRangeMax: 1.0
-    TopOffsetRadio: -1.0
+    TopOffsetRadio: -1.2
     BottomOffsetRadio: 1.0
     LeftOffsetRadio: -0.5
     RightOffsetRadio: 30.0
@@ -34,5 +34,29 @@ Targets:
     YRangeMax: 0.40
     # value所在的左右范围
     ValueXRangeMin: 0.10
-    ValueXRangeMax: 0.60
+    ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.9
+    BottomOffsetRadio: 3.1
+    LeftOffsetRadio: -0.2
+    RightOffsetRadio: 2.0
+
+  - Name: "购买方-名称-2"
+    KeyWordList: ["称：","称:"]
+    YRangeMax: 0.40
+    # value所在的左右范围
+    ValueXRangeMin: 0.10
+    ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.9
+    BottomOffsetRadio: 3.1
+    LeftOffsetRadio: -0.2
+    RightOffsetRadio: 2.0
+
+  - Name: "价税合计（大写）"
+    ValueXRangeMax: 0.55
+
+  - Name: "价税合计（大写）-2"
+    KeyWordList: ["价税合计（大写）"]
+    ValueXRangeMax: 0.55
+    LengthMax: 1
+
 

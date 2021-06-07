@@ -31,21 +31,26 @@ public class InvoiceTypeTest {
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
+        for(int i=0; i< resultArray.size() ; i++){
+            JSONObject item = (JSONObject) resultArray.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称", "北京西云数据科技有限公司");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-纳税人识别号", "91110105MA01M3778H");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-开户行及账号", "中国工商银行股份有限公司北京东四支行0200004109200060094");
-
+//
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "销售方-名称", "北京滴滴出行科技有限公司");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "销售方-纳税人识别号", "91110108MA01GOFB09");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "销售方-开户行及账号", "招商银行股份有限公司北京东三环支行110936504210806");
-
+//
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）", "肆佰柒拾肆圆柒角玖分");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计-小写", "￥474.79");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "发票代码", "011002000311");
-
+//
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "发票号码", "96079560");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "开票日期", "2020年09月25日");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "校验码", "16372973982892550584");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "机器编号", "499098498420");
 
 
 
@@ -68,9 +73,10 @@ public class InvoiceTypeTest {
             logger.info(resultArray.get(i).toString());
         }
 
-
-
-
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称", "永道商务咨询（上海）有限公司");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称-2", "普华永道商务咨询（上海）有限公司");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）", "②壹仟壹佰叁拾参元肆角肆分");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）-2", "②");
     }
 
 

@@ -4,11 +4,10 @@ Targets:
 
   - Name: "境内收货人"
     KeyWordList: ["境内收货人"]
-    LengthMin: 20
     LengthMax: 30
-    MaxLineCount: 2
     TargetValueType: "char"
     XRangeMin: 0.0
     XRangeMax: 0.30
     YRangeMin: 0.0
     YRangeMax: 0.30
+    RightOffsetRadio: 0.0

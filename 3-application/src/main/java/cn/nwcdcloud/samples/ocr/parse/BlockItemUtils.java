@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -280,6 +282,9 @@ public class BlockItemUtils {
         blockItem.put("yMin",(polyArray.getJSONObject(0).getDouble("y").doubleValue() /documentZoomOutHeight ));
         blockItem.put("yMax",(polyArray.getJSONObject(2).getDouble("y").doubleValue() /documentZoomOutHeight));
 
+        blockItem.put("widthRate",blockItem.getDouble("xMax") - blockItem.getDouble("xMin"));
+        blockItem.put("heightRate",blockItem.getDouble("yMax") - blockItem.getDouble("yMin"));
+
 
 //        logger.info("{}-------- {} ",blockItem.getString("text"), blockItem.toJSONString());
 
@@ -400,38 +405,129 @@ public class BlockItemUtils {
 
     }
 
-    public static JSONObject getBlockItemBorder(DefaultValueConfig mDefaultConfig,  HashMap configMap, JSONObject blockItem){
+//    public static JSONObject getBlockItemBorder(DefaultValueConfig mDefaultConfig,  HashMap configMap, JSONObject blockItem){
+//
+//        double topOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO).toString());
+//        double bottomOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO).toString());
+//        double leftOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO).toString());
+//        double rightOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO).toString());
+//
+//        int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
+//        int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
+//        //ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
+//        int leftBorder = blockItem.getInteger("right") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
+//        int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
+//
+//
+//        JSONObject result = new JSONObject();
+//        result.put("topBorder", topBorder);
+//        result.put("bottomBorder", bottomBorder);
+//        result.put("leftBorder", leftBorder);
+//        result.put("rightBorder", rightBorder);
+//        return result;
+//    }
 
-        double topOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO).toString());
-        double bottomOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO).toString());
-        double leftOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO).toString());
-        double rightOffsetRadio =  Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO).toString());
+    /**
+     * 判断一个元素 是否在指定的范围内。
+     * @param valueBlockItem
+     * @param rangeObject
+     * @return
+     */
+    public static boolean checkBlockItemRangeValidation(JSONObject valueBlockItem, JSONObject rangeObject){
+        double rangeXMin = rangeObject.getDouble("xMin");
+		double rangeXMax = rangeObject.getDouble("xMax");
+		double rangeYMin = rangeObject.getDouble("yMin");
+		double rangeYMax = rangeObject.getDouble("yMax");
 
-        int topBorder = blockItem.getInteger("top") + (int) (topOffsetRadio * blockItem.getInteger("height"));
-        int bottomBorder = blockItem.getInteger("bottom") + (int) (bottomOffsetRadio * blockItem.getInteger("height"));
-        //ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX 加一个误差值
-        int leftBorder = blockItem.getInteger("right") + (int) (leftOffsetRadio * blockItem.getInteger("width") );
-        int rightBorder = blockItem.getInteger("right") + (int) (rightOffsetRadio * blockItem.getInteger("width"));
-
-
-        JSONObject result = new JSONObject();
-        result.put("topBorder", topBorder);
-        result.put("bottomBorder", bottomBorder);
-        result.put("leftBorder", leftBorder);
-        result.put("rightBorder", rightBorder);
-        return result;
+        return valueBlockItem.getDouble("xMin") >= rangeXMin
+                &&  valueBlockItem.getDouble("xMax") <= rangeXMax
+                &&  valueBlockItem.getDouble("yMin") >= rangeYMin
+                &&  valueBlockItem.getDouble("yMax") <= rangeYMax;
     }
 
-    public static boolean checkBlockItemRangeValidation(JSONObject valueBlockItem, JSONObject borderItem){
-        int topBorder = borderItem.getInteger("topBorder");
-        int bottomBorder = borderItem.getInteger("bottomBorder");
-        int leftBorder = borderItem.getInteger("leftBorder");
-        int rightBorder = borderItem.getInteger("rightBorder");
+    /**
+     * 通过Key的配置信息和 key的坐标， 计算Value 元素所在元素的坐标
+     *
+     *     ValueXRangeMin: 0.10
+     *     ValueXRangeMax: 0.60
+     *     TopOffsetRadio: -0.9
+     *     BottomOffsetRadio: 3.1
+     *     LeftOffsetRadio: 0
+     *     RightOffsetRadio: 2.0
+     *
+     * @param mDefaultConfig
+     * @param configMap
+     * @param blockItem
+     * @return
+     */
 
-        return valueBlockItem.getInteger("top") >= topBorder
-                &&  valueBlockItem.getInteger("bottom") <= bottomBorder
-                &&  valueBlockItem.getInteger("left") >= leftBorder
-                &&  valueBlockItem.getInteger("right") <= rightBorder;
+    public static JSONObject findValueRange(DefaultValueConfig mDefaultConfig, HashMap configMap, JSONObject blockItem){
+
+//		logger.info("findValueRange:  {} ", configMap.toString());
+//		logger.info("blockItem : xMin: {} xMax: {}  yMin:{} yMax:{}", blockItem.getDouble("xMin"), blockItem.getDouble("xMax"),
+//				blockItem.getDouble("yMin"), blockItem.getDouble("yMax"));
+
+        DecimalFormat df=new DecimalFormat("#0.000");
+        double topRadio = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "TopOffsetRadio", ConfigConstants.ITEM_OFFSET_TOP_RADIO).toString());
+        double bottomRadio = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "BottomOffsetRadio", ConfigConstants.ITEM_OFFSET_BOTTOM_RADIO).toString());
+        double leftRadio = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "LeftOffsetRadio", ConfigConstants.ITEM_OFFSET_LEFT_RADIO).toString());
+        double rightRadio = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "RightOffsetRadio", ConfigConstants.ITEM_OFFSET_RIGHT_RADIO).toString());
+
+        double valueXRangeMin = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMin", ConfigConstants.ITEM_VALUE_X_RANGE_MIN).toString());
+        double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
+
+//        logger.debug("【Radio】top: {}  bottom: {} left: {} right: {}  ---- valueXRangeMin {}, valueXRangeMax {}",
+//                df.format(topRadio), df.format(bottomRadio), df.format(leftRadio), df.format(rightRadio),
+//                df.format(valueXRangeMin), df.format(valueXRangeMax));
+
+        //step1. 找到top 范围
+
+//        logger.debug("[key range]   xMin={}, xMax={}, yMin={}, yMax={}",
+//                df.format(blockItem.getDouble("xMin")),
+//                df.format(blockItem.getDouble("xMax")),
+//                df.format(blockItem.getDouble("yMin")),
+//                df.format(blockItem.getDouble("yMax")));
+
+        double xMin = blockItem.getDouble("xMin") + blockItem.getDouble("widthRate") * leftRadio;
+        double xMax = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * rightRadio;
+        double yMin = blockItem.getDouble("yMin") + blockItem.getDouble("heightRate") * topRadio;
+        double yMax = blockItem.getDouble("yMax") + blockItem.getDouble("heightRate") * bottomRadio;
+
+        //同时设计了 TopOffsetRadio 和 ValueXRangeMin， 按照交集进行计算， 两者都要满足
+        if(valueXRangeMin > xMin){
+            xMin = valueXRangeMin;
+        }
+        if(valueXRangeMax < xMax){
+            xMax = valueXRangeMax;
+        }
+
+//        logger.info("[value range] widthRate={}   heightRate={}  \t xMin={} xMax={} yMin={}  yMax={} "
+//                ,  df.format(blockItem.getDouble("widthRate")),
+//                df.format(blockItem.getDouble("heightRate")),
+//                df.format(xMin), df.format(xMax), df.format(yMin), df.format(yMax));
+
+        JSONObject result = new JSONObject();
+        result.put("xMin", df.format(xMin));
+        result.put("xMax", df.format(xMax));
+        result.put("yMin", df.format(yMin));
+        result.put("yMax", df.format(yMax));
+        logger.debug("[Value range] {}   Text[{}]", result.toJSONString(), blockItem.getString("text"));
+        return result;
+
+    }
+
+
+    public static String removeInvalidChar(String value){
+
+        if(!StringUtils.hasLength(value)){
+            return value;
+        }
+        if(value.startsWith(":") || value.startsWith("：")){
+            value = value.replaceAll(":", "");
+            value = value.replaceAll("：", "");
+        }
+
+        return value;
     }
 
 }

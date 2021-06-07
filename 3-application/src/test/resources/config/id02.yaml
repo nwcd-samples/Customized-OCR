@@ -23,6 +23,9 @@ Targets:
     KeyWordList: ["性别"]
     LengthMax: 1
     LineCountMax: 1
+    TopOffsetRadio: -0.2
+    BottomOffsetRadio: 0.2
+    RightOffsetRadio: 5.0
 
   - Name: "民族"
     RecognitionType: "default"

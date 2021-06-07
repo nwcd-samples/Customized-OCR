@@ -31,6 +31,11 @@ public class ZZTest {
 //        logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+        //FIXME:
 
     }
 
@@ -46,6 +51,11 @@ public class ZZTest {
 //        logger.info(resultObject.toJSONString());
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
+
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
 
     }
 

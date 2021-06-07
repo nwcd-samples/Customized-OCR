@@ -21,7 +21,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 2.0
         XRangeMin: 0.1
         XRangeMax: 0.5
         YRangeMin: 0.2
@@ -49,7 +49,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 0.5
+        MoveRightRatio: 0.8
         XRangeMin: 0.5
         XRangeMax: 0.8
         YRangeMin: 0.2

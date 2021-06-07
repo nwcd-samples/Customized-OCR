@@ -19,7 +19,6 @@ public class CommonServiceImplTest {
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_1 = "/sample/id001.json";
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_2 = "/sample/id002.json";
 	private static final String ID_SAMPLE_JSON_OBJECT_FILE_3 = "/sample/id003.json";
-//	private static final String ID_SAMPLE_JSON_ARRAY_FILE = "/sample/id001_array.json";
 
 
 
@@ -32,7 +31,10 @@ public class CommonServiceImplTest {
 		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT,"id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 		JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-//		logger.info(resultArray.toJSONString());
+		for(int i=0; i< resultArray.size() ; i++){
+			JSONObject item = (JSONObject) resultArray.get(i);
+			logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+		}
 		assert checkKeyValueMap(resultArray, "姓名", "代用名");
 		assert checkKeyValueMap(resultArray, "性别", "男");
 		assert checkKeyValueMap(resultArray, "民族", "汉");
@@ -51,7 +53,10 @@ public class CommonServiceImplTest {
 		ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "id02");
 		JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
-//		logger.info(resultArray.toJSONString());
+		for(int i=0; i< resultArray.size() ; i++){
+			JSONObject item = (JSONObject) resultArray.get(i);
+			logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+		}
 		assert checkKeyValueMap(resultArray, "姓名", "李四");
 		assert checkKeyValueMap(resultArray, "性别", "男");
 		assert checkKeyValueMap(resultArray, "民族", "汉");

@@ -29,6 +29,7 @@ Targets:
     Columns:
       - ColumnName: "收费项目"
         Location: true
+        MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -40,7 +41,6 @@ Targets:
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
-        MainColumn: true
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
@@ -55,7 +55,7 @@ Targets:
 
   - Name: "收费项目二"
     RecognitionType: "table"
-    MaxRowHeightRatio: 1.5
+    MaxRowHeightRatio: 1.0
     Columns:
       - ColumnName: "收费项目"
         Location: true
@@ -63,16 +63,18 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 0.5
+        MoveRightRatio: 1.0
         XRangeMin: 0.3
-        XRangeMax: 0.5
-        YRangeMin: 0.2
+        XRangeMax: 0.45
+        YRangeMin: 0.3
         YRangeMax: 0.8
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
-        MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "far"
+        MoveRightRatio: 1.8
         Location: true
         XRangeMin: 0.4
         XRangeMax: 0.6

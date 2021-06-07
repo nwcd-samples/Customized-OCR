@@ -2,7 +2,7 @@ TemplateName: 'identity-card-ocr-template'
 
 Targets:
   - Name: "自付一"
-    KeyWordList: ["自付一","自付一:"]
+    KeyWordList: ["自付一：","自付一:","自付一"]
     LengthMin: 2
     LengthMax: 20
     MaxLineCount: 1

@@ -39,4 +39,6 @@ Targets:
         MainColumn: true
         Location: true
         MarginLeftType: "near"
+        MoveLeftRatio: -1.0
+        MarginRightType: "near"
         MoveRightRatio: 1

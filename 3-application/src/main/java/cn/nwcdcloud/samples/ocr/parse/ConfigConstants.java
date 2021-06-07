@@ -13,15 +13,23 @@ public interface ConfigConstants {
 
 
     //通过key 查找value 元素的范围， 相对key的坐标范围
-    double ITEM_OFFSET_TOP_RADIO = -1.0;
-    double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
-    double ITEM_OFFSET_LEFT_RADIO = -0.5;
-    double ITEM_OFFSET_RIGHT_RADIO = 30;
+    double ITEM_OFFSET_TOP_RADIO = -0.2;
+    double ITEM_OFFSET_BOTTOM_RADIO = 0.2;
+    double ITEM_OFFSET_LEFT_RADIO = -0.1;
+    double ITEM_OFFSET_RIGHT_RADIO = 10;
+
+    //Value 的左右边界
+    double ITEM_VALUE_X_RANGE_MIN = 0.0;
+    double ITEM_VALUE_X_RANGE_MAX = 1.0;
 
     // 解析表格 定位 cell元素， 上下设置一个误差范围
     int PARSE_CELL_ERROR_RANGE_TOP      = 20;
     int PARSE_CELL_ERROR_RANGE_BOTTOM   = 20;
-    int PARSE_CELL_ERROR_RANGE_MIN      = 10;
+
+    //FIXME: 合并下面两个值
+    double PARSE_CELL_ERROR_RANGE_MIN      = 0.002;
+    int PARSE_CELL_ERROR_RANGE_MIN_INT      = 10;
+
     //FIXME：  上下元素有误差， 扩大范围 进行兼容， 后面根据每个单据倾斜 密集程度不一样， 可以对误差进行设置。
     int PARSE_CELL_ERROR_RANGE_MAX      = 30;
 
@@ -48,4 +56,6 @@ public interface ConfigConstants {
     double PAGE_RANGE_X_MAX = 1.0;
     double PAGE_RANGE_Y_MIN = 0.0;
     double PAGE_RANGE_Y_MAX = 1.0;
+
+
 }

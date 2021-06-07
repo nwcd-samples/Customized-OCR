@@ -1,5 +1,6 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
+import cn.nwcdcloud.commons.config.JsonConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -371,21 +372,26 @@ public class ParseTablesWorker {
         //根据主列的 top  left  right 向下查找元素
         for (int i=0; i< blockItemList.size(); i++){
             JSONObject item = blockItemList.get(i);
-//            logger.info("### top: [{}]  item top: [{}]  [{}]", top, item.getInteger("top"), item.getString("text"));
+//            logger.debug("### top: [{}]  item top: [{}]  Text [{}]     item[{}, {}] , range[{} , {}]",
+//                    top, item.getInteger("top"), item.getString("text"),
+//                    item.getInteger("xMin"), item.getInteger("xMax"), left, right
+//            );
             if(
+
                     item.getInteger("top") >  top
                     && item.getInteger("left")> left
                     && item.getInteger("right")< right &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))
                     ){
+                logger.debug(" ------------- 寻找到主列的行元素   {}", item.getString("text"));
                 resList.add(item);
             }
         }
 
         resList.sort(new Comparator<JSONObject>() {
             @Override
-            public int compare(JSONObject jsonObject, JSONObject t1) {
-                return jsonObject.getInteger("top") - t1.getInteger("top");
+            public int compare(JSONObject j1, JSONObject j2) {
+                return j1.getInteger("y") - j2.getInteger("y");
             }
         });
 
@@ -393,7 +399,7 @@ public class ParseTablesWorker {
         int maxRowCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "MaxRowCount", ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
 
-        int maxRowHeight = (int)maxRowHeightRatio * mainColumnBlockItem.getInteger("height");
+        int maxRowHeight = (int) (maxRowHeightRatio * mainColumnBlockItem.getInteger("height"));
         logger.debug("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
 
         List<JSONObject> newResList = new ArrayList<>();
@@ -416,19 +422,22 @@ public class ParseTablesWorker {
                 bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 3;
             }else{
                 //如果距离下一行高度差过大, 停止循环
-                //logger.debug("  bottom ={}  maxRowHeight={}  top={} ", item.getInteger("bottom")  ,  maxRowHeight, resList.get(i+1).getInteger("top"));
+
                 if(item.getInteger("bottom")  + maxRowHeight < resList.get(i+1).getInteger("top") ){
+                    logger.debug("[停止循环] [{}]--Next[{}] bottom ={}  maxRowHeight={}  top={} ",
+                            item.getString("text"),  resList.get(i+1).getString("text"), item.getInteger("bottom")  ,
+                            maxRowHeight, resList.get(i+1).getInteger("top"));
                     bottomBorder =  item.getInteger("bottom")  + maxRowHeight;
                     skipItemFlag = true;
                 }else{
-                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;
+                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN_INT;
 
                 }
             }
 
-//            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
-//                    item.getInteger("bottom"),
-//                    topBorder, bottomBorder);
+            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
+                    item.getInteger("bottom"),
+                    topBorder, bottomBorder);
 
             item.put("topBorder", topBorder);
             item.put("bottomBorder", bottomBorder);
@@ -437,6 +446,7 @@ public class ParseTablesWorker {
                 break;//下一行过远 停止循环
             }
         }
+
 
         for (JSONObject item: newResList){
             logger.debug("【DEBUG】行划分 {} Border [top={}, bottom={}]   self[top={}, bottom={}]  {} ",item.getString("text"),
@@ -478,7 +488,10 @@ public class ParseTablesWorker {
                 JSONObject columnItem = columnList.get(j);
                 int left = columnItem.getInteger("leftBorder");
                 int right = columnItem.getInteger("rightBorder");
-//                logger.info(" cell : [{}]     row[{}]   cell[{}]  [left={}, right={}] ", i, j, left , right);
+                logger.info(" cell : [{}]     row[{}]   cell[{}]  [left={}, right={}] ", i, j, left , right);
+
+
+                List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
 
 
@@ -489,11 +502,19 @@ public class ParseTablesWorker {
                     ){
 //                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}]   ",
 //                                item.getString("text"), left , right, top, bottom );
-                        cell.text += (" " + item.getString("text"));
+                        cellList.add(item);
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");
                         }
                     }
+                }//End for
+
+                //Sort list
+
+                cellList.sort(new BlockItemComparator());
+
+                for (JSONObject item: cellList){
+                    cell.text += (" " + item.getString("text"));
                 }
             }
 
