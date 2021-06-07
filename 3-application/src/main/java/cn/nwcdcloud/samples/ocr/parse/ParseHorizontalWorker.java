@@ -107,11 +107,6 @@ public class ParseHorizontalWorker {
 			resultItem.put("confidence", cell.confidence);
 		}
 
-		if (ConfigConstants.PARSE_KEY_TYPE_MULTIPLE.equals(parseItemResult.keyType)) {
-			// key 在多个单元格里， 取最后一个单元格 第一个字符开始的内容
-			resultItem.put("value", blockItem.getString("text").substring(1));
-		}
-
 		if (resultItem.getString("value").startsWith(":") || resultItem.getString("value").startsWith("：")) {
 			resultItem.put("value", resultItem.getString("value").substring(1));
 		}
@@ -136,35 +131,40 @@ public class ParseHorizontalWorker {
 
 
 		// case1. key， 单个元素里面包含了关键字， 或者以关键字开头
-		boolean findFlag = false;
 		JSONObject targetBlockItem = null;
 		int targetIndex = -1;
 		String targetKeyWord = "";
 		for (Object key : keyWordList) {
 			String keyWord = key.toString();
+			boolean isAllMatchFlag = keyWord.startsWith("*");
+			if(isAllMatchFlag){
+				keyWord = keyWord.substring(1);
+			}
 			for (int i = 0; i < blockItemList.size(); i++) {
 				// 判断关键字
 				JSONObject blockItem = blockItemList.get(i);
 				String blockText = blockItem.getString("text");
-				int index = blockText.indexOf(keyWord);
+				int index = -1;
+//				logger.info("Find keys:     keyword {}          blockText {} ", keyWord, blockText);
+				if(isAllMatchFlag){
+					index = blockText.indexOf(keyWord);
+				}else {
+					if(blockText.startsWith(keyWord)){
+						index = 0;
+					}
+				}
 //				logger.debug(" Text:  {}   key: {}   {} ", blockText, keyWord, index);
 				// 判断范围
 				if (index < 0 || !BlockItemUtils.isValidRange(mDefaultConfig, configMap, blockItem)) {
 					continue;
 				}
-				findFlag = true;
+
 				targetBlockItem = blockItem;
 				targetIndex = index;
 				targetKeyWord = keyWord;
 				break;
 			}
-			if(!findFlag ){
-				//如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
-				ParseItemResult result = findResultBySplitKeywords(configMap, blockItemList, keyWord);
-				 if(result != null && result.blockItem != null){
-				 	return result;
-				 }
-			}
+
 
 		}
 //        logger.debug("关键字查找【{}】 findFlag:  {}   index: {}  keyType:   {} ", targetBlockItem.getString("text"),
@@ -173,85 +173,12 @@ public class ParseHorizontalWorker {
 		ParseItemResult parseItemResult = new ParseItemResult();
 		parseItemResult.index = targetIndex;
 		parseItemResult.blockItem = targetBlockItem;
-		parseItemResult.keyType = ConfigConstants.PARSE_KEY_TYPE_SINGLE;  // 关键字在一个单元格里面
 		parseItemResult.keyWord = targetKeyWord;
 
 		return parseItemResult;
 
 	}
 
-	/**
-	 * 如果没有找到， 尝试将关键字拆分开， 然后进行查找， 第一个字符和最后一个字符
-	 *
-	 * 比较极端的情况  例如 【名    称】 两个字符离的比较远， 识别成了两个元素， 用'名' 和'称' 两个字同时去匹配。
-	 * @param configMap
-	 * @param blockItemList
-	 * @return
-	 */
-	private ParseItemResult findResultBySplitKeywords(HashMap configMap, List<JSONObject> blockItemList, String targetKeyWord){
-
-		if(targetKeyWord == null || targetKeyWord.length()<2){
-			logger.warn("关键字【{}】长度不够， 不需要进行拆分 ", JSON.toJSON(configMap));
-			return null;
-		}
-
-
-		int lastKeyLength =1;
-		String startKey = targetKeyWord.substring(0,lastKeyLength);
-		String endKey = targetKeyWord.substring(targetKeyWord.length()-lastKeyLength);
-
-		JSONObject startBlockItem = null;
-
-
-//		logger.debug("关键字=[{}] 被分成了两个， 一起进行查找，  firstKey=[{}] , endKey=[{}]", targetKeyWord , startKey, endKey);
-		// 找到开始的关键字
-		for (int i = 0; i < blockItemList.size(); i++) {
-			JSONObject blockItem = blockItemList.get(i);
-			String blockText = blockItem.getString("text").trim();
-			if(blockText.equals(startKey)){
-				startBlockItem = blockItem;
-			}
-		}
-
-		if(startBlockItem == null){
-
-			ParseItemResult parseItemResult = new ParseItemResult();
-			parseItemResult.index = lastKeyLength;
-			parseItemResult.keyType = ConfigConstants.PARSE_KEY_TYPE_SINGLE;  // 关键字在一个单元格里面
-			parseItemResult.keyWord = targetKeyWord;
-			parseItemResult.subKeyWord = endKey;
-
-			return parseItemResult;
-		}
-		logger.debug("关键字=[{}] 被分成了两个，找到第一个元素， firstKey=[{}] , endKey=[{}] startBlockItem={} ", targetKeyWord , startKey, endKey, JSON.toJSON(startBlockItem));
-		JSONObject targetBlockItem = null;
-		//找到后一个关键字
-		for (int i = 0; i < blockItemList.size(); i++) {
-			JSONObject blockItem = blockItemList.get(i);
-			String blockText = blockItem.getString("text").trim();
-			if(blockText.startsWith(endKey) &&
-					blockItem.getInteger("y") > startBlockItem.getInteger("y") - startBlockItem.getInteger("height")&&
-					blockItem.getInteger("y") < startBlockItem.getInteger("y") + startBlockItem.getInteger("height")
-			){
-				targetBlockItem = blockItem;
-			}
-		}
-
-
-		logger.info(" find targetBlockItem  blockItem {} ", JSON.toJSON(targetBlockItem));
-		logger.debug("关键字=[{}] 被分成了两个，找到第一个元素， firstKey=[{}] , endKey=[{}] endBlockItem= {} ", targetKeyWord , startKey, endKey, JSON.toJSON(targetBlockItem));
-
-
-		ParseItemResult parseItemResult = new ParseItemResult();
-		parseItemResult.index = 1;
-		parseItemResult.blockItem = targetBlockItem;
-		parseItemResult.keyType = ConfigConstants.PARSE_KEY_TYPE_SINGLE;  // 关键字在一个单元格里面
-		parseItemResult.keyWord = targetKeyWord;
-		parseItemResult.subKeyWord = endKey;
-
-		return parseItemResult;
-
-	}
 
 	/**
 	 * 找到[key]元素右边一个[value]单元格
@@ -364,7 +291,6 @@ public class ParseHorizontalWorker {
 	private static class ParseItemResult{
 		int index;
 		String keyWord;
-		String keyType;
 		String subKeyWord;
 		JSONObject blockItem;
 

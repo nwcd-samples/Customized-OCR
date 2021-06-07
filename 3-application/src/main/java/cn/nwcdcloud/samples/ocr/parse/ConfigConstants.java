@@ -43,12 +43,6 @@ public interface ConfigConstants {
     float TABLE_DEFAULT_MARGIN_RIGHT_RATIO      = 0.0f;
 
 
-
-    String PARSE_KEY_TYPE_SINGLE = "single" ;
-    // 比较极端的情况  例如 【名    称】 两个字符离的比较远， 识别成了两个元素， 用'名' 和'称' 两个字同时去匹配。
-    String PARSE_KEY_TYPE_MULTIPLE = "multiple" ;
-
-
     // 每个元素在页面的坐标范围
     double PAGE_RANGE_X_MIN = 0.0;
     double PAGE_RANGE_X_MAX = 1.0;

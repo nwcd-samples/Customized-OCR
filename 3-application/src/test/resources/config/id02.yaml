@@ -26,7 +26,7 @@ Targets:
 
   - Name: "民族"
     RecognitionType: "default"
-    KeyWordList: ["民族"]
+    KeyWordList: ["民族","*民族"]
     LengthMin: 1
     TargetValueType: "char"
     XRangeMax: 0.5

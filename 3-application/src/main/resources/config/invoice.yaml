@@ -19,10 +19,12 @@ Targets:
   - Name: "购买方-地址电话"
     KeyWordList: ["地址、电话"]
     YRangeMax: 0.40
+    RightOffsetRadio: 4
 
   - Name: "购买方-开户行及账号"
     KeyWordList: ["开户行及账号"]
     YRangeMax: 0.40
+    RightOffsetRadio: 4
 
   - Name: "销售方-名称"
     KeyWordList: ["称：","称:"]

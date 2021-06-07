@@ -7,9 +7,9 @@ Targets:
     LengthMax: 20
     MaxLineCount: 1
     TargetValueType: "char"
-    XRangeMin: 0.2
+    XRangeMin: 0.0
     XRangeMax: 1.0
-    YRangeMin: 0.2
+    YRangeMin: 0.0
     YRangeMax: 1.0
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5

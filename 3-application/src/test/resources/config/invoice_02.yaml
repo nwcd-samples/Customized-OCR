@@ -1,0 +1,38 @@
+TemplateName: 'invoice-ocr-template'
+
+DefaultValue:
+  KeyValue:
+    LengthMin: 1
+    LengthMax: 39
+    LineCountMax: 1
+    TargetValueType: "string"
+    XRangeMin: 0.0
+    XRangeMax: 1.0
+    YRangeMin: 0.0
+    YRangeMax: 1.0
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 1.0
+    LeftOffsetRadio: -0.5
+    RightOffsetRadio: 30.0
+  Table:
+    MaxRowHeightRatio: 2.0
+    MaxRowCount: 21
+    Columns:
+      MarginLeftType: "middle"
+      MoveLeftRatio: 0.1
+      MarginRightType: "middle"
+      MoveRightRatio: 0.0
+      XRangeMin: 0.0
+      XRangeMax: 1.0
+      YRangeMin: 0.0
+      YRangeMax: 1.1
+
+Targets:
+  - Name: "购买方-名称"
+#    KeyWordList: ["称：","称:"]
+    KeyWordList: ["*普华"]
+    YRangeMax: 0.40
+    # value所在的左右范围
+    ValueXRangeMin: 0.10
+    ValueXRangeMax: 0.60
+
