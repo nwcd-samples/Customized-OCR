@@ -556,6 +556,7 @@ public class ParseTablesWorker {
 //            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("MainColumn", false));
         }
 
+
         if (count > 1){
             throw new IllegalArgumentException(" 'MainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
         }
