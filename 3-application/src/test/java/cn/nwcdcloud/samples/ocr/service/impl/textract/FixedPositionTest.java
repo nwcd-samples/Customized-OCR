@@ -16,11 +16,12 @@ import java.util.List;
 public class FixedPositionTest {
     private static final Logger logger = LoggerFactory.getLogger(FixedPositionTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/fixed_position.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/fixed_position_01.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/fixed_position_02.json";
 
 
     @Test
-    public void parse() {
+    public void parse01() {
 
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
@@ -28,8 +29,50 @@ public class FixedPositionTest {
         ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
-        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
         logger.info(keyValueList.toJSONString());
+
+        for(int i=0; i< keyValueList.size(); i++){
+            logger.info(keyValueList.get(i).toString());
+        }
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "始发站", "北京南站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "终点站", "上海站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "车次", "G5");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "开车时间", "2021年04月25日07:00开");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "价格", "￥604.0元");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "座位号", "10车15F号");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "身份证&姓名", "5111241982****3413张岭惠");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "10010301040427D000534北京南");
+
+    }
+
+
+    @Test
+    public void parse02() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(ConfigConstants.PAGE_WIDTH, ConfigConstants.PAGE_HEIGHT, "fixed_position");
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
+        logger.info(keyValueList.toJSONString());
+
+        for(int i=0; i< keyValueList.size(); i++){
+            logger.info(keyValueList.get(i).toString());
+        }
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "始发站", "扬州东站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "终点站", "北京南站");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "车次", "G880");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "开车时间", "2021年04月29日14：54开");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "价格", "￥449.0元");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "座位号", "05车020号");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "身份证&姓名", "1404241981****001X张良");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "单号", "17334300290430A029342扬州东售");
+
 
     }
 

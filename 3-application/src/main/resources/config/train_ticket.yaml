@@ -1,4 +1,4 @@
-TemplateName: 'fixed position  template'
+TemplateName: 'Train ticket template'
 
 Targets:
   - Name: "始发站"

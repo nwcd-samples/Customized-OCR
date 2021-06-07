@@ -3,6 +3,7 @@ package cn.nwcdcloud.samples.ocr.parse;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,15 +40,32 @@ public class ParseFixedPosition {
             throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
         }
 
-        logger.info(configMap.get("Name").toString());
+//        logger.info(configMap.get("Name").toString());
 
+        JSONObject resultItem = new JSONObject();
+
+        resultItem.put("name", configMap.get("Name"));
+
+
+        double confidence = 1.0;
+        StringBuilder stringBuilder = new StringBuilder();
         for(JSONObject blockItem : blockItemList){
-            logger.info(blockItem.getString("text"));
             if(BlockItemUtils.isValidRange(mDefaultConfig, configMap, blockItem)){
-                logger.info("____________________", blockItem.toJSONString());
+                stringBuilder.append(blockItem.getString("text"));
+                if(blockItem.getDouble("Confidence") < confidence){
+                    confidence = blockItem.getDouble("Confidence");
+                }
             }
         }
 
-        return null;
+        if(StringUtils.hasLength(stringBuilder.toString())){
+            resultItem.put("value", stringBuilder.toString());
+            resultItem.put("confidence", confidence);
+            return resultItem;
+
+        }else {
+            return null;
+        }
+
     }
 }

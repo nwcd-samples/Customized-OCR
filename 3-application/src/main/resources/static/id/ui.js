@@ -9,10 +9,10 @@ $(function(){
                 tableBlockList:[],
                 result_list:[],      //返回的key-value结果
                 table_list:[],
+                fixed_position_list:[],
                 result_table_list:[],  //返回的列表结果， 保险名称
                 currentTableBlock:{},
-//                data_url:"https://dikers-html.s3.cn-northwest-1.amazonaws.com.cn/ocr_output/t001.json",
-                data_url:"https://dikers-html.s3.cn-northwest-1.amazonaws.com.cn/ocr_output/id.json",
+                data_url:"",
                 data:{}
 
              },methods:{
@@ -64,7 +64,6 @@ function get_data(data){
 function displayResult(fullData,simpleData){
 
 
-    console.log("------------***------------  ")
 	vue.tableBlockList = new Array()
     vue.currentTableBlock = {}
     parse_data(fullData[0]);
@@ -73,10 +72,10 @@ function displayResult(fullData,simpleData){
     console.log("\n")
 
 	console.info(simpleData[0]);
-	console.log("************  : ",  JSON.stringify(simpleData[0]))
+	console.log("      ",  JSON.stringify(simpleData[0]))
 	vue.result_list = simpleData[0]['keyValueList']
-	vue.table_list = simpleData[0]['tableList']
-
+	vue.fixed_position_list = simpleData[0]['fixedPositionList']
+    vue.table_list = simpleData[0]['tableList']
 
 
 }
