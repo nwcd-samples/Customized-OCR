@@ -3,6 +3,7 @@ package cn.nwcdcloud.samples.ocr.parse;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -70,7 +71,12 @@ public class ParseHorizontalWorker {
 
 		resultItem.put("value", BlockItemUtils.removeInvalidChar(value));
 
-		return resultItem;
+		if(StringUtils.hasLength(resultItem.getString("value"))){
+			return resultItem;
+		}else {
+			return null;
+		}
+
 	}
 
 

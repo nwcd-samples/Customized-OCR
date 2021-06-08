@@ -62,7 +62,7 @@ public class InvoiceTypeTest {
     @Test
     public void parse002() {
 
-        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
+        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory("invoice_02");
@@ -79,6 +79,23 @@ public class InvoiceTypeTest {
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）-2", "②");
     }
 
+
+    @Test
+    public void parse003() {
+
+        String jsonObjectPath=this.getClass().getResource(ID_SAMPLE_JSON_OBJECT_FILE_2).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory("invoice");
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+        logger.info(resultArray.toJSONString());
+        for(int i=0; i< resultArray.size() ; i++){
+            logger.info(resultArray.get(i).toString());
+        }
+
+
+    }
 
 
 

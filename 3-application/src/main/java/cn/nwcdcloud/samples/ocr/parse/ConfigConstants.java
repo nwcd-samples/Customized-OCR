@@ -14,7 +14,7 @@ public interface ConfigConstants {
 
     //通过key 查找value 元素的范围， 相对key的坐标范围
     double ITEM_OFFSET_TOP_RADIO = -0.2;
-    double ITEM_OFFSET_BOTTOM_RADIO = 0.2;
+    double ITEM_OFFSET_BOTTOM_RADIO = 0.4;
     double ITEM_OFFSET_LEFT_RADIO = -0.1;
     double ITEM_OFFSET_RIGHT_RADIO = 10;
 
