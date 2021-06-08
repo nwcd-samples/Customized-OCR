@@ -1,0 +1,169 @@
+TemplateName: 'hospital-ocr-template'
+
+Targets:
+  - Name: "交易流水号"
+  - Name: "业务流水号"
+    ValueXRangeMax: 0.40
+  - Name: "医疗机构类型"
+    ValueXRangeMax: 0.65
+  - Name: "上传NO"
+  - Name: "姓名"
+    ValueXRangeMax: 0.27
+  - Name: "性别"
+    KeyWordList: ["性别：", "性别:", "*性别"]
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
+    LengthMax: 1
+  - Name: "医保类型"
+    ValueXRangeMax: 0.65
+  - Name: "社会保障号码"
+    KeyWordList: ["社会保障卡号"]
+  - Name: "NO"
+    KeyWordList: ["*NO"]
+    TopOffsetRadio: -1.5
+    BottomOffsetRadio: 1.5
+  - Name: "合计（大写）"
+    KeyWordList: ["*大写"]
+  - Name: "基金"
+  - Name: "个人支付金额"
+    KeyWordList: ["个人支付金额"]
+    LeftOffsetRadio: 1
+    TopOffsetRadio: -1.5
+    BottomOffsetRadio: 1.5
+  - Name: "门诊大额支付"
+    ValueXRangeMax: 0.65
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
+  - Name: "退休补充支付"
+    ValueXRangeMax: 0.65
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
+  - Name: "自付一"
+    KeyWordList: ["*自付一：", "*自付一:", "自付一"]
+    ValueXRangeMax: 0.98
+  - Name: "自付二"
+    KeyWordList: ["*自付二：", "*自付二:", "*自付二"]
+  - Name: "收费项目一"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 2.0
+    Columns:
+      - ColumnName: "项目/规格"
+        KeyWordList: ["项目/规格","项目规格"]
+        MainColumn: true
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -1.0
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        XRangeMin: 0.0
+        XRangeMax: 0.4
+        YRangeMin: 0.1
+        YRangeMax: 0.8
+
+      - ColumnName: "单价"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        Location: true
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+        YRangeMin: 0.1
+        YRangeMax: 0.9
+
+      - ColumnName: "数量/单位"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.1
+        XRangeMax: 0.5
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        Location: true
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+        YRangeMin: 0.1
+        YRangeMax: 0.9
+
+      - ColumnName: "等级"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        Location: true
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+        YRangeMin: 0.1
+        YRangeMax: 0.9
+
+  - Name: "收费项目二"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 2.0
+    Columns:
+      - ColumnName: "项目/规格"
+        KeyWordList: ["项目/规格","项目规格"]
+        Location: true
+        MainColumn: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -1.5
+        MarginRightType: "near"
+        MoveRightRatio: 3.0
+        XRangeMin: 0.5
+        XRangeMax: 0.8
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "单价"
+        XRangeMin: 0.6
+        XRangeMax: 0.9
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "数量"
+        XRangeMin: 0.6
+        XRangeMax: 0.9
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        Location: true
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.6
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "数量/单位"
+        Location: true
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.6
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "金额"
+        Location: true
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.6
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.8
+
+      - ColumnName: "登记"
+        Location: true
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.6
+        XRangeMax: 1.0
+        YRangeMin: 0.2
+        YRangeMax: 0.8

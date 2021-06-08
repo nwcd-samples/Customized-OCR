@@ -49,6 +49,8 @@
                 </a>
                 <a href="ocr?type=invoice" class="list-group-item list-group-item-action">发票识别</a>
                 <a href="ocr?type=train_ticket" class="list-group-item list-group-item-action">火车票识别</a>
+                <a href="ocr?type=outpatient" class="list-group-item list-group-item-action">门诊收据</a>
+
 
             </div>
 
