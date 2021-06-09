@@ -10,9 +10,9 @@ DefaultValue:
     XRangeMax: 1.0
     YRangeMin: 0.0
     YRangeMax: 1.0
-    TopOffsetRadio: -1.0
+    TopOffsetRadio: -0.5
     BottomOffsetRadio: 1.0
-    LeftOffsetRadio: -0.5
+    LeftOffsetRadio: -1.1
     RightOffsetRadio: 30.0
   Table:
     MaxRowHeightRatio: 2.0

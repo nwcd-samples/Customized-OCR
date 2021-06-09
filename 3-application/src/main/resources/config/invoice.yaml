@@ -1,5 +1,9 @@
 TemplateName: 'invoice-ocr-template'
 
+DefaultValue:
+  KeyValue:
+
+
 Targets:
   - Name: "二维码"
     RecognitionType: "qrcode"
@@ -8,34 +12,34 @@ Targets:
   - Name: "开票日期"
   - Name: "校验码"
   - Name: "机器编号"
-    ValueXRangeMax: 0.4
   - Name: "购买方-名称"
     KeyWordList: ["称：","称:"]
     YRangeMax: 0.40
     ValueXRangeMin: 0.08
     ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
 
   - Name: "购买方-纳税人识别号"
     KeyWordList: ["纳税人识别号"]
     YRangeMax: 0.40
-    ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
 
   - Name: "购买方-地址电话"
     KeyWordList: ["地址、电话"]
     YRangeMax: 0.40
-    ValueXRangeMax: 0.55
-    RightOffsetRadio: 4
 
   - Name: "购买方-开户行及账号"
     KeyWordList: ["开户行及账号"]
     YRangeMax: 0.40
-    ValueXRangeMax: 0.55
-    RightOffsetRadio: 4
 
   - Name: "销售方-名称"
     KeyWordList: ["称：","称:"]
     YRangeMin: 0.50
     ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
 
   - Name: "销售方-地址电话"
     KeyWordList: ["地址、电话"]
@@ -46,6 +50,8 @@ Targets:
     KeyWordList: ["开户行及账号"]
     YRangeMin: 0.50
     ValueXRangeMax: 0.6
+    TopOffsetRadio: -0.1
+    BottomOffsetRadio: 0.1
 
 
   - Name: "价税合计（大写）"
@@ -58,5 +64,6 @@ Targets:
   - Name: "销售方-纳税人识别号"
     KeyWordList: ["纳税人识别号:", "纳税人识别号："]
     YRangeMin: 0.50
-    ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.1
+    BottomOffsetRadio: 0.1
 

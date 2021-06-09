@@ -489,11 +489,19 @@ public class BlockItemUtils {
 //                df.format(blockItem.getDouble("heightRate")),
 //                df.format(xMin), df.format(xMax), df.format(yMin), df.format(yMax));
 
+
+        // step 2. 如果没有设置ValueXRangeMax， 默认只识别最近的单元格, 左边的范围
+        if(valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+            xMin = blockItem.getDouble("xMax") - blockItem.getDouble("widthRate");
+        }
+
+
+
         JSONObject result = new JSONObject();
-        result.put("xMin", df.format(xMin));
-        result.put("xMax", df.format(xMax));
-        result.put("yMin", df.format(yMin));
-        result.put("yMax", df.format(yMax));
+        result.put("xMin", df.format(xMin -0.001) );
+        result.put("xMax", df.format(xMax+ 0.001));
+        result.put("yMin", df.format(yMin -0.001));
+        result.put("yMax", df.format(yMax+0.001));
         logger.debug("[Value range] {}   Text[{}]", result.toJSONString(), blockItem.getString("text"));
         return result;
 
@@ -509,7 +517,7 @@ public class BlockItemUtils {
         if(!StringUtils.hasLength(value)){
             return value;
         }
-        if(value.startsWith(":") || value.startsWith("：")){
+        if(value.startsWith(":") || value.startsWith("：") || value.endsWith("：") || value.endsWith(":")){
             value = value.replaceAll(":", "");
             value = value.replaceAll("：", "");
         }

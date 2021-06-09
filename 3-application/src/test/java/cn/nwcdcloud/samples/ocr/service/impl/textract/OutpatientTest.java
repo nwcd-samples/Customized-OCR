@@ -17,6 +17,7 @@ public class OutpatientTest {
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient001.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient003.json";
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
     private static final String  SAMPLE_YAML_OBJECT_FILE_2 =  "hospital";
 
@@ -36,6 +37,7 @@ public class OutpatientTest {
             JSONObject item = (JSONObject) keyValueList.get(i);
             logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
         }
+        /**
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "交易流水号", "081100140Z191031007412");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "业务流水号", "11785403");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "非营利性医疗机构");
@@ -81,11 +83,30 @@ public class OutpatientTest {
             logger.info(o2.toJSONString());
         }
 
-
+        */
     }
 
     @Test
     public void parseId002() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+    }
+
+
+
+    @Test
+    public void parseId003() {
 
         String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);

@@ -47,6 +47,9 @@ public class ParseHorizontalWorker {
 
 		//step 3. !parseItemResult.keySeparateFlag 是否包含自己的单元格。
 		ParseFactory.Cell  cell = findValueBlocksCell(blockItemList,configMap, blockItem, !parseItemResult.keySeparateFlag);
+		if(cell == null){
+			return null;
+		}
 
 		logger.debug("Target index: {}  text length: {}   Text: {}   keySeparateFlag: {} , cell.text: [{}]",
 				index, blockItem.getString("text").length() ,blockItem.getString("text")
@@ -56,7 +59,7 @@ public class ParseHorizontalWorker {
 		String value = cell.text;
 		if(!parseItemResult.keySeparateFlag){
 			// [key:value]
-			logger.info("Index={} , value [{}], keyWord [{}]", index, value, parseItemResult.keyWord );
+			logger.info("【Key和Value未分离】 Index={} , value [{}], keyWord [{}]", index, value, parseItemResult.keyWord );
 			value = value.substring(index);
 			resultItem.put("confidence", blockItem.getString("Confidence"));
 		}else {
@@ -75,6 +78,7 @@ public class ParseHorizontalWorker {
 		resultItem.put("value", value);
 
 		if(StringUtils.hasLength(resultItem.getString("value"))){
+			logger.warn("【已经找到】  {} ", resultItem.toJSONString());
 			return resultItem;
 		}else {
 			return null;
@@ -143,12 +147,15 @@ public class ParseHorizontalWorker {
 		if(targetBlockItem == null){
 			return parseItemResult;
 		}
-		logger.debug("[Find index]   targetIndex: {}  Text: [{}]", targetIndex ,targetBlockItem.getString("text"));
-		if(parseItemResult.index == targetBlockItem.getString("text").length()){
+		logger.debug("[Find index]  parseItemResult.index {}  targetIndex: {}  Text: [{}]", parseItemResult.index,  targetIndex ,targetBlockItem.getString("text"));
+		// 关键字最后一个字符可能是 '冒号'
+		String tempString = BlockItemUtils.removeInvalidChar(targetBlockItem.getString("text"));
+		if(parseItemResult.index >= tempString.length() ){
 			//key 是独立的
+			parseItemResult.index = tempString.length();
 			parseItemResult.keySeparateFlag = true;
-			logger.debug("关键字查找【{}】    index: {}  keyType:   {} ", targetBlockItem.getString("text"),
-					targetIndex, targetBlockItem);
+			logger.debug("关键字查找【{}】    index: {}  keyType:   {}  keySeparateFlag :{} ", targetBlockItem.getString("text"),
+					targetIndex, targetBlockItem, parseItemResult.keySeparateFlag);
 		}
 
 		return parseItemResult;
@@ -165,13 +172,13 @@ public class ParseHorizontalWorker {
 	private ParseFactory.Cell findValueBlocksCell(List<JSONObject> blockItemList, HashMap configMap, JSONObject blockItem, boolean isContainSelf) {
 		JSONObject rangeObject = BlockItemUtils.findValueRange(mDefaultConfig,configMap, blockItem);
 
-
+		logger.error(" findValueBlocksCell ----- isContainSelf {} ", isContainSelf);
 		int maxLineCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
+		//step 1. 找到Value  的取值范围。
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject curItem = blockItemList.get(i);
-//			logger.debug("-------------------   1  {} " , curItem.getString("text"));
 			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
@@ -189,10 +196,33 @@ public class ParseHorizontalWorker {
 			}
 		}
 
+		//未找到元素
+		if(contentBlockItemList == null || contentBlockItemList.size() == 0){
+			return null;
+		}
+		double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
+		double compareHeightRate = ConfigConstants.COMPARE_HEIGHT_RATE;
+		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+			compareHeightRate = 0.5d;
+		}
 
-		contentBlockItemList.sort(new BlockItemComparator());
-		//多行元素， 寻找置信度最小的作为置信度
+		contentBlockItemList.sort(new BlockItemComparator(compareHeightRate));
+		ParseFactory.Cell cell = new ParseFactory.Cell();
+
+		// step 2. 如果没有设置ValueXRangeMax, 并且是单行， 默认只识别最近的单元格。
+
+		for (int i = 0; i < contentBlockItemList.size(); i++) {
+			logger.error("Range item text:   [{}]", contentBlockItemList.get(i).getString("text"));
+		}
+		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+			JSONObject item = contentBlockItemList.get(0);
+			cell.text = item.getString("text");
+			cell.confidence = item.getFloat("Confidence");
+			return cell ;
+		}
+
 		StringBuilder stringBuilder = new StringBuilder();
+		// step 3. 多行元素， 寻找置信度最小的作为置信度 。  查找所有落在区域里面的单元格， 进行合并，然后返回合并后的文字。
 		float minConfidence  = 1.0f;
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
@@ -201,9 +231,8 @@ public class ParseHorizontalWorker {
 				minConfidence = confidence;
 			}
 		}
-		ParseFactory.Cell cell = new ParseFactory.Cell();
+
 		cell.text = stringBuilder.toString();
-		logger.debug("findValueBlocksCell:   [{}]", cell.text);
 		cell.confidence = minConfidence;
 		return cell ;
 	}

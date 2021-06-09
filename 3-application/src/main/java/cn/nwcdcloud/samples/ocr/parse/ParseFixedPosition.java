@@ -55,7 +55,7 @@ public class ParseFixedPosition {
                 }
             }
         }
-        itemList.sort(new BlockItemComparator());
+        itemList.sort(new BlockItemComparator(ConfigConstants.COMPARE_HEIGHT_RATE));
         StringBuilder stringBuilder = new StringBuilder();
         for(JSONObject item : itemList){
             stringBuilder.append(item.getString("text")).append(" ");

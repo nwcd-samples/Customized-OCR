@@ -13,7 +13,7 @@ Targets:
   - Name: "出生日期"
     KeyWordList: ["出生"]
   - Name: "住址"
-    LineCountMax: 2
+    LineCountMax: 3
     LeftOffsetRadio: -1.0
     BottomOffsetRadio: 3.0
   - Name: "公民身份号码"

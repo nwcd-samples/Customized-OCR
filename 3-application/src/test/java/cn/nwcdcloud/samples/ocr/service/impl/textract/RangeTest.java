@@ -10,7 +10,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import cn.nwcdcloud.samples.ocr.parse.FileUtils;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 
@@ -24,7 +23,7 @@ public class RangeTest {
     @Test
     public void parseId001() {
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory( "range");

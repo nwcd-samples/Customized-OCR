@@ -13,10 +13,10 @@ public interface ConfigConstants {
 
 
     //通过key 查找value 元素的范围， 相对key的坐标范围
-    double ITEM_OFFSET_TOP_RADIO = -0.2;
-    double ITEM_OFFSET_BOTTOM_RADIO = 0.4;
-    double ITEM_OFFSET_LEFT_RADIO = -0.1;
-    double ITEM_OFFSET_RIGHT_RADIO = 10;
+    double ITEM_OFFSET_TOP_RADIO = -1.0;
+    double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
+    double ITEM_OFFSET_LEFT_RADIO = -0.5;
+    double ITEM_OFFSET_RIGHT_RADIO = 30;
 
     //Value 的左右边界
     double ITEM_VALUE_X_RANGE_MIN = 0.0;
@@ -57,5 +57,11 @@ public interface ConfigConstants {
     double PAGE_RANGE_Y_MIN = 0.0;
     double PAGE_RANGE_Y_MAX = 1.0;
 
+
+
+    double DOUBLE_ONE_VALUE = 0.99999d;
+
+
+    double COMPARE_HEIGHT_RATE = 3.0d;
 
 }

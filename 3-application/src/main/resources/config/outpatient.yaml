@@ -3,19 +3,15 @@ TemplateName: 'hospital-ocr-template'
 Targets:
   - Name: "交易流水号"
   - Name: "业务流水号"
-    ValueXRangeMax: 0.40
   - Name: "医疗机构类型"
-    ValueXRangeMax: 0.65
   - Name: "上传NO"
   - Name: "姓名"
-    ValueXRangeMax: 0.27
   - Name: "性别"
     KeyWordList: ["性别：", "性别:", "*性别"]
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
     LengthMax: 1
   - Name: "医保类型"
-    ValueXRangeMax: 0.65
   - Name: "社会保障号码"
     KeyWordList: ["社会保障卡号"]
   - Name: "NO"
@@ -31,28 +27,25 @@ Targets:
     TopOffsetRadio: -1.5
     BottomOffsetRadio: 1.5
   - Name: "门诊大额支付"
-    ValueXRangeMax: 0.65
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
   - Name: "退休补充支付"
-    ValueXRangeMax: 0.65
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
   - Name: "自付一"
     KeyWordList: ["*自付一：", "*自付一:", "自付一"]
-    ValueXRangeMax: 0.98
   - Name: "自付二"
     KeyWordList: ["*自付二：", "*自付二:", "*自付二"]
   - Name: "收费项目一"
     RecognitionType: "table"
-    MaxRowHeightRatio: 0.9
+    MaxRowHeightRatio: 3
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目/规格","项目规格"]
         Location: true
         MainColumn: true
         MarginLeftType: "near"
-        MoveLeftRatio: -1.0
+        MoveLeftRatio: -0.3
         MarginRightType: "near"
         MoveRightRatio: 2.0
         XRangeMin: 0.0
@@ -62,7 +55,7 @@ Targets:
 
       - ColumnName: "单价"
         MarginLeftType: "near"
-        MoveLeftRatio: -0.1
+        MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 2.0
         Location: true
@@ -93,11 +86,11 @@ Targets:
         YRangeMax: 0.9
 
       - ColumnName: "等级"
-        KeyWordList: ["手级","登记"]
+        KeyWordList: ["手级","登记","级"]
         MarginLeftType: "near"
-        MoveLeftRatio: -0.1
+        MoveLeftRatio: -1
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 1.0
         Location: true
         XRangeMin: 0.1
         XRangeMax: 0.7
@@ -106,7 +99,7 @@ Targets:
 
   - Name: "收费项目二"
     RecognitionType: "table"
-    MaxRowHeightRatio: 1.0
+    MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目规格","项目规格"]
@@ -122,6 +115,10 @@ Targets:
         YRangeMax: 0.8
 
       - ColumnName: "单价"
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
         XRangeMin: 0.6
         XRangeMax: 0.9
         YRangeMin: 0.2
@@ -162,12 +159,12 @@ Targets:
         YRangeMax: 0.8
 
       - ColumnName: "等级"
-        KeyWordList: ["手级","登记"]
+        KeyWordList: ["手级","登记","级"]
         Location: true
         MarginRightType: "near"
-        MoveRightRatio: 0.5
+        MoveRightRatio: 1
         MarginLeftType: "near"
-        MoveLeftRatio: -0.5
+        MoveLeftRatio: -1
         XRangeMin: 0.6
         XRangeMax: 1.0
         YRangeMin: 0.2

@@ -521,7 +521,7 @@ public class ParseTablesWorker {
 
                 //Sort list
 
-                cellList.sort(new BlockItemComparator());
+                cellList.sort(new BlockItemComparator(ConfigConstants.COMPARE_HEIGHT_RATE));
 
                 for (JSONObject item: cellList){
                     cell.text += (" " + item.getString("text"));
