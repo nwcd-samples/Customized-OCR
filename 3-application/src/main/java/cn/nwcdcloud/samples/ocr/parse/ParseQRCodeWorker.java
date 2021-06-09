@@ -34,9 +34,6 @@ public class ParseQRCodeWorker {
 	 * @return 解析后的json 文件
 	 */
 	public JSONObject parse(Map<String, Object> configMap, BufferedImage image) {
-		if (!configMap.containsKey("Name")) {
-			throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
-		}
 		if (image == null) {
 			return null;
 		}

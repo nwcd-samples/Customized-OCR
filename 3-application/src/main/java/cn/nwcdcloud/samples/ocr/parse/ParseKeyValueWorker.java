@@ -28,9 +28,6 @@ public class ParseKeyValueWorker {
 	public JSONObject parse(HashMap configMap, List<JSONObject> blockItemList) {
 
 		//step 1. 通过关键字进行 key 元素的定位
-		if(!configMap.containsKey("Name")){
-			throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
-		}
 		if(DEBUG_PARSE_KEY_VALUE){
 			logger.debug("\n【KeyValue 查找】------【{}】config配置: {}", configMap.get("Name"), configMap);
 		}
@@ -95,7 +92,6 @@ public class ParseKeyValueWorker {
 			if(DEBUG_PARSE_KEY_VALUE){
 				logger.debug("【6. END 找到元素】  {} ", resultItem.toJSONString());
 			}
-
 			return resultItem;
 		}else {
 			if(DEBUG_PARSE_KEY_VALUE) {

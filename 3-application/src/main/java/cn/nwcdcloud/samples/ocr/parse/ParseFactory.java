@@ -61,6 +61,10 @@ public class ParseFactory {
 		@SuppressWarnings("unchecked")
 		List<HashMap<String, Object>> targetList = (List<HashMap<String, Object>>) configMap.get("Targets");
 		for (HashMap<String, Object> newItem : targetList) {
+			if(!newItem.containsKey("Name")){
+				throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
+			}
+
 			String recognitionType = newItem.getOrDefault("RecognitionType", "Default").toString();
 			if ("Default".equals(recognitionType) || "KeyValue".equals(recognitionType)) {
 				// 识别单个key-value元素

@@ -8,6 +8,8 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
 import java.util.*;
 
+import static cn.nwcdcloud.samples.ocr.parse.ConfigConstants.DEBUG_PARSE_TABLE;
+
 public class ParseTablesWorker {
 
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
@@ -22,10 +24,13 @@ public class ParseTablesWorker {
      */
     public JSONObject parse(HashMap rootMap, List<JSONObject> blockItemList) {
 
+        if(DEBUG_PARSE_TABLE){
+            logger.debug("【Table 查找】 【{}】\nconfig配置: {}", rootMap.get("Name"), rootMap);
+        }
         //step 0. 找到用来定位的列元素 最少有一个， 可以有多个， 不建议太多，太多以后， 出错的可能会比较大， 会有匹配不到的问题。
         List<JSONObject> locationColumnList = findTableHeadColumns(rootMap, blockItemList);
         if (locationColumnList == null || locationColumnList.size() == 0) {
-            logger.warn(" 没有找到表头定位的元素   请检查配置文件， 或者关键字配置");
+            logger.debug(" 【finish】没有找到表头定位的元素   请检查配置文件， 或者关键字配置");
             return null;
         }
 
@@ -38,11 +43,9 @@ public class ParseTablesWorker {
         //step 3. 通过主列 往下迭代找元素， 找到行划分。
         int mainColumnIndex = findMainColumnIndex(columnBlockItemList);
 
-        if(mainColumnIndex >= columnBlockItemList.size()){
-            throw new IllegalArgumentException(" 主列设置错误， 最大列数为"+columnBlockItemList.size()+" , 设置的值= "+ mainColumnIndex);
+        if(DEBUG_PARSE_TABLE) {
+            logger.debug("【5. 查找到主列】：主列index={}   Text [{}] ", mainColumnIndex, columnBlockItemList.get(mainColumnIndex).getString("text"));
         }
-        logger.info("查找到主列： {}   Text [{}] ", mainColumnIndex,  columnBlockItemList.get(mainColumnIndex).getString("text"));
-
         List<JSONObject> rowList = findRowSplitByMainColumn( rootMap, blockItemList, columnBlockItemList.get(mainColumnIndex));
 
         //step 4. 所有列通过行划分， 找到对应元素，
@@ -56,7 +59,7 @@ public class ParseTablesWorker {
             // displayColumnName 列的显示名称和 key 不一定保持一致
             headTitleArray.add(item.getString("displayColumnName"));
         }
-        //step 5. TODO: 判断行结尾的情况, 设置每个cell 是否能为空，然后同一行的Cell 一起进行判断， 符合标准的才算是一行。
+        //step 5. FIXME: 判断行结尾的情况,设置结束的关键字。
 
         JSONObject resultObject = new JSONObject();
         resultObject.put("name", rootMap.get("Name").toString());
@@ -120,16 +123,12 @@ public class ParseTablesWorker {
                 blockItem.put("isMainColumn", isMainColumn);
                 columnBlockItemList.add(blockItem);
             }
-//            else{
-//                logger.debug("没有找到表头元素  : "+ configMap );
-//                for(String  key: keyList){
-//                    logger.warn("\t 未找到 【{}】 ",  key  );
-//                }
-//            }
         }
-        logger.debug(" 定位元素size = {} ", columnBlockItemList.size());
-        for(JSONObject item : columnBlockItemList){
-            logger.info("【DEBUG】找到表头元素  {} ", BlockItemUtils.generateBlockItemString(item) );
+        if(DEBUG_PARSE_TABLE) {
+            for (int i=0; i<columnBlockItemList.size(); i++) {
+
+                logger.debug("【3.{} 找到表头元素】 {} ", i+1,  BlockItemUtils.generateBlockItemString(columnBlockItemList.get(i)));
+            }
         }
 
         return columnBlockItemList;
@@ -171,6 +170,14 @@ public class ParseTablesWorker {
         if (locationColumnList == null  || locationColumnList.size() ==0 ) {
             throw new IllegalArgumentException("没有配置  'Location ' 用来定位表头, 请检查配置文件 ");
         }
+        if(DEBUG_PARSE_TABLE) {
+
+            for(int i=0; i< locationColumnList.size(); i++){
+                logger.debug("【1.{} 用来定位的表头配置信息】 {} ", i+1 , locationColumnList.get(i));
+            }
+
+        }
+
         return findTableByKeys(blockItemList, locationColumnList);
     }
 
@@ -215,11 +222,12 @@ public class ParseTablesWorker {
                 continue;
             }
         }
-        logger.debug(" 定位元素size = {} ", resultItemList.size());
-        for(JSONObject item : resultItemList){
-            logger.info("【DEBUG】找到表头定位元素  {} ", BlockItemUtils.generateBlockItemString(item) );
-        }
 
+        if(DEBUG_PARSE_TABLE) {
+            for (int i = 0; i < resultItemList.size(); i++) {
+                logger.debug("【2.{} 找到用于定位表头的元素】 {} ", i + 1, BlockItemUtils.generateBlockItemString(resultItemList.get(i)));
+            }
+        }
         return resultItemList;
     }
 
@@ -348,15 +356,18 @@ public class ParseTablesWorker {
 
         currentItem.put("leftBorder", leftBorder);
         currentItem.put("rightBorder",rightBorder);
-        logger.debug("【DEBUG】列划分 {} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ",
-                currentItem.getString("text"),
-                currentItem.getInteger("width"),
-                currentItem.getInteger("left"),
-                currentItem.getInteger("right"),
-                leftBorder, rightBorder,
-                marginLeftType, moveLeftRatio,
-                marginRightType, moveRightRatio);
 
+        if(DEBUG_PARSE_TABLE) {
+
+            logger.debug("【4.列划分】 {} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ",
+                    currentItem.getString("text"),
+                    currentItem.getInteger("width"),
+                    currentItem.getInteger("left"),
+                    currentItem.getInteger("right"),
+                    leftBorder, rightBorder,
+                    marginLeftType, moveLeftRatio,
+                    marginRightType, moveRightRatio);
+        }
 
     }
 
@@ -375,6 +386,7 @@ public class ParseTablesWorker {
 
 
         //根据主列的 top  left  right 向下查找元素
+        int rowCount =0;
         for (int i=0; i< blockItemList.size(); i++){
             JSONObject item = blockItemList.get(i);
 //            logger.debug("### top: [{}]  item top: [{}]  Text [{}]     item[{}, {}] , range[{} , {}]",
@@ -384,13 +396,14 @@ public class ParseTablesWorker {
             if(item.getInteger("top") > top
                     && item.getInteger("left")> left
                     && item.getInteger("right")< right &&
-                    !item.getString("text").equals(mainColumnBlockItem.getString("text"))
-                    ){
-                logger.debug(" ------------- 寻找到主列的行元素   {}", item.getString("text"));
+                    !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
+                rowCount ++;
+                if(DEBUG_PARSE_TABLE){
+                    logger.debug("【6.{}主列 行元素 】 {}", rowCount, BlockItemUtils.generateBlockItemString(item));
+                }
                 if(!item.getString("id").equals(mainColumnBlockItem.getString("id"))){
                     resList.add(item);
                 }
-
             }
         }
 
@@ -406,7 +419,9 @@ public class ParseTablesWorker {
 
 
         int maxRowHeight = (int) (maxRowHeightRatio * mainColumnBlockItem.getInteger("height"));
-        logger.warn("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
+        if(DEBUG_PARSE_TABLE){
+            logger.debug("【7.】   最高行高度={}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
+        }
 
         List<JSONObject> newResList = new ArrayList<>();
         for(int i =0; i< resList.size() && i<maxRowCount; i++){
@@ -532,7 +547,7 @@ public class ParseTablesWorker {
 
         List<JSONArray> resList = new ArrayList<>();
 
-        if(ConfigConstants.DEBUG_FLAG){
+        if(DEBUG_PARSE_TABLE){
             for(int i=0; i<columnList.size(); i++ ){
                 System.out.printf("| %20s ",columnList.get(i).getString("displayColumnName"));
             }
@@ -553,13 +568,13 @@ public class ParseTablesWorker {
                 }
                 object.put("text", text);
                 object.put("confidence", tableArray[i][j].confidence);
-                if(ConfigConstants.DEBUG_FLAG) {
+                if(DEBUG_PARSE_TABLE) {
                     System.out.printf("| %20s ", tableArray[i][j].text);
                 }
                 rowArray.add(object);
             }
             resList.add(rowArray);
-            if(ConfigConstants.DEBUG_FLAG){
+            if(DEBUG_PARSE_TABLE){
                 System.out.println("  ");
             }
         }
@@ -583,24 +598,6 @@ public class ParseTablesWorker {
                 return i;
             }
         }
-//        int mainColumnIndex = ConfigConstants.TABLE_MAIN_COLUMN_INDEX;
-//        int count = 0;
-//        for(int i=0; i< columnBlockItemList.size(); i++){
-//            JSONObject item = columnBlockItemList.get(i);
-//            HashMap config = (HashMap) item.get("config");
-//            if((boolean)config.getOrDefault("MainColumn", false)){
-//                count ++;
-//                mainColumnIndex = i;
-//            }
-////            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("MainColumn", false));
-//        }
-//
-//
-//        if (count > 1){
-//            throw new IllegalArgumentException(" 'MainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
-//        }
-//        return mainColumnIndex;
-
         return 0;
     }
 

@@ -44,7 +44,7 @@ public class BlockItemUtils {
      */
     private static List<JSONObject> parseDataByPageCount(int pageCount, JSONArray jsonArray,  int pageWidth, int pageHeight){
         List<JSONObject> blockList = new ArrayList<JSONObject>();
-        logger.debug(" 共有Blocks {} 个元素 ", jsonArray.size());
+        logger.debug(" 共有Block元素{}个", jsonArray.size());
 
         for(int i=0; i<jsonArray.size(); i++){
             JSONObject blockItem = jsonArray.getJSONObject(i);
@@ -99,7 +99,7 @@ public class BlockItemUtils {
      */
     private static List<Double> computeDegree(JSONObject blockItem){
 
-        logger.debug(blockItem.getJSONObject("Geometry").getJSONArray("Polygon").toJSONString());
+//        logger.debug(blockItem.getJSONObject("Geometry").getJSONArray("Polygon").toJSONString());
 
         JSONArray pointArray = blockItem.getJSONObject("Geometry").getJSONArray("Polygon");
 
@@ -109,7 +109,7 @@ public class BlockItemUtils {
         double tan = (pointB.getDouble("Y")  - pointA.getDouble("Y") )/
                 (pointB.getDouble("X")  - pointA.getDouble("X"));
 
-        logger.debug("倾斜角度 {} ", tan);
+//        logger.debug("倾斜角度 {} ", tan);
         double theta = Math.atan(tan);
         List<Double> matrix =new ArrayList<Double>();
         matrix.add(Math.cos(theta));
@@ -225,7 +225,7 @@ public class BlockItemUtils {
         pageMargin.put("height_rate", 1.0/(pageBottom - pageTop));
         pageMargin.put("width_rate", 1.0/(pageRight - pageLeft));
 
-        logger.debug("page margin    {} ", pageMargin.toJSONString());
+//        logger.debug("page margin    {} ", pageMargin.toJSONString());
         return pageMargin;
 
     }
@@ -398,7 +398,7 @@ public class BlockItemUtils {
         stringBuilder.append("yMax="+ df.format(blockItem.getDouble("yMax")) +", ");
         stringBuilder.append("xMin="+ df.format(blockItem.getDouble("xMin")) +", ");
         stringBuilder.append("xMax="+ df.format(blockItem.getDouble("xMax")) +", ");
-        stringBuilder.append("【"+ blockItem.getString("text") +"】 "+ blockItem.getString("id").substring(5));
+        stringBuilder.append("【"+ blockItem.getString("text") +"】  id="+ blockItem.getString("id").substring(0, 5));
 
 
         return stringBuilder.toString();
