@@ -39,12 +39,12 @@ public class TableSample02Test {
     public void parseId002() {
 
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH);
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
-        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
+//        JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
 
@@ -160,7 +160,7 @@ public class TableSample02Test {
 
     @Test
     public void parseIdMultiTable() {
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_MULTI).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory(CONFIG_FILE_PATH_MULTI);

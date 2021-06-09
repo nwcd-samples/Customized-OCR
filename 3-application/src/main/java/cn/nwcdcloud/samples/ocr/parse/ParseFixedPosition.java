@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static cn.nwcdcloud.samples.ocr.parse.ConfigConstants.DEBUG_PARSE_FIXED_POSITION;
-import static cn.nwcdcloud.samples.ocr.parse.ConfigConstants.DEBUG_PARSE_KEY_VALUE;
 
 public class ParseFixedPosition {
 
@@ -35,7 +34,7 @@ public class ParseFixedPosition {
 
         //step 0. 通过关键字进行 key 元素的定位
         if(DEBUG_PARSE_FIXED_POSITION){
-            logger.debug("\n【Fixed Position 查找】 【{}】config配置: {}", configMap.get("Name"), configMap);
+            logger.debug("【Fixed Position 查找】 【{}】 \n config配置: {}", configMap.get("Name"), configMap);
         }
         JSONObject resultItem = new JSONObject();
         resultItem.put("name", configMap.get("Name"));

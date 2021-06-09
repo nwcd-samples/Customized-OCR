@@ -29,7 +29,7 @@ public class ParseKeyValueWorker {
 
 		//step 1. 通过关键字进行 key 元素的定位
 		if(DEBUG_PARSE_KEY_VALUE){
-			logger.debug("\n【KeyValue 查找】------【{}】config配置: {}", configMap.get("Name"), configMap);
+			logger.debug("【KeyValue 查找】------【{}】\nconfig配置: {}", configMap.get("Name"), configMap);
 		}
 		// step 2. 查找关键字元素
 		ParseItemResult parseItemResult = findKeyBlockItem(configMap, blockItemList);

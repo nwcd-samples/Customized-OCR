@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static cn.nwcdcloud.samples.ocr.parse.ConfigConstants.DEBUG_PARSE_TABLE;
@@ -14,6 +15,7 @@ public class ParseTablesWorker {
 
     private final Logger logger = LoggerFactory.getLogger(ParseTablesWorker.class);
     private DefaultValueConfig mDefaultConfig ;
+    private DecimalFormat mDecimalFormat = new DecimalFormat("#0.000");
 
     public ParseTablesWorker(Map<String, ?> rootConfig) {
         this.mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
@@ -79,18 +81,18 @@ public class ParseTablesWorker {
     private List<JSONObject> findColumnBlockItem(HashMap rootMap, List<JSONObject> blockItemList, List<JSONObject> locationColumnList) {
 
         //设置一个最大值
-        int topBorder = ConfigConstants.PAGE_HEIGHT;
-        int bottomBorder = 0;
+        double topBorder = 1.0;
+        double bottomBorder = 0;
 
         for(int i=0; i< locationColumnList.size(); i++){
             JSONObject item = locationColumnList.get(i);
-            int top = item.getInteger("top");
-            int bottom = item.getInteger("bottom");
-            if(top < topBorder){
-                topBorder = top;
+            double yMin = item.getDouble("yMin");
+            double yMax = item.getDouble("yMax");
+            if(yMin < topBorder){
+                topBorder = yMin;
             }
-            if(bottom > bottomBorder){
-                bottomBorder = bottom;
+            if(yMax > bottomBorder){
+                bottomBorder = yMax;
             }
         }
 
@@ -239,21 +241,18 @@ public class ParseTablesWorker {
      * @param bottom
      * @return
      */
-    private JSONObject findColumnByKeyList(HashMap configMap, List<JSONObject> blockItemList, List<String> keyList, int top, int bottom) {
+    private JSONObject findColumnByKeyList(HashMap configMap, List<JSONObject> blockItemList, List<String> keyList, double top, double bottom) {
         for (int i = 0; i < blockItemList.size(); i++) {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
             for (String key: keyList){
                 key = key.replaceAll(" ", "");
-                if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getInteger("top") >= top - ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX
-                        && tempBlockItem.getInteger("bottom") < bottom + ConfigConstants.PARSE_CELL_ERROR_RANGE_MAX) {
+                if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getDouble("yMin") >= top - 0.05
+                        && tempBlockItem.getDouble("yMax") < bottom + 0.05) {
 
                     //检测元素坐标范围 , 同一个关键字  可能出现在多个表格中。
                     if(BlockItemUtils.isValidRange(mDefaultConfig, configMap, tempBlockItem)){
                         return tempBlockItem;
-                    }else {
-                        logger.debug("【DEBUG】 找到表头定位元素【{}】， 但是位置不匹配 {} ",tempBlockItem.getString("text"),
-                                BlockItemUtils.generateBlockItemString(tempBlockItem));
                     }
                 }
             }
@@ -278,21 +277,21 @@ public class ParseTablesWorker {
         for(int i=0 ; i<columnBlockItemList.size(); i++ ){
             JSONObject currentItem = columnBlockItemList.get(i);
 
-            int leftColumnRight = 0;
-            int rightColumnLeft = 0;
+            double leftColumnRight = 0;
+            double rightColumnLeft = 0;
 
             if(i ==0 ){
                 leftColumnRight = 0;
             }else{
                 JSONObject leftItem = columnBlockItemList.get(i-1);
-                leftColumnRight = leftItem.getInteger("right");
+                leftColumnRight = leftItem.getDouble("xMax");
             }
 
             if (i== columnBlockItemList.size()-1){
                 rightColumnLeft = BlockItemUtils.findRightMostPoz(blockItemList);
             }else {
                 JSONObject rightItem = columnBlockItemList.get(i+1);
-                rightColumnLeft = rightItem.getInteger("left");
+                rightColumnLeft = rightItem.getDouble("xMin");
             }
             adjustSingleItem( leftColumnRight, rightColumnLeft, currentItem);
         }
@@ -315,7 +314,7 @@ public class ParseTablesWorker {
      * @param rightColumnLeft  右边元素的左边界
      * @param currentItem      当前元素
      */
-    private void adjustSingleItem(int leftColumnRight, int rightColumnLeft, JSONObject currentItem){
+    private void adjustSingleItem(double leftColumnRight, double rightColumnLeft, JSONObject currentItem){
         HashMap infoMap = (HashMap) currentItem.get("config");
 
         String marginLeftType = mDefaultConfig.getTableColumnValue(infoMap, "MarginLeftType" , ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE).toString();
@@ -325,48 +324,48 @@ public class ParseTablesWorker {
         float moveRightRatio = Float.valueOf(mDefaultConfig.getTableColumnValue(infoMap, "MoveRightRatio", ConfigConstants.TABLE_DEFAULT_MARGIN_RIGHT_RATIO).toString());
 
 
-        int leftBorder = 0;
+        double xMinBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginLeftType)){
-            leftBorder = currentItem.getInteger("left");
-            leftBorder -= ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
+            xMinBorder = currentItem.getDouble("xMin");
+            xMinBorder -= ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginLeftType)){
-            leftBorder = (currentItem.getInteger("left") + leftColumnRight)/2 ;
+            xMinBorder = (currentItem.getDouble("xMin") + leftColumnRight)/2 ;
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginLeftType)){
-            leftBorder = leftColumnRight ;
+            xMinBorder = leftColumnRight ;
         }else {
             throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginLeftType 类型配置不正确 只能为 near, middle, far 三种类型 ");
         }
 
-        leftBorder += currentItem.getInteger("width") * moveLeftRatio;
+        xMinBorder += currentItem.getDouble("widthRate") * moveLeftRatio;
 
 
 
-        int rightBorder = 0;
+        double xMaxBorder = 0;
         if(ConfigConstants.TABLE_MARGIN_TYPE_NEAR.equals(marginRightType)){
-            rightBorder = currentItem.getInteger("right");
-            rightBorder += ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
+            xMaxBorder = currentItem.getDouble("xMax");
+            xMaxBorder += ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN;  // near 情况下， 加一些冗余， 防止误差
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_MIDDLE.equals(marginRightType)){
-            rightBorder = (currentItem.getInteger("right") + rightColumnLeft) /2;
+            xMaxBorder = (currentItem.getDouble("xMax") + rightColumnLeft) /2;
         }else if(ConfigConstants.TABLE_MARGIN_TYPE_FAR.equals(marginRightType)){
-            rightBorder = rightColumnLeft;
+            xMaxBorder = rightColumnLeft;
         }else {
             throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginRightType 类型配置不正确 只能为 near, middle, far 三种类型 ");
         }
-        rightBorder += currentItem.getInteger("width") * moveRightRatio;
+        xMaxBorder += currentItem.getDouble("widthRate") * moveRightRatio;
 
-        currentItem.put("leftBorder", leftBorder);
-        currentItem.put("rightBorder",rightBorder);
+        currentItem.put("xMinBorder", xMinBorder);
+        currentItem.put("xMaxBorder",xMaxBorder);
 
         if(DEBUG_PARSE_TABLE) {
 
-            logger.debug("【4.列划分】 {} :  width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  ",
-                    currentItem.getString("text"),
-                    currentItem.getInteger("width"),
-                    currentItem.getInteger("left"),
-                    currentItem.getInteger("right"),
-                    leftBorder, rightBorder,
+            logger.debug("【4.列划分】width={} original [{}, {}]  border:[{}, {}]  left config:[type={}, radio={}], right config:[type={}, radio={}]  [{}] ",
+                    mDecimalFormat.format(currentItem.getDouble("widthRate")),
+                    mDecimalFormat.format(currentItem.getDouble("xMin")),
+                    mDecimalFormat.format(currentItem.getDouble("xMax")),
+                    mDecimalFormat.format(xMinBorder), mDecimalFormat.format(xMaxBorder),
                     marginLeftType, moveLeftRatio,
-                    marginRightType, moveRightRatio);
+                    marginRightType, moveRightRatio,
+                    currentItem.getString("text"));
         }
 
     }
@@ -380,22 +379,26 @@ public class ParseTablesWorker {
 
 
         List<JSONObject> resList = new ArrayList<>();
-        int left = mainColumnBlockItem.getInteger("leftBorder");
-        int right = mainColumnBlockItem.getInteger("rightBorder");
-        int top = mainColumnBlockItem.getInteger("top");
+        double xMinBorder = mainColumnBlockItem.getDouble("xMinBorder");
+        double xMaxBorder = mainColumnBlockItem.getDouble("xMaxBorder");
+        double yMinBorder = mainColumnBlockItem.getDouble("yMin");
+
 
 
         //根据主列的 top  left  right 向下查找元素
         int rowCount =0;
         for (int i=0; i< blockItemList.size(); i++){
             JSONObject item = blockItemList.get(i);
-//            logger.debug("### top: [{}]  item top: [{}]  Text [{}]     item[{}, {}] , range[{} , {}]",
-//                    top, item.getInteger("top"), item.getString("text"),
-//                    item.getInteger("xMin"), item.getInteger("xMax"), left, right
-//            );
-            if(item.getInteger("top") > top
-                    && item.getInteger("left")> left
-                    && item.getInteger("right")< right &&
+//                    logger.debug("【8.{} 根据主列查找元素】yMin: [{}] item yMin: [{}] item[{}, {}] , range[{} , {}]  Text [{}]   ",
+//                            i+1, mDecimalFormat.format(yMinBorder),
+//                            mDecimalFormat.format(item.getDouble("yMin")),
+//                            mDecimalFormat.format(item.getDouble("xMin")),
+//                            mDecimalFormat.format(item.getDouble("xMax")),
+//                            mDecimalFormat.format(xMinBorder), mDecimalFormat.format(xMaxBorder),item.getString("text")
+//                    );
+            if(item.getDouble("yMin") > yMinBorder
+                    && item.getDouble("xMin")> xMinBorder
+                    && item.getDouble("xMax")< xMaxBorder &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
                 rowCount ++;
                 if(DEBUG_PARSE_TABLE){
@@ -418,9 +421,9 @@ public class ParseTablesWorker {
         int maxRowCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "MaxRowCount", ConfigConstants.TABLE_MAX_ROW_COUNT).toString());
 
 
-        int maxRowHeight = (int) (maxRowHeightRatio * mainColumnBlockItem.getInteger("height"));
+        double maxRowHeight = maxRowHeightRatio * mainColumnBlockItem.getDouble("heightRate");
         if(DEBUG_PARSE_TABLE){
-            logger.debug("【7.】   最高行高度={}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
+            logger.debug("【7.】 最高行高度={}  待比对的行元素{}个 ", mDecimalFormat.format(maxRowHeight), resList.size());
         }
 
         List<JSONObject> newResList = new ArrayList<>();
@@ -428,42 +431,47 @@ public class ParseTablesWorker {
             JSONObject item = resList.get(i);
 
             boolean skipItemFlag = false;
-            int topBorder = 0;
+            double topBorder = 0;
             if(i ==0){
 
-                if(item.getInteger("top") > mainColumnBlockItem.getInteger("bottom") + maxRowHeight ){
+                if(item.getDouble("yMin") > mainColumnBlockItem.getDouble("yMax") + maxRowHeight ){
                     break;
                 }
 
-                topBorder = (item.getInteger("top") < mainColumnBlockItem.getInteger("bottom")
-                        ? item.getInteger("top")
-                        : mainColumnBlockItem.getInteger("bottom"));
+                topBorder = (item.getDouble("yMin") < mainColumnBlockItem.getDouble("yMax")
+                        ? item.getDouble("yMin")
+                        : mainColumnBlockItem.getDouble("yMax"));
             }else {
                 // 该block 与上一行的block 求中点 ， 再往上移动若干像素， 控制误差。
-                topBorder = (resList.get(i-1).getInteger("bottom") + item.getInteger("top"))/2 - 3  ;
+                topBorder = (resList.get(i-1).getDouble("yMax") + item.getDouble("yMin"))/2 - 0.001  ;
             }
 
-            int bottomBorder = 0;
+            double bottomBorder = 0;
             if(i == resList.size()-1){
-                bottomBorder = item.getInteger("bottom") + item.getInteger("height") + 3;
+                bottomBorder = item.getDouble("yMax") + item.getDouble("heightRate") + 0.001;
             }else{
                 //如果距离下一行高度差过大, 停止循环
 
-                if(item.getInteger("bottom")  + maxRowHeight < resList.get(i+1).getInteger("top") ){
-                    logger.debug("[停止循环] [{}]--Next[{}] bottom ={}  maxRowHeight={}  top={} ",
-                            item.getString("text"),  resList.get(i+1).getString("text"), item.getInteger("bottom")  ,
-                            maxRowHeight, resList.get(i+1).getInteger("top"));
-                    bottomBorder =  item.getInteger("bottom")  + maxRowHeight;
+
+
+                if(item.getDouble("yMax")  + maxRowHeight < resList.get(i+1).getDouble("yMin") ){
+                    if(DEBUG_PARSE_TABLE){
+                        logger.debug("【7.停止循环】yMax={} maxRowHeight={}  下一个元素yMin={}    [{}]--Next[{}] ",
+                                mDecimalFormat.format(item.getDouble("yMax")),
+                                mDecimalFormat.format(maxRowHeight),
+                                mDecimalFormat.format(resList.get(i+1).getDouble("yMin")),
+                                item.getString("text"),
+                                resList.get(i+1).getString("text")
+                        );
+                    }
+
+                    bottomBorder =  item.getDouble("yMin")  + maxRowHeight;
                     skipItemFlag = true;
                 }else{
-                    bottomBorder = (resList.get(i+1).getInteger("top") + item.getInteger("bottom"))/2 + ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN_INT;
+                    bottomBorder = (resList.get(i+1).getDouble("yMin") + item.getDouble("yMax"))/2 + 0.005;
 
                 }
             }
-
-            logger.debug("{} item: [t={}, b={}] Boarder[t={}, b={}]", item.getString("text"), item.getInteger("top"),
-                    item.getInteger("bottom"),
-                    topBorder, bottomBorder);
 
             item.put("topBorder", topBorder);
             item.put("bottomBorder", bottomBorder);
@@ -471,14 +479,18 @@ public class ParseTablesWorker {
             if(skipItemFlag){
                 break;//下一行过远 停止循环
             }
+
         }
 
-
-        for (JSONObject item: newResList){
-            logger.debug("【DEBUG】行划分 {} Border [top={}, bottom={}]   self[top={}, bottom={}]  {} ",item.getString("text"),
-                    item.getInteger("topBorder"), item.getInteger("bottomBorder"),
-                    item.getInteger("top"), item.getInteger("bottom"),
-                    item.toJSONString());
+        if(DEBUG_PARSE_TABLE) {
+            for (int i=0; i< newResList.size(); i++) {
+                JSONObject item  =  newResList.get(i);
+                logger.debug("【8.{} 行划分】 Border [yMin={}, yMax={}] self[yMin={}, yMax={}]  [{}] ",
+                        i+1,
+                        mDecimalFormat.format(item.getDouble("topBorder")), mDecimalFormat.format(item.getDouble("bottomBorder")),
+                        mDecimalFormat.format(item.getDouble("yMin")), mDecimalFormat.format(item.getDouble("yMax")),
+                        item.getString("text") );
+            }
         }
         return newResList;
     }
@@ -500,9 +512,8 @@ public class ParseTablesWorker {
 
         for(int i=0; i<rowList.size(); i++){
             JSONObject rowItem = rowList.get(i);
-            int top = rowItem.getInteger("topBorder") - ConfigConstants.PARSE_CELL_ERROR_RANGE_TOP;
-            int bottom = rowItem.getInteger("bottomBorder") + ConfigConstants.PARSE_CELL_ERROR_RANGE_BOTTOM;
-//            logger.info("      row ");
+            double top = rowItem.getDouble("topBorder") - 0.01;
+            double bottom = rowItem.getDouble("bottomBorder") + 0.01;
             for (int j=0; j< columnList.size(); j ++ ){
 
                 Cell cell = tableArray[i][j];
@@ -512,22 +523,31 @@ public class ParseTablesWorker {
                 tableArray[i][j] = cell;
 
                 JSONObject columnItem = columnList.get(j);
-                int left = columnItem.getInteger("leftBorder");
-                int right = columnItem.getInteger("rightBorder");
-                logger.info(" cell  [row={},  column={}]  [left={}, right={}]  [{}]", i, j, left , right, columnItem.getString("text"));
+                double left = columnItem.getDouble("xMinBorder");
+                double right = columnItem.getDouble("xMaxBorder");
 
+
+                if(DEBUG_PARSE_TABLE) {
+                    logger.debug("【9.{} cell取值范围】\t[yMin={}, yMax={}, xMin={}, xMax={}]  [row={}, column={}]   列名：[{}]",
+                           i+1,
+                            mDecimalFormat.format(top), mDecimalFormat.format(bottom),
+                            mDecimalFormat.format(left),mDecimalFormat.format(right),
+                            i, j, columnItem.getString("text"));
+                }
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
-
-
-                    if(item.getInteger("top")>= top &&
-                       item.getInteger("bottom")<= bottom &&
-                       item.getInteger("left")>= left &&
-                       item.getInteger("right") <= right+10
+                    if(item.getDouble("yMin")>= top &&
+                       item.getDouble("yMax")<= bottom &&
+                       item.getDouble("xMin")>= left &&
+                       item.getDouble("xMax") <= right+ 0.005
                     ){
-                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}]   ",
-                                item.getString("text"), left , right, top, bottom );
                         cellList.add(item);
+                        if(DEBUG_PARSE_TABLE){
+                            logger.debug("\t【找到第{}元素】\t{} ",
+                                    cellList.size(), BlockItemUtils.generateBlockItemString(item));
+                        }
+
+
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");
                         }
@@ -578,6 +598,7 @@ public class ParseTablesWorker {
                 System.out.println("  ");
             }
         }
+
         return resList;
 
     }

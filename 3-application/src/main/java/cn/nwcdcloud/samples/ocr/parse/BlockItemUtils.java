@@ -325,11 +325,11 @@ public class BlockItemUtils {
      * @param blockItemList
      * @return
      */
-    public static int findRightMostPoz(List<JSONObject> blockItemList){
-        int rightMost = 0;
+    public static double findRightMostPoz(List<JSONObject> blockItemList){
+        double rightMost = 0;
         for (JSONObject item : blockItemList){
-            if(item.getInteger("right")> rightMost){
-                rightMost = item.getInteger("right");
+            if(item.getDouble("xMax")> rightMost){
+                rightMost = item.getDouble("xMax");
             }
         }
         return rightMost;
@@ -394,10 +394,10 @@ public class BlockItemUtils {
             return "Block Item is null. ";
         }
         DecimalFormat df=new DecimalFormat("#0.000");
-        stringBuilder.append("yMin="+ df.format(blockItem.getDouble("yMin")) +", ");
+        stringBuilder.append("[yMin="+ df.format(blockItem.getDouble("yMin")) +", ");
         stringBuilder.append("yMax="+ df.format(blockItem.getDouble("yMax")) +", ");
         stringBuilder.append("xMin="+ df.format(blockItem.getDouble("xMin")) +", ");
-        stringBuilder.append("xMax="+ df.format(blockItem.getDouble("xMax")) +", ");
+        stringBuilder.append("xMax="+ df.format(blockItem.getDouble("xMax")) +"]");
         stringBuilder.append("【"+ blockItem.getString("text") +"】  id="+ blockItem.getString("id").substring(0, 5));
 
 

@@ -2,8 +2,8 @@ package cn.nwcdcloud.samples.ocr.parse;
 
 public interface ConfigConstants {
 
-    boolean DEBUG_PARSE_KEY_VALUE =  false;
-    boolean DEBUG_PARSE_FIXED_POSITION =  false;
+    boolean DEBUG_PARSE_KEY_VALUE =  true;
+    boolean DEBUG_PARSE_FIXED_POSITION =  true;
     boolean DEBUG_PARSE_TABLE =  true;
 
 //    boolean DEBUG_FLAG = true;
