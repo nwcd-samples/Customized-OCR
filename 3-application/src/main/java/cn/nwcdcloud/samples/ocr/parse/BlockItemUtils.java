@@ -474,11 +474,13 @@ public class BlockItemUtils {
         double yMin = blockItem.getDouble("yMin") + blockItem.getDouble("heightRate") * topRadio;
         double yMax = blockItem.getDouble("yMax") + blockItem.getDouble("heightRate") * bottomRadio;
 
-        //同时设计了 TopOffsetRadio 和 ValueXRangeMin， 按照交集进行计算， 两者都要满足
-        if(valueXRangeMin > xMin){
+        //同时设计了 *OffsetRadio 和 ValueXRangeMin， 按照交集进行计算， 两者都要满足
+        //如果用户没有设置 ValueXRangeMin ValueXRangeMax, 都按照默认的 *OffsetRadio的范围
+        if( valueXRangeMin> 0 && valueXRangeMin > xMin){
             xMin = valueXRangeMin;
         }
-        if(valueXRangeMax < xMax){
+
+        if( valueXRangeMax<1.0 && valueXRangeMax < xMax){
             xMax = valueXRangeMax;
         }
 

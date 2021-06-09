@@ -1,0 +1,133 @@
+TemplateName: 'hospital-ocr-template'
+
+Targets:
+#  - Name: "交易流水号"
+#  - Name: "业务流水号"
+#    ValueXRangeMax: 0.40
+#  - Name: "医疗机构类型"
+#    ValueXRangeMax: 0.65
+#  - Name: "姓名"
+#    ValueXRangeMax: 0.30
+#  - Name: "性别"
+#    LengthMax: 1
+#  - Name: "医保类型"
+#    ValueXRangeMax: 0.64
+#  - Name: "社会保障卡号"
+#    KeyWordList: ["社会保障号"]
+#  - Name: "合计（大写）"
+#    KeyWordList: ["合计（大5）","合计（大写"]
+#  - Name: "自付一"
+#    KeyWordList: ["白付一"]
+#  - Name: "自付二"
+#    KeyWordList: ["白付二"]
+  - Name: "收费项目一"
+    RecognitionType: "table"
+    MaxRowHeightRatio: 0.6
+    Columns:
+      - ColumnName: "项目/规格"
+        KeyWordList: ["项目规格"]
+        MainColumn: true
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -1.0
+        MarginRightType: "far"
+        MoveRightRatio: 0.2
+        XRangeMin: 0.0
+        XRangeMax: 0.5
+
+      - ColumnName: "单价"
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+
+      - ColumnName: "数量/单位"
+        KeyWordList: ["数量单位"]
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
+        MarginRightType: "near"
+        MoveRightRatio: 0.0
+        XRangeMin: 0.1
+        XRangeMax: 0.5
+
+      - ColumnName: "金额"
+        KeyWordList: ["全额"]
+        MarginLeftType: "near"
+        MoveLeftRatio: -1.0
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+
+      - ColumnName: "等级"
+        MoveLeftRatio: -0.1
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        XRangeMin: 0.1
+        XRangeMax: 0.7
+
+#  - Name: "收费项目二"
+#    RecognitionType: "table"
+#    MaxRowHeightRatio: 2.0
+#    Columns:
+#      - ColumnName: "项目/规格"
+#        KeyWordList: ["项目规格"]
+#        MainColumn: true
+#        Location: true
+#        MarginLeftType: "near"
+#        MoveLeftRatio: -1.2
+#        MarginRightType: "far"
+#        MoveRightRatio: 0.2
+#        XRangeMin: 0.5
+#        XRangeMax: 0.8
+#
+#      - ColumnName: "单价"
+#        Location: true
+#        MarginLeftType: "near"
+#        MoveLeftRatio: -0.1
+#        MarginRightType: "near"
+#        MoveRightRatio: 2.0
+#        XRangeMin: 0.6
+#        XRangeMax: 0.9
+#
+#      - ColumnName: "数量/单位"
+#        KeyWordList: ["数量单位"]
+#        MarginLeftType: "near"
+#        MoveLeftRatio: -0.5
+#        MarginRightType: "near"
+#        MoveRightRatio: 0.0
+#        XRangeMin: 0.6
+#        XRangeMax: 0.9
+#
+#      - ColumnName: "金额"
+#        KeyWordList: ["全额"]
+#        MarginLeftType: "near"
+#        MoveLeftRatio: -1.0
+#        MarginRightType: "near"
+#        MoveRightRatio: 2.0
+#        XRangeMin: 0.6
+#        XRangeMax: 1.0
+#
+#      - ColumnName: "数量/单位"
+#        Location: true
+#        MarginRightType: "near"
+#        MoveRightRatio: 1.0
+#        XRangeMin: 0.6
+#        XRangeMax: 1.0
+#
+#      - ColumnName: "金额"
+#        Location: true
+#        MarginRightType: "near"
+#        MoveRightRatio: 1.0
+#        XRangeMin: 0.6
+#        XRangeMax: 1.0
+#
+#      - ColumnName: "等级"
+#        MoveLeftRatio: -0.1
+#        MarginRightType: "near"
+#        MoveRightRatio: 1.0
+#        XRangeMin: 0.6
+#        XRangeMax: 1.0

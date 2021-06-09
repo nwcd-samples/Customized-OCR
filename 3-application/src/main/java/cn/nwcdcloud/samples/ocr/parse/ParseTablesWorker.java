@@ -1,6 +1,5 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
-import cn.nwcdcloud.commons.config.JsonConfig;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -54,7 +53,8 @@ public class ParseTablesWorker {
 
         JSONArray headTitleArray = new JSONArray();
         for(JSONObject item : columnBlockItemList){
-            headTitleArray.add(item.getString("text"));
+            // displayColumnName 列的显示名称和 key 不一定保持一致
+            headTitleArray.add(item.getString("displayColumnName"));
         }
         //step 5. TODO: 判断行结尾的情况, 设置每个cell 是否能为空，然后同一行的Cell 一起进行判断， 符合标准的才算是一行。
 
@@ -107,17 +107,21 @@ public class ParseTablesWorker {
             }
 
             List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
-            keyList.add(configMap.get("ColumnName").toString());
+
+            String displayColumnName = configMap.get("ColumnName").toString();
+            keyList.add(displayColumnName);
             JSONObject blockItem = findColumnByKeyList(configMap, blockItemList, keyList, topBorder, bottomBorder);
             if(blockItem != null){
+                blockItem.put("displayColumnName", displayColumnName);
                 blockItem.put("config", configMap);
                 columnBlockItemList.add(blockItem);
-            }else{
-                logger.warn("没有找到表头元素  : "+ configMap );
-                for(String  key: keyList){
-                    logger.warn("\t 未找到 【{}】 ",  key  );
-                }
             }
+//            else{
+//                logger.debug("没有找到表头元素  : "+ configMap );
+//                for(String  key: keyList){
+//                    logger.warn("\t 未找到 【{}】 ",  key  );
+//                }
+//            }
         }
         logger.debug(" 定位元素size = {} ", columnBlockItemList.size());
         for(JSONObject item : columnBlockItemList){
@@ -373,9 +377,7 @@ public class ParseTablesWorker {
 //                    top, item.getInteger("top"), item.getString("text"),
 //                    item.getInteger("xMin"), item.getInteger("xMax"), left, right
 //            );
-            if(
-
-                    item.getInteger("top") >  top
+            if(item.getInteger("top") >=  top
                     && item.getInteger("left")> left
                     && item.getInteger("right")< right &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))
@@ -384,6 +386,7 @@ public class ParseTablesWorker {
                 resList.add(item);
             }
         }
+//        resList.add(mainColumnBlockItem);
 
         resList.sort(new Comparator<JSONObject>() {
             @Override
@@ -397,7 +400,7 @@ public class ParseTablesWorker {
 
 
         int maxRowHeight = (int) (maxRowHeightRatio * mainColumnBlockItem.getInteger("height"));
-        logger.debug("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
+        logger.warn("最高行高度  {}  找到待比对的行元素个数 {} 个 ", maxRowHeight, resList.size());
 
         List<JSONObject> newResList = new ArrayList<>();
         for(int i =0; i< resList.size() && i<maxRowCount; i++){
@@ -521,7 +524,7 @@ public class ParseTablesWorker {
 
         if(ConfigConstants.DEBUG_FLAG){
             for(int i=0; i<columnList.size(); i++ ){
-                System.out.printf("| %20s ",columnList.get(i).getString("text"));
+                System.out.printf("| %20s ",columnList.get(i).getString("displayColumnName"));
             }
             System.out.println("");
         }

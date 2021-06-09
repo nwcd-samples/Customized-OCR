@@ -64,12 +64,15 @@ public class ParseHorizontalWorker {
 			resultItem.put("confidence", cell.confidence);
 		}
 		//step 5. 最大字符限制
+		value = BlockItemUtils.removeInvalidChar(value);
 		int maxLength = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
+
+//		logger.warn(configMap.get("Name") + "maxLength  " + maxLength + "   "+ value);
 		if( value.length() > maxLength){
 			value = value.substring(0, maxLength);
 		}
 
-		resultItem.put("value", BlockItemUtils.removeInvalidChar(value));
+		resultItem.put("value", value);
 
 		if(StringUtils.hasLength(resultItem.getString("value"))){
 			return resultItem;
