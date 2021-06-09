@@ -12,7 +12,7 @@ DefaultValue:
     YRangeMax: 1.0
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 1.0
-    LeftOffsetRadio: -1.1
+    LeftOffsetRadio: -0.1
     RightOffsetRadio: 30.0
   Table:
     MaxRowHeightRatio: 2.0

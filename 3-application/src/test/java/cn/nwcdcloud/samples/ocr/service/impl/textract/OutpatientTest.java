@@ -37,7 +37,7 @@ public class OutpatientTest {
             JSONObject item = (JSONObject) keyValueList.get(i);
             logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
         }
-        /**
+
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "交易流水号", "081100140Z191031007412");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "业务流水号", "11785403");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "非营利性医疗机构");
@@ -82,9 +82,7 @@ public class OutpatientTest {
             logger.info(o1.toJSONString());
             logger.info(o2.toJSONString());
         }
-
-        */
-    }
+     }
 
     @Test
     public void parseId002() {

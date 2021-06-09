@@ -393,12 +393,12 @@ public class BlockItemUtils {
         if(blockItem == null){
             return "Block Item is null. ";
         }
-
-        stringBuilder.append("top="+ blockItem.getString("top") +", ");
-        stringBuilder.append("bottom="+ blockItem.getString("bottom") +", ");
-        stringBuilder.append("left="+ blockItem.getString("left") +", ");
-        stringBuilder.append("right="+ blockItem.getString("right") +", ");
-        stringBuilder.append("【"+ blockItem.getString("text") +"】 "+ blockItem.getString("id"));
+        DecimalFormat df=new DecimalFormat("#0.000");
+        stringBuilder.append("yMin="+ df.format(blockItem.getDouble("yMin")) +", ");
+        stringBuilder.append("yMax="+ df.format(blockItem.getDouble("yMax")) +", ");
+        stringBuilder.append("xMin="+ df.format(blockItem.getDouble("xMin")) +", ");
+        stringBuilder.append("xMax="+ df.format(blockItem.getDouble("xMax")) +", ");
+        stringBuilder.append("【"+ blockItem.getString("text") +"】 "+ blockItem.getString("id").substring(5));
 
 
         return stringBuilder.toString();
@@ -469,11 +469,11 @@ public class BlockItemUtils {
 //                df.format(blockItem.getDouble("yMin")),
 //                df.format(blockItem.getDouble("yMax")));
 
+
         double xMin = blockItem.getDouble("xMin") + blockItem.getDouble("widthRate") * leftRadio;
         double xMax = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * rightRadio;
         double yMin = blockItem.getDouble("yMin") + blockItem.getDouble("heightRate") * topRadio;
         double yMax = blockItem.getDouble("yMax") + blockItem.getDouble("heightRate") * bottomRadio;
-
         //同时设计了 *OffsetRadio 和 ValueXRangeMin， 按照交集进行计算， 两者都要满足
         //如果用户没有设置 ValueXRangeMin ValueXRangeMax, 都按照默认的 *OffsetRadio的范围
         if( valueXRangeMin> 0 && valueXRangeMin > xMin){
@@ -492,7 +492,7 @@ public class BlockItemUtils {
 
         // step 2. 如果没有设置ValueXRangeMax， 默认只识别最近的单元格, 左边的范围
         if(valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
-            xMin = blockItem.getDouble("xMax") - blockItem.getDouble("widthRate");
+            xMin = blockItem.getDouble("xMin") + blockItem.getDouble("widthRate") * leftRadio;
         }
 
 
@@ -502,7 +502,6 @@ public class BlockItemUtils {
         result.put("xMax", df.format(xMax+ 0.001));
         result.put("yMin", df.format(yMin -0.001));
         result.put("yMax", df.format(yMax+0.001));
-        logger.debug("[Value range] {}   Text[{}]", result.toJSONString(), blockItem.getString("text"));
         return result;
 
     }

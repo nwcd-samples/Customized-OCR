@@ -64,6 +64,6 @@ Targets:
   - Name: "销售方-纳税人识别号"
     KeyWordList: ["纳税人识别号:", "纳税人识别号："]
     YRangeMin: 0.50
-    TopOffsetRadio: -0.1
-    BottomOffsetRadio: 0.1
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
 

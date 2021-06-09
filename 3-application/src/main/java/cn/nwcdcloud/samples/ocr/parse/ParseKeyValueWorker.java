@@ -7,13 +7,15 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-public class ParseHorizontalWorker {
-	private final Logger logger = LoggerFactory.getLogger(ParseHorizontalWorker.class);
+import static cn.nwcdcloud.samples.ocr.parse.ConfigConstants.DEBUG_PARSE_KEY_VALUE;
+
+public class ParseKeyValueWorker {
+	private final Logger logger = LoggerFactory.getLogger(ParseKeyValueWorker.class);
 
 	// 默认值配置类
 	DefaultValueConfig mDefaultConfig ;
 
-	public ParseHorizontalWorker(Map<String, ?> rootConfig) {
+	public ParseKeyValueWorker(Map<String, ?> rootConfig) {
 		mDefaultConfig = new DefaultValueConfig((Map<String, ?>)rootConfig.get("DefaultValue"));
 	}
 
@@ -24,23 +26,30 @@ public class ParseHorizontalWorker {
 	 * @return  解析后的json 文件
 	 */
 	public JSONObject parse(HashMap configMap, List<JSONObject> blockItemList) {
+
 		//step 1. 通过关键字进行 key 元素的定位
 		if(!configMap.containsKey("Name")){
 			throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
 		}
+		if(DEBUG_PARSE_KEY_VALUE){
+			logger.debug("\n【KeyValue 查找】------【{}】config配置: {}", configMap.get("Name"), configMap);
+		}
 		// step 2. 查找关键字元素
 		ParseItemResult parseItemResult = findKeyBlockItem(configMap, blockItemList);
-		if (parseItemResult.blockItem == null) {
-//			logger.warn("Parse key-value   没有找到 : text {}  ", configMap.get("Name"));
+		if (parseItemResult == null ) {
 			return null;
 		}
-
-		logger.info("找到关键字  {} " ,  BlockItemUtils.generateBlockItemString(parseItemResult.blockItem));
-
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【1. 找到关键字】 key和value是否分离 [{}] 【{}】  ", parseItemResult.keySeparateFlag,
+					BlockItemUtils.generateBlockItemString(parseItemResult.blockItem));
+		}
 		int index = parseItemResult.index;
 		JSONObject blockItem = parseItemResult.blockItem;
-//		logger.debug("index {}  text {} text length: {}   keyWord {} ", index, text, text.length(), keyWord);
 
+		String text = parseItemResult.blockItem.getString("text");
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【2. 拆分关键字】 index={}  textLength={} keyWord:[{}]  text:[{}]", index, text.length(), parseItemResult.keyWord, text);
+		}
 		JSONObject resultItem = new JSONObject();
 		resultItem.put("name", configMap.get("Name"));
 
@@ -50,17 +59,19 @@ public class ParseHorizontalWorker {
 		if(cell == null){
 			return null;
 		}
-
-		logger.debug("Target index: {}  text length: {}   Text: {}   keySeparateFlag: {} , cell.text: [{}]",
-				index, blockItem.getString("text").length() ,blockItem.getString("text")
-					, parseItemResult.keySeparateFlag, cell.text);
-
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【3. 查找到的Value】 keyWord:[{}] value: [{}]", parseItemResult.keyWord, cell.text);
+		}
 		//step 4.  如果key 和value 不是分离的， 需要除去开头的key。
 		String value = cell.text;
 		if(!parseItemResult.keySeparateFlag){
 			// [key:value]
-			logger.info("【Key和Value未分离】 Index={} , value [{}], keyWord [{}]", index, value, parseItemResult.keyWord );
-			value = value.substring(index);
+			if(DEBUG_PARSE_KEY_VALUE) {
+				logger.debug("【4. 将key和value 进行分离】 Index={}, keyWord=[{}], value=[{}], ", index, parseItemResult.keyWord, value);
+			}
+			if(index < value.length()) {
+				value = value.substring(index);
+			}
 			resultItem.put("confidence", blockItem.getString("Confidence"));
 		}else {
 			// [key] : [value]
@@ -72,18 +83,26 @@ public class ParseHorizontalWorker {
 
 //		logger.warn(configMap.get("Name") + "maxLength  " + maxLength + "   "+ value);
 		if( value.length() > maxLength){
+
 			value = value.substring(0, maxLength);
+			if(DEBUG_PARSE_KEY_VALUE){
+				logger.debug("【4.1 最大字符数限制】 maxLength={},  裁剪以后的 value=[{}], ", maxLength,  value );
+			}
 		}
 
 		resultItem.put("value", value);
-
 		if(StringUtils.hasLength(resultItem.getString("value"))){
-			logger.warn("【已经找到】  {} ", resultItem.toJSONString());
+			if(DEBUG_PARSE_KEY_VALUE){
+				logger.debug("【6. END 找到元素】  {} ", resultItem.toJSONString());
+			}
+
 			return resultItem;
 		}else {
+			if(DEBUG_PARSE_KEY_VALUE) {
+				logger.debug("【6. END 未找到元素】 ");
+			}
 			return null;
 		}
-
 	}
 
 
@@ -138,24 +157,27 @@ public class ParseHorizontalWorker {
 			}
 
 		}
+		if(targetBlockItem == null){
+			return null;
+		}
 
 		ParseItemResult parseItemResult = new ParseItemResult();
 		parseItemResult.index = targetIndex + targetKeyWord.length() ;
 		parseItemResult.blockItem = targetBlockItem;
 		parseItemResult.keyWord = targetKeyWord;
-
-		if(targetBlockItem == null){
-			return parseItemResult;
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【0. 查找到关键字的索引】 index={}  targetIndex={}  Text: [{}]", parseItemResult.index, targetIndex, targetBlockItem.getString("text"));
 		}
-		logger.debug("[Find index]  parseItemResult.index {}  targetIndex: {}  Text: [{}]", parseItemResult.index,  targetIndex ,targetBlockItem.getString("text"));
 		// 关键字最后一个字符可能是 '冒号'
 		String tempString = BlockItemUtils.removeInvalidChar(targetBlockItem.getString("text"));
 		if(parseItemResult.index >= tempString.length() ){
 			//key 是独立的
 			parseItemResult.index = tempString.length();
 			parseItemResult.keySeparateFlag = true;
-			logger.debug("关键字查找【{}】    index: {}  keyType:   {}  keySeparateFlag :{} ", targetBlockItem.getString("text"),
-					targetIndex, targetBlockItem, parseItemResult.keySeparateFlag);
+			if(DEBUG_PARSE_KEY_VALUE) {
+				logger.debug("【0.1关键字查找 】 [{}]  index={} keySeparateFlag={}", targetBlockItem.getString("text"),
+						targetIndex, parseItemResult.keySeparateFlag);
+			}
 		}
 
 		return parseItemResult;
@@ -171,8 +193,10 @@ public class ParseHorizontalWorker {
 	 */
 	private ParseFactory.Cell findValueBlocksCell(List<JSONObject> blockItemList, HashMap configMap, JSONObject blockItem, boolean isContainSelf) {
 		JSONObject rangeObject = BlockItemUtils.findValueRange(mDefaultConfig,configMap, blockItem);
-
-		logger.error(" findValueBlocksCell ----- isContainSelf {} ", isContainSelf);
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【2.1 Value 的取值范围】[{}]  Text[{}]", rangeObject.toJSONString(), blockItem.getString("text"));
+		}
+//		logger.error(" findValueBlocksCell ----- isContainSelf {} ", isContainSelf);
 		int maxLineCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
@@ -195,15 +219,15 @@ public class ParseHorizontalWorker {
 
 			}
 		}
-
 		//未找到元素
-		if(contentBlockItemList == null || contentBlockItemList.size() == 0){
+		if(contentBlockItemList.size() == 0){
 			return null;
 		}
 		double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 		double compareHeightRate = ConfigConstants.COMPARE_HEIGHT_RATE;
 		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
-			compareHeightRate = 0.5d;
+			//尽量找坐标靠的比较近的元素
+			compareHeightRate = 0.2d;
 		}
 
 		contentBlockItemList.sort(new BlockItemComparator(compareHeightRate));
@@ -211,8 +235,10 @@ public class ParseHorizontalWorker {
 
 		// step 2. 如果没有设置ValueXRangeMax, 并且是单行， 默认只识别最近的单元格。
 
-		for (int i = 0; i < contentBlockItemList.size(); i++) {
-			logger.error("Range item text:   [{}]", contentBlockItemList.get(i).getString("text"));
+		if(DEBUG_PARSE_KEY_VALUE) {
+			for (int i = 0; i < contentBlockItemList.size(); i++) {
+				logger.debug("【2.2 查找到可选的Item】 [{}]", BlockItemUtils.generateBlockItemString(contentBlockItemList.get(i)));
+			}
 		}
 		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
 			JSONObject item = contentBlockItemList.get(0);
@@ -238,7 +264,7 @@ public class ParseHorizontalWorker {
 	}
 
 	private static class ParseItemResult{
-		//关键字的其实位置， 0 表示从头开始
+		//关键字的起始位置， 0 表示从头开始
 		int index;
 		String keyWord;
 		JSONObject blockItem;

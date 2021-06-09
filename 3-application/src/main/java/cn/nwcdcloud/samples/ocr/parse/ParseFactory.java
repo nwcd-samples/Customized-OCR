@@ -48,7 +48,7 @@ public class ParseFactory {
 
 	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageContent) {
 		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
-		ParseHorizontalWorker horizontalWorker = new ParseHorizontalWorker(configMap);
+		ParseKeyValueWorker horizontalWorker = new ParseKeyValueWorker(configMap);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(configMap);
 		ParseFixedPosition fixedPositionWorker = new ParseFixedPosition(configMap);
 		ParseQRCodeWorker qrcodeWorker = new ParseQRCodeWorker(configMap);
