@@ -2,7 +2,7 @@ TemplateName: 'identity-card-ocr-template'
 
 Targets:
   - Name: "收费项目一"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "收费项目"
@@ -40,7 +40,7 @@ Targets:
 
 
   - Name: "收费项目二"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "收费项目"

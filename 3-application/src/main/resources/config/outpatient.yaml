@@ -37,7 +37,7 @@ Targets:
   - Name: "自付二"
     KeyWordList: ["*自付二：", "*自付二:", "*自付二"]
   - Name: "收费项目一"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 3
     Columns:
       - ColumnName: "项目/规格"
@@ -98,7 +98,7 @@ Targets:
         YRangeMax: 0.9
 
   - Name: "收费项目二"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"

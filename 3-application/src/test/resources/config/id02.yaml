@@ -2,7 +2,7 @@ TemplateName: 'identity-card-ocr-template'
 
 Targets:
   - Name: "姓名"
-    RecognitionType: "default"
+    RecognitionType: "Default"
     KeyWordList: ["姓名", "名字"]
     # LengthMin
     LengthMin: 1
@@ -28,7 +28,6 @@ Targets:
     RightOffsetRadio: 5.0
 
   - Name: "民族"
-    RecognitionType: "default"
     KeyWordList: ["民族","*民族"]
     LengthMin: 1
     TargetValueType: "char"
@@ -38,7 +37,6 @@ Targets:
 
 
   - Name: "出生"
-    RecognitionType: "default"
     KeyWordList: ["出生"]
     LengthMin: 10
     LengthMax: 20
@@ -50,7 +48,6 @@ Targets:
     RightOffsetRadio: 5.0
 
   - Name: "住址"
-    RecognitionType: "default"
     KeyWordList: ["住址", "往址"]
     LengthMin: 4
     LengthMax: 30

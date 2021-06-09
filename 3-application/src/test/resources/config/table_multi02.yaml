@@ -24,7 +24,7 @@ Targets:
   - Name: "收款单位（章）"
   - Name: "收款人"
   - Name: "收费项目一"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 1.5
     Columns:
       - ColumnName: "收费项目"
@@ -54,7 +54,7 @@ Targets:
 
 
   - Name: "收费项目二"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 1.0
     Columns:
       - ColumnName: "收费项目"
@@ -82,7 +82,7 @@ Targets:
         YRangeMax: 0.8
 
   - Name: "收费项目三"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 1.5
     Columns:
       - ColumnName: "收费项目"

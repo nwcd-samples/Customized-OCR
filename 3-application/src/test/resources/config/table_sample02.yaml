@@ -3,7 +3,7 @@ TemplateName: 'table-ocr-template'
 Targets:
 
   - Name: "Invoice Date"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     # 用来迭代查找的行高， 以Column为基础 * MaxRowHeightRatio
     MaxRowHeightRatio: 3.0
     # 最大行数
@@ -37,7 +37,7 @@ Targets:
 
 
   - Name: "Customer PO"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "CustomerPO"

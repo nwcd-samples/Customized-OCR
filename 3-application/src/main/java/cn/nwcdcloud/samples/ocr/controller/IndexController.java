@@ -35,7 +35,7 @@ public class IndexController {
 		mapOcrType.put("id", "身份证识别");
 		mapOcrType.put("invoice", "发票识别");
 		mapOcrType.put("business_license", "营业执照识别");
-		mapOcrType.put("table", "表格识别");
+		mapOcrType.put("Table", "表格识别");
 	}
 
 	@GetMapping("/")

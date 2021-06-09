@@ -29,7 +29,7 @@ DefaultValue:
 
 Targets:
   - Name: "二维码"
-    RecognitionType: "qrcode"
+    RecognitionType: "Qrcode"
   - Name: "发票代码"
   - Name: "发票号码"
   - Name: "开票日期"

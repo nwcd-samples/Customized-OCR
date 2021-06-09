@@ -7,7 +7,7 @@ Targets:
   - Name: "分店"
   - Name: "纳税人识别号"
   - Name: "结算单费用明细"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     Columns:
       - ColumnName: "扣款代码"
         Location: true

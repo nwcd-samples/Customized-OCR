@@ -61,25 +61,25 @@ public class ParseFactory {
 		@SuppressWarnings("unchecked")
 		List<HashMap<String, Object>> targetList = (List<HashMap<String, Object>>) configMap.get("Targets");
 		for (HashMap<String, Object> newItem : targetList) {
-			String recognitionType = newItem.getOrDefault("RecognitionType", "default").toString();
-			if ("default".equals(recognitionType)) {
+			String recognitionType = newItem.getOrDefault("RecognitionType", "Default").toString();
+			if ("Default".equals(recognitionType) || "KeyValue".equals(recognitionType)) {
 				// 识别单个key-value元素
 				JSONObject resultItem = horizontalWorker.parse(newItem, blockItemList);
 				if (resultItem != null) {
 					keyValueArray.add(resultItem);
 				}
-			} else if ("table".equals(recognitionType)) {
+			} else if ("Table".equals(recognitionType)) {
 				JSONObject result = tablesWorker.parse(newItem, blockItemList);
 				if (result != null) {
 					tableArray.add(result);
 				}
-			}else if("fixed-position".equals(recognitionType)){
+			}else if("FixedPosition".equals(recognitionType)){
 				JSONObject result = fixedPositionWorker.parse(newItem, blockItemList);
 				if (result != null) {
 					fixedPositionArray.add(result);
 				}
 
-			}else if ("qrcode".equals(recognitionType)) {
+			}else if ("Qrcode".equals(recognitionType)) {
 				if (image == null) {
 					image = getImage(imageType, imageContent);
 				}

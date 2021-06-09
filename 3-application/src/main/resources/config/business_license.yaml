@@ -2,7 +2,7 @@ TemplateName: 'business-license-ocr-template'
 
 Targets:
   - Name: "二维码"
-    RecognitionType: "qrcode"
+    RecognitionType: "Qrcode"
     XRangeMin: 0.70
     XRangeMax: 0.85
     YRangeMin: 0.25

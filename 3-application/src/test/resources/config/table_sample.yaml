@@ -48,7 +48,7 @@ Targets:
     LengthMax: 40
 
   - Name: "结算费用单明细"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     # 用来做行切分的 '列' 的索引
     MaxRowHeightRatio: 2.5
     # 最大行数

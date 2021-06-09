@@ -8,7 +8,7 @@ Targets:
   - Name: "车牌号"
   - Name: "交货地点"
   - Name: "结算单费用明细"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     Columns:
       - ColumnName: "序号"
         Location: true
