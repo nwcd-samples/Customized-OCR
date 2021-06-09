@@ -91,6 +91,7 @@ public class ParseTablesWorker {
             }
         }
 
+
         List<JSONObject> columnBlockItemList = new ArrayList<>();
         if(!rootMap.containsKey("Columns")){
             throw new IllegalArgumentException(" Table 类型， 需要配置  'Columns' 元素");
@@ -109,11 +110,14 @@ public class ParseTablesWorker {
             List<String> keyList = (List) configMap.getOrDefault("KeyWordList", new ArrayList<>());
 
             String displayColumnName = configMap.get("ColumnName").toString();
+            boolean isMainColumn = (boolean) configMap.getOrDefault("MainColumn", false);
+
             keyList.add(displayColumnName);
             JSONObject blockItem = findColumnByKeyList(configMap, blockItemList, keyList, topBorder, bottomBorder);
             if(blockItem != null){
                 blockItem.put("displayColumnName", displayColumnName);
                 blockItem.put("config", configMap);
+                blockItem.put("isMainColumn", isMainColumn);
                 columnBlockItemList.add(blockItem);
             }
 //            else{
@@ -377,16 +381,18 @@ public class ParseTablesWorker {
 //                    top, item.getInteger("top"), item.getString("text"),
 //                    item.getInteger("xMin"), item.getInteger("xMax"), left, right
 //            );
-            if(item.getInteger("top") >=  top
+            if(item.getInteger("top") > top
                     && item.getInteger("left")> left
                     && item.getInteger("right")< right &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))
                     ){
                 logger.debug(" ------------- 寻找到主列的行元素   {}", item.getString("text"));
-                resList.add(item);
+                if(!item.getString("id").equals(mainColumnBlockItem.getString("id"))){
+                    resList.add(item);
+                }
+
             }
         }
-//        resList.add(mainColumnBlockItem);
 
         resList.sort(new Comparator<JSONObject>() {
             @Override
@@ -409,6 +415,11 @@ public class ParseTablesWorker {
             boolean skipItemFlag = false;
             int topBorder = 0;
             if(i ==0){
+
+                if(item.getInteger("top") > mainColumnBlockItem.getInteger("bottom") + maxRowHeight ){
+                    break;
+                }
+
                 topBorder = (item.getInteger("top") < mainColumnBlockItem.getInteger("bottom")
                         ? item.getInteger("top")
                         : mainColumnBlockItem.getInteger("bottom"));
@@ -488,8 +499,7 @@ public class ParseTablesWorker {
                 JSONObject columnItem = columnList.get(j);
                 int left = columnItem.getInteger("leftBorder");
                 int right = columnItem.getInteger("rightBorder");
-                logger.info(" cell : [{}]     row[{}]   cell[{}]  [left={}, right={}] ", i, j, left , right);
-
+                logger.info(" cell  [row={},  column={}]  [left={}, right={}]  [{}]", i, j, left , right, columnItem.getString("text"));
 
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
@@ -500,8 +510,8 @@ public class ParseTablesWorker {
                        item.getInteger("left")>= left &&
                        item.getInteger("right") <= right+10
                     ){
-//                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}]   ",
-//                                item.getString("text"), left , right, top, bottom );
+                        logger.debug("[{}]   [left={}, right={}], [top={}, bottom={}]   ",
+                                item.getString("text"), left , right, top, bottom );
                         cellList.add(item);
                         if(item.getFloat("Confidence") < cell.confidence){
                             cell.confidence = item.getFloat("Confidence");
@@ -565,23 +575,33 @@ public class ParseTablesWorker {
      */
     private int findMainColumnIndex( List<JSONObject>  columnBlockItemList){
 
-        int mainColumnIndex = ConfigConstants.TABLE_MAIN_COLUMN_INDEX;
-        int count = 0;
+
         for(int i=0; i< columnBlockItemList.size(); i++){
-            JSONObject item = columnBlockItemList.get(i);
-            HashMap config = (HashMap) item.get("config");
-            if((boolean)config.getOrDefault("MainColumn", false)){
-                count ++;
-                mainColumnIndex = i;
+            JSONObject blockItem = columnBlockItemList.get(i);
+            boolean isMainColumn = blockItem.getBoolean("isMainColumn");
+            if(isMainColumn){
+                return i;
             }
-//            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("MainColumn", false));
         }
+//        int mainColumnIndex = ConfigConstants.TABLE_MAIN_COLUMN_INDEX;
+//        int count = 0;
+//        for(int i=0; i< columnBlockItemList.size(); i++){
+//            JSONObject item = columnBlockItemList.get(i);
+//            HashMap config = (HashMap) item.get("config");
+//            if((boolean)config.getOrDefault("MainColumn", false)){
+//                count ++;
+//                mainColumnIndex = i;
+//            }
+////            logger.info("--------------- index: {} text:{}  isMainIndex: {}  ", i, item.getString("text"), config.getOrDefault("MainColumn", false));
+//        }
+//
+//
+//        if (count > 1){
+//            throw new IllegalArgumentException(" 'MainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
+//        }
+//        return mainColumnIndex;
 
-
-        if (count > 1){
-            throw new IllegalArgumentException(" 'MainColumn' 只能设置给一个Column元素 (用来进行行定位) 目前设置了多个，请检查配置文件!");
-        }
-        return mainColumnIndex;
+        return 0;
     }
 
 

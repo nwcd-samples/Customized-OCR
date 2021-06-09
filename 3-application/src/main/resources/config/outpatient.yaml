@@ -109,14 +109,14 @@ Targets:
     MaxRowHeightRatio: 1.0
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目/规格","项目规格"]
+        KeyWordList: ["项目规格","项目规格"]
         Location: true
         MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 1.0
-        XRangeMin: 0.5
+        XRangeMin: 0.4
         XRangeMax: 0.8
         YRangeMin: 0.2
         YRangeMax: 0.8
@@ -165,7 +165,7 @@ Targets:
         KeyWordList: ["手级","登记"]
         Location: true
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 0.5
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         XRangeMin: 0.6
