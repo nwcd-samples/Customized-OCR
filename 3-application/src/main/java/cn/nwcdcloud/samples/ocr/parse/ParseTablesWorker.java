@@ -27,6 +27,7 @@ public class ParseTablesWorker {
     public JSONObject parse(HashMap rootMap, List<JSONObject> blockItemList) {
 
         if(DEBUG_PARSE_TABLE){
+            logger.debug("");
             logger.debug("【Table 查找】 【{}】\nconfig配置: {}", rootMap.get("Name"), rootMap);
         }
         //step 0. 找到用来定位的列元素 最少有一个， 可以有多个， 不建议太多，太多以后， 出错的可能会比较大， 会有匹配不到的问题。
@@ -204,15 +205,15 @@ public class ParseTablesWorker {
                 for (int i = 0; i < blockItemList.size(); i++) {
                     JSONObject tempBlockItem = blockItemList.get(i);
                     String text = tempBlockItem.getString("text").trim();
-                    if (keyWord.equals(text.replaceAll(" ", ""))) {
-
+                    //key 比较去除掉一些特殊字符
+                    if(BlockItemUtils.compareString(keyWord, text)){
                         //Column 列头元素范围检测
                         if(BlockItemUtils.isValidRange(mDefaultConfig, config, tempBlockItem)){
                             resultItemList.add(tempBlockItem);
                             findFlag = true;
-//                            logger.debug("找到列头定位元素 【{}】   {} ", tempBlockItem.getString("text"), BlockItemUtils.generateBlockItemString(tempBlockItem) );
+                            logger.debug("找到列头定位元素 【{}】   {} ", tempBlockItem.getString("text"), BlockItemUtils.generateBlockItemString(tempBlockItem) );
                         }else{
-//                            logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", tempBlockItem.getString("text"), config );
+                            logger.warn("表头元素[{}]坐标范围不正确， 请检查XRangeMin ... YRangeMin  等参数配置。 {} ", tempBlockItem.getString("text"), config );
                         }
                     }
                 }
@@ -246,8 +247,8 @@ public class ParseTablesWorker {
             JSONObject tempBlockItem = blockItemList.get(i);
             String text = tempBlockItem.getString("text").trim();
             for (String key: keyList){
-                key = key.replaceAll(" ", "");
-                if (key.equals(text.replaceAll(" ","")) && tempBlockItem.getDouble("yMin") >= top - 0.05
+
+                if (BlockItemUtils.compareString(key, text) && tempBlockItem.getDouble("yMin") >= top - 0.05
                         && tempBlockItem.getDouble("yMax") < bottom + 0.05) {
 
                     //检测元素坐标范围 , 同一个关键字  可能出现在多个表格中。

@@ -67,4 +67,12 @@ public class DefaultValueTest {
         return rootMap;
     }
 
+    @Test
+    public void compareString(){
+        String itemString = "项目／管。理";
+        itemString = itemString.replaceAll("[/／:：.。 ]", "");
+        logger.info(itemString);
+        assert itemString.equals("项目管理");
+    }
+
 }

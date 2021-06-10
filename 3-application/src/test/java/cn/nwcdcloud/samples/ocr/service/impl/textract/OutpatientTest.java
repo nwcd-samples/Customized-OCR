@@ -63,7 +63,7 @@ public class OutpatientTest {
         assert tableRowList.size() ==2;
 
         JSONArray cell1List = (JSONArray) tableRowList.get(0);
-        assert  cell1List.size() ==4 ;
+        assert  cell1List.size() == 5;
         logger.info(cell1List.getJSONObject(0).getString("text"));
         assert cell1List.getJSONObject(0).getString("text").equals("化验费");
 
@@ -106,7 +106,7 @@ public class OutpatientTest {
     @Test
     public void parseId003() {
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_2).getFile();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
@@ -118,6 +118,20 @@ public class OutpatientTest {
             JSONObject item = (JSONObject) keyValueList.get(i);
             logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
         }
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "业务流水号", "50011971609168");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "综合医院");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "姓名", "文雨年");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "城");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "103961136014");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "合计（大写）", "陆佰登拾壹元壹角肆分");
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "门诊大额支付", "427.80本次医保范围内金额");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付一", "183.34");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付二", "000");
+
+
+
     }
 
 

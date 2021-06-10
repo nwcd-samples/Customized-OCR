@@ -66,24 +66,24 @@ public class ParseFactory {
 			}
 
 			String recognitionType = newItem.getOrDefault("RecognitionType", "Default").toString();
-			if ("Default".equals(recognitionType) || "KeyValue".equals(recognitionType)) {
+			if ("Default".equalsIgnoreCase(recognitionType) || "KeyValue".equalsIgnoreCase(recognitionType)) {
 				// 识别单个key-value元素
 				JSONObject resultItem = horizontalWorker.parse(newItem, blockItemList);
 				if (resultItem != null) {
 					keyValueArray.add(resultItem);
 				}
-			} else if ("Table".equals(recognitionType)) {
+			} else if ("Table".equalsIgnoreCase(recognitionType)) {
 				JSONObject result = tablesWorker.parse(newItem, blockItemList);
 				if (result != null) {
 					tableArray.add(result);
 				}
-			}else if("FixedPosition".equals(recognitionType)){
+			}else if("FixedPosition".equalsIgnoreCase(recognitionType)){
 				JSONObject result = fixedPositionWorker.parse(newItem, blockItemList);
 				if (result != null) {
 					fixedPositionArray.add(result);
 				}
 
-			}else if ("Qrcode".equals(recognitionType)) {
+			}else if ("Qrcode".equalsIgnoreCase(recognitionType)) {
 				if (image == null) {
 					image = getImage(imageType, imageContent);
 				}

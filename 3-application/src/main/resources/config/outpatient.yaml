@@ -41,7 +41,7 @@ Targets:
     MaxRowHeightRatio: 3
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目/规格","项目规格"]
+#        KeyWordList: ["项目规格"]
         Location: true
         MainColumn: true
         MarginLeftType: "near"
@@ -102,7 +102,6 @@ Targets:
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目规格","项目规格"]
         Location: true
         MainColumn: true
         MarginLeftType: "near"
@@ -124,26 +123,10 @@ Targets:
         YRangeMin: 0.2
         YRangeMax: 0.8
 
-      - ColumnName: "数量"
-        XRangeMin: 0.6
-        XRangeMax: 0.9
-        YRangeMin: 0.2
-        YRangeMax: 0.8
-
-      - ColumnName: "金额"
-        KeyWordList: ["全额"]
-        Location: true
-        MarginRightType: "near"
-        MoveRightRatio: 1.0
-        XRangeMin: 0.6
-        XRangeMax: 1.0
-        YRangeMin: 0.2
-        YRangeMax: 0.8
-
       - ColumnName: "数量/单位"
         Location: true
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 0.3
         XRangeMin: 0.6
         XRangeMax: 1.0
         YRangeMin: 0.2

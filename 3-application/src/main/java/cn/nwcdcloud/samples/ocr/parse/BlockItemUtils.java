@@ -523,4 +523,21 @@ public class BlockItemUtils {
         return value;
     }
 
+    /**
+     * 比较字符串， 忽略特殊符号
+     * @param keyString
+     * @param itemString
+     * @return
+     */
+    public static boolean compareString(String keyString, String itemString){
+
+        if(keyString == null || itemString == null){
+            return false;
+        }
+        keyString = keyString.replaceAll("[/／:：.。 ]", "");
+        itemString = itemString.replaceAll("[/／:：.。 ]", "");
+        return keyString.equals(itemString);
+
+    }
+
 }
