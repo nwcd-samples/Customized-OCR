@@ -13,6 +13,7 @@ $(function(){
                 result_table_list:[],  //返回的列表结果， 保险名称
                 currentTableBlock:{},
                 data_url:"",
+                confidence_threshold: 0.8,
                 data:{}
 
              },methods:{
@@ -20,6 +21,9 @@ $(function(){
                     url = $("#json_url_input").val()
                     //alert(url)
                     get_data()
+                },
+                change_confidence_threshold:function(){
+                    redraw_canvas()
                 },
 
              }

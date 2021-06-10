@@ -151,6 +151,7 @@ function create_block(block){
 //    封装block 元素， 供页面显示
     var blockItem = {
         id:block['Id'],
+        confidence: block['Confidence'],
         raw_block_type: block['BlockType'],   // LINE or WORD
         newPoly:polyArray,
         selected:0,  // 是否选中
@@ -229,10 +230,17 @@ function draw_block_inside(blockItem){
         }
     });
 
+        var textStrokeStyle = '#36c'
+
+        if(parseFloat(blockItem['confidence']) < parseFloat(vue.confidence_threshold) ){
+            textStrokeStyle="red";
+        }
+
+
 
    $('#myCanvas').drawText({
      layer: true,
-     fillStyle: '#36c',
+     fillStyle: textStrokeStyle,
      fontSize: '11pt',
      text: blockItem['text'],
      autosave: true,

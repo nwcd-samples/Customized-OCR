@@ -30,9 +30,11 @@
                 <h3>${title}</h3>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
+                <span class="input-group-text">置信度</span><input type="number" @change='change_confidence_threshold'  οninput="value=value.replace(/[^\d]/g,'')"  v-model="confidence_threshold"    placeholder="置信度">
                 <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-right:5px;padding-top:8px" href="/">返回首页</a>
                 <a class="btn btn-sm btn-outline-secondary" target="_blank" href="https://www.amazonaws.cn/"><img src="../static/logo.jpg" /></a>
                 <a class="btn btn-sm btn-outline-secondary" style="height:42px;margin-left:5px;padding-top:8px" target="_blank" href="https://github.com/nwcd-samples/Customized-OCR">Github</a>
+
             </div>
         </div>
     </header>
@@ -56,6 +58,8 @@
                         <span id="click_point_coord_span"> </span>
                         <span id="click_block_coord_span"> </span>
                     </p>
+
+
                 </form>
 
 

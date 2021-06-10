@@ -158,13 +158,13 @@ function print_block_item(message, _blockItem){
     var bottomRadio = (parseFloat(_blockItem['bottom']) / canvas_height).toFixed(3);
     var leftRadio = (parseFloat(_blockItem['left']) / canvas_width).toFixed(3);
     var rightRadio = (parseFloat(_blockItem['right']) / canvas_width).toFixed(3);
-    console.log("[%s] [%s]  [top=%d (%s) , bottom=%d (%s)]  [left=%d (%s), right=%d (%s)]  canvas[width=%s, height=%s]",
+    console.log("[%s] [%s]  [top=%d (%s) , bottom=%d (%s)]  [left=%d (%s), right=%d (%s)]  canvas[width=%s, height=%s]  confidence=[%s]",
                         message, _blockItem['text'] ,
                       _blockItem['top'] ,  topRadio,
                       _blockItem['bottom'] ,bottomRadio,
                       _blockItem['left'] , leftRadio,
                       _blockItem['right'] , rightRadio,
-                       canvas_width, canvas_height
+                       canvas_width, canvas_height, _blockItem['confidence']
                        )
 
     var display_text = "元素：[xMin="+leftRadio+", xMax="+rightRadio+", yMin="+topRadio+", yMax="+bottomRadio+"] ["+_blockItem['text']+"] "
