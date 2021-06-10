@@ -29,6 +29,7 @@ public class ParseKeyValueWorker {
 
 		//step 1. 通过关键字进行 key 元素的定位
 		if(DEBUG_PARSE_KEY_VALUE){
+			logger.debug("");
 			logger.debug("【KeyValue 查找】------【{}】\nconfig配置: {}", configMap.get("Name"), configMap);
 		}
 		// step 2. 查找关键字元素
@@ -37,6 +38,7 @@ public class ParseKeyValueWorker {
 			return null;
 		}
 		if(DEBUG_PARSE_KEY_VALUE) {
+
 			logger.debug("【1. 找到关键字】 key和value是否分离 [{}] 【{}】  ", parseItemResult.keySeparateFlag,
 					BlockItemUtils.generateBlockItemString(parseItemResult.blockItem));
 		}
@@ -166,13 +168,19 @@ public class ParseKeyValueWorker {
 		}
 		// 关键字最后一个字符可能是 '冒号'
 		String tempString = BlockItemUtils.removeInvalidChar(targetBlockItem.getString("text"));
-		if(parseItemResult.index >= tempString.length() ){
+
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【0.1 关键字查找 】 [{}]  index={}  textLength={}   tempString=[{}]", targetBlockItem.getString("text"),
+					targetIndex, tempString.length()  , tempString);
+		}
+
+		if(  parseItemResult.index >= tempString.length() ){
 			//key 是独立的
 			parseItemResult.index = tempString.length();
 			parseItemResult.keySeparateFlag = true;
 			if(DEBUG_PARSE_KEY_VALUE) {
-				logger.debug("【0.1关键字查找 】 [{}]  index={} keySeparateFlag={}", targetBlockItem.getString("text"),
-						targetIndex, parseItemResult.keySeparateFlag);
+				logger.debug("【0.2 关键字查找 】 [{}]  index={}  textLength={}  keySeparateFlag={}", targetBlockItem.getString("text"),
+						targetIndex, tempString.length(), parseItemResult.keySeparateFlag);
 			}
 		}
 

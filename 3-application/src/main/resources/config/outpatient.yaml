@@ -8,8 +8,8 @@ Targets:
   - Name: "姓名"
   - Name: "性别"
     KeyWordList: ["性别：", "性别:", "*性别"]
-    TopOffsetRadio: -0.5
-    BottomOffsetRadio: 0.5
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 1
     LengthMax: 1
   - Name: "医保类型"
   - Name: "社会保障号码"
@@ -38,7 +38,7 @@ Targets:
     KeyWordList: ["*自付二：", "*自付二:", "*自付二"]
   - Name: "收费项目一"
     RecognitionType: "Table"
-    MaxRowHeightRatio: 3
+    MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
 #        KeyWordList: ["项目规格"]
@@ -68,7 +68,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 0.1
         XRangeMin: 0.1
         XRangeMax: 0.5
         YRangeMin: 0.2
@@ -126,14 +126,17 @@ Targets:
       - ColumnName: "数量/单位"
         Location: true
         MarginRightType: "near"
-        MoveRightRatio: 0.3
+        MoveRightRatio: 0.1
         XRangeMin: 0.6
         XRangeMax: 1.0
         YRangeMin: 0.2
         YRangeMax: 0.8
 
       - ColumnName: "金额"
+        KeyWordList: ["全额"]
         Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -1
         MarginRightType: "near"
         MoveRightRatio: 1.0
         XRangeMin: 0.6

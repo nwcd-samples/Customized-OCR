@@ -122,7 +122,7 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "业务流水号", "50011971609168");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "综合医院");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "姓名", "文雨年");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "城");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "男");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "103961136014");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "合计（大写）", "陆佰登拾壹元壹角肆分");
 

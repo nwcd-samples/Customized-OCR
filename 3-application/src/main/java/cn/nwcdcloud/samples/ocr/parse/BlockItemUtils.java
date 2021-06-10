@@ -517,8 +517,7 @@ public class BlockItemUtils {
             return value;
         }
         if(value.startsWith(":") || value.startsWith("：") || value.endsWith("：") || value.endsWith(":")){
-            value = value.replaceAll(":", "");
-            value = value.replaceAll("：", "");
+            value = value.replaceAll("[:：]", "");
         }
         return value;
     }
