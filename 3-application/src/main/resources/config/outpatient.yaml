@@ -28,7 +28,8 @@ Targets:
     BottomOffsetRadio: 1.5
   - Name: "合计（大写）"
     KeyWordList: ["*大写"]
-  - Name: "基金"
+    RightOffsetRadio: 4.0
+  - Name: "基金支付"
   - Name: "个人支付金额"
     KeyWordList: ["个人支付金额"]
     LeftOffsetRadio: 1
