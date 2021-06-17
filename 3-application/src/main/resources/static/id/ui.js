@@ -66,16 +66,16 @@ function displayResult(fullData,simpleData){
 
 	vue.tableBlockList = new Array()
     vue.currentTableBlock = {}
-    parse_data(fullData[0]);
+    parse_data(fullData);
     console.log("\n")
-    console.log(JSON.stringify(fullData[0]))
+    console.log(JSON.stringify(fullData))
     console.log("\n")
 
-	console.info(simpleData[0]);
-	console.log("      ",  JSON.stringify(simpleData[0]))
-	vue.result_list = simpleData[0]['keyValueList']
-	vue.fixed_position_list = simpleData[0]['fixedPositionList']
-    vue.table_list = simpleData[0]['tableList']
+	console.info(simpleData);
+	console.log("      ",  JSON.stringify(simpleData))
+	vue.result_list = simpleData['keyValueList']
+	vue.fixed_position_list = simpleData['fixedPositionList']
+    vue.table_list = simpleData['tableList']
 
 
 }

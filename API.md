@@ -52,11 +52,12 @@ Targets:
 | ----  | ---- | ---- | ---- | ---- | ---- |
 |TemplateName|一级|否|string|无|本文件自描述|
 |Targets|一级|是|list|无|所有要提取内容|
+|DefaultValue|一级|否|list|无|所有要提取内容|
 |Name|二级|是|string|无|返回关键字，同时也会把此Name作为keyword搜索|
-|RecognitionType|二级|否|enumeration|default|识别类型，可选值为：default、table、qrcode<br>分别代表普通的key/value形式、表格形式、二维码（含条形码）形式|
+|RecognitionType|二级|否|enumeration|default|识别类型，可选值为：KeyValue、Table、Qrcode、FixedPosition<br>分别代表普通的key/value形式、表格形式、二维码（含条形码）、绝对定位形式|
 
 ### 2.1 key/value
-当RecognitionType的值为default时，可选参数如下：  
+当RecognitionType的值为KeyValue时，可选参数如下：  
 
 | 参数名 | 层级 | 是否必填 | 类型 | 默认值 | 说明 |
 | ----  | ---- | ---- | ---- | ---- | ---- |
@@ -65,14 +66,16 @@ Targets:
 |LengthMax|二级|否|int|40|value最大匹配长度|
 |LineCountMax|二级|否|int|1|最大匹配行数|
 |TargetValueType|二级|否|enumeration|string|value类型，可选值为：string、currency、number|
-|XRangeMin|二级|否|float|0.0|key在页面上纵坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
-|XRangeMax|二级|否|float|1.0|key在页面上纵坐标的最大值|
-|YRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值|
-|YRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
+|XRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
+|XRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
+|YRangeMin|二级|否|float|0.0|key在页面上纵坐标的最小值|
+|YRangeMax|二级|否|float|1.0|key在页面上纵坐标的最大值|
 |TopOffsetRadio|二级|否|float|-1.0|valueItem.top >= keyItem.top + keyItem.height * TopOffsetRadio|
 |BottomOffsetRadio|二级|否|float|1.0|valueItem.bottom <= keyItem.bottom + keyItem.height * BottomOffsetRadio|
 |LeftOffsetRadio|二级|否|float|-0.5|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
 |RightOffsetRadio|二级|否|float|30.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
+|ValueXRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
+|ValueXRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
 
 ### 2.2 表格
 当RecognitionType的值为table时，可选参数如下：  
@@ -90,20 +93,67 @@ Targets:
 |MoveLeftRatio|三级|否|float|0.0|左分界线在MarginLeftType基础上移动的比率，向左为负，向右为正。<br>移动距离为headColumn.width * MoveLeftRatio|
 |MarginRightType|三级|否|enumeration|middle|可选值为near、middle、far<br>near：以当前Column的右边作为分界线，范围最近<br>middle：以当前Column和右边Column的中点作为分界线，范围适中<br>far：以右边Column的左边作为分界线，范围最远|
 |MoveRightRatio|三级|否|float|0.0|右分界线在MarginRightType基础上移动的比率，向左为负，向右为正。<br>移动距离为headColumn.width * MoveRightRatio|
-|XRangeMin|三级|否|float|0.0|key在页面上纵坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
-|XRangeMax|三级|否|float|1.0|key在页面上纵坐标的最大值|
-|YRangeMin|三级|否|float|0.0|key在页面上横坐标的最小值|
-|YRangeMax|三级|否|float|1.0|key在页面上横坐标的最大值|
+|XRangeMin|三级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
+|XRangeMax|三级|否|float|1.0|key在页面上横坐标的最大值|
+|YRangeMin|三级|否|float|0.0|key在页面上纵坐标的最小值|
+|YRangeMax|三级|否|float|1.0|key在页面上纵坐标的最大值|
 
 ### 2.3 二维码（含条形码）
 当RecognitionType的值为qrcode时，可选参数如下：  
 
 | 参数名 | 层级 | 是否必填 | 类型 | 默认值 | 说明 |
 | ----  | ---- | ---- | ---- | ---- | ---- |
-|XRangeMin|二级|否|float|0.0|二维码在页面上纵坐标的最小值，建议设置这4个参数，以便准确识别|
-|XRangeMax|二级|否|float|1.0|二维码在页面上纵坐标的最大值|
-|YRangeMin|二级|否|float|0.0|二维码在页面上横坐标的最小值|
-|YRangeMax|二级|否|float|1.0|二维码在页面上横坐标的最大值|
+|XRangeMin|二级|否|float|0.0|二维码在页面上横坐标的最小值，建议设置这4个参数，以便准确识别|
+|XRangeMax|二级|否|float|1.0|二维码在页面上横坐标的最大值|
+|YRangeMin|二级|否|float|0.0|二维码在页面上纵坐标的最小值|
+|YRangeMax|二级|否|float|1.0|二维码在页面上纵坐标的最大值|
+
+### 2.4 绝对定位
+本类别用来选取指定范围内的内容，比如落款日期，设置一个范围，vauleItem在这范围内的才选取出来。  
+范围为一个矩形，指定左上角的XY(XRangeMin、YRangeMin)和右下角的XY(XRangeMax、YRangeMax)即可。  
+当RecognitionType的值为fixed-position时，可选参数如下：  
+
+| 参数名 | 层级 | 是否必填 | 类型 | 默认值 | 说明 |
+| ----  | ---- | ---- | ---- | ---- | ---- |
+|XRangeMin|二级|否|float|0.0|选取范围在页面上横坐标的最小值|
+|XRangeMax|二级|否|float|1.0|选取范围在页面上横坐标的最大值|
+|YRangeMin|二级|否|float|0.0|选取范围在页面上纵坐标的最小值|
+|YRangeMax|二级|否|float|1.0|选取范围在页面上纵坐标的最大值|
+
+### 2.5 模板级默认值
+在单独的模板中，如果大部分的值相同，可以采用模板级的默认值。  
+默认值主要涉及KeyValue、Table，二维码（含条形码）、绝对定位不涉及模板级默认值。  
+模板级默认值可设置参数为KeyValue、Table的参数。
+```YAML
+TemplateName: 'invoice-ocr-template'
+
+DefaultValue:
+  KeyValue:
+    LengthMin: 1
+    LengthMax: 40
+    LineCountMax: 1
+    TargetValueType: "string"
+    XRangeMin: 0.0
+    XRangeMax: 1.0
+    YRangeMin: 0.0
+    YRangeMax: 1.0
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 1.0
+    LeftOffsetRadio: -0.5
+    RightOffsetRadio: 30.0
+  Table:
+    MaxRowHeightRatio: 2.0
+    MaxRowCount: 20
+    Columns:
+      MarginLeftType: "middle"
+      MoveLeftRatio: 0.0
+      MarginRightType: "middle"
+      MoveRightRatio: 0.0
+      XRangeMin: 0.0
+      XRangeMax: 1.0
+      YRangeMin: 0.0
+      YRangeMax: 1.0
+```
 
 ## 3 示例
 ```YAML
