@@ -405,24 +405,22 @@ public class ParseTablesWorker {
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
                 totalRowCount ++;
                 if(DEBUG_PARSE_TABLE){
-                    logger.debug("【6.{}主列 行元素 】 {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
+                    logger.debug("【6.{}主列 查找行元素 】 {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
                 }
 
                 if(item.getString("id").equals(mainColumnBlockItem.getString("id"))){
                     continue;
                 }
                 //如果新找到的行元素和上一个行元素 高度过近， 算一行
-
                 if(resList.size()>0 && item.getDouble("yMin")+ item.getDouble("heightRate")/2 < resList.get(resList.size()-1).getDouble("yMax")){
                     continue;
                 }else if(resList.size() ==0 &&  item.getDouble("yMin") + item.getDouble("heightRate")/2
                         < mainColumnBlockItem.getDouble("yMax")){
-
                     continue;
                 }
                 rowCount ++;
                 if(DEBUG_PARSE_TABLE){
-                    logger.debug("【 6.{}  找到主列 行元素 】 {}", rowCount, BlockItemUtils.generateBlockItemString(item));
+                    logger.debug("【\t6.{}  找到主列 行元素 】 {}", rowCount, BlockItemUtils.generateBlockItemString(item));
                 }
                 resList.add(item);
             }
@@ -472,13 +470,8 @@ public class ParseTablesWorker {
             }
 
             double bottomBorder = 0;
-            if(i == resList.size()-1){
-                bottomBorder = item.getDouble("yMax") + item.getDouble("heightRate") + 0.001;
-            }else{
+            if(i < resList.size()-1){
                 //如果距离下一行高度差过大, 停止循环
-
-
-
                 if(item.getDouble("yMax")  + maxRowHeight < resList.get(i+1).getDouble("yMin") ){
                     if(DEBUG_PARSE_TABLE){
                         logger.debug("【7.{}停止循环 下一个行元素距离过远】yMax={} maxRowHeight={}  下一个元素yMin={}    [{}]--Next[{}] ",
@@ -507,6 +500,13 @@ public class ParseTablesWorker {
             }
 
         }
+        if(newResList.size()>0){
+
+            JSONObject item = newResList.get(newResList.size() -1);
+            Double bottomBorder = item.getDouble("yMax") + item.getDouble("heightRate") + 0.001;
+            item.put("bottomBorder", bottomBorder);
+        }
+
 
         if(DEBUG_PARSE_TABLE) {
             for (int i=0; i< newResList.size(); i++) {
@@ -554,8 +554,8 @@ public class ParseTablesWorker {
 
 
                 if(DEBUG_PARSE_TABLE) {
-                    logger.debug("【9.{} cell取值范围】\t[yMin={}, yMax={}, xMin={}, xMax={}]  [row={}, column={}]   列名：[{}]",
-                           i+1,
+                    logger.debug("【9.{} 第{}行 cell取值范围】\t[yMin={}, yMax={}, xMin={}, xMax={}]  [row={}, column={}]   列名：[{}]",
+                           i+1,i+1,
                             mDecimalFormat.format(top), mDecimalFormat.format(bottom),
                             mDecimalFormat.format(left),mDecimalFormat.format(right),
                             i, j, columnItem.getString("text"));

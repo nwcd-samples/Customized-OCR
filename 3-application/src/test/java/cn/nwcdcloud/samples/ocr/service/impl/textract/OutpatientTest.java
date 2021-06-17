@@ -20,8 +20,9 @@ public class OutpatientTest {
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient003.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient004.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient005.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/sample/outpatient006.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/sample/outpatient007.json";
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
-    private static final String  SAMPLE_YAML_OBJECT_FILE_2 =  "hospital";
 
 
     @Test
@@ -191,6 +192,120 @@ public class OutpatientTest {
 
     }
 
+
+
+
+    @Test
+    public void parseId006() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_6).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+
+
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() ==5;
+
+        logger.info(((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("20.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("63.10");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("20.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("33.3000");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("5.1300");
+
+
+
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==5;
+
+        logger.info(((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("7.00");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("12.93");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("7.0000");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("29.8000");
+        assert ((JSONArray) table2RowList.get(4)).getJSONObject(3).getString("text").equals("7.8000");
+
+
+    }
+
+
+    @Test
+    public void parseId007() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_7).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+
+
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() ==10;
+
+        logger.info(((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("180.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("6.00");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("150.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("50.0000");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("27.0000");
+        assert ((JSONArray) tableRowList.get(5)).getJSONObject(3).getString("text").equals("35.0000");
+        assert ((JSONArray) tableRowList.get(6)).getJSONObject(3).getString("text").equals("45.0000");
+        assert ((JSONArray) tableRowList.get(7)).getJSONObject(3).getString("text").equals("40.0000");
+        assert ((JSONArray) tableRowList.get(8)).getJSONObject(3).getString("text").equals("45.0000");
+        assert ((JSONArray) tableRowList.get(9)).getJSONObject(3).getString("text").equals("3.0600");
+
+
+
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==9;
+
+        logger.info(((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("426.00");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("3.06");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("30.0000");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("27.0000");
+        assert ((JSONArray) table2RowList.get(4)).getJSONObject(3).getString("text").equals("32.0000");
+        assert ((JSONArray) table2RowList.get(5)).getJSONObject(3).getString("text").equals("45.0000");
+        assert ((JSONArray) table2RowList.get(6)).getJSONObject(3).getString("text").equals("35.0000");
+        assert ((JSONArray) table2RowList.get(7)).getJSONObject(3).getString("text").equals("45.0000");
+        assert ((JSONArray) table2RowList.get(8)).getJSONObject(3).getString("text").equals("6.0000");
+
+
+    }
 
 
 }

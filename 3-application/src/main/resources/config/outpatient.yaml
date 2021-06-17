@@ -150,7 +150,7 @@ Targets:
         KeyWordList: ["全额"]
         MainColumn: true
         MarginLeftType: "near"
-        MoveLeftRatio: -1.0
+        MoveLeftRatio: -2.0
         MarginRightType: "near"
         MoveRightRatio: 5.0
         ValueType: "number"
@@ -168,7 +168,7 @@ Targets:
 
   - Name: "收费项目二"
     RecognitionType: "Table"
-    MaxRowHeightRatio: 2.0
+    MaxRowHeightRatio: 2.5
     Columns:
       - ColumnName: "项目/规格"
         Location: true
@@ -201,7 +201,7 @@ Targets:
         KeyWordList: ["全额"]
         MainColumn: true
         MarginLeftType: "near"
-        MoveLeftRatio: -1.0
+        MoveLeftRatio: -2.0
         MarginRightType: "near"
         MoveRightRatio: 5.0
         ValueType: "number"
