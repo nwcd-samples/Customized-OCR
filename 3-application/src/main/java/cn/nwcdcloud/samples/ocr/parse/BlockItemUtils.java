@@ -153,7 +153,8 @@ public class BlockItemUtils {
         blockItem.put("id", rawBlockItem.getString("Id"));
         blockItem.put("newPoly", newPolyArray);
 //        blockItem.put("boundingBox", rawBlockItem.getJSONObject("Geometry").getJSONObject("BoundingBox"));
-        blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
+//        blockItem.put("text", deleteUnnecessaryChar(rawBlockItem.getString("Text")));
+        blockItem.put("text", rawBlockItem.getString("Text"));
         blockItem.put("Confidence", rawBlockItem.getString("Confidence"));
 //        blockItem.put("raw_block_type", rawBlockItem.getString("BlockType"));
 
