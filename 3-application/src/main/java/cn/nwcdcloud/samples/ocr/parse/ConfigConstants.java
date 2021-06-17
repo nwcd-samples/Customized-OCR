@@ -4,7 +4,7 @@ public interface ConfigConstants {
 
     boolean DEBUG_PARSE_KEY_VALUE =  false;
     boolean DEBUG_PARSE_FIXED_POSITION =  false;
-    boolean DEBUG_PARSE_TABLE =  false;
+    boolean DEBUG_PARSE_TABLE =  true;
 
 //    boolean DEBUG_FLAG = true;
     int PAGE_WIDTH = 1200;

@@ -68,7 +68,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 5.0
         ValueType: "number"
         Location: true
         XRangeMin: 0.1
@@ -91,7 +91,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 5.0
         ValueType: "number"
         XRangeMin: 0.1
         XRangeMax: 0.7
@@ -118,7 +118,7 @@ Targets:
         Location: true
         MainColumn: true
         MarginLeftType: "near"
-        MoveLeftRatio: -0.5
+        MoveLeftRatio: -0.3
         MarginRightType: "near"
         MoveRightRatio: 1.0
         XRangeMin: 0.4
@@ -130,7 +130,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 5.0
         ValueType: "number"
         XRangeMin: 0.6
         XRangeMax: 0.9
@@ -152,7 +152,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -1
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 5.0
         ValueType: "number"
         XRangeMin: 0.6
         XRangeMax: 1.0
