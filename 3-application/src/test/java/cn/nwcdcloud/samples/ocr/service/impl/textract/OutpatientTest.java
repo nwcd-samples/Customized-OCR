@@ -15,13 +15,13 @@ import java.util.List;
 public class OutpatientTest {
     private static final Logger logger = LoggerFactory.getLogger(OutpatientTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient001.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient002.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient003.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient004.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient005.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/sample/outpatient006.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/sample/outpatient007.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient/001.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient/002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient/003.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient/004.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient/005.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/sample/outpatient/006.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/sample/outpatient/007.json";
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
 
 
@@ -69,11 +69,23 @@ public class OutpatientTest {
         assert  cell1List.size() == 5;
         logger.info(cell1List.getJSONObject(0).getString("text"));
         assert cell1List.getJSONObject(0).getString("text").equals("化验费");
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("30.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("6.0000");
+
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("6.00");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("20.0000");
+
 
         JSONArray cell2List = (JSONArray) tableRowList.get(1);
         logger.info(cell2List.getJSONObject(0).getString("text"));
         assert cell2List.getJSONObject(0).getString("text").equals("C-反应蛋白（CRP）测定/次");
 
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("30.0000");
 
         for(int i=0; i<tableArray.size(); i++ ){
             logger.info("------");
