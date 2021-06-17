@@ -2,7 +2,11 @@ TemplateName: 'Train ticket template'
 
 Targets:
   - Name: "二维码"
-      RecognitionType: "Qrcode"
+    RecognitionType: "Qrcode"
+    XRangeMin: 0.65
+    XRangeMax: 0.9
+    YRangeMin: 0.55
+    YRangeMax: 0.9
   - Name: "始发站"
     RecognitionType: "FixedPosition"
     XRangeMin: 0.02

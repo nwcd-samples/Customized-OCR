@@ -2,8 +2,12 @@ package cn.nwcdcloud.samples.ocr.parse;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +26,8 @@ import com.google.zxing.common.HybridBinarizer;
 public class ParseQRCodeWorker {
 	private final Logger logger = LoggerFactory.getLogger(ParseQRCodeWorker.class);
 
-	private Map<String, ?> mRootConfig ;
+	private Map<String, ?> mRootConfig;
+
 	public ParseQRCodeWorker(Map<String, ?> rootConfig) {
 		mRootConfig = rootConfig;
 	}
@@ -83,6 +88,20 @@ public class ParseQRCodeWorker {
 				(int) (image.getHeight() * yMin), (int) (image.getWidth() * xMax), (int) (image.getHeight() * yMax),
 				null);
 		gr.dispose();
+		if (logger.isDebugEnabled()) {
+			String dir = System.getProperty("java.io.tmpdir") + "ocr";
+			File fileDir = new File(dir);
+			if (!fileDir.exists()) {
+				fileDir.mkdirs();
+			}
+			logger.debug("临时图片目录：{}", dir);
+			String tmpImage = dir + File.separator + "tmp.jpg";
+			try {
+				ImageIO.write(imageOut, "jpg", new File(tmpImage));
+			} catch (IOException e) {
+				logger.warn("写临时图片出错", e);
+			}
+		}
 		return imageOut;
 	}
 }
