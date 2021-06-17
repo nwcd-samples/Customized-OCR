@@ -388,6 +388,7 @@ public class ParseTablesWorker {
 
         //根据主列的 top  left  right 向下查找元素
         int rowCount =0;
+        int totalRowCount = 0;
         for (int i=0; i< blockItemList.size(); i++){
 
             JSONObject item = blockItemList.get(i);
@@ -402,13 +403,28 @@ public class ParseTablesWorker {
                     && item.getDouble("xMin")> xMinBorder
                     && item.getDouble("xMax")< xMaxBorder &&
                     !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
+                totalRowCount ++;
+                if(DEBUG_PARSE_TABLE){
+                    logger.debug("【6.{}主列 行元素 】 {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
+                }
+
+                if(item.getString("id").equals(mainColumnBlockItem.getString("id"))){
+                    continue;
+                }
+                //如果新找到的行元素和上一个行元素 高度过近， 算一行
+
+                if(resList.size()>0 && item.getDouble("yMin")+ item.getDouble("heightRate")/2 < resList.get(resList.size()-1).getDouble("yMax")){
+                    continue;
+                }else if(resList.size() ==0 &&  item.getDouble("yMin") + item.getDouble("heightRate")/2
+                        < mainColumnBlockItem.getDouble("yMax")){
+
+                    continue;
+                }
                 rowCount ++;
                 if(DEBUG_PARSE_TABLE){
-                    logger.debug("【6.{}主列 行元素 】 {}", rowCount, BlockItemUtils.generateBlockItemString(item));
+                    logger.debug("【 6.{}  找到主列 行元素 】 {}", rowCount, BlockItemUtils.generateBlockItemString(item));
                 }
-                if(!item.getString("id").equals(mainColumnBlockItem.getString("id"))){
-                    resList.add(item);
-                }
+                resList.add(item);
             }
         }
 

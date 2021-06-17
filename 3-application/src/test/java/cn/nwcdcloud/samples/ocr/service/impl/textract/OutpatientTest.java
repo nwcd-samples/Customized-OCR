@@ -46,7 +46,7 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "姓名", "李初");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "男");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医保类型", "城多居民");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "126776699001");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障卡号", "126776699001");
 
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "0006475067");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "合计（大写）", "伍拾陆元整");
@@ -62,7 +62,7 @@ public class OutpatientTest {
         JSONObject table1 = (JSONObject) tableArray.get(0);
         assert table1 !=null;
         JSONArray tableRowList =  table1.getJSONArray("rowList");
-        assert tableRowList.size() ==2;
+        assert tableRowList.size() ==3;
 
         JSONArray cell1List = (JSONArray) tableRowList.get(0);
         assert  cell1List.size() == 5;
@@ -125,7 +125,7 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "综合医院");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "姓名", "文雨年");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "男");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "103961136014");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障卡号", "103961136014");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "合计（大写）", "陆佰登拾壹元壹角肆分");
 
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "门诊大额支付", "427.80");
@@ -182,7 +182,7 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
 
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医保类型", "城镇职工");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "116910487001");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障卡号", "116910487001");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "116910487001");
 
 

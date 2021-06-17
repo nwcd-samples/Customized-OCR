@@ -111,15 +111,15 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "个人支付金额"
     ValueType: "number"
-    TopOffsetRadio: -0.5
-    LeftOffsetRadio: 0
-    BottomOffsetRadio: 0.5
+    LeftOffsetRadio: 1
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 1.5
+
   - Name: "收费项目一"
     RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-        MainColumn: true
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
@@ -148,6 +148,7 @@ Targets:
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
+        MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
         MarginRightType: "near"
@@ -170,7 +171,6 @@ Targets:
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-        MainColumn: true
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
@@ -199,6 +199,7 @@ Targets:
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
+        MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
         MarginRightType: "near"
