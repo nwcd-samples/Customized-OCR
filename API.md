@@ -169,7 +169,7 @@ Targets:
   - Name: "结算年月"
   - Name: "供应商名称"
   - Name: "结算单费用明细"
-    RecognitionType: "table"
+    RecognitionType: "Table"
     Columns:
       - ColumnName: "扣款代码"
         Location: true
