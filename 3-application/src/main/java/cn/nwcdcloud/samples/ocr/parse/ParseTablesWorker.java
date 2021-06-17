@@ -389,6 +389,7 @@ public class ParseTablesWorker {
         //根据主列的 top  left  right 向下查找元素
         int rowCount =0;
         for (int i=0; i< blockItemList.size(); i++){
+
             JSONObject item = blockItemList.get(i);
 //                    logger.debug("【8.{} 根据主列查找元素】yMin: [{}] item yMin: [{}] item[{}, {}] , range[{} , {}]  Text [{}]   ",
 //                            i+1, mDecimalFormat.format(yMinBorder),
@@ -433,12 +434,19 @@ public class ParseTablesWorker {
 
             boolean skipItemFlag = false;
             double topBorder = 0;
+            // 当前行元素大于 行高的限制 ， 结束循环
+            if(item.getDouble("yMax") - item.getDouble("yMin") > maxRowHeight){
+                if(DEBUG_PARSE_TABLE){
+                    logger.debug("【7.{}  停止循环】 最高行高度={}  当前行高={}  Text=[{}] ", i, mDecimalFormat.format(maxRowHeight),
+                            item.getDouble("yMax") - item.getDouble("yMin"), item.getString("text"));
+                }
+                break;
+            }
             if(i ==0){
 
                 if(item.getDouble("yMin") > mainColumnBlockItem.getDouble("yMax") + maxRowHeight ){
                     break;
                 }
-
                 topBorder = (item.getDouble("yMin") < mainColumnBlockItem.getDouble("yMax")
                         ? item.getDouble("yMin")
                         : mainColumnBlockItem.getDouble("yMax"));
@@ -457,7 +465,8 @@ public class ParseTablesWorker {
 
                 if(item.getDouble("yMax")  + maxRowHeight < resList.get(i+1).getDouble("yMin") ){
                     if(DEBUG_PARSE_TABLE){
-                        logger.debug("【7.停止循环】yMax={} maxRowHeight={}  下一个元素yMin={}    [{}]--Next[{}] ",
+                        logger.debug("【7.{}停止循环 下一个行元素距离过远】yMax={} maxRowHeight={}  下一个元素yMin={}    [{}]--Next[{}] ",
+                                i,
                                 mDecimalFormat.format(item.getDouble("yMax")),
                                 mDecimalFormat.format(maxRowHeight),
                                 mDecimalFormat.format(resList.get(i+1).getDouble("yMin")),
@@ -537,6 +546,7 @@ public class ParseTablesWorker {
                 }
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
+
                     if(item.getDouble("yMin")>= top &&
                        item.getDouble("yMax")<= bottom &&
                        item.getDouble("xMin")>= left &&
@@ -562,6 +572,15 @@ public class ParseTablesWorker {
                 for (JSONObject item: cellList){
                     cell.text += (" " + item.getString("text"));
                 }
+                // 根据设置的格式，进行字符串处理
+
+                JSONObject configMap = columnItem.getJSONObject("config");
+                String valueType = configMap.getString("ValueType");
+                if(valueType != null && "number".equals(valueType)){
+                    cell.text = BlockItemUtils.getItemNumericalValue(cell.text);
+                }
+//                ValueType
+
             }
 
         }

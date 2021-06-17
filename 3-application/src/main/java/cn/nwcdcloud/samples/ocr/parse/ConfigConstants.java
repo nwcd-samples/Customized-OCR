@@ -2,9 +2,9 @@ package cn.nwcdcloud.samples.ocr.parse;
 
 public interface ConfigConstants {
 
-    boolean DEBUG_PARSE_KEY_VALUE =  true;
+    boolean DEBUG_PARSE_KEY_VALUE =  false;
     boolean DEBUG_PARSE_FIXED_POSITION =  false;
-    boolean DEBUG_PARSE_TABLE =  false;
+    boolean DEBUG_PARSE_TABLE =  true;
 
 //    boolean DEBUG_FLAG = true;
     int PAGE_WIDTH = 1200;
@@ -19,7 +19,7 @@ public interface ConfigConstants {
     //通过key 查找value 元素的范围， 相对key的坐标范围
     double ITEM_OFFSET_TOP_RADIO = -1.0;
     double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
-    double ITEM_OFFSET_LEFT_RADIO = -0.5;
+    double ITEM_OFFSET_LEFT_RADIO = -0.1;
     double ITEM_OFFSET_RIGHT_RADIO = 30;
 
     //Value 的左右边界

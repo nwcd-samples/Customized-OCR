@@ -58,6 +58,7 @@ Targets:
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 2.0
+        ValueType: "number"
         Location: true
         XRangeMin: 0.1
         XRangeMax: 0.7
@@ -80,6 +81,7 @@ Targets:
         MoveLeftRatio: -1.0
         MarginRightType: "near"
         MoveRightRatio: 2.0
+        ValueType: "number"
         XRangeMin: 0.1
         XRangeMax: 0.7
         YRangeMin: 0.1
@@ -118,6 +120,7 @@ Targets:
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 2.0
+        ValueType: "number"
         XRangeMin: 0.6
         XRangeMax: 0.9
         YRangeMin: 0.2
@@ -139,6 +142,7 @@ Targets:
         MoveLeftRatio: -1
         MarginRightType: "near"
         MoveRightRatio: 1.0
+        ValueType: "number"
         XRangeMin: 0.6
         XRangeMax: 1.0
         YRangeMin: 0.2

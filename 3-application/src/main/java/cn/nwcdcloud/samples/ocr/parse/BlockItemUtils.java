@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * 解析Textract返回的json数据， 生成元素列表， 供后续进行结构化提取
@@ -538,5 +539,35 @@ public class BlockItemUtils {
         return keyString.equals(itemString);
 
     }
+
+
+    private static boolean isDoubleOrFloat(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[.\\d]*$");
+        return pattern.matcher(str).matches();
+    }
+    /**
+     * 或者Item value 里面数字的值，
+     * Step 1.  根据空格进行拆分， 找到第一组是数字的字符串，并且返回。
+     * Step 2.   过滤掉不是数字的文字， 然后返回。
+     * @param value
+     * @return
+     */
+    public static String getItemNumericalValue(String value){
+        if(!StringUtils.hasLength(value)){
+            return value;
+        }
+        value = value.replaceAll("[。*,，]", ".");
+        String  [] splitArray = value.split(" ");
+
+        for(String tempStr: splitArray){
+            if(tempStr.length()>0 && BlockItemUtils.isDoubleOrFloat(tempStr)){
+//                System.out.println("----- "+tempStr);
+                return  tempStr;
+            }
+        }
+
+        return value.replaceAll("[^0-9.-]", "");
+    }
+
 
 }
