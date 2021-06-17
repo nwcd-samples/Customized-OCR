@@ -18,6 +18,7 @@ public class OutpatientTest {
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient001.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient002.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient003.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient004.json";
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
     private static final String  SAMPLE_YAML_OBJECT_FILE_2 =  "hospital";
 
@@ -129,6 +130,28 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "门诊大额支付", "427.80本次医保范围内金额");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付一", "183.34");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付二", "000");
+
+
+
+    }
+
+
+    @Test
+    public void parseId004() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_4).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
 
 
 

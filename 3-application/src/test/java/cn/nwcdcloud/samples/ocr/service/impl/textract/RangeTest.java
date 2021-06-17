@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
 import cn.nwcdcloud.samples.ocr.parse.FileUtils;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
+import org.springframework.util.StringUtils;
 
 
 public class RangeTest {
@@ -40,4 +41,34 @@ public class RangeTest {
 
     }
 
+
+    @Test
+    public void testRe(){
+
+
+//        String str = "0.80 本次医保";
+
+        assert "800".equals(BlockItemUtils.getItemNumericalValue("800 "));
+        assert "800".equals(BlockItemUtils.getItemNumericalValue(" 800"));
+        assert "800".equals(BlockItemUtils.getItemNumericalValue("800 本次医保"));
+        assert "800".equals(BlockItemUtils.getItemNumericalValue("本次医保 800"));
+
+
+        assert "8.00".equals(BlockItemUtils.getItemNumericalValue("8.00 "));
+        assert "80.0".equals(BlockItemUtils.getItemNumericalValue(" 80.0"));
+        assert "-80.0".equals(BlockItemUtils.getItemNumericalValue("-80.0 本次医保"));
+        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保 -8.00"));
+
+
+
+        assert "8.00".equals(BlockItemUtils.getItemNumericalValue("8，00 "));
+        assert "80.0".equals(BlockItemUtils.getItemNumericalValue(" 80,0"));
+        assert "-80.0".equals(BlockItemUtils.getItemNumericalValue("-80。0 本次医保"));
+        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保 -8。00"));
+
+        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保-8。00"));
+        assert "80.0".equals(BlockItemUtils.getItemNumericalValue("本次医保80,0"));
+        assert "0.002".equals(BlockItemUtils.getItemNumericalValue("0.002ABCD"));
+        assert "0.012".equals(BlockItemUtils.getItemNumericalValue("ABCD0.012"));
+    }
 }

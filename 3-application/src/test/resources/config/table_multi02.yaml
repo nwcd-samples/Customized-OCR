@@ -1,28 +1,28 @@
 TemplateName: 'hospital-ocr-template'
 
 Targets:
-#  - Name: "票控盘号"
-#  - Name: "业务流水号"
-#  - Name: "医疗机构类型"
-#  - Name: "病历号"
-#  - Name: "机打票号"
-#  - Name: "住院时间"
-#  - Name: "住院天数"
-#  - Name: "住院号"
-#  - Name: "姓名"
-#  - Name: "性别"
-#  - Name: "医保类型"
-#  - Name: "社会保障卡号"
-#  - Name: "合计（大写）"
-#  - Name: "预缴金额"
-#  - Name: "补缴金额"
-#  - Name: "退费金额"
-#    YRangeMin: 0.5
-#  - Name: "基金支付"
-#  - Name: "个人账户支付"
-#  - Name: "个人支付金额"
-#  - Name: "收款单位（章）"
-#  - Name: "收款人"
+  - Name: "票控盘号"
+  - Name: "业务流水号"
+  - Name: "医疗机构类型"
+  - Name: "病历号"
+  - Name: "机打票号"
+  - Name: "住院时间"
+  - Name: "住院天数"
+  - Name: "住院号"
+  - Name: "姓名"
+  - Name: "性别"
+  - Name: "医保类型"
+  - Name: "社会保障卡号"
+  - Name: "合计（大写）"
+  - Name: "预缴金额"
+  - Name: "补缴金额"
+  - Name: "退费金额"
+    YRangeMin: 0.5
+  - Name: "基金支付"
+  - Name: "个人账户支付"
+  - Name: "个人支付金额"
+  - Name: "收款单位（章）"
+  - Name: "收款人"
   - Name: "收费项目一"
     RecognitionType: "Table"
     MaxRowHeightRatio: 1.5
@@ -55,7 +55,7 @@ Targets:
 
   - Name: "收费项目二"
     RecognitionType: "Table"
-    MaxRowHeightRatio: 1.0
+    MaxRowHeightRatio: 1.5
     Columns:
       - ColumnName: "收费项目"
         Location: true
