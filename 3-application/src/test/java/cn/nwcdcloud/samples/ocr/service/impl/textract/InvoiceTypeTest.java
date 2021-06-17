@@ -69,14 +69,34 @@ public class InvoiceTypeTest {
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
         JSONArray  resultArray =  resultObject.getJSONArray("keyValueList");
         logger.info(resultArray.toJSONString());
+
+
+
         for(int i=0; i< resultArray.size() ; i++){
-            logger.info(resultArray.get(i).toString());
+            JSONObject item = (JSONObject) resultArray.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
         }
 
-        assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称", "永道商务咨询（上海）有限公司");
-        assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称-2", "普华永道商务咨询（上海）有限公司");
+        assert  BlockItemUtils.checkKeyValueMap(resultArray, "购买方-名称", "普华永道商务咨询（上海）有限公司");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）", "②壹仟壹佰叁拾参元肆角肆分");
         assert  BlockItemUtils.checkKeyValueMap(resultArray, "价税合计（大写）-2", "②");
+
+
+//        [2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [发票代码]  value: [012001700111]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [发票号码]  value: [39541056]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [开票日期]  value: [2017年10月30日]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [校验码]  value: [05038725199196463249]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [机器编号]  value: [499099606306]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [购买方-名称]  value: [普华永道商务咨询（上海）有限公司]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [购买方-纳税人识别号]  value: [91310115787244809E]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [购买方-地址电话]  value: [码]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [购买方-开户行及账号]  value: [区]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [销售方-名称]  value: [滴滴出行科技有限公司]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [销售方-开户行及账号]  value: [招商银行股份有限公司天津自由贸易试验区分行122905939910401]
+//[2021-06-17 15:44:51.055][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [价税合计（大写）]  value: [②壹仟壹佰叁拾参元肆角肆分]
+//[2021-06-17 15:44:51.056][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [价税合计-小写]  value: [￥1133.44]
+//[2021-06-17 15:44:51.056][INFO] c.n.s.o.s.i.t.InvoiceTypeTest - name: [销售方-纳税人识别号]  value: [911201163409833307]
+
     }
 
 

@@ -22,7 +22,6 @@ public class IDSampleTest {
     private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/id004.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/id005.json";
     private static final String  CONFIG_FILE_PATH_1 =  "id" ;
-    private static final String  CONFIG_FILE_PATH_2 =  "id02" ;
 
     @Test
     public void parseId001() {

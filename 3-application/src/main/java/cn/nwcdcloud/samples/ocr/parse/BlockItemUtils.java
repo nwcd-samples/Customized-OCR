@@ -458,20 +458,23 @@ public class BlockItemUtils {
         double valueXRangeMin = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMin", ConfigConstants.ITEM_VALUE_X_RANGE_MIN).toString());
         double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 
-//        logger.debug("【Radio】top: {}  bottom: {} left: {} right: {}  ---- valueXRangeMin {}, valueXRangeMax {}",
-//                df.format(topRadio), df.format(bottomRadio), df.format(leftRadio), df.format(rightRadio),
-//                df.format(valueXRangeMin), df.format(valueXRangeMax));
+        logger.debug("【Radio】top: {}  bottom: {} left: {} right: {}  ---- valueXRangeMin {}, valueXRangeMax {}",
+                df.format(topRadio), df.format(bottomRadio), df.format(leftRadio), df.format(rightRadio),
+                df.format(valueXRangeMin), df.format(valueXRangeMax));
 
         //step1. 找到top 范围
 
-//        logger.debug("[key range]   xMin={}, xMax={}, yMin={}, yMax={}",
-//                df.format(blockItem.getDouble("xMin")),
-//                df.format(blockItem.getDouble("xMax")),
-//                df.format(blockItem.getDouble("yMin")),
-//                df.format(blockItem.getDouble("yMax")));
+        logger.debug("[key range]   xMin={}, xMax={}, yMin={}, yMax={}   widthRate={} heightRate={} ",
+                df.format(blockItem.getDouble("xMin")),
+                df.format(blockItem.getDouble("xMax")),
+                df.format(blockItem.getDouble("yMin")),
+                df.format(blockItem.getDouble("yMax")),
+                df.format(blockItem.getDouble("widthRate")),
+                df.format(blockItem.getDouble("heightRate"))
+                );
 
 
-        double xMin = blockItem.getDouble("xMin") + blockItem.getDouble("widthRate") * leftRadio;
+        double xMin = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * leftRadio;
         double xMax = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * rightRadio;
         double yMin = blockItem.getDouble("yMin") + blockItem.getDouble("heightRate") * topRadio;
         double yMax = blockItem.getDouble("yMax") + blockItem.getDouble("heightRate") * bottomRadio;
@@ -485,15 +488,15 @@ public class BlockItemUtils {
             xMax = valueXRangeMax;
         }
 
-//        logger.info("[value range] widthRate={}   heightRate={}  \t xMin={} xMax={} yMin={}  yMax={} "
-//                ,  df.format(blockItem.getDouble("widthRate")),
-//                df.format(blockItem.getDouble("heightRate")),
-//                df.format(xMin), df.format(xMax), df.format(yMin), df.format(yMax));
+        logger.info("[value range] widthRate={}   heightRate={}  \t xMin={} xMax={} yMin={}  yMax={} "
+                ,  df.format(blockItem.getDouble("widthRate")),
+                df.format(blockItem.getDouble("heightRate")),
+                df.format(xMin), df.format(xMax), df.format(yMin), df.format(yMax));
 
 
         // step 2. 如果没有设置ValueXRangeMax， 默认只识别最近的单元格, 左边的范围
         if(valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
-            xMin = blockItem.getDouble("xMin") + blockItem.getDouble("widthRate") * leftRadio;
+            xMin = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * leftRadio;
         }
 
 

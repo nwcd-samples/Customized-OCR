@@ -44,7 +44,6 @@ Targets:
     XRangeMax: 0.70
     YRangeMin: 0.20
     YRangeMax: 0.60
-    LeftOffsetRadio: -0.5
     RightOffsetRadio: 5.0
 
   - Name: "住址"

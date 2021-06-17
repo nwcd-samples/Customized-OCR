@@ -1,7 +1,6 @@
 TemplateName: 'identity-card'
 Targets:
   - Name: "姓名"
-    LeftOffsetRadio: -0.2
     TopOffsetRadio: -0.6
     BottomOffsetRadio: 2
     RightOffsetRadio: 4

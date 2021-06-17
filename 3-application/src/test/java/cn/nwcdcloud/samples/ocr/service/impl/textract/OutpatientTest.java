@@ -184,27 +184,9 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医保类型", "城镇职工");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "116910487001");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "116910487001");
-//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
-//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
-//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
 
 
 
-
-
-//        [2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [交易流水号]  value: [121100010A201209007260]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [业务流水号]  value: [兰杭杭]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [医疗机构类型]  value: [城镇职工]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [姓名]  value: [兰杭杭]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [性别]  value: [医]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [医保类型]  value: [医疗机构类型]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [社会保障号码]  value: [116910487001]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [NO]  value: [.]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [合计（大写）]  value: [bhp001]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [基金]  value: [支付]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [门诊大额支付]  value: [484.05本次医保范围内金额]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [退休补充支付]  value: [0.00累计医保内范围金额]
-//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [自付二]  value: [0.00]
 
 
     }
