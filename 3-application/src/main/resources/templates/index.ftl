@@ -17,7 +17,8 @@
 
     <div class="row">
         <div class="col-sm">
-
+			<#if recognitionType == 1>
+			
             <div style="margin-top:20px">
                 OCR推理服务状态: <b id="status">获取状态中</b>
             </div>
@@ -28,7 +29,7 @@
                 <input type="button" id="remove" onclick="createRole();" value="创建Role" style="display:none;"><br>
                 PS:创建OCR推理服务大约需要7分钟。OCR推理服务创建后开始计费，不使用时，请及时删除。
             </div>
-
+			</#if>
 
 
 
@@ -69,13 +70,14 @@
 </div>
 
 
-    <script>
+<#if recognitionType == 1>
+<script>
 $(function(){
 	getStatus();
 });
 
 function getStatus(){
-	$.get("inference/getEndpointStatus",
+	$.get("sagemaker/getEndpointStatus",
 		  function(result) {
 		      if (result.code == 1) {
 			      console.log("获取status:"+result.data);
@@ -120,7 +122,7 @@ function changeStatus(status){
 
 function deploy(){
 	$("#deploy").attr("disabled",true);
-	$.post('inference/deploy',{},
+	$.post('sagemaker/deploy',{},
 		    function(result) {
 				if (result.code == 1) {
 					setTimeout("getStatus()",3*1000);
@@ -134,7 +136,7 @@ function deploy(){
 function remove(){
 	if(confirm('确认删除Endpoint?')){
 		$("#remove").attr("disabled",true);
-		$.post('inference/remove');
+		$.post('sagemaker/remove');
 		setTimeout("getStatus()",2*1000);
 	}
 }
@@ -151,5 +153,6 @@ function createRole(){
 		  "json");
 }
 </script>
+</#if>
 </body>
 </html>

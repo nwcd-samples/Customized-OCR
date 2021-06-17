@@ -24,24 +24,30 @@ public class IndexController {
 	private S3Service s3Service;
 	@Autowired
 	private ManifestService manifestService;
+	@Value("${recognition.appId}")
+	private String appId;
 	@Value("${bucketName}")
 	private String bucketName;
 	@Value("${prefix}")
 	private String prefix;
 	@Value("${uploadType}")
 	private String uploadType;
+	@Value("${recognition.type}")
+	private int recognitionType;
 	private static Map<String, String> mapOcrType = new HashMap<>();
 	{
 		mapOcrType.put("id", "身份证识别");
 		mapOcrType.put("invoice", "发票识别");
 		mapOcrType.put("business_license", "营业执照识别");
-		mapOcrType.put("Table", "表格识别");
+		mapOcrType.put("train_ticket", "火车票");
 	}
 
 	@GetMapping("/")
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
+		System.out.println("appId" + appId);
 		mv.addObject("version", manifestService.get("Implementation-Version"));
+		mv.addObject("recognitionType", recognitionType);
 		mv.setViewName("index");
 		return mv;
 	}

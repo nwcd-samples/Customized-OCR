@@ -1,29 +1,19 @@
 package cn.nwcdcloud.samples.ocr.service.impl;
 
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
-import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
 import cn.nwcdcloud.commons.constant.CommonConstants;
 import cn.nwcdcloud.commons.lang.Result;
-import cn.nwcdcloud.samples.ocr.constant.ImageType;
-import cn.nwcdcloud.samples.ocr.constant.OcrConstants;
 import cn.nwcdcloud.samples.ocr.service.IamService;
 import cn.nwcdcloud.samples.ocr.service.SageMakerService;
-import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.sagemaker.SageMakerClient;
 import software.amazon.awssdk.services.sagemaker.model.ContainerDefinition;
@@ -36,97 +26,23 @@ import software.amazon.awssdk.services.sagemaker.model.DescribeEndpointRequest;
 import software.amazon.awssdk.services.sagemaker.model.DescribeEndpointResponse;
 import software.amazon.awssdk.services.sagemaker.model.ProductionVariant;
 import software.amazon.awssdk.services.sagemaker.model.SageMakerException;
-import software.amazon.awssdk.services.sagemakerruntime.SageMakerRuntimeClient;
-import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointRequest;
-import software.amazon.awssdk.services.sagemakerruntime.model.InvokeEndpointResponse;
-import software.amazon.awssdk.services.sagemakerruntime.model.ModelErrorException;
 
 @Service
 public class SageMakerServiceImpl implements SageMakerService {
 	@Value("${instanceCount}")
 	private int instanceCount;
+	@Value("${imageUri}")
+	private String imageUri;
+	@Value("${endpointName}")
+	private String endpointName;
+	@Value("${instanceType}")
+	private String instanceType;
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private IamService iamService;
-	@Autowired
-	private Cache<String, Object> cacheImageByte;
 
 	@Override
-	public Result invokeEndpoint(String endpointName, String body) {
-		Result result = new Result();
-		SdkBytes requestBody = SdkBytes.fromUtf8String(body);
-		InvokeEndpointRequest request = InvokeEndpointRequest.builder().endpointName(endpointName)
-				.contentType("application/json").body(requestBody).build();
-		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
-		InvokeEndpointResponse response = client.invokeEndpoint(request);
-		JSONArray data = addImageInfoJson(response.body().asUtf8String(), body);
-		result.setData(data);
-		return result;
-	}
-
-	@Override
-	public Result invokeEndpoint(String endpointName, String contentType, InputStream inputStream) {
-		Result result = new Result();
-		SdkBytes requestBody = SdkBytes.fromInputStream(inputStream);
-		InvokeEndpointRequest request = InvokeEndpointRequest.builder().endpointName(endpointName)
-				.contentType(contentType).body(requestBody).build();
-		SageMakerRuntimeClient client = SageMakerRuntimeClient.create();
-		try {
-			InvokeEndpointResponse response = client.invokeEndpoint(request);
-			JSONArray data = addImageInfoByte(response.body().asUtf8String(), requestBody.asByteArray());
-			result.setData(data);
-		} catch (ModelErrorException e) {
-			if (e.getMessage().indexOf("413 Request Entity Too Large") != -1) {
-				result.setCode(25);
-				result.setMsg("待识别图片过大，上限为10MB");
-				return result;
-			}
-			throw e;
-		}
-		return result;
-	}
-
-	/**
-	 * 直接传输图片的只有1个
-	 * 
-	 * @param original
-	 * @param imageType
-	 * @param imageId
-	 * @return
-	 */
-	private JSONArray addImageInfoByte(final String original, byte[] content) {
-		JSONArray jsonArray = JSON.parseArray(original);
-		JSONObject jsonObject = jsonArray.getJSONObject(0);
-		String imageId = getUUID();
-		cacheImageByte.put(imageId, content);
-		jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.Byte.getId());
-		jsonObject.put(OcrConstants.IMAGE_CONTENT, imageId);
-		return jsonArray;
-	}
-
-	/**
-	 * JSON格式的可能有多个
-	 * 
-	 * @param original
-	 * @param imageId
-	 * @return
-	 */
-	private JSONArray addImageInfoJson(final String original, String content) {
-		JSONObject jsonContent = JSON.parseObject(content);
-		JSONArray jsonArray = JSON.parseArray(original);
-		for (int i = 0; i < jsonArray.size(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-			JSONObject jsonData = new JSONObject();
-			jsonData.put("bucket", jsonContent.getString("bucket"));
-			jsonData.put("image_uri", jsonContent.getJSONArray("image_uri").get(i));
-			jsonObject.put(OcrConstants.IMAGE_TYPE, ImageType.JSON.getId());
-			jsonObject.put(OcrConstants.IMAGE_CONTENT, jsonData);
-		}
-		return jsonArray;
-	}
-
-	@Override
-	public Result deploy(String endpointName, String imageUri, String instanceType) {
+	public Result deploy() {
 		Result result = createModel(imageUri, endpointName);
 		if (result.getCode() != CommonConstants.NORMAL) {
 			return result;
@@ -186,7 +102,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 	}
 
 	@Override
-	public Result getEndpointStatus(String endpointName) {
+	public Result getEndpointStatus() {
 		Result result = new Result();
 		String status = "None";
 		try {
@@ -219,7 +135,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 	}
 
 	@Override
-	public Result remove(String endpointName) {
+	public Result remove() {
 		Result result = new Result();
 		SageMakerClient client = SageMakerClient.create();
 		DeleteEndpointRequest request = DeleteEndpointRequest.builder().endpointName(endpointName).build();
@@ -230,7 +146,4 @@ public class SageMakerServiceImpl implements SageMakerService {
 		return result;
 	}
 
-	private String getUUID() {
-		return UUID.randomUUID().toString().replace("-", "").toUpperCase();
-	}
 }
