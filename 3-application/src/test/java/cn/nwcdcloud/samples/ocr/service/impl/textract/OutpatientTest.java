@@ -19,6 +19,7 @@ public class OutpatientTest {
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient002.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient003.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient004.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient005.json";
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
     private static final String  SAMPLE_YAML_OBJECT_FILE_2 =  "hospital";
 
@@ -127,7 +128,7 @@ public class OutpatientTest {
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "103961136014");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "合计（大写）", "陆佰登拾壹元壹角肆分");
 
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "门诊大额支付", "427.80本次医保范围内金额");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "门诊大额支付", "427.80");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付一", "183.34");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "自付二", "000");
 
@@ -153,6 +154,57 @@ public class OutpatientTest {
         }
 
 
+
+
+    }
+
+
+    @Test
+    public void parseId005() {
+
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_5).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
+//        logger.info(resultObject.toJSONString());
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "交易流水号", "121100010A201209007260");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "业务流水号", "12110001201209004669");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医疗机构类型", "综合医院");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "姓名", "兰杭杭");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
+
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医保类型", "城镇职工");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障号码", "116910487001");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "116910487001");
+//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
+//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
+//        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "性别", "医");
+
+
+
+
+
+//        [2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [交易流水号]  value: [121100010A201209007260]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [业务流水号]  value: [兰杭杭]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [医疗机构类型]  value: [城镇职工]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [姓名]  value: [兰杭杭]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [性别]  value: [医]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [医保类型]  value: [医疗机构类型]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [社会保障号码]  value: [116910487001]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [NO]  value: [.]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [合计（大写）]  value: [bhp001]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [基金]  value: [支付]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [门诊大额支付]  value: [484.05本次医保范围内金额]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [退休补充支付]  value: [0.00累计医保内范围金额]
+//[2021-06-17 14:48:40.317][INFO] c.n.s.o.s.i.textract.OutpatientTest - name: [自付二]  value: [0.00]
 
 
     }

@@ -579,7 +579,6 @@ public class ParseTablesWorker {
                 if(valueType != null && "number".equals(valueType)){
                     cell.text = BlockItemUtils.getItemNumericalValue(cell.text);
                 }
-//                ValueType
 
             }
 

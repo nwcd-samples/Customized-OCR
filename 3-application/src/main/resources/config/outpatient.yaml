@@ -2,8 +2,14 @@ TemplateName: 'hospital-ocr-template'
 
 Targets:
   - Name: "交易流水号"
+    TopOffsetRadio: -0.5
   - Name: "业务流水号"
+    TopOffsetRadio: -0.8
+    BottomOffsetRadio: 0.8
   - Name: "医疗机构类型"
+    LeftOffsetRadio: -0.5
+    TopOffsetRadio: -0.8
+    BottomOffsetRadio: 0.8
   - Name: "上传NO"
   - Name: "姓名"
   - Name: "性别"
@@ -12,10 +18,12 @@ Targets:
     BottomOffsetRadio: 1
     LengthMax: 1
   - Name: "医保类型"
+    TopOffsetRadio: -0.3
+    BottomOffsetRadio: 0.3
   - Name: "社会保障号码"
     KeyWordList: ["社会保障卡号"]
   - Name: "NO"
-    KeyWordList: ["*NO"]
+    KeyWordList: ["NO.", "*NO"]
     TopOffsetRadio: -1.5
     BottomOffsetRadio: 1.5
   - Name: "合计（大写）"
@@ -27,9 +35,11 @@ Targets:
     TopOffsetRadio: -1.0
     BottomOffsetRadio: 1.5
   - Name: "门诊大额支付"
+    ValueType: "number"
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
   - Name: "退休补充支付"
+    ValueType: "number"
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
   - Name: "自付一"

@@ -81,8 +81,12 @@ public class ParseKeyValueWorker {
 		int maxLength = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 
 //		logger.warn(configMap.get("Name") + "maxLength  " + maxLength + "   "+ value);
-		if( value.length() > maxLength){
 
+		String valueType = configMap.getOrDefault("ValueType", "").toString();
+		if("number".equals(valueType)){
+			value = BlockItemUtils.getItemNumericalValue(value);
+		}
+		if( value.length() > maxLength){
 			value = value.substring(0, maxLength);
 			if(DEBUG_PARSE_KEY_VALUE){
 				logger.debug("【4.1 最大字符数限制】 maxLength={},  裁剪以后的 value=[{}], ", maxLength,  value );
