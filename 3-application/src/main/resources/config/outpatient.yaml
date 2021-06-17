@@ -2,7 +2,9 @@ TemplateName: 'hospital-ocr-template'
 
 Targets:
   - Name: "交易流水号"
+    KeyWordList: ["*易流水号"]
     TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
   - Name: "业务流水号"
     TopOffsetRadio: -0.8
     BottomOffsetRadio: 0.8
@@ -10,81 +12,139 @@ Targets:
     LeftOffsetRadio: -0.5
     TopOffsetRadio: -0.8
     BottomOffsetRadio: 0.8
-  - Name: "上传NO"
-  - Name: "姓名"
-  - Name: "性别"
-    KeyWordList: ["性别：", "性别:", "*性别"]
-    TopOffsetRadio: -1.0
-    BottomOffsetRadio: 1
-    LengthMax: 1
-  - Name: "医保类型"
-    TopOffsetRadio: -0.3
-    BottomOffsetRadio: 0.3
-  - Name: "社会保障号码"
-    KeyWordList: ["社会保障卡号"]
   - Name: "NO"
     KeyWordList: ["NO.", "*NO"]
     TopOffsetRadio: -1.5
     BottomOffsetRadio: 1.5
+  - Name: "姓名"
+  - Name: "性别"
+    KeyWordList: ["性别：", "性别:", "*性别"]
+    LengthMax: 1
+  - Name: "医保类型"
+    TopOffsetRadio: -0.3
+    BottomOffsetRadio: 0.3
+  - Name: "社会保障卡号"
   - Name: "合计（大写）"
     KeyWordList: ["*大写"]
     RightOffsetRadio: 4.0
-  - Name: "基金支付"
-  - Name: "个人支付金额"
-    KeyWordList: ["个人支付金额"]
-    LeftOffsetRadio: 1
-    TopOffsetRadio: -1.0
-    BottomOffsetRadio: 1.5
   - Name: "门诊大额支付"
     ValueType: "number"
     TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
   - Name: "退休补充支付"
     ValueType: "number"
     TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
+  - Name: "残军补助支付"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "单位补充险支付"
+    ValueType: "number"
+    KeyWordList: ["单位补充险[原公疗]支付","单位补充险［原公疗］支付"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "基金支付"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "本次医保范围内金额"
+    ValueType: "number"
+    KeyWordList: ["*本次医保范围内金额"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "累计医保内范围金额"
+    ValueType: "number"
+    KeyWordList: ["*累计医保内范围金额"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "年度门诊大额累计支付"
+    ValueType: "number"
+    KeyWordList: ["*年度门诊大额累计支付"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "本次支付后个人账户余额"
+    ValueType: "number"
+    KeyWordList: ["*本次支付后个人账户余额"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "个人账户支付"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 1.0
   - Name: "自付一"
     KeyWordList: ["*自付一：", "*自付一:", "自付一"]
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "起付金额"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "超封顶金额"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
   - Name: "自付二"
     KeyWordList: ["*自付二：", "*自付二:", "*自付二"]
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "自费"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
+  - Name: "个人支付金额"
+    ValueType: "number"
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: 0
+    BottomOffsetRadio: 0.5
   - Name: "收费项目一"
     RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-#        KeyWordList: ["项目规格"]
-        Location: true
         MainColumn: true
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
         MoveRightRatio: 2.0
-        XRangeMin: 0.0
-        XRangeMax: 0.4
-        YRangeMin: 0.1
-        YRangeMax: 0.8
+        XRangeMax: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "单价"
+        ValueType: "number"
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 5.0
-        ValueType: "number"
-        Location: true
-        XRangeMin: 0.1
-        XRangeMax: 0.7
-        YRangeMin: 0.1
-        YRangeMax: 0.9
+        XRangeMax: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "数量/单位"
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 0.1
-        XRangeMin: 0.1
         XRangeMax: 0.5
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        YRangeMax: 0.5
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
@@ -93,80 +153,65 @@ Targets:
         MarginRightType: "near"
         MoveRightRatio: 5.0
         ValueType: "number"
-        XRangeMin: 0.1
-        XRangeMax: 0.7
-        YRangeMin: 0.1
-        YRangeMax: 0.9
+        XRangeMax: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
         MarginLeftType: "near"
         MoveLeftRatio: -1
         MarginRightType: "near"
-        MoveRightRatio: 1.0
-        Location: true
-        XRangeMin: 0.1
+        MoveRightRatio: 1
         XRangeMax: 0.7
-        YRangeMin: 0.1
-        YRangeMax: 0.9
+        YRangeMax: 0.5
 
   - Name: "收费项目二"
     RecognitionType: "Table"
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-        Location: true
         MainColumn: true
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
-        MoveRightRatio: 1.0
+        MoveRightRatio: 2.0
         XRangeMin: 0.4
-        XRangeMax: 0.8
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        YRangeMax: 0.5
 
       - ColumnName: "单价"
+        ValueType: "number"
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 5.0
-        ValueType: "number"
-        XRangeMin: 0.6
-        XRangeMax: 0.9
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        XRangeMin: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "数量/单位"
-        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 0.1
-        XRangeMin: 0.6
-        XRangeMax: 1.0
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        XRangeMin: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "金额"
         KeyWordList: ["全额"]
-        Location: true
         MarginLeftType: "near"
-        MoveLeftRatio: -1
+        MoveLeftRatio: -1.0
         MarginRightType: "near"
         MoveRightRatio: 5.0
         ValueType: "number"
-        XRangeMin: 0.6
-        XRangeMax: 1.0
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        XRangeMin: 0.5
+        YRangeMax: 0.5
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
-        Location: true
-        MarginRightType: "near"
-        MoveRightRatio: 1
         MarginLeftType: "near"
         MoveLeftRatio: -1
-        XRangeMin: 0.6
-        XRangeMax: 1.0
-        YRangeMin: 0.2
-        YRangeMax: 0.8
+        MarginRightType: "near"
+        MoveRightRatio: 1
+        XRangeMin: 0.5
+        YRangeMax: 0.5
