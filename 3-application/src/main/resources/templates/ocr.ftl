@@ -202,11 +202,21 @@ $("body").on('paste', function (event) {
     }
 });
 
+
+images = ["png","jpg","jpeg","bmp","gif"];
 function showImg(){
 	var file = document.getElementById('upload').files[0];
 	var extName = file.name.toLowerCase();
-	if(extName.endsWith(".png") || extName.endsWith(".jpg") || extName.endsWith(".jpeg") || extName.endsWith(".bmp")){
-		$("#showImg").attr("src",window.URL.createObjectURL(file));
+	var isImage = false;
+	for(var i=0;i<images.length;i++){
+		if(extName.endsWith(images[i])){
+			$("#showImg").attr("src",window.URL.createObjectURL(file));
+			isImage = true;
+			break;
+		}
+	}
+	if(!isImage){
+		$("#showImg").attr("src","");
 	}
 }
 
