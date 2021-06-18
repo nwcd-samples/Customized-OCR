@@ -39,7 +39,6 @@ public class ParseUtils {
 
         for(String tempStr: splitArray){
             if(tempStr.length()>0 && isDoubleOrFloat(tempStr)){
-//                System.out.println("----- "+tempStr);
                 return  retainFixedLength(tempStr);
             }
         }

@@ -24,8 +24,6 @@ public class IndexController {
 	private S3Service s3Service;
 	@Autowired
 	private ManifestService manifestService;
-	@Value("${recognition.appId}")
-	private String appId;
 	@Value("${bucketName}")
 	private String bucketName;
 	@Value("${prefix}")
@@ -45,7 +43,6 @@ public class IndexController {
 	@GetMapping("/")
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
-		System.out.println("appId" + appId);
 		mv.addObject("version", manifestService.get("Implementation-Version"));
 		mv.addObject("recognitionType", recognitionType);
 		mv.setViewName("index");

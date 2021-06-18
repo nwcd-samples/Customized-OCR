@@ -26,6 +26,7 @@ Targets:
   - Name: "社会保障卡号"
   - Name: "合计（大写）"
     KeyWordList: ["*大写"]
+    TopOffsetRadio: -1.5
     RightOffsetRadio: 4.0
   - Name: "门诊大额支付"
     ValueType: "number"
@@ -61,7 +62,7 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "累计医保内范围金额"
     ValueType: "number"
-    KeyWordList: ["*累计医保内范围金额"]
+    KeyWordList: ["*累计医保内范围金额","*累计医保范围内金额"]
     TopOffsetRadio: -0.5
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5

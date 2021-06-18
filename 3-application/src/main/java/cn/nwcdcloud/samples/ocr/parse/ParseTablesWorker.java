@@ -599,11 +599,10 @@ public class ParseTablesWorker {
 
         List<JSONArray> resList = new ArrayList<>();
 
-        if(DEBUG_PARSE_TABLE){
+        if(logger.isDebugEnabled()){
             for(int i=0; i<columnList.size(); i++ ){
-                System.out.printf("| %20s ",columnList.get(i).getString("displayColumnName"));
+            	logger.debug("| %20s ",columnList.get(i).getString("displayColumnName"));
             }
-            System.out.println("");
         }
 
         for (int i=0; i< rowCount; i++){
@@ -620,15 +619,12 @@ public class ParseTablesWorker {
                 }
                 object.put("text", text);
                 object.put("confidence", tableArray[i][j].confidence);
-                if(DEBUG_PARSE_TABLE) {
-                    System.out.printf("| %20s ", tableArray[i][j].text);
+                if(logger.isDebugEnabled()) {
+                    logger.debug("| %20s ", tableArray[i][j].text);
                 }
                 rowArray.add(object);
             }
             resList.add(rowArray);
-            if(DEBUG_PARSE_TABLE){
-                System.out.println("  ");
-            }
         }
 
         return resList;
