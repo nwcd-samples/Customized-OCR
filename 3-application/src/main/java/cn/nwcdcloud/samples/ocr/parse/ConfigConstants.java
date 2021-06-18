@@ -1,12 +1,16 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public interface ConfigConstants {
 
-    boolean DEBUG_PARSE_KEY_VALUE =  false;
-    boolean DEBUG_PARSE_FIXED_POSITION =  false;
-    boolean DEBUG_PARSE_TABLE =  true;
+    Logger logger = LoggerFactory.getLogger(ConfigConstants.class);
+    boolean DEBUG_PARSE_KEY_VALUE =  false && logger.isDebugEnabled();
+    boolean DEBUG_PARSE_FIXED_POSITION =  false && logger.isDebugEnabled();
+    boolean DEBUG_PARSE_TABLE =  true && logger.isDebugEnabled();
 
-//    boolean DEBUG_FLAG = true;
+    //用于计算页面的坐标值， 主要是为了和显示的坐标统一， 目前都用百分比进行判断。
     int PAGE_WIDTH = 1200;
     int PAGE_HEIGHT = 2000;
 
@@ -14,7 +18,6 @@ public interface ConfigConstants {
     int ITEM_LENGTH_MAX = 40;
     // LineCountMax  Value 元素可以有多行
     int ITEM_LINE_COUNT_MAX = 1;
-
 
     //通过key 查找value 元素的范围， 相对key的坐标范围
     double ITEM_OFFSET_TOP_RADIO = -1.0;
@@ -26,26 +29,15 @@ public interface ConfigConstants {
     double ITEM_VALUE_X_RANGE_MIN = 0.0;
     double ITEM_VALUE_X_RANGE_MAX = 1.0;
 
-    // 解析表格 定位 cell元素， 上下设置一个误差范围
-    int PARSE_CELL_ERROR_RANGE_TOP      = 20;
-    int PARSE_CELL_ERROR_RANGE_BOTTOM   = 20;
-
     //FIXME: 合并下面两个值
     double PARSE_CELL_ERROR_RANGE_MIN      = 0.002;
-    int PARSE_CELL_ERROR_RANGE_MIN_INT      = 10;
 
-    //FIXME：  上下元素有误差， 扩大范围 进行兼容， 后面根据每个单据倾斜 密集程度不一样， 可以对误差进行设置。
-    int PARSE_CELL_ERROR_RANGE_MAX      = 30;
+
 
     // 表格解析的最大的行数
     int TABLE_MAX_ROW_COUNT = 20;
     // 表格用来迭代查找行的比率   nextItem.top <=  item.bottom +  ratio * item.height
     double TABLE_MAX_ROW_HEIGHT_RATIO = 2.0;
-
-    int TABLE_MAIN_COLUMN_INDEX  = 0 ;
-
-
-
 
     String TABLE_MARGIN_TYPE_NEAR               = "near";
     String TABLE_MARGIN_TYPE_MIDDLE             = "middle";

@@ -16,7 +16,7 @@ public class ParseUtils {
             return getItemNumericalValue(value);
         }
         if("word".equalsIgnoreCase(valueType)){
-            return getItemStringValue(value);
+            return getItemWordValue(value);
         }
         return value;
     }
@@ -45,7 +45,7 @@ public class ParseUtils {
         return retainFixedLength(value);
     }
 
-    private static String getItemStringValue(String value){
+    private static String getItemWordValue(String value){
         if(!StringUtils.hasLength(value)){
             return value;
         }

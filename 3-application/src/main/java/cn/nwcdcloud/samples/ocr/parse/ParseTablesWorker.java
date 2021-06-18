@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -130,7 +131,8 @@ public class ParseTablesWorker {
         if(DEBUG_PARSE_TABLE) {
             for (int i=0; i<columnBlockItemList.size(); i++) {
 
-                logger.debug("【3.{} 找到表头元素】 {} ", i+1,  BlockItemUtils.generateBlockItemString(columnBlockItemList.get(i)));
+                logger.debug("【3.{} 找到表头元素】 ColumnName=[{}] {} ", i+1, columnBlockItemList.get(i).getString("displayColumnName"),
+                        BlockItemUtils.generateBlockItemString(columnBlockItemList.get(i)));
             }
         }
 
@@ -569,7 +571,7 @@ public class ParseTablesWorker {
                        item.getDouble("xMax") <= right+ 0.005
                     ){
                         cellList.add(item);
-                        if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
+                        if(DEBUG_PARSE_TABLE ){
                             logger.debug("\t【找到第{}元素】\t{} ",
                                     cellList.size(), BlockItemUtils.generateBlockItemString(item));
                         }
@@ -600,7 +602,9 @@ public class ParseTablesWorker {
 
         List<JSONArray> resList = new ArrayList<>();
 
-        if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
+        if(DEBUG_PARSE_TABLE ){
+            System.out.println("---------------------------------------------------------------------------------------------------");
+
             for(int i=0; i<columnList.size(); i++ ){
                 System.out.printf("| %20s ",columnList.get(i).getString("displayColumnName"));
             }
@@ -627,9 +631,13 @@ public class ParseTablesWorker {
                 rowArray.add(object);
             }
             resList.add(rowArray);
-            if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
+            if(DEBUG_PARSE_TABLE ){
                 System.out.println("  ");
             }
+        }
+
+        if(DEBUG_PARSE_TABLE ){
+            System.out.println("---------------------------------------------------------------------------------------------------");
         }
 
         return resList;
