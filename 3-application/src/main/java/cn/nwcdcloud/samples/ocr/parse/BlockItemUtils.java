@@ -566,11 +566,25 @@ public class BlockItemUtils {
         for(String tempStr: splitArray){
             if(tempStr.length()>0 && BlockItemUtils.isDoubleOrFloat(tempStr)){
 //                System.out.println("----- "+tempStr);
-                return  tempStr;
+                return  retainFixedLength(tempStr);
             }
         }
+        value = value.replaceAll("[^0-9.-]", "");
+        return retainFixedLength(value);
+    }
+    private static String retainFixedLength(String value){
 
-        return value.replaceAll("[^0-9.-]", "");
+        //FIXME: 最多保留4位小数， 以后可以从配置文件进行设置
+        if(!StringUtils.hasLength(value) ){
+            return value;
+        }
+
+        int fixedLength = 4;
+        if(value.length() >  value.lastIndexOf('.') + fixedLength +1  ){
+            value = value.substring(0, value.lastIndexOf('.')+ fixedLength + 1);
+        }
+        return value;
+
     }
 
 

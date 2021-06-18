@@ -70,5 +70,18 @@ public class RangeTest {
         assert "80.0".equals(BlockItemUtils.getItemNumericalValue("本次医保80,0"));
         assert "0.002".equals(BlockItemUtils.getItemNumericalValue("0.002ABCD"));
         assert "0.012".equals(BlockItemUtils.getItemNumericalValue("ABCD0.012"));
+
+
+
+
     }
+
+
+    @Test
+    public void testRetainFixedLength(){
+        assert "5.0000".equals(BlockItemUtils.getItemNumericalValue("5.00001"));
+        assert "12.325.0000".equals(BlockItemUtils.getItemNumericalValue("12.325.0000123"));
+
+    }
+
 }
