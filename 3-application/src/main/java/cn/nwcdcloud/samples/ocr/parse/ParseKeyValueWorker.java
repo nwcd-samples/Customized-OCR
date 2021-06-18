@@ -83,9 +83,8 @@ public class ParseKeyValueWorker {
 //		logger.warn(configMap.get("Name") + "maxLength  " + maxLength + "   "+ value);
 
 		String valueType = configMap.getOrDefault("ValueType", "").toString();
-		if("number".equals(valueType)){
-			value = BlockItemUtils.getItemNumericalValue(value);
-		}
+		value = ParseUtils.processBlockValue(valueType, value);
+
 		if( value.length() > maxLength){
 			value = value.substring(0, maxLength);
 			if(DEBUG_PARSE_KEY_VALUE){

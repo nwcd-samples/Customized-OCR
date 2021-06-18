@@ -589,12 +589,9 @@ public class ParseTablesWorker {
                     cell.text += (" " + item.getString("text"));
                 }
                 // 根据设置的格式，进行字符串处理
-
                 JSONObject configMap = columnItem.getJSONObject("config");
                 String valueType = configMap.getString("ValueType");
-                if(valueType != null && "number".equals(valueType)){
-                    cell.text = BlockItemUtils.getItemNumericalValue(cell.text);
-                }
+                cell.text = ParseUtils.processBlockValue(valueType, cell.text);
 
             }
 

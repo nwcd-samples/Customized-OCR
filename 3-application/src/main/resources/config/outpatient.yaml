@@ -125,11 +125,13 @@ Targets:
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
+        KeyWordList: ["项目"]
+        ValueType: "string"
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 5.0
         XRangeMax: 0.5
         YRangeMax: 0.5
 
@@ -176,11 +178,13 @@ Targets:
     MaxRowHeightRatio: 2.5
     Columns:
       - ColumnName: "项目/规格"
+        KeyWordList: ["项目"]
+        ValueType: "string"
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
-        MoveRightRatio: 2.0
+        MoveRightRatio: 5.0
         XRangeMin: 0.4
         YRangeMax: 0.5
 

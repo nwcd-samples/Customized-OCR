@@ -2,6 +2,7 @@ package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.util.List;
 
+import cn.nwcdcloud.samples.ocr.parse.ParseUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,33 +44,33 @@ public class RangeTest {
 
 
     @Test
-    public void testRe(){
+    public void testNumericalValue(){
 
 
 //        String str = "0.80 本次医保";
 
-        assert "800".equals(BlockItemUtils.getItemNumericalValue("800 "));
-        assert "800".equals(BlockItemUtils.getItemNumericalValue(" 800"));
-        assert "800".equals(BlockItemUtils.getItemNumericalValue("800 本次医保"));
-        assert "800".equals(BlockItemUtils.getItemNumericalValue("本次医保 800"));
+        assert "800".equals(ParseUtils.processBlockValue("number", "800 "));
+        assert "800".equals(ParseUtils.processBlockValue("number", " 800"));
+        assert "800".equals(ParseUtils.processBlockValue("number", "800 本次医保"));
+        assert "800".equals(ParseUtils.processBlockValue("number", "本次医保 800"));
 
 
-        assert "8.00".equals(BlockItemUtils.getItemNumericalValue("8.00 "));
-        assert "80.0".equals(BlockItemUtils.getItemNumericalValue(" 80.0"));
-        assert "-80.0".equals(BlockItemUtils.getItemNumericalValue("-80.0 本次医保"));
-        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保 -8.00"));
+        assert "8.00".equals(ParseUtils.processBlockValue("number", "8.00 "));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80.0"));
+        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80.0 本次医保"));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8.00"));
 
 
 
-        assert "8.00".equals(BlockItemUtils.getItemNumericalValue("8，00 "));
-        assert "80.0".equals(BlockItemUtils.getItemNumericalValue(" 80,0"));
-        assert "-80.0".equals(BlockItemUtils.getItemNumericalValue("-80。0 本次医保"));
-        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保 -8。00"));
+        assert "8.00".equals(ParseUtils.processBlockValue("number", "8，00 "));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80,0"));
+        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80。0 本次医保"));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8。00"));
 
-        assert "-8.00".equals(BlockItemUtils.getItemNumericalValue("本次医保-8。00"));
-        assert "80.0".equals(BlockItemUtils.getItemNumericalValue("本次医保80,0"));
-        assert "0.002".equals(BlockItemUtils.getItemNumericalValue("0.002ABCD"));
-        assert "0.012".equals(BlockItemUtils.getItemNumericalValue("ABCD0.012"));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保-8。00"));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", "本次医保80,0"));
+        assert "0.002".equals(ParseUtils.processBlockValue("number", "0.002ABCD"));
+        assert "0.012".equals(ParseUtils.processBlockValue("number", "ABCD0.012"));
 
 
 
@@ -79,9 +80,17 @@ public class RangeTest {
 
     @Test
     public void testRetainFixedLength(){
-        assert "5.0000".equals(BlockItemUtils.getItemNumericalValue("5.00001"));
-        assert "12.325.0000".equals(BlockItemUtils.getItemNumericalValue("12.325.0000123"));
+        assert "5.0000".equals(ParseUtils.processBlockValue("number", "5.00001"));
+        assert "12.325.0000".equals(ParseUtils.processBlockValue("number", "12.325.0000123"));
 
+    }
+
+
+    @Test
+    public void testStringValue(){
+        assert "你好".equals(ParseUtils.processBlockValue("string", "你好 5.00001"));
+        assert "你好".equals(ParseUtils.processBlockValue("string", "你好 5.00001  我们"));
+        assert "你好".equals(ParseUtils.processBlockValue("string", "你好5.00001"));
     }
 
 }
