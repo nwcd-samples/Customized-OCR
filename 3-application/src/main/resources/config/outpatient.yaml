@@ -79,6 +79,7 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "个人账户支付"
     ValueType: "number"
+    KeyWordList: ["*人账户支付"]
     TopOffsetRadio: -0.5
     LeftOffsetRadio: 0
     BottomOffsetRadio: 1.0
@@ -90,11 +91,13 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "起付金额"
     ValueType: "number"
+    KeyWordList: ["*起付金额"]
     TopOffsetRadio: -0.5
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
   - Name: "超封顶金额"
     ValueType: "number"
+    KeyWordList: ["*超封顶金额"]
     TopOffsetRadio: -0.5
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
@@ -106,11 +109,13 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "自费"
     ValueType: "number"
+    KeyWordList: ["*自费"]
     TopOffsetRadio: -0.5
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
   - Name: "个人支付金额"
     ValueType: "number"
+    KeyWordList: ["*个人支付金额"]
     LeftOffsetRadio: 1
     TopOffsetRadio: -1.0
     BottomOffsetRadio: 1.5
