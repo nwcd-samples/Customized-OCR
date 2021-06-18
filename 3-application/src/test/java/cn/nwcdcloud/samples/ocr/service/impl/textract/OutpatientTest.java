@@ -496,6 +496,7 @@ public class OutpatientTest {
         assert tableRowList.size() == 2; //第一个表格行数
 
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("31.39");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("31.3900");
 
 
 
@@ -881,23 +882,25 @@ public class OutpatientTest {
         JSONObject table1 = (JSONObject) tableArray.get(0);
         assert table1 !=null;
         JSONArray tableRowList =  table1.getJSONArray("rowList");
-        assert tableRowList.size() == 5; //第一个表格行数
+        assert tableRowList.size() == 6; //第一个表格行数
 
-        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("西药费");
-        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("电耳镜检查／");
-        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("盐酸氨卓斯汀鼻端／10ml：1s5.4700");
-        assert ((JSONArray) tableRowList.get(3)).getJSONObject(0).getString("text").equals("核柠测肠溶软胶囊／0.12g＊");
-        assert ((JSONArray) tableRowList.get(4)).getJSONObject(0).getString("text").equals("糠酸英米松鼻晴雾／0.0540");
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("西药费");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("电耳镜检查／");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(0).getString("text").equals("盐酸氨卓斯汀鼻端／10ml：1s5.4700");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(0).getString("text").equals("核柠测肠溶软胶囊／0.12g＊");
+        assert ((JSONArray) tableRowList.get(5)).getJSONObject(0).getString("text").equals("糠酸英米松鼻晴雾／0.0540");
 
 
 
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("10.00");
-        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("10.0000");
-        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("45.4700");
-        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("56.3800");
-        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("0010");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("231.08");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("10.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("45.4700");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("56.3800");
+        assert ((JSONArray) tableRowList.get(5)).getJSONObject(3).getString("text").equals("0010");
 
-        assert ((JSONArray) tableRowList.get(4)).getJSONObject(4).getString("text").equals("有自付");
+        assert ((JSONArray) tableRowList.get(5)).getJSONObject(4).getString("text").equals("有自付");
 
 
 
@@ -999,8 +1002,8 @@ public class OutpatientTest {
         assert table2RowList.size() ==3;
 
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("");
-        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("无自付");
-        assert ((JSONArray) table2RowList.get(2)).getJSONObject(0).getString("text").equals("4／瓶");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("克霉唑阴道片／500mg＊1片／");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(0).getString("text").equals("皮肤康洗液／50ml");
 
 
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("185.90");
@@ -1096,17 +1099,6 @@ public class OutpatientTest {
         assert ((JSONArray) tableRowList.get(3)).getJSONObject(0).getString("text").equals("连花清瘟颗粒／6g＊10袋");
         assert ((JSONArray) tableRowList.get(4)).getJSONObject(0).getString("text").equals("双黄连颗粒（无蔗糖／5g＊6袋");
 
-        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("176.38");
-        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("");
-        assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("23.4800");
-        assert ((JSONArray) tableRowList.get(3)).getJSONObject(1).getString("text").equals("23.5700");
-        assert ((JSONArray) tableRowList.get(4)).getJSONObject(1).getString("text").equals("");
-
-        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("176.38");
-        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("108.1000");
-        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("23.4800");
-        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("70.7100");
-        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("180.0000");
 
 
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
@@ -1129,9 +1121,7 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(3)).getJSONObject(0).getString("text").equals("穿心莲内酯滴丸／0.6g＊15袋20.0300");
         assert ((JSONArray) table2RowList.get(4)).getJSONObject(0).getString("text").equals("苏黄止咳胶囊／0.45g＊24粒");
 
-        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("808.43");
-        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("");
-        assert ((JSONArray) table2RowList.get(2)).getJSONObject(1).getString("text").equals("50.7300");
+
 
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("808.43");
         assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("44.8000");

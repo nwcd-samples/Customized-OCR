@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory.Cell;
 
-import java.sql.SQLOutput;
+
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -45,7 +45,7 @@ public class ParseTablesWorker {
         adjustColumnBlockItemMargin(columnBlockItemList, blockItemList);
 
         //step 3. 通过主列 往下迭代找元素， 找到行划分。
-        int mainColumnIndex = findMainColumnIndex(columnBlockItemList);
+        int mainColumnIndex = ParseUtils.findMainColumnIndex(columnBlockItemList);
 
         if(DEBUG_PARSE_TABLE) {
             logger.debug("【5. 查找到主列】：主列index={}   Text [{}] ", mainColumnIndex, columnBlockItemList.get(mainColumnIndex).getString("text"));
@@ -382,8 +382,7 @@ public class ParseTablesWorker {
 
 
         List<JSONObject> resList = new ArrayList<>();
-        double xMinBorder = mainColumnBlockItem.getDouble("xMinBorder");
-        double xMaxBorder = mainColumnBlockItem.getDouble("xMaxBorder");
+
         double yMinBorder = mainColumnBlockItem.getDouble("yMin");
 
 
@@ -401,10 +400,10 @@ public class ParseTablesWorker {
 //                            mDecimalFormat.format(item.getDouble("xMax")),
 //                            mDecimalFormat.format(xMinBorder), mDecimalFormat.format(xMaxBorder),item.getString("text")
 //                    );
-            if(item.getDouble("yMin") > yMinBorder
-                    && item.getDouble("xMin")> xMinBorder
-                    && item.getDouble("xMax")< xMaxBorder &&
-                    !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
+
+            if( ParseUtils.isContainItemInRow(item, mainColumnBlockItem)
+                    && item.getDouble("yMin") > yMinBorder
+                    && !item.getString("text").equals(mainColumnBlockItem.getString("text"))){
                 totalRowCount ++;
                 if(DEBUG_PARSE_TABLE){
                     logger.debug("【6.{}主列 查找行元素 】 {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
@@ -416,8 +415,8 @@ public class ParseTablesWorker {
                 //如果新找到的行元素和上一个行元素 高度过近， 算一行
                 if(resList.size()>0 && item.getDouble("yMin")+ item.getDouble("heightRate")/2 < resList.get(resList.size()-1).getDouble("yMax")){
                     continue;
-                }else if(resList.size() ==0 &&  item.getDouble("yMin") + item.getDouble("heightRate")/2
-                        < mainColumnBlockItem.getDouble("yMax")){
+                }else if(resList.size() ==0 &&  item.getDouble("yMin") <
+                        mainColumnBlockItem.getDouble("yMin") + mainColumnBlockItem.getDouble("heightRate")/2){
                     continue;
                 }
                 rowCount ++;
@@ -565,11 +564,17 @@ public class ParseTablesWorker {
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
 
-                    if(item.getDouble("yMin")>= top &&
-                       item.getDouble("yMax")<= bottom &&
-                       item.getDouble("xMin")>= left &&
-                       item.getDouble("xMax") <= right+ 0.005
-                    ){
+//                    // 边界内部包含候选元素
+//                    boolean insideContainFlag = item.getDouble("xMin")>= left &&
+//                                    item.getDouble("xMax") <= right+ 0.005;
+//
+//                    // 候选元素 包含列元素
+//                    double middleX = (columnItem.getDouble("xMin") + columnItem.getDouble("xMax"))/2;
+//                    boolean outsideContainFlag = item.getDouble("xMin") < middleX
+//                            && item.getDouble("xMax")> middleX && item.getDouble("widthRate") > columnItem.getDouble("widthRate") ;
+
+                    if( ParseUtils.isContainItemInRow(item, columnItem)  && item.getDouble("yMin")>= top &&
+                       item.getDouble("yMax")<= bottom ){
                         cellList.add(item);
                         if(DEBUG_PARSE_TABLE ){
                             logger.debug("\t【找到第{}元素】\t{} ",
@@ -584,24 +589,21 @@ public class ParseTablesWorker {
                 }//End for
 
                 //Sort list
-
                 cellList.sort(new BlockItemComparator(ConfigConstants.COMPARE_HEIGHT_RATE));
 
                 for (JSONObject item: cellList){
                     cell.text += (" " + item.getString("text"));
                 }
                 // 根据设置的格式，进行字符串处理
-
                 JSONObject configMap = columnItem.getJSONObject("config");
                 String valueType = configMap.getString("ValueType");
-                cell.text = ParseUtils.processBlockValue(valueType, cell.text);
-
+                //FIXME:  如果多个元素连起来， 取到 X 的偏移值， 从左边取元素， 还是从右边取元素，
+                int direction = 0;
+                cell.text = ParseUtils.processBlockValue(valueType, cell.text, direction);
             }
-
         }
 
         List<JSONArray> resList = new ArrayList<>();
-
         if(DEBUG_PARSE_TABLE ){
             System.out.println("---------------------------------------------------------------------------------------------------");
 
@@ -643,25 +645,5 @@ public class ParseTablesWorker {
         return resList;
 
     }
-
-    /**
-     * 寻找用来定位主列元素， 主列是用来进行行划分的， 可能会出现一个单元格里面有多行文字的情况。
-     * 主列一般都是不为空， 单行， 长度固定， 可以用来定义一行的元素。
-      * @param columnBlockItemList
-     * @return
-     */
-    private int findMainColumnIndex( List<JSONObject>  columnBlockItemList){
-
-
-        for(int i=0; i< columnBlockItemList.size(); i++){
-            JSONObject blockItem = columnBlockItemList.get(i);
-            boolean isMainColumn = blockItem.getBoolean("isMainColumn");
-            if(isMainColumn){
-                return i;
-            }
-        }
-        return 0;
-    }
-
 
 }

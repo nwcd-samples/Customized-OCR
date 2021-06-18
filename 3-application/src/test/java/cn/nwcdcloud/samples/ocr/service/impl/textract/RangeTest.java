@@ -49,28 +49,29 @@ public class RangeTest {
 
 //        String str = "0.80 本次医保";
 
-        assert "800".equals(ParseUtils.processBlockValue("number", "800 "));
-        assert "800".equals(ParseUtils.processBlockValue("number", " 800"));
-        assert "800".equals(ParseUtils.processBlockValue("number", "800 本次医保"));
-        assert "800".equals(ParseUtils.processBlockValue("number", "本次医保 800"));
+        int direction = 0;
+        assert "800".equals(ParseUtils.processBlockValue("number", "800 ", direction));
+        assert "800".equals(ParseUtils.processBlockValue("number", " 800", direction));
+        assert "800".equals(ParseUtils.processBlockValue("number", "800 本次医保", direction));
+        assert "800".equals(ParseUtils.processBlockValue("number", "本次医保 800", direction));
 
 
-        assert "8.00".equals(ParseUtils.processBlockValue("number", "8.00 "));
-        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80.0"));
-        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80.0 本次医保"));
-        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8.00"));
+        assert "8.00".equals(ParseUtils.processBlockValue("number", "8.00 ", direction));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80.0", direction));
+        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80.0 本次医保", direction));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8.00", direction));
 
 
 
-        assert "8.00".equals(ParseUtils.processBlockValue("number", "8，00 "));
-        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80,0"));
-        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80。0 本次医保"));
-        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8。00"));
+        assert "8.00".equals(ParseUtils.processBlockValue("number", "8，00 ", direction));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", " 80,0", direction));
+        assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80。0 本次医保", direction));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8。00", direction));
 
-        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保-8。00"));
-        assert "80.0".equals(ParseUtils.processBlockValue("number", "本次医保80,0"));
-        assert "0.002".equals(ParseUtils.processBlockValue("number", "0.002ABCD"));
-        assert "0.012".equals(ParseUtils.processBlockValue("number", "ABCD0.012"));
+        assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保-8。00", direction));
+        assert "80.0".equals(ParseUtils.processBlockValue("number", "本次医保80,0", direction));
+        assert "0.002".equals(ParseUtils.processBlockValue("number", "0.002ABCD", direction));
+        assert "0.012".equals(ParseUtils.processBlockValue("number", "ABCD0.012", direction));
 
 
 
@@ -80,17 +81,19 @@ public class RangeTest {
 
     @Test
     public void testRetainFixedLength(){
-        assert "5.0000".equals(ParseUtils.processBlockValue("number", "5.00001"));
-        assert "12.325.0000".equals(ParseUtils.processBlockValue("number", "12.325.0000123"));
+        int direction = 0;
+        assert "5.0000".equals(ParseUtils.processBlockValue("number", "5.00001", direction));
+        assert "12.325.0000".equals(ParseUtils.processBlockValue("number", "12.325.0000123", direction));
 
     }
 
 
     @Test
     public void testStringValue(){
-        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001"));
-        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001  我们"));
-        assert "你好".equals(ParseUtils.processBlockValue("word", "你好5.00001"));
+        int direction = 0;
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001", direction));
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001  我们", direction));
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好5.00001", direction));
     }
 
 }

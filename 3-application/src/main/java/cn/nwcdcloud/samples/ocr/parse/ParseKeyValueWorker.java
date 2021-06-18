@@ -83,7 +83,8 @@ public class ParseKeyValueWorker {
 //		logger.warn(configMap.get("Name") + "maxLength  " + maxLength + "   "+ value);
 
 		String valueType = configMap.getOrDefault("ValueType", "").toString();
-		value = ParseUtils.processBlockValue(valueType, value);
+		int direction = 0;// key-value 默认从左往右就可以，table 可能会有从右往左的情况。
+		value = ParseUtils.processBlockValue(valueType, value, direction);
 
 		if( value.length() > maxLength){
 			value = value.substring(0, maxLength);
