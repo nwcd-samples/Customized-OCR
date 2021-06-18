@@ -25,10 +25,10 @@ public class ParseUtils {
             return value;
         }
         if("number".equalsIgnoreCase(valueType)){
-            return getItemNumericalValue(value);
+            return getItemNumericalValue(value, direction);
         }
         if("word".equalsIgnoreCase(valueType)){
-            return getItemWordValue(value);
+            return getItemWordValue(value, direction);
         }
         return value;
     }
@@ -41,32 +41,55 @@ public class ParseUtils {
      * @param value
      * @return
      */
-    private static String getItemNumericalValue(String value){
+    private static String getItemNumericalValue(String value, int direction){
         if(!StringUtils.hasLength(value)){
             return value;
         }
-        value = value.replaceAll("[。*,，]", ".");
+        value = value.replaceAll("[，。]", ".");
         String  [] splitArray = value.split(" ");
 
-        for(String tempStr: splitArray){
-            if(tempStr.length()>0 && isDoubleOrFloat(tempStr)){
-                return  retainFixedLength(tempStr);
+        if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {
+            for (String tempStr : splitArray) {
+                if (tempStr.length() > 0 && isDoubleOrFloat(tempStr)) {
+                    return retainFixedLength(tempStr);
+                }
+            }
+        }else {
+            for(int i=splitArray.length-1; i>=0;i--){
+                String tempStr = splitArray[i];
+                if (tempStr.length() > 0 && isDoubleOrFloat(tempStr)) {
+                    return retainFixedLength(tempStr);
+                }
             }
         }
-        value = value.replaceAll("[^0-9.-]", "");
+
+
+//        value = value.replaceAll("[^0-9.-]", "");
+        value = remainNumberString(value, direction);
         return retainFixedLength(value);
     }
 
-    private static String getItemWordValue(String value){
+    private static String getItemWordValue(String value, int direction){
         if(!StringUtils.hasLength(value)){
             return value;
         }
         String  [] splitArray = value.split(" ");
         if(splitArray.length>1) {
-            for (String tempStr : splitArray) {
-                if (tempStr.length() > 0 && !isDoubleOrFloat(tempStr)) {
-                    return tempStr;
+            if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {
+                for (String tempStr : splitArray) {
+                    if (tempStr.length() > 0 && !isDoubleOrFloat(tempStr)) {
+                        return tempStr;
+                    }
                 }
+            }else {
+                for(int i=splitArray.length-1; i>=0;i--){
+                    String tempStr = splitArray[i];
+                    if (tempStr.length() > 0 && !isDoubleOrFloat(tempStr)) {
+                        return tempStr;
+                    }
+                }
+
+
             }
         }
         value = value.replaceAll("[0-9.]", "");
@@ -136,6 +159,33 @@ public class ParseUtils {
 
 
     /**
+     * 判断 table 里面 单元元素 取值方向， 元素过长， 通常是识别表格时候连在了一起，可以分别从左右取第一个空格分隔的元素。
+     * @param cellList
+     * @param columnItem
+     * @return
+     */
+    public static int checkParseCellValueDirection (List<JSONObject> cellList, JSONObject columnItem){
+        double xMin = 2.0;
+        double xMax = -1.0;
+        if(cellList == null || cellList.size() == 0 || cellList.size()>=2){
+            return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT;
+        }
+
+        JSONObject item = cellList.get(0);
+        xMin = item.getDouble("xMin");
+        xMax = item.getDouble("xMax");
+
+        double middleX = (xMin + xMax)/2;
+        // cell 元素更靠左， 从右边开始取元素
+        if(middleX < columnItem.getDouble("xMin")){
+            return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT;
+        }
+
+
+        return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT;
+    }
+
+    /**
      * 寻找用来定位主列元素， 主列是用来进行行划分的， 可能会出现一个单元格里面有多行文字的情况。
      * 主列一般都是不为空， 单行， 长度固定， 可以用来定义一行的元素。
      * @param columnBlockItemList
@@ -153,6 +203,63 @@ public class ParseUtils {
         }
         return 0;
     }
+//    艾瑞昔布片／（恒扬）（0.1GM：49.0000 3／盒（10）147.0000 有自付
 
+
+    public static String remainNumberString(String value, int direction){
+
+        if(!StringUtils.hasLength(value)){
+            return value;
+        }
+
+        if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT){
+            boolean startFlag = false;
+            int endIndex = value.length();
+            int startIndex = 0;
+            for(int i=value.length()-1; i>=0; i--){
+                Character c = value.charAt(i);
+
+                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                    if(startFlag == false){
+                        startFlag = true;
+                        endIndex = i+1;
+                    }
+                }else {
+                    if(startFlag){
+                        startIndex = i+1;
+                        break;
+                    }
+                }
+            }
+            String result = value.substring(startIndex, endIndex);
+            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
+            return result;
+        }else {
+
+            boolean startFlag = false;
+            int endIndex = value.length();
+            int startIndex = 0;
+            for(int i=0; i< value.length(); i++){
+                Character c = value.charAt(i);
+
+                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                    if(startFlag == false){
+                        startFlag = true;
+                        startIndex = i;
+                    }
+                }else {
+                    if(startFlag){
+                        endIndex = i;
+                        break;
+                    }
+                }
+            }
+            String result = value.substring(startIndex, endIndex);
+            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
+            return result;
+        }
+
+
+    }
 
 }

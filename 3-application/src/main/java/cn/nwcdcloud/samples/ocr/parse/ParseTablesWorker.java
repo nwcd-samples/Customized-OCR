@@ -564,15 +564,6 @@ public class ParseTablesWorker {
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
 
-//                    // 边界内部包含候选元素
-//                    boolean insideContainFlag = item.getDouble("xMin")>= left &&
-//                                    item.getDouble("xMax") <= right+ 0.005;
-//
-//                    // 候选元素 包含列元素
-//                    double middleX = (columnItem.getDouble("xMin") + columnItem.getDouble("xMax"))/2;
-//                    boolean outsideContainFlag = item.getDouble("xMin") < middleX
-//                            && item.getDouble("xMax")> middleX && item.getDouble("widthRate") > columnItem.getDouble("widthRate") ;
-
                     if( ParseUtils.isContainItemInRow(item, columnItem)  && item.getDouble("yMin")>= top &&
                        item.getDouble("yMax")<= bottom ){
                         cellList.add(item);
@@ -597,8 +588,8 @@ public class ParseTablesWorker {
                 // 根据设置的格式，进行字符串处理
                 JSONObject configMap = columnItem.getJSONObject("config");
                 String valueType = configMap.getString("ValueType");
-                //FIXME:  如果多个元素连起来， 取到 X 的偏移值， 从左边取元素， 还是从右边取元素，
-                int direction = 0;
+                //如果多个元素连起来， 取到 X 的偏移值， 从左边取元素， 还是从右边取元素，
+                int direction = ParseUtils.checkParseCellValueDirection(cellList, columnItem);
                 cell.text = ParseUtils.processBlockValue(valueType, cell.text, direction);
             }
         }

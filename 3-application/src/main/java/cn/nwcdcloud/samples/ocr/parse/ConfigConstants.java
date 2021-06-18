@@ -60,4 +60,8 @@ public interface ConfigConstants {
 
     double COMPARE_HEIGHT_RATE = 3.0d;
 
+
+    int PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT = 0;
+    int PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT = 1;
+
 }

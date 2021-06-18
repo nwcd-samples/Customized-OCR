@@ -23,7 +23,7 @@ public class ZZTest {
     @Test
     public void parseId001() {
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile().toString();
+        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_1).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory("zz");

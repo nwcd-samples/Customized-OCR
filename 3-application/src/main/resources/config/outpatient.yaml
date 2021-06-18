@@ -133,12 +133,11 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
-        MoveRightRatio: 5.0
+        MoveRightRatio: 2.0
         XRangeMax: 0.5
         YRangeMax: 0.5
 
       - ColumnName: "单价"
-        KeyWordList: ["单位"]
         ValueType: "number"
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
@@ -148,6 +147,7 @@ Targets:
         YRangeMax: 0.5
 
       - ColumnName: "数量/单位"
+        KeyWordList: ["单位"]
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -162,7 +162,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
-        MoveRightRatio: 5.0
+        MoveRightRatio: 3.0
         ValueType: "number"
         XRangeMax: 0.5
         YRangeMax: 0.5
@@ -188,22 +188,22 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
-        MoveRightRatio: 5.0
+        MoveRightRatio: 2.0
         XRangeMin: 0.45
         XRangeMax: 0.78
         YRangeMax: 0.5
 
       - ColumnName: "单价"
-        KeyWordList: ["单位"]
         ValueType: "number"
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
         MarginRightType: "near"
-        MoveRightRatio: 5.0
+        MoveRightRatio: 3.0
         XRangeMin: 0.5
         YRangeMax: 0.5
 
       - ColumnName: "数量/单位"
+        KeyWordList: ["单位"]
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -218,7 +218,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
-        MoveRightRatio: 5.0
+        MoveRightRatio: 3.0
         ValueType: "number"
         XRangeMin: 0.6
         YRangeMax: 0.5

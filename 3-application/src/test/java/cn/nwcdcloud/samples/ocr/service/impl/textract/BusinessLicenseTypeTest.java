@@ -82,7 +82,7 @@ public class BusinessLicenseTypeTest {
     @Test
     public void parse003() {
 
-        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile().toString();
+        String jsonObjectPath=this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_3).getFile();
         JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
         List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
         ParseFactory parseJsonUtil = new ParseFactory("business_license03");
