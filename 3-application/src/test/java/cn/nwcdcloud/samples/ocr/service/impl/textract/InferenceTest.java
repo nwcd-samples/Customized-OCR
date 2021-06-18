@@ -14,6 +14,9 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import cn.nwcdcloud.commons.http.HttpClientUtils;
 
 public class InferenceTest {
@@ -44,9 +47,11 @@ public class InferenceTest {
 			httpPost.setEntity(new FileEntity(new File(dirInput + File.separator + fileName)));
 			CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
 			String result = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+			JSONObject jsonResult = JSON.parseObject(result);
+			JSONObject jsonData = jsonResult.getJSONObject("data");
 			String filePrefix = fileName.split("\\.")[0];
 			BufferedWriter out = new BufferedWriter(new FileWriter(dirOutput + File.separator + filePrefix + ".json"));
-			out.write(result);
+			out.write(jsonData.toJSONString());
 			out.close();
 		}
 	}
