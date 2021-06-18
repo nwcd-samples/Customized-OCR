@@ -287,8 +287,47 @@ public class BlockItemUtils {
         blockItem.put("widthRate",blockItem.getDouble("xMax") - blockItem.getDouble("xMin"));
         blockItem.put("heightRate",blockItem.getDouble("yMax") - blockItem.getDouble("yMin"));
 
+        //四个点的坐标顺序可能从右开始
 
-//        logger.info("{}-------- {} ",blockItem.getString("text"), blockItem.toJSONString());
+        if(blockItem.getDouble("widthRate")< 0.00){
+            blockItem.put("widthRate", Math.abs(blockItem.getDouble("widthRate")));
+            int temp = blockItem.getInteger("right");
+            blockItem.put("right", blockItem.getInteger("left"));
+            blockItem.put("left", temp);
+
+            double doubleTemp = blockItem.getDouble("xMin");
+            blockItem.put("xMin", blockItem.getDouble("xMax"));
+            blockItem.put("xMax", doubleTemp);
+        }
+
+        if(blockItem.getDouble("heightRate")< 0.00){
+            blockItem.put("heightRate", Math.abs(blockItem.getDouble("heightRate")));
+            int temp = blockItem.getInteger("bottom");
+            blockItem.put("bottom", blockItem.getInteger("top"));
+            blockItem.put("top", temp);
+
+            double doubleTemp = blockItem.getDouble("yMin");
+            blockItem.put("yMin", blockItem.getDouble("yMax"));
+            blockItem.put("yMax", doubleTemp);
+        }
+
+
+//        if(blockItem.getString("text").equals("工")){
+//            logger.warn("{}-------- {} ",blockItem.getString("text"), blockItem.toJSONString());
+//            logger.warn(polyArray.toJSONString());
+//            logger.warn("left  {}", blockItem.getInteger("left"));
+//            logger.warn("right  {}", blockItem.getInteger("right"));
+//            logger.warn("xMin  {}", blockItem.getDouble("xMin"));
+//            logger.warn("xMax  {}", blockItem.getDouble("xMax"));
+//            logger.warn("widthRate  {}", blockItem.getDouble("widthRate"));
+//
+//            logger.warn("top  {}", blockItem.getInteger("top"));
+//            logger.warn("bottom  {}", blockItem.getInteger("bottom"));
+//            logger.warn("yMin  {}", blockItem.getDouble("yMin"));
+//            logger.warn("yMax  {}", blockItem.getDouble("yMax"));
+//            logger.warn("heightRate  {}", blockItem.getDouble("heightRate"));
+//        }
+
 
     }
 

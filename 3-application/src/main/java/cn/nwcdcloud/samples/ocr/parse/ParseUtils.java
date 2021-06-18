@@ -55,14 +55,11 @@ public class ParseUtils {
         if(splitArray.length>1) {
             for (String tempStr : splitArray) {
                 if (tempStr.length() > 0 && !isDoubleOrFloat(tempStr)) {
-//                System.out.println("----- "+tempStr);
                     return tempStr;
                 }
             }
         }
         value = value.replaceAll("[0-9.]", "");
-        System.out.println("------------------------ "+ value);
-
         return value;
 
 

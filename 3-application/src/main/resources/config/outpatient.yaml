@@ -166,10 +166,11 @@ Targets:
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
+        ValueType: "string"
         MarginLeftType: "near"
-        MoveLeftRatio: -1
+        MoveLeftRatio: -3
         MarginRightType: "near"
-        MoveRightRatio: 1
+        MoveRightRatio: 2
         XRangeMax: 0.7
         YRangeMax: 0.5
 
@@ -219,9 +220,10 @@ Targets:
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
+        ValueType: "string"
         MarginLeftType: "near"
-        MoveLeftRatio: -1
+        MoveLeftRatio: -3
         MarginRightType: "near"
-        MoveRightRatio: 1
+        MoveRightRatio: 2
         XRangeMin: 0.5
         YRangeMax: 0.5
