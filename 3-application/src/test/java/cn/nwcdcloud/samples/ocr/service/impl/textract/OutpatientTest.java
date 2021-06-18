@@ -15,6 +15,8 @@ import java.util.List;
 public class OutpatientTest {
     private static final Logger logger = LoggerFactory.getLogger(OutpatientTest.class);
 
+    private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
+
     private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient/001.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient/002.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient/003.json";
@@ -22,7 +24,60 @@ public class OutpatientTest {
     private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient/005.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/sample/outpatient/006.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/sample/outpatient/007.json";
-    private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
+
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_101 =  "/sample/outpatient/101.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_102 =  "/sample/outpatient/102.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_103 =  "/sample/outpatient/103.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_104 =  "/sample/outpatient/104.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_105 =  "/sample/outpatient/105.json";
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_106 =  "/sample/outpatient/106.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_107 =  "/sample/outpatient/107.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_108 =  "/sample/outpatient/108.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_109 =  "/sample/outpatient/109.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_110 =  "/sample/outpatient/110.json";
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_111 =  "/sample/outpatient/111.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_112 =  "/sample/outpatient/112.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_113 =  "/sample/outpatient/113.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_114 =  "/sample/outpatient/114.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_115 =  "/sample/outpatient/115.json";
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_116 =  "/sample/outpatient/116.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_117 =  "/sample/outpatient/117.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_118 =  "/sample/outpatient/118.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_119 =  "/sample/outpatient/119.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_120 =  "/sample/outpatient/120.json";
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_121 =  "/sample/outpatient/121.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_122 =  "/sample/outpatient/122.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_123 =  "/sample/outpatient/123.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_124 =  "/sample/outpatient/124.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_125 =  "/sample/outpatient/125.json";
+
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_126 =  "/sample/outpatient/126.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_127 =  "/sample/outpatient/127.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_128 =  "/sample/outpatient/128.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_129 =  "/sample/outpatient/129.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_130 =  "/sample/outpatient/130.json";
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_131 =  "/sample/outpatient/131.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_132 =  "/sample/outpatient/132.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_133 =  "/sample/outpatient/133.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_134 =  "/sample/outpatient/134.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_135 =  "/sample/outpatient/135.json";
+
+    private static final String  SAMPLE_JSON_OBJECT_FILE_136 =  "/sample/outpatient/136.json";
+
+
+
 
 
     @Test
@@ -258,16 +313,20 @@ public class OutpatientTest {
 
     }
 
+    private JSONObject getResultObject(String dataFile, String templateFile){
+        String jsonObjectPath= this.getClass().getResource(dataFile).getFile();
+        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
+        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
+        ParseFactory parseJsonUtil = new ParseFactory(templateFile);
+        return  parseJsonUtil.extractValue(blockItemList);
+    }
+
+
 
     @Test
     public void parseId007() {
 
-        String jsonObjectPath= this.getClass().getResource(SAMPLE_JSON_OBJECT_FILE_7).getFile();
-        JSONObject jsonObject = FileUtils.readJsonObject(jsonObjectPath);
-        List<JSONObject> blockItemList = BlockItemUtils.getBlockItemList(jsonObject);
-        ParseFactory parseJsonUtil = new ParseFactory(SAMPLE_YAML_OBJECT_FILE_1);
-        JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
-//        logger.info(resultObject.toJSONString());
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_7, SAMPLE_YAML_OBJECT_FILE_1);
         JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
         for(int i=0; i< keyValueList.size() ; i++){
@@ -275,16 +334,16 @@ public class OutpatientTest {
             logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
         }
 
+        // 表格个数
         JSONArray  tableArray =  resultObject.getJSONArray("tableList");
         logger.info("   {} ", tableArray.toJSONString());
         assert tableArray.size() == 2;
 
-
-
+        //第一个表格
         JSONObject table1 = (JSONObject) tableArray.get(0);
         assert table1 !=null;
         JSONArray tableRowList =  table1.getJSONArray("rowList");
-        assert tableRowList.size() ==10;
+        assert tableRowList.size() ==10; //第一个表格行数
 
         logger.info(((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text"));
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("180.00");
@@ -300,6 +359,7 @@ public class OutpatientTest {
 
 
 
+        //第二个表格
         JSONObject table2 = (JSONObject) tableArray.get(1);
         assert table2 !=null;
         JSONArray table2RowList =  table2.getJSONArray("rowList");
@@ -318,6 +378,249 @@ public class OutpatientTest {
 
 
     }
+
+
+    @Test
+    public void parseId101() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_101, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 5; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("675.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("150.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("120.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("15.0000");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("16.5000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==4;
+
+        logger.info("[{}]", ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("43.23");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("300.0000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("90.0000");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("26.7300");
+
+
+    }
+
+
+    @Test
+    public void parseId102() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_102, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 4; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("240.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("90.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("90.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("12.0000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==4;
+
+        logger.info("[{}]", ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("24.0");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("0000.00");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("0000.00");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("12.0000");
+
+
+    }
+
+
+    @Test
+    public void parseId103() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_103, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("31.39");
+
+
+
+    }
+
+
+
+
+    @Test
+    public void parseId104() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_104, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 3; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("170.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("20.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("120.0000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==3;
+
+        logger.info("[{}]", ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("治疗费");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("C-反应蛋白（CRP）测定／");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(0).getString("text").equals("末梢血采集｛六岁以下儿／");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("6.00");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("30.0000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(1).getString("text").equals("6.0000");
+
+    }
+
+
+    @Test
+    public void parseId105() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_105, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("131.67");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("131.6700");
+
+
+
+    }
+
+
+
+    @Test
+    public void parseId106() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_106, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+        logger.info(keyValueList.toJSONString());
+        for(int i=0; i< keyValueList.size() ; i++){
+            JSONObject item = (JSONObject) keyValueList.get(i);
+            logger.info("name: [{}]  value: [{}]", item.getString("name"), item.getString("value"));
+        }
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        logger.info("   {} ", tableArray.toJSONString());
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 3; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("20.47");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("20.4700");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("133.2000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==2;
+
+        logger.info("[{}]", ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text"));
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("264.87");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("131.6700");
+
+
+    }
+
 
 
 }
