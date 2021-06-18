@@ -16,8 +16,8 @@ import java.util.List;
 public class ZZTest {
     private static final Logger logger = LoggerFactory.getLogger(ZZTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/zz.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/invoice01.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/zz.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/invoice01.json";
 
 
     @Test

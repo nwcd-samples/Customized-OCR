@@ -10,8 +10,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * 解析Textract返回的json数据， 生成元素列表， 供后续进行结构化提取

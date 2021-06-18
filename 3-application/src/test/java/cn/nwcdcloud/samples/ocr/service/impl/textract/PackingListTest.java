@@ -18,8 +18,8 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 public class PackingListTest {
     private static final Logger logger = LoggerFactory.getLogger(PackingListTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/packing_list.json";
-//    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/cost_table002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/packing_list.json";
+//    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/cost_table002.json";
 
 
 

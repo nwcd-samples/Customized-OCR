@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 public class RangeTest {
     private static final Logger logger = LoggerFactory.getLogger(RangeTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/range.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/range.json";
 
 
     @Test
@@ -88,9 +88,9 @@ public class RangeTest {
 
     @Test
     public void testStringValue(){
-        assert "你好".equals(ParseUtils.processBlockValue("string", "你好 5.00001"));
-        assert "你好".equals(ParseUtils.processBlockValue("string", "你好 5.00001  我们"));
-        assert "你好".equals(ParseUtils.processBlockValue("string", "你好5.00001"));
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001"));
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好 5.00001  我们"));
+        assert "你好".equals(ParseUtils.processBlockValue("word", "你好5.00001"));
     }
 
 }

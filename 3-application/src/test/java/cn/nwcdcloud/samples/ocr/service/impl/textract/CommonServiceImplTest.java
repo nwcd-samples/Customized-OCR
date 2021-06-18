@@ -16,9 +16,9 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 
 public class CommonServiceImplTest {
 	private static final Logger logger = LoggerFactory.getLogger(CommonServiceImplTest.class);
-	private static final String ID_SAMPLE_JSON_OBJECT_FILE_1 = "/sample/id001.json";
-	private static final String ID_SAMPLE_JSON_OBJECT_FILE_2 = "/sample/id002.json";
-	private static final String ID_SAMPLE_JSON_OBJECT_FILE_3 = "/sample/id003.json";
+	private static final String ID_SAMPLE_JSON_OBJECT_FILE_1 = "/samples/id001.json";
+	private static final String ID_SAMPLE_JSON_OBJECT_FILE_2 = "/samples/id002.json";
+	private static final String ID_SAMPLE_JSON_OBJECT_FILE_3 = "/samples/id003.json";
 
 
 

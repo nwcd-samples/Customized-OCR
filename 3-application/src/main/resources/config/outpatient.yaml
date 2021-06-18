@@ -28,6 +28,7 @@ Targets:
     KeyWordList: ["*大写"]
     TopOffsetRadio: -1.5
     RightOffsetRadio: 4.0
+    LeftOffsetRadio: 0.1
   - Name: "门诊大额支付"
     ValueType: "number"
     TopOffsetRadio: -0.5
@@ -127,7 +128,7 @@ Targets:
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目"]
-        ValueType: "string"
+        ValueType: "word"
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
@@ -167,7 +168,7 @@ Targets:
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
-        ValueType: "string"
+        ValueType: "word"
         MarginLeftType: "near"
         MoveLeftRatio: -3
         MarginRightType: "near"
@@ -181,7 +182,7 @@ Targets:
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目"]
-        ValueType: "string"
+        ValueType: "word"
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
@@ -221,7 +222,7 @@ Targets:
 
       - ColumnName: "等级"
         KeyWordList: ["手级","登记","级"]
-        ValueType: "string"
+        ValueType: "word"
         MarginLeftType: "near"
         MoveLeftRatio: -3
         MarginRightType: "near"

@@ -17,64 +17,64 @@ public class OutpatientTest {
 
     private static final String  SAMPLE_YAML_OBJECT_FILE_1 =  "outpatient";
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/outpatient/001.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/outpatient/002.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/outpatient/003.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/outpatient/004.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/outpatient/005.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/sample/outpatient/006.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/sample/outpatient/007.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/outpatient/001.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/outpatient/002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/samples/outpatient/003.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/samples/outpatient/004.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/samples/outpatient/005.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_6 =  "/samples/outpatient/006.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_7 =  "/samples/outpatient/007.json";
 
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_101 =  "/sample/outpatient/101.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_102 =  "/sample/outpatient/102.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_103 =  "/sample/outpatient/103.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_104 =  "/sample/outpatient/104.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_105 =  "/sample/outpatient/105.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_101 =  "/samples/outpatient/101.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_102 =  "/samples/outpatient/102.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_103 =  "/samples/outpatient/103.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_104 =  "/samples/outpatient/104.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_105 =  "/samples/outpatient/105.json";
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_106 =  "/sample/outpatient/106.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_107 =  "/sample/outpatient/107.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_108 =  "/sample/outpatient/108.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_109 =  "/sample/outpatient/109.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_110 =  "/sample/outpatient/110.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_106 =  "/samples/outpatient/106.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_107 =  "/samples/outpatient/107.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_108 =  "/samples/outpatient/108.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_109 =  "/samples/outpatient/109.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_110 =  "/samples/outpatient/110.json";
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_111 =  "/sample/outpatient/111.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_112 =  "/sample/outpatient/112.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_113 =  "/sample/outpatient/113.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_114 =  "/sample/outpatient/114.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_115 =  "/sample/outpatient/115.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_111 =  "/samples/outpatient/111.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_112 =  "/samples/outpatient/112.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_113 =  "/samples/outpatient/113.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_114 =  "/samples/outpatient/114.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_115 =  "/samples/outpatient/115.json";
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_116 =  "/sample/outpatient/116.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_117 =  "/sample/outpatient/117.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_118 =  "/sample/outpatient/118.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_119 =  "/sample/outpatient/119.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_120 =  "/sample/outpatient/120.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_116 =  "/samples/outpatient/116.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_117 =  "/samples/outpatient/117.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_118 =  "/samples/outpatient/118.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_119 =  "/samples/outpatient/119.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_120 =  "/samples/outpatient/120.json";
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_121 =  "/sample/outpatient/121.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_122 =  "/sample/outpatient/122.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_123 =  "/sample/outpatient/123.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_124 =  "/sample/outpatient/124.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_125 =  "/sample/outpatient/125.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_121 =  "/samples/outpatient/121.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_122 =  "/samples/outpatient/122.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_123 =  "/samples/outpatient/123.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_124 =  "/samples/outpatient/124.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_125 =  "/samples/outpatient/125.json";
 
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_126 =  "/sample/outpatient/126.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_127 =  "/sample/outpatient/127.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_128 =  "/sample/outpatient/128.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_129 =  "/sample/outpatient/129.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_130 =  "/sample/outpatient/130.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_126 =  "/samples/outpatient/126.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_127 =  "/samples/outpatient/127.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_128 =  "/samples/outpatient/128.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_129 =  "/samples/outpatient/129.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_130 =  "/samples/outpatient/130.json";
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_131 =  "/sample/outpatient/131.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_132 =  "/sample/outpatient/132.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_133 =  "/sample/outpatient/133.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_134 =  "/sample/outpatient/134.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_135 =  "/sample/outpatient/135.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_131 =  "/samples/outpatient/131.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_132 =  "/samples/outpatient/132.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_133 =  "/samples/outpatient/133.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_134 =  "/samples/outpatient/134.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_135 =  "/samples/outpatient/135.json";
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_136 =  "/sample/outpatient/136.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_136 =  "/samples/outpatient/136.json";
 
 
 
@@ -680,6 +680,74 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("30.0000");
         assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("60.0000");
         assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("6.0000");
+
+    }
+
+
+    @Test
+    public void parseId108() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_108, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("医事服务费副主任医师（／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("00.09");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("60.0000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+
+    @Test
+    public void parseId109() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_109, SAMPLE_YAML_OBJECT_FILE_1);
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
+
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("医事服务费普通门诊（三／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("50.0000");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
 
     }
 

@@ -1,7 +1,6 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import cn.nwcdcloud.samples.ocr.parse.BlockItemUtils;
-import cn.nwcdcloud.samples.ocr.parse.ConfigConstants;
 import cn.nwcdcloud.samples.ocr.parse.FileUtils;
 import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 import com.alibaba.fastjson.JSONArray;
@@ -16,9 +15,9 @@ import java.util.List;
 public class FixedPositionTest {
     private static final Logger logger = LoggerFactory.getLogger(FixedPositionTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/fixed_position_01.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/fixed_position_02.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/fixed_position_03.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/fixed_position_01.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/fixed_position_02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/samples/fixed_position_03.json";
 
 
     @Test

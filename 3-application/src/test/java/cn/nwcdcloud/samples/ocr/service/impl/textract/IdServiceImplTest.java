@@ -15,8 +15,8 @@ public class IdServiceImplTest {
 
     private static final Logger logger = LoggerFactory.getLogger(IdServiceImplTest.class);
 
-    private static final String  ID_SAMPLE_JSON_OBJECT_FILE =  "/sample/id001.json";
-    private static final String  ID_SAMPLE_JSON_ARRAY_FILE =  "/sample/id001_array.json";
+    private static final String  ID_SAMPLE_JSON_OBJECT_FILE =  "/samples/id001.json";
+    private static final String  ID_SAMPLE_JSON_ARRAY_FILE =  "/samples/id001_array.json";
 
     @Test
     public void setUp() throws Exception {

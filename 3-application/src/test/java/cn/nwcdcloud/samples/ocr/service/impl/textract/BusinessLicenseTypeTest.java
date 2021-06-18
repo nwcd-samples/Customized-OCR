@@ -17,9 +17,9 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 
 public class BusinessLicenseTypeTest {
     private static final Logger logger = LoggerFactory.getLogger(BusinessLicenseTypeTest.class);
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/business_license001.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/business_license002.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/business_license003.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/business_license001.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/business_license002.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/samples/business_license003.json";
 
 
 

@@ -18,14 +18,14 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 public class TableSample02Test {
     private static final Logger logger = LoggerFactory.getLogger(TableSample02Test.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/table_sample02.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/sample/table_sample03.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/table_sample04.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/table_sample05.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/table_sample02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_3 =  "/samples/table_sample03.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/samples/table_sample04.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/samples/table_sample05.json";
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI =  "/sample/table_multi.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_02 =  "/sample/table_multi02.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_03 =  "/sample/table_multi03.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI =  "/samples/table_multi.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_02 =  "/samples/table_multi02.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_MULTI_03 =  "/samples/table_multi03.json";
 
     private static final String  CONFIG_FILE_PATH =  "table_sample02" ;
     private static final String  CONFIG_FILE_PATH_3 =  "table_sample03" ;

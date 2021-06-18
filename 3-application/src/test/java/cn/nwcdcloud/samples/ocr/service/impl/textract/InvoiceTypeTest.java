@@ -18,8 +18,8 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 public class InvoiceTypeTest {
     private static final Logger logger = LoggerFactory.getLogger(InvoiceTypeTest.class);
 
-    private static final String  ID_SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/invoice01.json";
-    private static final String  ID_SAMPLE_JSON_OBJECT_FILE_2 =  "/sample/invoice02.json";
+    private static final String  ID_SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/invoice01.json";
+    private static final String  ID_SAMPLE_JSON_OBJECT_FILE_2 =  "/samples/invoice02.json";
 
     @Test
     public void parse001() {

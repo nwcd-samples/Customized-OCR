@@ -18,9 +18,9 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 public class IDSampleTest {
     private static final Logger logger = LoggerFactory.getLogger(IDSampleTest.class);
 
-    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/sample/id001.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/sample/id004.json";
-    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/sample/id005.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_1 =  "/samples/id001.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_4 =  "/samples/id004.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_5 =  "/samples/id005.json";
     private static final String  CONFIG_FILE_PATH_1 =  "id" ;
 
     @Test

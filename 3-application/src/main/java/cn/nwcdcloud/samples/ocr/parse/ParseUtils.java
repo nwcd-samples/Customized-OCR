@@ -1,6 +1,5 @@
 package cn.nwcdcloud.samples.ocr.parse;
 
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.util.StringUtils;
 
 import java.util.regex.Pattern;
@@ -10,13 +9,13 @@ public class ParseUtils {
 
 
     public static String processBlockValue(String valueType, String value ){
-        if(!StringUtils.hasLength(valueType) || "all".equalsIgnoreCase(valueType) || "default".equalsIgnoreCase(valueType)){
+        if(!StringUtils.hasLength(valueType) || "string".equalsIgnoreCase(valueType) || "default".equalsIgnoreCase(valueType)){
             return value;
         }
         if("number".equalsIgnoreCase(valueType)){
             return getItemNumericalValue(value);
         }
-        if("string".equalsIgnoreCase(valueType)){
+        if("word".equalsIgnoreCase(valueType)){
             return getItemStringValue(value);
         }
         return value;
