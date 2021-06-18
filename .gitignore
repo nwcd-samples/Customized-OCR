@@ -108,3 +108,4 @@ build.sh
 cdk.context.json
 
 *.zip
+/3-application/src/test/resources/samples/

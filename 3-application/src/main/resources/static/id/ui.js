@@ -35,14 +35,39 @@ $(function(){
 
 function initClickEvent(){
     var myCanvas =  $('#myCanvas')
+    //初始化点击事件
     myCanvas.on('click', function(e) {
         var p = getEventPosition(e);
 
 
-    var xRadio = (parseFloat(p.x) / canvas_width).toFixed(3);
-    var yRadio = (parseFloat(p.y) / canvas_height).toFixed(3);
+    var x = (parseFloat(p.x) / canvas_width).toFixed(3);
+    var y = (parseFloat(p.y) / canvas_height).toFixed(3);
+    $("#click_point_coord_span").html("点：[x="+x+", y="+y +" ]")
 
-        $("#click_point_coord_span").html("点：[x="+xRadio+", y="+yRadio +" ]")
+    //判断所有元素， 如果不在所有元素的范围内， 就清空log区域。
+
+    var blockItemList = vue.blockItemList
+
+    var findFlag = false;
+    for(i =0 ; i<blockItemList.length; i++){
+        var _blockItem = blockItemList[i]
+        var top = (parseFloat(_blockItem['top']) / canvas_height).toFixed(3);
+        var bottom = (parseFloat(_blockItem['bottom']) / canvas_height).toFixed(3);
+        var left = (parseFloat(_blockItem['left']) / canvas_width).toFixed(3);
+        var right = (parseFloat(_blockItem['right']) / canvas_width).toFixed(3);
+
+        if(x >=left && x <=right && y>=top && y<=bottom){
+            findFlag = true;
+            break;
+        }
+
+    }
+
+    if(!findFlag){
+        $("#click_block_coord_span").html("")
+    }
+
+
     });
 }
 

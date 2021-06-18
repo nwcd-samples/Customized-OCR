@@ -127,11 +127,11 @@ Targets:
     MaxRowHeightRatio: 2.0
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目"]
+        KeyWordList: ["项目","项目名称"]
         ValueType: "word"
         Location: true
         MarginLeftType: "near"
-        MoveLeftRatio: -0.3
+        MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 5.0
         XRangeMax: 0.5
@@ -139,7 +139,6 @@ Targets:
 
       - ColumnName: "单价"
         ValueType: "number"
-        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -156,8 +155,9 @@ Targets:
         YRangeMax: 0.5
 
       - ColumnName: "金额"
-        KeyWordList: ["全额"]
+        KeyWordList: ["全额","金额（元）"]
         MainColumn: true
+        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
@@ -181,11 +181,11 @@ Targets:
     MaxRowHeightRatio: 2.5
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目"]
+        KeyWordList: ["项目","项目名称"]
         ValueType: "word"
         Location: true
         MarginLeftType: "near"
-        MoveLeftRatio: -0.3
+        MoveLeftRatio: -0.5
         MarginRightType: "near"
         MoveRightRatio: 5.0
         XRangeMin: 0.4
@@ -193,7 +193,6 @@ Targets:
 
       - ColumnName: "单价"
         ValueType: "number"
-        Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -210,7 +209,8 @@ Targets:
         YRangeMax: 0.5
 
       - ColumnName: "金额"
-        KeyWordList: ["全额"]
+        Location: true
+        KeyWordList: ["全额","金额（元）"]
         MainColumn: true
         MarginLeftType: "near"
         MoveLeftRatio: -2.0

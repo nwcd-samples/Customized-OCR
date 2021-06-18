@@ -569,7 +569,7 @@ public class ParseTablesWorker {
                        item.getDouble("xMax") <= right+ 0.005
                     ){
                         cellList.add(item);
-                        if(DEBUG_PARSE_TABLE){
+                        if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
                             logger.debug("\t【找到第{}元素】\t{} ",
                                     cellList.size(), BlockItemUtils.generateBlockItemString(item));
                         }
@@ -589,6 +589,7 @@ public class ParseTablesWorker {
                     cell.text += (" " + item.getString("text"));
                 }
                 // 根据设置的格式，进行字符串处理
+
                 JSONObject configMap = columnItem.getJSONObject("config");
                 String valueType = configMap.getString("ValueType");
                 cell.text = ParseUtils.processBlockValue(valueType, cell.text);
@@ -599,10 +600,11 @@ public class ParseTablesWorker {
 
         List<JSONArray> resList = new ArrayList<>();
 
-        if(logger.isDebugEnabled()){
+        if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
             for(int i=0; i<columnList.size(); i++ ){
-            	logger.debug("| %20s ",columnList.get(i).getString("displayColumnName"));
+                System.out.printf("| %20s ",columnList.get(i).getString("displayColumnName"));
             }
+            System.out.println("");
         }
 
         for (int i=0; i< rowCount; i++){
@@ -619,12 +621,15 @@ public class ParseTablesWorker {
                 }
                 object.put("text", text);
                 object.put("confidence", tableArray[i][j].confidence);
-                if(logger.isDebugEnabled()) {
-                    logger.debug("| %20s ", tableArray[i][j].text);
+                if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()) {
+                    System.out.printf("| %20s ", tableArray[i][j].text);
                 }
                 rowArray.add(object);
             }
             resList.add(rowArray);
+            if(DEBUG_PARSE_TABLE && logger.isDebugEnabled()){
+                System.out.println("  ");
+            }
         }
 
         return resList;
