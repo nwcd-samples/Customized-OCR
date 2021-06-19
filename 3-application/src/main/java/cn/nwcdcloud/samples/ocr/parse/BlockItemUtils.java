@@ -579,7 +579,8 @@ public class BlockItemUtils {
         }
         keyString = keyString.replaceAll("[/／:：.。 ]", "");
         itemString = itemString.replaceAll("[/／:：.。 ]", "");
-        return keyString.equals(itemString);
+        //或者用key 开头
+        return keyString.equals(itemString) || itemString.startsWith(keyString);
 
     }
 

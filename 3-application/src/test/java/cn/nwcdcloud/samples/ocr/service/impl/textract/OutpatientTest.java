@@ -78,10 +78,6 @@ public class OutpatientTest {
 
     private static final String  SAMPLE_JSON_OBJECT_FILE_136 =  "/samples/outpatient/136.json";
 
-
-
-
-
     @Test
     public void parseId001() {
 
@@ -830,9 +826,6 @@ public class OutpatientTest {
 
     }
 
-
-
-
     @Test
     public void parseId112() {
 
@@ -867,8 +860,6 @@ public class OutpatientTest {
 
 
     }
-
-
 
     @Test
     public void parseId113() {
@@ -925,8 +916,6 @@ public class OutpatientTest {
 
     }
 
-
-
     @Test
     public void parseId114() {
 
@@ -959,8 +948,6 @@ public class OutpatientTest {
 
 
     }
-
-
 
     @Test
     public void parseId115() {
@@ -1014,8 +1001,6 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("无自付");
         assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("有自付");
     }
-
-
 
 
     @Test
@@ -1407,8 +1392,6 @@ public class OutpatientTest {
 
     }
 
-
-
     @Test
     public void parseId122() {
 
@@ -1485,8 +1468,6 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("有自付");
     }
 
-
-
     @Test
     public void parseId124() {
 
@@ -1545,6 +1526,482 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
     }
 
+    @Test
+    public void parseId125() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_125, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("普通门诊医事服务费（三／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+    @Test
+    public void parseId126() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_126, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("西药费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("塞来昔布胶囊／0.2g＊6粒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("31.4900");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("5／盒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("157.45");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("157.4500");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+    @Test
+    public void parseId127() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_127, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("普通门诊医事服务费（三／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+    @Test
+    public void parseId128() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_128, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 3; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("西药费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("塞来昔布胶囊／0.2g＊6粒（仑");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("强骨胶囊／0.25g＊12粒");
+
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("27.5400");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("28.9500");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("5／盒");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(2).getString("text").equals("7／盒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("181.61");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("137.7000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("202.6500");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(4).getString("text").equals("无自付");
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==2;
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("中成药费");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("盐酸氨基葡萄糖胶／0.75g＊43.9100");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("1");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(2).getString("text").equals("1／盒");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("202.65");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("43.9100");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+    }
+
+    @Test
+    public void parseId129() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_129, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 5; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("手术费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("西药费");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("膝关节注射治疗／");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(0).getString("text").equals("医用几丁糖／2ML／医用几丁");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(0).getString("text").equals("塞来昔布胶囊／0.2g＊6粒（合");
+
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("238.000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(1).getString("text").equals("435.000");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(1).getString("text").equals("27.5400");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(2).getString("text").equals("1／次");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(2).getString("text").equals("1／支");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(2).getString("text").equals("5／盒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("476.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("181.61");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("238.0000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("435.0000");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(3).getString("text").equals("137.7000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) tableRowList.get(4)).getJSONObject(4).getString("text").equals("有自付");
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==4;
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("卫生材料费");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("膝关节注射治疗／");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(0).getString("text").equals("医用几丁糖／2ML／医用几丁）435.000");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(0).getString("text").equals("盐酸氨基葡萄糖胶／0.75g＊");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("238.000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(1).getString("text").equals("1");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(1).getString("text").equals("43.9100");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(2).getString("text").equals("1／次");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(2).getString("text").equals("1／支");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(2).getString("text").equals("1／盒");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("870.00");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("238.0000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("435.0000");
+        assert ((JSONArray) table2RowList.get(3)).getJSONObject(3).getString("text").equals("43.9100");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+    }
+
+    @Test
+    public void parseId130() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_130, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("普通门诊医事服务费（三／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("50.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("50.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+    @Test
+    public void parseId131() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_131, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 4; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("治疗费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("换药（大）／");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("无菌大方纱（10＊10／10＊10＊2.6000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(0).getString("text").equals("吸水敷料（7.5＊7.5／7.5＊7.210.000");
+
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("40.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("40.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("10");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(1).getString("text").equals("3");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(2).getString("text").equals("3／袋");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(2).getString("text").equals("3／片");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("40.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("40.0000");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("7.8000");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(3).getString("text").equals("630.0000");
+
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) tableRowList.get(3)).getJSONObject(4).getString("text").equals("无自付");
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==3;
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("卫生材料费");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("无菌小方纱（5＊5＊8／5＊5＊8（1.0000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(0).getString("text").equals("绷带3列／");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("5");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(1).getString("text").equals("1.9600");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(2).getString("text").equals("3／袋");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(2).getString("text").equals("1／卷");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("642.76");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("3.0000");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(3).getString("text").equals("1.9600");
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) table2RowList.get(2)).getJSONObject(4).getString("text").equals("无自付");
+    }
+
+
+    @Test
+    public void parseId132() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_132, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 2; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("诊察费");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("医事服务费（急诊）／");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("70.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("70.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("70.00");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("70.0000");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("有自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==0;
+
+
+    }
+
+    @Test
+    public void parseId133() {
+
+        JSONObject resultObject = getResultObject(SAMPLE_JSON_OBJECT_FILE_133, SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray  tableArray =  resultObject.getJSONArray("tableList");
+        assert tableArray.size() == 2;
+
+        //第一个表格
+        JSONObject table1 = (JSONObject) tableArray.get(0);
+        assert table1 !=null;
+        JSONArray tableRowList =  table1.getJSONArray("rowList");
+        assert tableRowList.size() == 3; //第一个表格行数
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(0).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(0).getString("text").equals("头孢地尼分散片／0.1g＊12");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("虎力散胶囊／1盒／0.3g＊24粒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("79.2800");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("67.6100");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(2).getString("text").equals("2／盒");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(2).getString("text").equals("3／盒");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(3).getString("text").equals("158.56");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(3).getString("text").equals("158.5600");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(3).getString("text").equals("202.8300");
+
+        assert ((JSONArray) tableRowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+        assert ((JSONArray) tableRowList.get(2)).getJSONObject(4).getString("text").equals("无自付");
+
+
+
+        //第二个表格
+        JSONObject table2 = (JSONObject) tableArray.get(1);
+        assert table2 !=null;
+        JSONArray table2RowList =  table2.getJSONArray("rowList");
+        assert table2RowList.size() ==2;
+
+
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(0).getString("text").equals("中成药费");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(0).getString("text").equals("无自付");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("68.2600");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(2).getString("text").equals("2／瓶");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(3).getString("text").equals("339.35");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(3).getString("text").equals("136.5200");
+
+        assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(4).getString("text").equals("无自付");
+
+
+    }
 
     @Test
     public void parseId134() {
@@ -1623,10 +2080,6 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(3)).getJSONObject(4).getString("text").equals("无自付");
     }
 
-
-
-
-
     @Test
     public void parseId135() {
 
@@ -1661,7 +2114,6 @@ public class OutpatientTest {
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(2).getString("text").equals("105.00");
         assert ((JSONArray) table2RowList.get(1)).getJSONObject(2).getString("text").equals("341.95");
     }
-
 
     @Test
     public void parseId136() {
