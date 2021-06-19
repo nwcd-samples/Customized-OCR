@@ -109,7 +109,9 @@ public class BlockItemUtils {
                 (pointB.getDouble("X")  - pointA.getDouble("X"));
 
 //        logger.debug("倾斜角度 {} ", tan);
-        double theta = Math.atan(tan);
+
+//        double theta = Math.atan(tan); TODO: 旋转的比较少， 先不进行计算
+        double theta = 0.0;
         List<Double> matrix =new ArrayList<Double>();
         matrix.add(Math.cos(theta));
         matrix.add(Math.sin(theta));

@@ -99,8 +99,9 @@ function parse_data_by_page(page, margin_document_top){
      pointB = max_width_block['Geometry']['Polygon'][1]
 
     tan = (pointB['Y'] - pointA['Y'])/((pointB['X'] - pointA['X']))
-    var theta = Math.atan(tan)
-    console.log("PageCount=%d,   tan = %f,  theta =   %f   ", page , tan, theta)
+//    var theta = Math.atan(tan)
+    var theta = 0;
+    console.log("PageCount=%d;   tan = %f; theta =   %f   ", page , tan, theta)
 
     //反方向旋转Theta
     matrix = [Math.cos(theta), Math.sin(theta), -1 * Math.sin(theta), Math.cos(theta)]

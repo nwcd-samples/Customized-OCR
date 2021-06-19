@@ -148,6 +148,7 @@ Targets:
 
       - ColumnName: "数量/单位"
         KeyWordList: ["单位"]
+        ValueType: "word"
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
@@ -204,6 +205,7 @@ Targets:
 
       - ColumnName: "数量/单位"
         KeyWordList: ["单位"]
+        ValueType: "word"
         MarginLeftType: "near"
         MoveLeftRatio: -0.5
         MarginRightType: "near"
