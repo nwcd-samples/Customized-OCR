@@ -123,7 +123,15 @@ public class RangeTest {
 
         assert "234".equals(ParseUtils.remainNumberString("abc 234bb 23.23", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT));
         assert "234.0001".equals(ParseUtils.remainNumberString("abc 234.0001bb 23.23", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT));
+        assert "23.23".equals(ParseUtils.remainNumberString("abc 234.0001bb 23.23", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT));
 
+        assert "234.90".equals(ParseUtils.remainNumberString("234.90", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT));
+
+        assert "234.90".equals(ParseUtils.remainNumberString("a234.90", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT));
+        assert "234.90".equals(ParseUtils.remainNumberString("a234.90", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT));
+
+        assert "234.90".equals(ParseUtils.remainNumberString("234.90baa", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT));
+        assert "234.90".equals(ParseUtils.remainNumberString("234.90baa", ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT));
 
     }
 

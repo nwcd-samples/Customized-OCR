@@ -203,22 +203,25 @@ public class ParseUtils {
         }
         return 0;
     }
-//    艾瑞昔布片／（恒扬）（0.1GM：49.0000 3／盒（10）147.0000 有自付
 
-
+    /***
+     * 只保留数字字符， 从两个方向查找数字， 找到数字的开始和结束位置， 返回只含有数字的字符串。
+     * @param value
+     * @param direction
+     * @return
+     */
     public static String remainNumberString(String value, int direction){
-
         if(!StringUtils.hasLength(value)){
             return value;
         }
 
+        boolean startFlag = false;
+        int endIndex = value.length();
+        int startIndex = 0;
+
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT){
-            boolean startFlag = false;
-            int endIndex = value.length();
-            int startIndex = 0;
             for(int i=value.length()-1; i>=0; i--){
                 Character c = value.charAt(i);
-
                 if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
@@ -232,13 +235,10 @@ public class ParseUtils {
                 }
             }
             String result = value.substring(startIndex, endIndex);
-            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
+//            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
             return result;
         }else {
 
-            boolean startFlag = false;
-            int endIndex = value.length();
-            int startIndex = 0;
             for(int i=0; i< value.length(); i++){
                 Character c = value.charAt(i);
 
@@ -255,7 +255,7 @@ public class ParseUtils {
                 }
             }
             String result = value.substring(startIndex, endIndex);
-            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
+//            logger.warn("value = [{}] length=[{}]  start=[{}] end=[{}] result=[{}]", value, value.length(), startIndex, endIndex, result);
             return result;
         }
 
