@@ -142,7 +142,6 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
         MarginRightType: "near"
-#        Direction: 0
         MoveRightRatio: 5.0
         XRangeMax: 0.5
         YRangeMax: 0.5
@@ -200,7 +199,6 @@ Targets:
         ValueType: "number"
         MarginLeftType: "near"
         MoveLeftRatio: -1.0
-#        Direction: 0
         MarginRightType: "near"
         MoveRightRatio: 3.0
         XRangeMin: 0.5

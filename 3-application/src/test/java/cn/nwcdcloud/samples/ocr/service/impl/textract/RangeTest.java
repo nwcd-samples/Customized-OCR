@@ -61,7 +61,6 @@ public class RangeTest {
 
 
         assert "8.00".equals(ParseUtils.processBlockValue("number", "8。00 ", direction));
-        assert "8,00".equals(ParseUtils.processBlockValue("number", "8,00 ", direction));
         assert "80.0".equals(ParseUtils.processBlockValue("number", " 80.0", direction));
         assert "-80.0".equals(ParseUtils.processBlockValue("number", "-80。0 本次医保", direction));
         assert "-8.00".equals(ParseUtils.processBlockValue("number", "本次医保 -8。00", direction));

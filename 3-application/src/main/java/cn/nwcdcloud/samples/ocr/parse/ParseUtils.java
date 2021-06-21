@@ -46,6 +46,7 @@ public class ParseUtils {
             return value;
         }
         value = value.replaceAll("[。]", ".");
+        value = value.replaceAll("[,，/]", " ");
         String  [] splitArray = value.split(" ");
 
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {
@@ -234,7 +235,7 @@ public class ParseUtils {
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT){
             for(int i=value.length()-1; i>=0; i--){
                 Character c = value.charAt(i);
-                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                if(c == '.' || c=='-' || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         endIndex = i+1;
@@ -254,7 +255,7 @@ public class ParseUtils {
             for(int i=0; i< value.length(); i++){
                 Character c = value.charAt(i);
 
-                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                if(c == '.' || c=='-'  || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         startIndex = i;
