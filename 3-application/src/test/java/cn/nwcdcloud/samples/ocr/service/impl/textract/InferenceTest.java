@@ -50,9 +50,11 @@ public class InferenceTest {
 			JSONObject jsonResult = JSON.parseObject(result);
 			JSONObject jsonData = jsonResult.getJSONObject("data");
 			String filePrefix = fileName.split("\\.")[0];
-			BufferedWriter out = new BufferedWriter(new FileWriter(dirOutput + File.separator + filePrefix + ".json"));
+			String fileNameResult = dirOutput + File.separator + filePrefix + ".json";
+			BufferedWriter out = new BufferedWriter(new FileWriter(fileNameResult));
 			out.write(jsonData.toJSONString());
 			out.close();
+			logger.info("生成{}", fileNameResult);
 		}
 	}
 
