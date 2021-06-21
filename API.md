@@ -65,7 +65,7 @@ Targets:
 |LengthMin|二级|否|int|1|value最小匹配长度|
 |LengthMax|二级|否|int|40|value最大匹配长度|
 |LineCountMax|二级|否|int|1|最大匹配行数|
-|ValueType|二级|否|enumeration|all|value类型，可选值为：all、number|
+|ValueType|三级|否|enumeration|String|value类型，可选值为：String、Number、Word。<br>String表示获取所有<br>Number表示只获取数字<br>Word表示去掉数字|
 |XRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
 |XRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
 |YRangeMin|二级|否|float|0.0|key在页面上纵坐标的最小值|
@@ -86,7 +86,7 @@ Targets:
 |MaxRowCount|二级|否|int|20|最大行数，超过的丢弃|
 |Columns|二级|是|list|无|定义所有列|
 |ColumnName|三级|是|string|无|列名|
-|ValueType|三级|否|enumeration|all|value类型，可选值为：all、number|
+|ValueType|三级|否|enumeration|String|value类型，可选值为：String、Number、Word。<br>String表示获取所有<br>Number表示只获取数字<br>Word表示去掉数字|
 |Location|三级|否|bool|false|用于表格定位，选择2列|
 |MainColumn|三级|否|bool|false|按此列来划分行，如果都不设置，默认为第1列。只能设置1列|
 |KeyWordList|三级|否|list|无|列头可能出现的关键字|
