@@ -11,3 +11,4 @@ Targets:
     YRangeMin: 0.0
     YRangeMax: 0.30
     RightOffsetRadio: 0.0
+    LeftOffsetRadio: -0.5

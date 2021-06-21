@@ -275,4 +275,15 @@ public class ParseUtils {
 
     }
 
+    public static boolean isContainSelfBlockItemInList(JSONObject keyItem, List<JSONObject> contentBlockItemList){
+        for(int i=0; i<contentBlockItemList.size(); i++){
+            JSONObject item = contentBlockItemList.get(i);
+            if(item.getString("id").equals(keyItem.getString("id"))){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

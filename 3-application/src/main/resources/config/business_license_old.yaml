@@ -14,6 +14,9 @@ Targets:
   - Name: "注册号"
   - Name: "名称"
     KeyWordList: ["称"]
+    LeftOffsetRadio: 2.0
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 2.0
 
 
   - Name: "住所"

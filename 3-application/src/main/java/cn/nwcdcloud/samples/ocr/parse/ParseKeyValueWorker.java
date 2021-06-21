@@ -54,29 +54,27 @@ public class ParseKeyValueWorker {
 
 
 		//step 3. !parseItemResult.keySeparateFlag 是否包含自己的单元格。
-		ParseFactory.Cell  cell = findValueBlocksCell(blockItemList,configMap, blockItem, !parseItemResult.keySeparateFlag);
+		ParseFactory.Cell  cell = findValueBlocksCell(blockItemList,configMap, blockItem, !parseItemResult.keySeparateFlag ,
+				parseItemResult.index, parseItemResult.keyWord);
 		if(cell == null){
 			return null;
 		}
 		if(DEBUG_PARSE_KEY_VALUE) {
-			logger.debug("【3. 查找到的Value】 keyWord:[{}] value: [{}]", parseItemResult.keyWord, cell.text);
+			logger.debug("【4. 查找到的Value】 keyWord:[{}] value: [{}]", parseItemResult.keyWord, cell.text);
 		}
 		//step 4.  如果key 和value 不是分离的， 需要除去开头的key。
 		String value = cell.text;
 		if(!parseItemResult.keySeparateFlag){
-			// [key:value]
-			if(DEBUG_PARSE_KEY_VALUE) {
-				logger.debug("【4. 将key和value 进行分离】 Index={}, keyWord=[{}], value=[{}], ", index, parseItemResult.keyWord, value);
-			}
-			if(index < value.length()) {
-				value = value.substring(index);
-			}
 			resultItem.put("confidence", blockItem.getString("Confidence"));
 		}else {
 			// [key] : [value]
 			resultItem.put("confidence", cell.confidence);
 		}
 		//step 5. 最大字符限制
+
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【3.1 查找到的Value】  value: [{}]", value);
+		}
 		value = BlockItemUtils.removeInvalidChar(value);
 		int maxLength = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 
@@ -199,19 +197,21 @@ public class ParseKeyValueWorker {
 	 * @param blockItem
 	 * @return
 	 */
-	private ParseFactory.Cell findValueBlocksCell(List<JSONObject> blockItemList, HashMap configMap, JSONObject blockItem, boolean isContainSelf) {
+	private ParseFactory.Cell findValueBlocksCell(List<JSONObject> blockItemList, HashMap configMap, JSONObject blockItem, boolean isContainSelf,
+												 int keyIndex,  String keyword) {
 		JSONObject rangeObject = BlockItemUtils.findValueRange(mDefaultConfig,configMap, blockItem);
 		if(DEBUG_PARSE_KEY_VALUE) {
-			logger.debug("【2.1 Value 的取值范围】[{}]  Text[{}]", rangeObject.toJSONString(), blockItem.getString("text"));
+			logger.debug("【2.1 Value 的取值范围】[{}]  Text[{}]  isContainSelf=[{}]", rangeObject.toJSONString(), blockItem.getString("text"), isContainSelf);
 		}
-//		logger.error(" findValueBlocksCell ----- isContainSelf {} ", isContainSelf);
 		int maxLineCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
+		int lengthMax = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
 		//step 1. 找到Value  的取值范围。
 		for (int i = 0; i < blockItemList.size(); i++) {
 			JSONObject curItem = blockItemList.get(i);
-			if (!isContainSelf && blockItem.getString("id").equals(curItem.getString("id"))) {
+			// 不包含key所在的blockItem
+			if (blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
 			// 行高的范围判断， 后期可以优化 和范围判断合并。
@@ -228,9 +228,6 @@ public class ParseKeyValueWorker {
 			}
 		}
 		//未找到元素
-		if(contentBlockItemList.size() == 0){
-			return null;
-		}
 		double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 		double compareHeightRate = ConfigConstants.COMPARE_HEIGHT_RATE;
 		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
@@ -238,26 +235,62 @@ public class ParseKeyValueWorker {
 			compareHeightRate = 0.2d;
 		}
 
-		contentBlockItemList.sort(new BlockItemComparator(compareHeightRate));
 		ParseFactory.Cell cell = new ParseFactory.Cell();
-
 		// step 2. 如果没有设置ValueXRangeMax, 并且是单行， 默认只识别最近的单元格。
-
 		if(DEBUG_PARSE_KEY_VALUE) {
 			for (int i = 0; i < contentBlockItemList.size(); i++) {
 				logger.debug("【2.2 查找到可选的Item】 [{}]", BlockItemUtils.generateBlockItemString(contentBlockItemList.get(i)));
 			}
 		}
+
+		String keyBlockText = "";
+		keyBlockText = blockItem.getString("text");
+		keyBlockText = keyBlockText.substring(keyIndex  );
+		keyBlockText = keyBlockText.replaceAll("[：:]", "");
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【3.0 查找key里面包含的value值】  keyIndex=[{}]  候选元素个数=[{}]   Text=[{}]  Value=[{}]  ",
+					keyIndex, contentBlockItemList.size(), blockItem.getString("text"), keyBlockText);
+		}
+
+
+		/**
+		 *有两种情况会返回单个元素的value ，
+		 * 1. 有多个候选元素， 但是剩余的value 已经大于最大字符
+		 * 2. 指定范围内， 没有其它候选元素
+		 */
+		if( (contentBlockItemList.size()>0 && keyBlockText.length() >= lengthMax)
+				|| (contentBlockItemList.size()==0  )
+				|| (valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE && maxLineCount ==1  &&  keyBlockText.length()>=1 )
+		) {
+			cell.text = keyBlockText ;
+			cell.confidence = blockItem.getFloat("Confidence");
+			if(DEBUG_PARSE_KEY_VALUE) {
+				logger.debug("【3.1 [key:value] 在一起 单独返回】   Value=[{}]  ", keyBlockText);
+			}
+			return cell ;
+		}
+
+		contentBlockItemList.sort(new BlockItemComparator(compareHeightRate));
+
 		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
 			JSONObject item = contentBlockItemList.get(0);
-			cell.text = item.getString("text");
+			cell.text = keyBlockText + item.getString("text");
 			cell.confidence = item.getFloat("Confidence");
+
+			if(DEBUG_PARSE_KEY_VALUE) {
+				logger.debug("【3.2 [key:value1] [value2] 返回 value1 + value2】   value1=[{}]  value2=[{}]  ",
+						keyBlockText, item.getString("text"));
+			}
 			return cell ;
 		}
 
 		StringBuilder stringBuilder = new StringBuilder();
 		// step 3. 多行元素， 寻找置信度最小的作为置信度 。  查找所有落在区域里面的单元格， 进行合并，然后返回合并后的文字。
 		float minConfidence  = 1.0f;
+		if(StringUtils.hasLength(keyBlockText)){
+			stringBuilder.append(keyBlockText);
+		}
+
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
 			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
 			float confidence = contentBlockItemList.get(i).getFloat("Confidence");
@@ -266,8 +299,15 @@ public class ParseKeyValueWorker {
 			}
 		}
 
+
 		cell.text = stringBuilder.toString();
 		cell.confidence = minConfidence;
+
+
+		if(DEBUG_PARSE_KEY_VALUE) {
+			logger.debug("【3.3 [key-value 多行 返回 value1 + value2】   value=[{}]  ",
+					cell.text);
+		}
 		return cell ;
 	}
 

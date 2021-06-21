@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 public interface ConfigConstants {
 
     Logger logger = LoggerFactory.getLogger(ConfigConstants.class);
-    boolean DEBUG_PARSE_KEY_VALUE =  false && logger.isDebugEnabled();
+    boolean DEBUG_PARSE_KEY_VALUE =  true && logger.isDebugEnabled();
     boolean DEBUG_PARSE_FIXED_POSITION =  false && logger.isDebugEnabled();
-    boolean DEBUG_PARSE_TABLE =  true && logger.isDebugEnabled();
+    boolean DEBUG_PARSE_TABLE =  false && logger.isDebugEnabled();
 
     //用于计算页面的坐标值， 主要是为了和显示的坐标统一， 目前都用百分比进行判断。
     int PAGE_WIDTH = 1200;
@@ -22,7 +22,7 @@ public interface ConfigConstants {
     //通过key 查找value 元素的范围， 相对key的坐标范围
     double ITEM_OFFSET_TOP_RADIO = -1.0;
     double ITEM_OFFSET_BOTTOM_RADIO = 1.0;
-    double ITEM_OFFSET_LEFT_RADIO = -1.0;
+    double ITEM_OFFSET_LEFT_RADIO = -0.3;
     double ITEM_OFFSET_RIGHT_RADIO = 30;
 
     //Value 的左右边界

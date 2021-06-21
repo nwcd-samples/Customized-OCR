@@ -265,7 +265,7 @@ public class OutpatientTest {
 
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "医保类型", "城镇职工");
         assert  BlockItemUtils.checkKeyValueMap(keyValueList, "社会保障卡号", "116910487001");
-        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "116910487001");
+        assert  BlockItemUtils.checkKeyValueMap(keyValueList, "NO", "0080631373");
 
 
 
