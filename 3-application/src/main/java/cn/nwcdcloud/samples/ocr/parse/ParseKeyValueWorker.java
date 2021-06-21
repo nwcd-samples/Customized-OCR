@@ -55,7 +55,7 @@ public class ParseKeyValueWorker {
 
 		//step 3. !parseItemResult.keySeparateFlag 是否包含自己的单元格。
 		ParseFactory.Cell  cell = findValueBlocksCell(blockItemList,configMap, blockItem, !parseItemResult.keySeparateFlag ,
-				parseItemResult.index, parseItemResult.keyWord);
+				parseItemResult.index);
 		if(cell == null){
 			return null;
 		}
@@ -91,7 +91,7 @@ public class ParseKeyValueWorker {
 			}
 		}
 
-		resultItem.put("value", value);
+		resultItem.put("value", value.trim());
 		if(StringUtils.hasLength(resultItem.getString("value"))){
 			if(DEBUG_PARSE_KEY_VALUE){
 				logger.debug("【6. END 找到元素】  {} ", resultItem.toJSONString());
@@ -198,7 +198,7 @@ public class ParseKeyValueWorker {
 	 * @return
 	 */
 	private ParseFactory.Cell findValueBlocksCell(List<JSONObject> blockItemList, HashMap configMap, JSONObject blockItem, boolean isContainSelf,
-												 int keyIndex,  String keyword) {
+												 int keyIndex) {
 		JSONObject rangeObject = BlockItemUtils.findValueRange(mDefaultConfig,configMap, blockItem);
 		if(DEBUG_PARSE_KEY_VALUE) {
 			logger.debug("【2.1 Value 的取值范围】[{}]  Text[{}]  isContainSelf=[{}]", rangeObject.toJSONString(), blockItem.getString("text"), isContainSelf);
@@ -215,18 +215,14 @@ public class ParseKeyValueWorker {
 				continue;
 			}
 			// 行高的范围判断， 后期可以优化 和范围判断合并。
-			if (curItem.getDouble("yMax") <
-					blockItem.getDouble("yMax")+ maxLineCount * (blockItem.getDouble("heightRate")
-							+ ConfigConstants.PARSE_CELL_ERROR_RANGE_MIN)) {
-//				logger.debug("-------------------   2 {} ", curItem.getString("text"));
+//				logger.warn("-------------------   2 {} ", curItem.getString("text"));
 				//范围的判断
 				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, rangeObject)){
 					contentBlockItemList.add(curItem);
-//					logger.debug("CurrItem: {} ", BlockItemUtils.generateBlockItemString(curItem));
+//					logger.warn("CurrItem: {} ", BlockItemUtils.generateBlockItemString(curItem));
 				}
 
 			}
-		}
 		//未找到元素
 		double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 		double compareHeightRate = ConfigConstants.COMPARE_HEIGHT_RATE;

@@ -22,6 +22,7 @@ public class OutpatientTest02 {
     private static final String  SAMPLE_JSON_OBJECT_FILE_310 =  "/samples/outpatient/310.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_320 =  "/samples/outpatient/320.json";
     private static final String  SAMPLE_JSON_OBJECT_FILE_319 =  "/samples/outpatient/319.json";
+    private static final String  SAMPLE_JSON_OBJECT_FILE_117 =  "/samples/outpatient/117.json";
 
 
 
@@ -184,5 +185,14 @@ public class OutpatientTest02 {
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(4).getString("text").equals("18.6200，无自付");
     }
 
+
+
+    @Test
+    public void parseId117() {
+
+        JSONObject resultObject = getResultObject("/samples/outpatient/133.json", SAMPLE_YAML_OBJECT_FILE_1);
+        // 表格个数
+        JSONArray tableArray =  resultObject.getJSONArray("tableList");
+    }
 
 }

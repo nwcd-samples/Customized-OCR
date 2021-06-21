@@ -424,8 +424,19 @@ public class BlockItemUtils {
             }
         }
         return false;
-
     }
+
+    public static String getRealValueString(JSONArray array, String name){
+        for(int i=0; i< array.size(); i++){
+            String tempValue = array.getJSONObject(i).getString("value");
+            String tempName = array.getJSONObject(i).getString("name");
+            if(  name.equals(tempName)){
+                return tempValue;
+            }
+        }
+        return null;
+    }
+
 
     public static String generateBlockItemString(JSONObject blockItem){
 

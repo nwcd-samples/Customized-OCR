@@ -6,7 +6,8 @@ Targets:
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
   - Name: "业务流水号"
-    TopOffsetRadio: -0.8
+    KeyWordList: ["业易流水号"]
+    TopOffsetRadio: -1.2
     BottomOffsetRadio: 0.8
   - Name: "医疗机构类型"
     LeftOffsetRadio: -0.5
@@ -14,20 +15,22 @@ Targets:
     BottomOffsetRadio: 0.8
   - Name: "NO"
     KeyWordList: ["NO.", "*NO"]
-    TopOffsetRadio: -1.5
-    BottomOffsetRadio: 1.5
+    TopOffsetRadio: -1.8
+    BottomOffsetRadio: 0.5
   - Name: "姓名"
+    TopOffsetRadio: -1.2
+    BottomOffsetRadio: 1.5
   - Name: "性别"
     KeyWordList: ["性别：", "性别:", "*性别"]
+    TopOffsetRadio: -1.2
     LengthMax: 1
   - Name: "医保类型"
     KeyWordList: ["*医保类型"]
-    TopOffsetRadio: -0.5
-    LeftOffsetRadio: -0.5
-    BottomOffsetRadio: 0.5
+    TopOffsetRadio: -1.2
+    BottomOffsetRadio: 0.8
   - Name: "社会保障卡号"
   - Name: "合计（大写）"
-    KeyWordList: ["*大写"]
+    KeyWordList: ["金额合计（大写）"]
     TopOffsetRadio: -1.5
     RightOffsetRadio: 4.0
     LeftOffsetRadio: 0.1
@@ -38,9 +41,9 @@ Targets:
     BottomOffsetRadio: 0.5
   - Name: "退休补充支付"
     ValueType: "number"
-    TopOffsetRadio: -0.5
+    TopOffsetRadio: -1.0
     LeftOffsetRadio: 0
-    BottomOffsetRadio: 0.5
+    BottomOffsetRadio: 1.0
   - Name: "残军补助支付"
     ValueType: "number"
     TopOffsetRadio: -0.5
@@ -60,14 +63,12 @@ Targets:
   - Name: "本次医保范围内金额"
     ValueType: "number"
     KeyWordList: ["*本次医保范围内金额"]
-    TopOffsetRadio: -0.5
-    LeftOffsetRadio: 0
+    TopOffsetRadio: -0.8
     BottomOffsetRadio: 0.5
   - Name: "累计医保内范围金额"
     ValueType: "number"
     KeyWordList: ["*累计医保内范围金额","*累计医保范围内金额"]
-    TopOffsetRadio: -0.5
-    LeftOffsetRadio: 0
+    TopOffsetRadio: -0.8
     BottomOffsetRadio: 0.5
   - Name: "年度门诊大额累计支付"
     ValueType: "number"
@@ -96,13 +97,13 @@ Targets:
   - Name: "起付金额"
     ValueType: "number"
     KeyWordList: ["*起付金额"]
-    TopOffsetRadio: -0.5
+    TopOffsetRadio: -0.8
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
   - Name: "超封顶金额"
     ValueType: "number"
     KeyWordList: ["*超封顶金额"]
-    TopOffsetRadio: -0.5
+    TopOffsetRadio: -0.6
     LeftOffsetRadio: 0
     BottomOffsetRadio: 0.5
   - Name: "自付二"
@@ -121,7 +122,7 @@ Targets:
     ValueType: "number"
     KeyWordList: ["*个人支付金额"]
     LeftOffsetRadio: 1
-    TopOffsetRadio: -1.0
+    TopOffsetRadio: -0.5
     BottomOffsetRadio: 1.5
 
   - Name: "收费项目一"

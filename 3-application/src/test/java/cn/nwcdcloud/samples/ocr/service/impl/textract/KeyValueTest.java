@@ -65,7 +65,8 @@ public class KeyValueTest {
 						boolean check = BlockItemUtils.checkKeyValueMap(resultArray, name, value);
 						if (!check) {
 							logger.info("检查文件：{}/{}", i, files.length);
-							logger.error("type:{},file:{},name:{},value:{}", configType, file.getName(), name, value);
+							logger.error("模板:{},文件:{}, name:[{}] 正确:[{}] 实际:[{}]", configType, file.getName(),
+									name, value, BlockItemUtils.getRealValueString(resultArray, name));
 						}
 						assert check;
 					}

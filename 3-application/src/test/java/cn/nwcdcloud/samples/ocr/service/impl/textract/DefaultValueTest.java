@@ -21,7 +21,7 @@ public class DefaultValueTest {
     @Test
     public void testDefaultValue(){
 
-        String filePath= this.getClass().getResource(CONFIG_OBJECT_FILE).getFile().toString();
+        String filePath= this.getClass().getResource(CONFIG_OBJECT_FILE).getFile();
         Map<String, ? > rootConfig = readConfig(filePath);
         logger.info(rootConfig.toString());
 
