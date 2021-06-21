@@ -162,6 +162,7 @@ Targets:
         KeyWordList: ["全额","金额（元）"]
         MainColumn: true
         Location: true
+        Direction: 1
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
@@ -219,6 +220,7 @@ Targets:
         Location: true
         KeyWordList: ["全额","金额（元）"]
         MainColumn: true
+        Direction: 1
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"

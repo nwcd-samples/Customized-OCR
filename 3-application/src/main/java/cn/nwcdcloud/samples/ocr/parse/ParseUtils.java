@@ -45,7 +45,8 @@ public class ParseUtils {
         if(!StringUtils.hasLength(value)){
             return value;
         }
-        value = value.replaceAll("[，。]", ".");
+        value = value.replaceAll("[。]", ".");
+        value = value.replaceAll("[,，/]", " ");
         String  [] splitArray = value.split(" ");
 
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {
@@ -165,6 +166,18 @@ public class ParseUtils {
      * @return
      */
     public static int checkParseCellValueDirection (List<JSONObject> cellList, JSONObject columnItem){
+
+        JSONObject configMap = columnItem.getJSONObject("config");
+        Integer directionValue = configMap.getInteger("Direction");
+
+        if(directionValue != null){
+            if(directionValue == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT){
+                return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT;
+            }else {
+                return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT;
+            }
+        }
+
         double xMin = 2.0;
         double xMax = -1.0;
         if(cellList == null || cellList.size() == 0 || cellList.size()>=2){
@@ -222,7 +235,7 @@ public class ParseUtils {
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT){
             for(int i=value.length()-1; i>=0; i--){
                 Character c = value.charAt(i);
-                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                if(c == '.' || c=='-' || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         endIndex = i+1;
@@ -242,7 +255,7 @@ public class ParseUtils {
             for(int i=0; i< value.length(); i++){
                 Character c = value.charAt(i);
 
-                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
+                if(c == '.' || c=='-'  || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         startIndex = i;
