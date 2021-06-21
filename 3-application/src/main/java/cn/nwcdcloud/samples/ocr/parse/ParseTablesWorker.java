@@ -208,7 +208,7 @@ public class ParseTablesWorker {
                     JSONObject tempBlockItem = blockItemList.get(i);
                     String text = tempBlockItem.getString("text").trim();
                     //key 比较去除掉一些特殊字符
-                    if(BlockItemUtils.compareString(keyWord, text)){
+                    if(BlockItemUtils.compareString(keyWord, text, config)){
                         //Column 列头元素范围检测
                         if(BlockItemUtils.isValidRange(mDefaultConfig, config, tempBlockItem)){
                             resultItemList.add(tempBlockItem);
@@ -250,7 +250,7 @@ public class ParseTablesWorker {
             String text = tempBlockItem.getString("text").trim();
             for (String key: keyList){
 
-                if (BlockItemUtils.compareString(key, text) && tempBlockItem.getDouble("yMin") >= top - 0.05
+                if (BlockItemUtils.compareString(key, text, configMap) && tempBlockItem.getDouble("yMin") >= top - 0.05
                         && tempBlockItem.getDouble("yMax") < bottom + 0.05) {
 
                     //检测元素坐标范围 , 同一个关键字  可能出现在多个表格中。
@@ -354,6 +354,7 @@ public class ParseTablesWorker {
         }else {
             throw new IllegalArgumentException("["+infoMap.get("ColumnName")+"] marginRightType 类型配置不正确 只能为 near, middle, far 三种类型 ");
         }
+
         xMaxBorder += currentItem.getDouble("widthRate") * moveRightRatio;
 
         currentItem.put("xMinBorder", xMinBorder);
@@ -414,9 +415,20 @@ public class ParseTablesWorker {
                 }
                 //如果新找到的行元素和上一个行元素 高度过近， 算一行
                 if(resList.size()>0 && item.getDouble("yMin")+ item.getDouble("heightRate")/2 < resList.get(resList.size()-1).getDouble("yMax")){
+                    if(DEBUG_PARSE_TABLE) {
+                        logger.debug("\t【6.{}主列 查找行元素  忽略 】行元素和上一个行元素 y方向过近 ，   {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
+                    }
                     continue;
                 }else if(resList.size() ==0 &&  item.getDouble("yMin") <
                         mainColumnBlockItem.getDouble("yMin") + mainColumnBlockItem.getDouble("heightRate")/2){
+                    if(DEBUG_PARSE_TABLE) {
+                        logger.debug("\t【6.{}主列 查找行元素  忽略 】第一行元素过近 ，   {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
+                    }
+                    continue;
+                }else if(item.getDouble("heightRate") > mainColumnBlockItem.getDouble("heightRate") *2){
+                    if(DEBUG_PARSE_TABLE) {
+                        logger.debug("\t【6.{}主列 查找行元素 忽略 】  元素高度过高  {}", totalRowCount, BlockItemUtils.generateBlockItemString(item));
+                    }
                     continue;
                 }
                 rowCount ++;

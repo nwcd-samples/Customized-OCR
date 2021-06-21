@@ -188,11 +188,9 @@ public class OutpatientTest02 {
 
 
     @Test
-    public void parseId117() {
+    public void parseFile() {
 
-        JSONObject resultObject = getResultObject("/samples/outpatient/133.json", SAMPLE_YAML_OBJECT_FILE_1);
-        // 表格个数
-        JSONArray tableArray =  resultObject.getJSONArray("tableList");
+        JSONObject resultObject = getResultObject("/samples/outpatient/228.json", SAMPLE_YAML_OBJECT_FILE_1);
     }
 
 }

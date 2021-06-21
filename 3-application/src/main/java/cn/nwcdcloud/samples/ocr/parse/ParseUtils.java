@@ -46,7 +46,7 @@ public class ParseUtils {
             return value;
         }
         value = value.replaceAll("[。]", ".");
-        value = value.replaceAll("[,，/]", " ");
+        value = value.replaceAll("[,，]", " ");
         String  [] splitArray = value.split(" ");
 
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {

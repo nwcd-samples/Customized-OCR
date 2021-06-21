@@ -34,6 +34,10 @@ Targets:
     TopOffsetRadio: -1.5
     RightOffsetRadio: 4.0
     LeftOffsetRadio: 0.1
+  - Name: "（小写）"
+    TopOffsetRadio: -1.0
+    BottomOffsetRadio: 1.0
+
   - Name: "门诊大额支付"
     ValueType: "number"
     TopOffsetRadio: -0.5
@@ -130,7 +134,7 @@ Targets:
     MaxRowHeightRatio: 2.5
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目","项目名称"]
+        KeyWordList: ["项目","项目名称","治目"]
         ValueType: "word"
         Location: true
         MarginLeftType: "near"
@@ -187,15 +191,15 @@ Targets:
     MaxRowHeightRatio: 2.5
     Columns:
       - ColumnName: "项目/规格"
-        KeyWordList: ["项目","项目名称"]
+        KeyWordList: ["项目","项目名称","治目"]
         ValueType: "word"
         Location: true
         MarginLeftType: "near"
         MoveLeftRatio: -0.3
         MarginRightType: "near"
         MoveRightRatio: 2.0
-        XRangeMin: 0.45
-        XRangeMax: 0.78
+        XRangeMin: 0.40
+        XRangeMax: 0.80
         YRangeMax: 0.5
 
       - ColumnName: "单价"
@@ -225,7 +229,7 @@ Targets:
         MarginLeftType: "near"
         MoveLeftRatio: -2.0
         MarginRightType: "near"
-        MoveRightRatio: 4.0
+        MoveRightRatio: 4.5
         ValueType: "number"
         XRangeMin: 0.6
         YRangeMax: 0.5

@@ -583,7 +583,7 @@ public class BlockItemUtils {
      * @param itemString
      * @return
      */
-    public static boolean compareString(String keyString, String itemString){
+    public static boolean compareString(String keyString, String itemString, HashMap config){
 
         if(keyString == null || itemString == null){
             return false;
@@ -591,7 +591,11 @@ public class BlockItemUtils {
         keyString = keyString.replaceAll("[/／:：.。 ]", "");
         itemString = itemString.replaceAll("[/／:：.。 ]", "");
         //或者用key 开头
-        return keyString.equals(itemString) || itemString.startsWith(keyString);
+
+        boolean mainColumn = (boolean) config.getOrDefault("Location", true);
+//        ||(mainColumn && itemString.indexOf(keyString)>0)
+
+        return keyString.equals(itemString) || itemString.startsWith(keyString) ;
 
     }
 
