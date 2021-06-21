@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,10 @@ public class KeyValueTest {
 				continue;
 			}
 			String configType = fileType.getName();
-			for (File file : fileType.listFiles()) {
+			File[] files = fileType.listFiles();
+			Arrays.sort(files);
+			int i = 1;
+			for (File file : files) {
 				String fileJsonPath = file.getPath();
 				if (!fileJsonPath.endsWith("json")) {
 					continue;
@@ -60,10 +64,12 @@ public class KeyValueTest {
 						String value = all[1];
 						boolean check = BlockItemUtils.checkKeyValueMap(resultArray, name, value);
 						if (!check) {
-							logger.error("type:{},file:{},name:{},value:{}", configType, fileJsonPath, name, value);
+							logger.info("检查文件：{}/{}", i, files.length);
+							logger.error("type:{},file:{},name:{},value:{}", configType, file.getName(), name, value);
 						}
 						assert check;
 					}
+					i++;
 				} catch (IOException e) {
 					logger.error(e.getMessage());
 				} finally {
