@@ -56,16 +56,11 @@
 					</div>
                     <p  class="text-primary" style="margin-left:30px;margin-top:10px;font-size:14px">
                         <span id="click_point_coord_span"> </span>
-                        <span id="click_block_coord_span"> </span>
                     </p>
-
-
                 </form>
-
-
             </nav>
-
-            <div>
+            <div >
+                <div style="font-size:13px"><span>&nbsp;</span> <span id="click_block_coord_span"> </span></div>
             </div>
     </div>
 
@@ -104,27 +99,6 @@
                     </tbody>
                 </table>
             </div>
-
-
-            <div  >
-                <h5> 固定位置列表</h5>
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">名称</th>
-                        <th scope="col">值</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(result, index) of fixed_position_list" >
-                        <td><small v-text="result.name"></small></td>
-                        <td><small v-text="result.value"></small></td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
 
             <div   v-for=" table  of table_list" >
                 <h5>表格名称： <b><span  v-text="table.name" ></span></b></h5>

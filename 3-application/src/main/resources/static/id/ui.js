@@ -9,7 +9,6 @@ $(function(){
                 tableBlockList:[],
                 result_list:[],      //返回的key-value结果
                 table_list:[],
-                fixed_position_list:[],
                 result_table_list:[],  //返回的列表结果， 保险名称
                 currentTableBlock:{},
                 data_url:"",
@@ -103,7 +102,6 @@ function displayResult(fullData,simpleData){
 	console.info(simpleData);
 	console.log("      ",  JSON.stringify(simpleData))
 	vue.result_list = simpleData['keyValueList']
-	vue.fixed_position_list = simpleData['fixedPositionList']
     vue.table_list = simpleData['tableList']
 
 

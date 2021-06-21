@@ -54,7 +54,6 @@ public class ParseFactory {
 		ParseQRCodeWorker qrcodeWorker = new ParseQRCodeWorker(configMap);
 		JSONArray keyValueArray = new JSONArray();
 		JSONArray tableArray = new JSONArray();
-		JSONArray fixedPositionArray = new JSONArray();
 		JSONObject jsonResult = new JSONObject();
 		BufferedImage image = null;
 
@@ -80,7 +79,7 @@ public class ParseFactory {
 			}else if("FixedPosition".equalsIgnoreCase(recognitionType)){
 				JSONObject result = fixedPositionWorker.parse(newItem, blockItemList);
 				if (result != null) {
-					fixedPositionArray.add(result);
+					keyValueArray.add(result);
 				}
 
 			}else if ("Qrcode".equalsIgnoreCase(recognitionType)) {
@@ -97,7 +96,6 @@ public class ParseFactory {
 		}
 		jsonResult.put("keyValueList", keyValueArray);
 		jsonResult.put("tableList", tableArray);
-		jsonResult.put("fixedPositionList", fixedPositionArray);
 		return jsonResult;
 	}
 
