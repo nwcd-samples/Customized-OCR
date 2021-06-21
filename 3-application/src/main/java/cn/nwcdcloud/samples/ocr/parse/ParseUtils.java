@@ -165,6 +165,18 @@ public class ParseUtils {
      * @return
      */
     public static int checkParseCellValueDirection (List<JSONObject> cellList, JSONObject columnItem){
+
+        JSONObject configMap = columnItem.getJSONObject("config");
+        Integer directionValue = configMap.getInteger("Direction");
+
+        if(directionValue != null){
+            if(directionValue == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT){
+                return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT;
+            }else {
+                return ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT;
+            }
+        }
+
         double xMin = 2.0;
         double xMax = -1.0;
         if(cellList == null || cellList.size() == 0 || cellList.size()>=2){
