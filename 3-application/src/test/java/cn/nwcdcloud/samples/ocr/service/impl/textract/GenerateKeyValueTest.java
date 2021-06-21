@@ -20,11 +20,8 @@ public class GenerateKeyValueTest {
 	private static final Logger logger = LoggerFactory.getLogger(GenerateKeyValueTest.class);
 
 	public static void main(String[] args) throws IOException {
-		if (args.length != 1) {
-			logger.error("请输入输入路径");
-			return;
-		}
-		File folder = new File(args[0]);
+		String dir = GenerateKeyValueTest.class.getClass().getResource("/samples").getFile().toString();
+		File folder = new File(dir);
 		// 每个目录使用一个模板
 		for (File fileType : folder.listFiles()) {
 			if (fileType.isFile()) {

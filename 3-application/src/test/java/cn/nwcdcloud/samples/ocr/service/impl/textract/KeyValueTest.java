@@ -21,12 +21,11 @@ import cn.nwcdcloud.samples.ocr.parse.ParseFactory;
 public class KeyValueTest {
 	private static final Logger logger = LoggerFactory.getLogger(KeyValueTest.class);
 
-	public static void main(String[] args) {
-		if (args.length != 1) {
-			logger.error("请输入输入路径");
-			return;
-		}
-		File folder = new File(args[0]);
+	@Test
+	public void test() {
+
+		String dir = GenerateKeyValueTest.class.getClass().getResource("/samples").getFile().toString();
+		File folder = new File(dir);
 		// 每个目录使用一个模板
 		for (File fileType : folder.listFiles()) {
 			if (fileType.isFile()) {
@@ -61,7 +60,7 @@ public class KeyValueTest {
 						String value = all[1];
 						boolean check = BlockItemUtils.checkKeyValueMap(resultArray, name, value);
 						if (!check) {
-							logger.error("type:{},name:{},value:{}", configType, name, value);
+							logger.error("type:{},file:{},name:{},value:{}", configType, fileJsonPath, name, value);
 						}
 						assert check;
 					}

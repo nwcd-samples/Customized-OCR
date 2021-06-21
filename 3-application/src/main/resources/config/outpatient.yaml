@@ -21,8 +21,10 @@ Targets:
     KeyWordList: ["性别：", "性别:", "*性别"]
     LengthMax: 1
   - Name: "医保类型"
-    TopOffsetRadio: -0.3
-    BottomOffsetRadio: 0.3
+    KeyWordList: ["*医保类型"]
+    TopOffsetRadio: -0.5
+    LeftOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
   - Name: "社会保障卡号"
   - Name: "合计（大写）"
     KeyWordList: ["*大写"]
