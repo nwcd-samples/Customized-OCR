@@ -29,7 +29,7 @@ public class FixedPositionTest {
         ParseFactory parseJsonUtil = new ParseFactory("fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
-        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
 
         for(int i=0; i< keyValueList.size(); i++){
@@ -57,7 +57,7 @@ public class FixedPositionTest {
         ParseFactory parseJsonUtil = new ParseFactory("fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
-        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
 
         for(int i=0; i< keyValueList.size(); i++){
@@ -86,7 +86,7 @@ public class FixedPositionTest {
         ParseFactory parseJsonUtil = new ParseFactory( "fixed_position");
         JSONObject resultObject = parseJsonUtil.extractValue(blockItemList);
 //        logger.info(resultObject.toJSONString());
-        JSONArray keyValueList = resultObject.getJSONArray("fixedPositionList");
+        JSONArray keyValueList = resultObject.getJSONArray("keyValueList");
         logger.info(keyValueList.toJSONString());
 
         for(int i=0; i< keyValueList.size(); i++){
