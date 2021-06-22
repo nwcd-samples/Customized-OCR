@@ -132,6 +132,7 @@ Targets:
   - Name: "收费项目一"
     RecognitionType: "Table"
     MaxRowHeightRatio: 2.5
+    StopWordList: ["大写", "小写"]
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目","项目名称","治目"]
@@ -189,6 +190,7 @@ Targets:
   - Name: "收费项目二"
     RecognitionType: "Table"
     MaxRowHeightRatio: 2.5
+    StopWordList: ["大写", "小写"]
     Columns:
       - ColumnName: "项目/规格"
         KeyWordList: ["项目","项目名称","治目"]

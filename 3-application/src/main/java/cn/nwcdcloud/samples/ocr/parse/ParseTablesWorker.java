@@ -63,8 +63,6 @@ public class ParseTablesWorker {
             // displayColumnName 列的显示名称和 key 不一定保持一致
             headTitleArray.add(item.getString("displayColumnName"));
         }
-        //step 5. FIXME: 判断行结尾的情况,设置结束的关键字。
-
         JSONObject resultObject = new JSONObject();
         resultObject.put("name", rootMap.get("Name").toString());
         resultObject.put("rowCount", rowCount);
@@ -464,7 +462,15 @@ public class ParseTablesWorker {
             // 当前行元素大于 行高的限制 ， 结束循环
             if(item.getDouble("yMax") - item.getDouble("yMin") > maxRowHeight){
                 if(DEBUG_PARSE_TABLE){
-                    logger.debug("【7.{}  停止循环】 最高行高度={}  当前行高={}  Text=[{}] ", i, mDecimalFormat.format(maxRowHeight),
+                    logger.debug("【7.{}  元素大于行高的限制 停止循环】 最高行高度={}  当前行高={}  Text=[{}] ", i, mDecimalFormat.format(maxRowHeight),
+                            item.getDouble("yMax") - item.getDouble("yMin"), item.getString("text"));
+                }
+                break;
+            }
+            //当前元素包含停用词
+            if(ParseUtils.isContainStopWord(configMap, item)){
+                if(DEBUG_PARSE_TABLE){
+                    logger.debug("【7.{} 包含停用词 停止循环】 最高行高度={}  当前行高={}  Text=[{}] ", i, mDecimalFormat.format(maxRowHeight),
                             item.getDouble("yMax") - item.getDouble("yMin"), item.getString("text"));
                 }
                 break;

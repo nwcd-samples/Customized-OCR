@@ -190,7 +190,7 @@ public class OutpatientTest02 {
     @Test
     public void parseFile() {
 
-        JSONObject resultObject = getResultObject("/samples/outpatient/228.json", SAMPLE_YAML_OBJECT_FILE_1);
+        JSONObject resultObject = getResultObject("/samples/outpatient/272.json", SAMPLE_YAML_OBJECT_FILE_1);
     }
 
 }

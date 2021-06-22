@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -285,5 +287,19 @@ public class ParseUtils {
         return false;
     }
 
+
+    public static boolean isContainStopWord(HashMap configMap, JSONObject blockItem){
+        List<String> stopWordList = (List) configMap.getOrDefault("StopWordList", new ArrayList<>());
+
+        boolean foundFlag = false;
+
+        for(String stopWord: stopWordList){
+            if(blockItem.getString("text").indexOf(stopWord)>0){
+                foundFlag = true;
+                break;
+            }
+        }
+        return foundFlag;
+    }
 
 }
