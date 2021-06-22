@@ -72,7 +72,7 @@ Targets:
 |YRangeMax|二级|否|float|1.0|key在页面上纵坐标的最大值|
 |TopOffsetRadio|二级|否|float|-1.0|valueItem.top >= keyItem.top + keyItem.height * TopOffsetRadio|
 |BottomOffsetRadio|二级|否|float|1.0|valueItem.bottom <= keyItem.bottom + keyItem.height * BottomOffsetRadio|
-|LeftOffsetRadio|二级|否|float|-1.0|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
+|LeftOffsetRadio|二级|否|float|-0.3|valueItem.left >= keyItem.right + keyItem.width * LeftOffsetRadio|
 |RightOffsetRadio|二级|否|float|30.0|valueItem.right <= keyItem.right + keyItem.width * RightOffsetRadio|
 |ValueXRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
 |ValueXRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
@@ -84,6 +84,7 @@ Targets:
 | ----  | ---- | ---- | ---- | ---- | ---- |
 |MaxRowHeightRatio|二级|否|float|2.0|用来迭代查找的行高，以headColumn * MaxRowHeightRatio|
 |MaxRowCount|二级|否|int|20|最大行数，超过的丢弃|
+|StopWordList|二级|否|list|无|设置关键字 遇到以后就结束|
 |Columns|二级|是|list|无|定义所有列|
 |ColumnName|三级|是|string|无|列名|
 |ValueType|三级|否|enumeration|String|value类型，可选值为：String、Number、Word。<br>String表示获取所有<br>Number表示只获取数字<br>Word表示去掉数字|

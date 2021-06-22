@@ -13,25 +13,23 @@
 ![](image/id.png)
 ![](image/id_predictor.png)
 
-## 使用方法
-可以使用Web方式或JupyterLab方式进行推理。
-### 使用Web方式推理
-#### 架构说明
+## 使用Web方式推理
+### 架构说明
 OCR推理服务部署在SageMaker endpoint上。
 上传图片时，支持两种方式：
 - 上传到Web服务，Web服务发送图片流到推理服务，不留存图片（默认）。
 - 上传到S3，推理服务从S3获取图片，S3留存图片。
-![架构图](image/web-architecture.jpg)
-#### 准备JDK/JRE 8
+![架构图](image/web-architecture.png)
+### 准备JDK/JRE 8
 Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地址：[https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)  
-#### 设置AWS访问密钥或角色、默认区域
+### 设置AWS访问密钥或角色、默认区域
 由于Web服务需要访问SageMaker推理功能，包括创建模型、创建终端节点配置和创建终端节点，以及调用终端节点进行推理。因此需要设置一个具有这些权限的账号。  
 - Web服务在本地服务器运行，请使用AWS CLI设置访问密钥、默认区域。
 - Web服务在EC2上运行，推荐使用角色方式，也可以采用访问密钥方式，需设置默认区域。
-#### 下载Web运行包
+### 下载Web运行包
 下载地址：https://nwcd-samples.s3.cn-northwest-1.amazonaws.com.cn/nico/latest/ocr.jar  
 存放本地时，建议存放到英文目录下，不含空格。
-#### 运行Web服务
+### 运行Web服务
 命令：`java -jar ocr.jar`  
 如果需要把上传的文件存放到S3，请使用命令：`java -jar ocr.jar --uploadType=s3 --bucketName=<BucketName>`  
 更多启动参数参见[boot.md](boot.md)  
@@ -42,20 +40,23 @@ Web方式使用SpringBoot方式启动，需要使用JDK/JRE 8，官方下载地�
 [2020-12-12 10:55:33.954][INFO] c.n.samples.ocr.OcrApplication - No active profile set, falling back to default profiles: default
 [2020-12-12 10:55:36.524][INFO] c.n.samples.ocr.OcrApplication - Started OcrApplication in 3.14 seconds (JVM running for 4.373)
 ```
-#### 访问Web服务
+### 访问Web服务
 在浏览器中输入服务器地址：http://127.0.0.1/ ，出现以下界面。
 ![](image/web-index.jpg)
 点击 **创建OCR推理服务** 按钮，OCR推理服务状态变为：Creating；预计7分钟左右，OCR推理服务状态变为：InService，这时即可进行推理。
-#### 使用PostMan测试发送图片方式
+### 使用PostMan测试发送图片方式
 选择**GET**方式，地址为http://127.0.0.1/inference/predict/id ，Body选择binary方式，选择一个身份证图片，发送后即可看到返回结果。  
 不能使用Web版，需要使用本地程序版。
 ![](image/postman.png)
-#### 使用浏览器测试S3中图片方式
+### 使用浏览器测试S3中图片方式
 使用浏览器访问http://127.0.0.1/inference/predict/id?keyName=filePath&bucketName=bucketName  
 这里filePath是图片在S3中的地址；可不传递bucketName，如果不指定bucketName，则使用启动jar时指定的值。  
 示例：http://127.0.0.1/inference/predict/id?keyName=nico/data/id.png&bucketName=nwcd-samples
-#### 清理环境
+### 清理环境
 点击 **删除OCR推理服务** 按钮。  
-### 使用JupyterLab方式推理
-参见[2-inference/inference.ipynb](2-inference/inference.ipynb)
+
+## 相关文档说明
+启动参数：[boot.md](boot.md)  
+模板配置参数：[API.md](API.md)  
+常见问题：[FAQ.md](FAQ.md)
 

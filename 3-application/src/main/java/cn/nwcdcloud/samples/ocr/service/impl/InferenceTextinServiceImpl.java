@@ -67,7 +67,7 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 		}
 	}
 
-	private static Map<String, Object> getPage(List<String> listId) {
+	private Map<String, Object> getPage(List<String> listId) {
 		Map<String, Object> mapPage = new HashMap<>();
 		mapPage.put("BlockType", "PAGE");
 		mapPage.put("Page", 1);
@@ -106,12 +106,69 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 	}
 
 	/**
-	 * 转成了一个数组
+	 * 正常的
+	 */
+	private void getPolygon0(List<Map<String, Double>> listPolygon, JSONArray listPosition, int width, int height) {
+		for (int j = 0; j <= 6; j = j + 2) {
+			Map<String, Double> mapPolygon = new HashMap<>();
+			mapPolygon.put("X", listPosition.getDouble(j) / width);
+			mapPolygon.put("Y", listPosition.getDouble(j + 1) / height);
+			listPolygon.add(mapPolygon);
+		}
+	}
+
+	/**
+	 * 顺时针旋转90度
+	 */
+	private void getPolygon90(List<Map<String, Double>> listPolygon, JSONArray listPosition, int width, int height) {
+		// x、y交换，Y位置需要用1.0减去当前位置，2次反向输出位置顺序后，结果不用再反向输出
+		for (int j = 0; j <= 6; j = j + 2) {
+			Map<String, Double> mapPolygon = new HashMap<>();
+			mapPolygon.put("Y", 1.0 - listPosition.getDouble(j) / width);
+			mapPolygon.put("X", listPosition.getDouble(j + 1) / height);
+			listPolygon.add(mapPolygon);
+		}
+	}
+
+	/**
+	 * 顺时针旋转180度
+	 */
+	private void getPolygon180(List<Map<String, Double>> listPolygon, JSONArray listPosition, int width, int height) {
+		// X、Y不需要交换，X、Y位置需要用1.0减去当前位置
+		for (int j = 0; j <= 6; j = j + 2) {
+			Map<String, Double> mapPolygon = new HashMap<>();
+			mapPolygon.put("X", 1.0 - listPosition.getDouble(j) / width);
+			mapPolygon.put("Y", 1.0 - listPosition.getDouble(j + 1) / height);
+			listPolygon.add(mapPolygon);
+		}
+	}
+
+	/**
+	 * 顺时针旋转270度
+	 */
+	private void getPolygon270(List<Map<String, Double>> listPolygon, JSONArray listPosition, int width, int height) {
+		// x、y交换，X位置需要用1.0减去当前位置，2次反向输出位置顺序后，结果不用再反向输出
+		for (int j = 0; j <= 6; j = j + 2) {
+			Map<String, Double> mapPolygon = new HashMap<>();
+			mapPolygon.put("Y", listPosition.getDouble(j) / width);
+			mapPolygon.put("X", 1.0 - listPosition.getDouble(j + 1) / height);
+			listPolygon.add(mapPolygon);
+		}
+	}
+
+	private void setBoundingBox(List<Map<String, Double>> listPolygon, Map<String, Double> mapBoundingBox) {
+		mapBoundingBox.put("Left", listPolygon.get(0).get("X"));
+		mapBoundingBox.put("Top", listPolygon.get(0).get("Y"));
+		mapBoundingBox.put("Width", listPolygon.get(1).get("X") - listPolygon.get(0).get("X"));
+		mapBoundingBox.put("Height", listPolygon.get(2).get("Y") - listPolygon.get(1).get("Y"));
+	}
+
+	/**
 	 * 
 	 * @param original
 	 * @return
 	 */
-	private static Result convertToTextract(final String original) {
+	private Result convertToTextract(final String original) {
 		Result result = new Result();
 		JSONObject jsonRoot = JSON.parseObject(original);
 		int code = jsonRoot.getIntValue("code");
@@ -123,6 +180,7 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 		JSONObject jsonResult = jsonRoot.getJSONObject("result");
 		int width = jsonResult.getIntValue("rotated_image_width");
 		int height = jsonResult.getIntValue("rotated_image_height");
+		int angle = jsonResult.getIntValue("image_angle");
 
 		Map<String, Object> mapRoot = new HashMap<>();
 		mapRoot.put("JobStatus", "SUCCEEDED");
@@ -154,20 +212,17 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 			Map<String, Object> mapGeometry = new HashMap<>();
 
 			Map<String, Double> mapBoundingBox = new HashMap<>();
-			mapBoundingBox.put("Left", listPosition.getDouble(0) / width);
-			mapBoundingBox.put("Top", listPosition.getDouble(1) / height);
-			mapBoundingBox.put("Width", listPosition.getDouble(2) / width);
-			mapBoundingBox.put("Height", listPosition.getDouble(5) / height);
-
 			List<Map<String, Double>> listPolygon = new ArrayList<>();
-
-			for (int j = 0; j < 8; j = j + 2) {
-				Map<String, Double> mapPolygon = new HashMap<>();
-				mapPolygon.put("X", listPosition.getDouble(j) / width);
-				mapPolygon.put("Y", listPosition.getDouble(j + 1) / height);
-				listPolygon.add(mapPolygon);
+			if (angle == 90) {
+				getPolygon90(listPolygon, listPosition, width, height);
+			} else if (angle == 180) {
+				getPolygon180(listPolygon, listPosition, width, height);
+			} else if (angle == 270) {
+				getPolygon270(listPolygon, listPosition, width, height);
+			} else {
+				getPolygon0(listPolygon, listPosition, width, height);
 			}
-
+			setBoundingBox(listPolygon, mapBoundingBox);
 			mapGeometry.put("BoundingBox", mapBoundingBox);
 			mapGeometry.put("Polygon", listPolygon);
 			mapBlock.put("Geometry", mapGeometry);
@@ -175,8 +230,7 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 		}
 
 		mapRoot.put("Blocks", listBlocks);
-		String data = JSONObject.toJSONString(mapRoot);
-		result.setData(data);
+		result.setData(mapRoot);
 		return result;
 	}
 
@@ -189,7 +243,7 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 		if (resultTextract.getCode() != CommonConstants.NORMAL) {
 			return resultTextract;
 		}
-		String textract = (String) resultTextract.getData();
+		String textract = JSONObject.toJSONString(resultTextract.getData());
 		JSONObject data = addImageInfoJson(textract, bucketName, keyName);
 		result.setData(data);
 		return result;
@@ -206,7 +260,7 @@ public class InferenceTextinServiceImpl extends AbstractInferenceService impleme
 			if (resultTextract.getCode() != CommonConstants.NORMAL) {
 				return resultTextract;
 			}
-			String textract = (String) resultTextract.getData();
+			String textract = JSONObject.toJSONString(resultTextract.getData());
 			JSONObject data = addImageInfoByte(textract, imageByte);
 			result.setData(data);
 		} catch (Exception e) {

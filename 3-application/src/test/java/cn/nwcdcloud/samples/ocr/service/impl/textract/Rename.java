@@ -1,6 +1,7 @@
 package cn.nwcdcloud.samples.ocr.service.impl.textract;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,9 @@ public class Rename {
 		String dir = args[0];
 		File folder = new File(dir);
 		int i = 101;
-		for (String fileName : folder.list()) {
+		String[] files = folder.list();
+		Arrays.sort(files);
+		for (String fileName : files) {
 			String extName = getImageExtName(fileName);
 			if (extName == null) {
 				continue;
