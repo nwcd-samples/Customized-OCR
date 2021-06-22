@@ -36,6 +36,7 @@ public class KeyValueTest {
 			File[] files = fileType.listFiles();
 			Arrays.sort(files);
 			int i = 1;
+			int countJson = countJsonFile(files);
 			for (File file : files) {
 				String fileJsonPath = file.getPath();
 				if (!fileJsonPath.endsWith("json")) {
@@ -64,9 +65,9 @@ public class KeyValueTest {
 						String value = all[1];
 						boolean check = BlockItemUtils.checkKeyValueMap(resultArray, name, value);
 						if (!check) {
-							logger.info("检查文件：{}/{}", i, files.length);
-							logger.error("模板:{},文件:{}, name:[{}] 正确:[{}] 实际:[{}]", configType, file.getName(),
-									name, value, BlockItemUtils.getRealValueString(resultArray, name));
+							logger.info("检查文件：{}/{}", i, countJson);
+							logger.error("模板:{},文件:{},name:[{}],正确:[{}],实际:[{}]", configType, file.getName(), name,
+									value, BlockItemUtils.getRealValueString(resultArray, name));
 						}
 						assert check;
 					}
@@ -87,5 +88,16 @@ public class KeyValueTest {
 				}
 			}
 		}
+	}
+
+	private int countJsonFile(File[] files) {
+		int count = 0;
+		for (File file : files) {
+			String fileJsonPath = file.getPath();
+			if (fileJsonPath.endsWith("json")) {
+				count++;
+			}
+		}
+		return count;
 	}
 }
