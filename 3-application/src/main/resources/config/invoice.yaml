@@ -35,9 +35,15 @@ Targets:
     YRangeMax: 0.40
 
   - Name: "销售方-名称"
-    KeyWordList: ["称：","称:"]
+    KeyWordList: ["称","称"]
     YRangeMin: 0.50
     ValueXRangeMax: 0.55
+    TopOffsetRadio: -0.5
+    BottomOffsetRadio: 0.5
+    
+  - Name: "销售方-纳税人识别号"
+    KeyWordList: ["纳税人识别号"]
+    YRangeMin: 0.50
     TopOffsetRadio: -0.5
     BottomOffsetRadio: 0.5
 

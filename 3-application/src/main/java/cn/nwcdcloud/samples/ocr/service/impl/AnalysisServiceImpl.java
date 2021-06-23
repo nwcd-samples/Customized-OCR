@@ -34,6 +34,11 @@ public class AnalysisServiceImpl implements AnalysisService {
 		ParseFactory parseJsonUtil = new ParseFactory(type, templateDir);
 		JSONObject resultJson = parseJsonUtil.extractValue(blockItemList, jsonData.getIntValue(OcrConstants.IMAGE_TYPE),
 				jsonData.getString(OcrConstants.IMAGE_CONTENT));
+		if (resultJson == null) {
+			result.setCode(6);
+			result.setMsg("解析失败");
+			return result;
+		}
 		if (logger.isDebugEnabled()) {
 			logger.debug(resultJson.toJSONString());
 		}

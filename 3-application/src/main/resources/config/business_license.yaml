@@ -20,11 +20,14 @@ Targets:
 
   - Name: "法定代表人"
   - Name: "经营范围"
-    LineCountMax: 5
+    LineCountMax: 7
+    LengthMax: 400
     TopOffsetRadio: -1.0
     LeftOffsetRadio: -1.0
-    RightOffsetRadio: 4
-    BottomOffsetRadio: 6.0
+    RightOffsetRadio: 6
+    BottomOffsetRadio: 7.0
+    ValueXRangeMax: 0.55
+    ValueXRangeMin: 0.01
   - Name: "注册资本"
   - Name: "成立日期"
   - Name: "营业期限"

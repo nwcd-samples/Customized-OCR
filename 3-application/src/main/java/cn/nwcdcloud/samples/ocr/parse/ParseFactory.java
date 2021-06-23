@@ -48,6 +48,9 @@ public class ParseFactory {
 
 	public JSONObject extractValue(List<JSONObject> blockItemList, int imageType, String imageContent) {
 		Map<String, ?> configMap = readConfig(this.configType, this.templateDir);
+		if (configMap == null) {
+			return null;
+		}
 		ParseKeyValueWorker horizontalWorker = new ParseKeyValueWorker(configMap);
 		ParseTablesWorker tablesWorker = new ParseTablesWorker(configMap);
 		ParseFixedPosition fixedPositionWorker = new ParseFixedPosition(configMap);
@@ -60,7 +63,7 @@ public class ParseFactory {
 		@SuppressWarnings("unchecked")
 		List<HashMap<String, Object>> targetList = (List<HashMap<String, Object>>) configMap.get("Targets");
 		for (HashMap<String, Object> newItem : targetList) {
-			if(!newItem.containsKey("Name")){
+			if (!newItem.containsKey("Name")) {
 				throw new IllegalArgumentException(" 配置文件必须包含  'Name' 选项 ");
 			}
 
@@ -76,13 +79,13 @@ public class ParseFactory {
 				if (result != null) {
 					tableArray.add(result);
 				}
-			}else if("FixedPosition".equalsIgnoreCase(recognitionType)){
+			} else if ("FixedPosition".equalsIgnoreCase(recognitionType)) {
 				JSONObject result = fixedPositionWorker.parse(newItem, blockItemList);
 				if (result != null) {
 					keyValueArray.add(result);
 				}
 
-			}else if ("Qrcode".equalsIgnoreCase(recognitionType)) {
+			} else if ("Qrcode".equalsIgnoreCase(recognitionType)) {
 				if (image == null) {
 					image = getImage(imageType, imageContent);
 				}
@@ -144,23 +147,24 @@ public class ParseFactory {
 	@SuppressWarnings("unchecked")
 	private Map<String, ?> readConfig(String configType, String templateDir) {
 		InputStream is = null;
-		String configPath;
 		if (StringUtils.hasLength(templateDir)) {
-			configPath = templateDir + configType + ".yaml";
-			File file = new File(configPath);
+			String configExternal = templateDir + configType + ".yaml";
+			File file = new File(configExternal);
 			if (file.exists()) {
 				try {
 					is = new FileInputStream(file);
 				} catch (FileNotFoundException e) {
 					is = null;
 				}
-			} else {
-				logger.info("未找到配置文件{}", configPath);
 			}
 		}
 		if (is == null) {
-			configPath = "config/" + configType + ".yaml";
-			is = this.getClass().getClassLoader().getResourceAsStream(configPath);
+			String configInternal = "config/" + configType + ".yaml";
+			is = this.getClass().getClassLoader().getResourceAsStream(configInternal);
+		}
+		if (is == null) {
+			logger.error("未找到外部配置文件：{}，外部配置文件目录：{}", configType, templateDir);
+			return null;
 		}
 		Map<String, ?> rootMap = null;
 		try {

@@ -24,7 +24,6 @@ public class KeyValueTest {
 
 	@Test
 	public void test() {
-
 		String dir = GenerateKeyValueTest.class.getClass().getResource("/samples").getFile().toString();
 		File folder = new File(dir);
 		// 每个目录使用一个模板
