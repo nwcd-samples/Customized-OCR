@@ -12,9 +12,11 @@ Targets:
   - Name: "地址"
   - Name: "托运人"
   - Name: "储运"
-    LineCountMax: 2
+    MultiLine: true
+    LengthMax: 100
   - Name: "单证"
-    LineCountMax: 2
+    MultiLine: true
+    LengthMax: 100
   - Name: "发票抬头"
     StopWordList: ["产地抬头"]
     MultiLine: true
