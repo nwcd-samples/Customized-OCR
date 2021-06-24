@@ -21,6 +21,12 @@ Targets:
     LeftOffsetRadio: -1.5
     BottomOffsetRadio: 20.0
     LengthMax: 300
+  - Name: "产地抬头"
+    StopWordList: ["件数","毛重","体积"]
+    MultiLine: true
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 20.0
+    LengthMax: 300
   - Name: "传真"
   - Name: "寄单地址"
   - Name: "SHIPPRER（承运人）"
