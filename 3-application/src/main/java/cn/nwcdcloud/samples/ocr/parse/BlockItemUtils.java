@@ -312,22 +312,6 @@ public class BlockItemUtils {
         }
 
 
-//        if(blockItem.getString("text").equals("工")){
-//            logger.warn("{}-------- {} ",blockItem.getString("text"), blockItem.toJSONString());
-//            logger.warn(polyArray.toJSONString());
-//            logger.warn("left  {}", blockItem.getInteger("left"));
-//            logger.warn("right  {}", blockItem.getInteger("right"));
-//            logger.warn("xMin  {}", blockItem.getDouble("xMin"));
-//            logger.warn("xMax  {}", blockItem.getDouble("xMax"));
-//            logger.warn("widthRate  {}", blockItem.getDouble("widthRate"));
-//
-//            logger.warn("top  {}", blockItem.getInteger("top"));
-//            logger.warn("bottom  {}", blockItem.getInteger("bottom"));
-//            logger.warn("yMin  {}", blockItem.getDouble("yMin"));
-//            logger.warn("yMax  {}", blockItem.getDouble("yMax"));
-//            logger.warn("heightRate  {}", blockItem.getDouble("heightRate"));
-//        }
-
 
     }
 
@@ -470,7 +454,7 @@ public class BlockItemUtils {
 		double rangeYMin = rangeObject.getDouble("yMin");
 		double rangeYMax = rangeObject.getDouble("yMax");
 
-//		logger.debug("Range: {}, {}    {}, {} ", rangeXMin , rangeXMax, rangeYMin,rangeYMax);
+//		logger.warn("Range:  xMin={},  xMax={}    yMin={}, yMax={} ", rangeXMin , rangeXMax, rangeYMin,rangeYMax);
 
         return valueBlockItem.getDouble("xMin") >= rangeXMin
                 &&  valueBlockItem.getDouble("xMax") <= rangeXMax
@@ -509,13 +493,13 @@ public class BlockItemUtils {
         double valueXRangeMin = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMin", ConfigConstants.ITEM_VALUE_X_RANGE_MIN).toString());
         double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 
-//        logger.debug("【Radio】top: {}  bottom: {} left: {} right: {}  ---- valueXRangeMin {}, valueXRangeMax {}",
+//        logger.warn("【Config Radio】top: {}  bottom: {} left: {} right: {}  ---- valueXRangeMin {}, valueXRangeMax {}",
 //                df.format(topRadio), df.format(bottomRadio), df.format(leftRadio), df.format(rightRadio),
 //                df.format(valueXRangeMin), df.format(valueXRangeMax));
 
         //step1. 找到top 范围
 
-//        logger.debug("[key range]   xMin={}, xMax={}, yMin={}, yMax={}   widthRate={} heightRate={} ",
+//        logger.warn("[key range]   xMin={}, xMax={}, yMin={}, yMax={}   widthRate={} heightRate={} ",
 //                df.format(blockItem.getDouble("xMin")),
 //                df.format(blockItem.getDouble("xMax")),
 //                df.format(blockItem.getDouble("yMin")),
@@ -531,22 +515,22 @@ public class BlockItemUtils {
         double yMax = blockItem.getDouble("yMax") + blockItem.getDouble("heightRate") * bottomRadio;
         //同时设计了 *OffsetRadio 和 ValueXRangeMin， 按照交集进行计算， 两者都要满足
         //如果用户没有设置 ValueXRangeMin ValueXRangeMax, 都按照默认的 *OffsetRadio的范围
+
         if( valueXRangeMin> 0 && valueXRangeMin > xMin){
             xMin = valueXRangeMin;
         }
-
         if( valueXRangeMax<1.0 && valueXRangeMax < xMax){
             xMax = valueXRangeMax;
         }
-//
-//        logger.info("[value range] widthRate={}   heightRate={}  \t xMin={} xMax={} yMin={}  yMax={} "
+
+//        logger.warn("[value range] widthRate={}   heightRate={}  \t xMin={} xMax={} yMin={}  yMax={} "
 //                ,  df.format(blockItem.getDouble("widthRate")),
 //                df.format(blockItem.getDouble("heightRate")),
 //                df.format(xMin), df.format(xMax), df.format(yMin), df.format(yMax));
 
 
         // step 2. 如果没有设置ValueXRangeMax， 默认只识别最近的单元格, 左边的范围
-        if(valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+        if(configMap.get("ValueXRangeMax") == null){
             xMin = blockItem.getDouble("xMax") + blockItem.getDouble("widthRate") * leftRadio;
         }
 
@@ -592,7 +576,7 @@ public class BlockItemUtils {
         itemString = itemString.replaceAll("[/／:：.。 ]", "");
         //或者用key 开头
 
-        boolean mainColumn = (boolean) config.getOrDefault("Location", true);
+//        boolean mainColumn = (boolean) config.getOrDefault("Location", true);
 //        ||(mainColumn && itemString.indexOf(keyString)>0)
 
         return keyString.equals(itemString) || itemString.startsWith(keyString) ;

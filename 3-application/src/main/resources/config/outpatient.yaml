@@ -10,8 +10,10 @@ Targets:
     TopOffsetRadio: -1.2
     BottomOffsetRadio: 0.8
   - Name: "医疗机构类型"
+    StopWordList: ["医保类型"]
     TopOffsetRadio: -0.8
     BottomOffsetRadio: 0.8
+
   - Name: "NO"
     KeyWordList: ["NO.", "*NO"]
     TopOffsetRadio: -1.8

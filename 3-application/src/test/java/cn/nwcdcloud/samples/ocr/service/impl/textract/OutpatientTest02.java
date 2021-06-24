@@ -96,7 +96,7 @@ public class OutpatientTest02 {
         assert ((JSONArray) tableRowList.get(2)).getJSONObject(0).getString("text").equals("甲钴胺片／500");
 
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(1).getString("text").equals("");
-        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("91.7000");
+        assert ((JSONArray) tableRowList.get(1)).getJSONObject(1).getString("text").equals("366.8000");
         assert ((JSONArray) tableRowList.get(2)).getJSONObject(1).getString("text").equals("84.6300");
 
         assert ((JSONArray) tableRowList.get(0)).getJSONObject(2).getString("text").equals("");

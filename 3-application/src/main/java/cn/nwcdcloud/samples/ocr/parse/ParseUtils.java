@@ -48,7 +48,7 @@ public class ParseUtils {
             return value;
         }
         value = value.replaceAll("[。]", ".");
-        value = value.replaceAll("[,，]", " ");
+        value = value.replaceAll("[，]", " ");
         String  [] splitArray = value.split(" ");
 
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_LEFT) {
@@ -229,6 +229,7 @@ public class ParseUtils {
         if(!StringUtils.hasLength(value)){
             return value;
         }
+        value = value.trim();
 
         boolean startFlag = false;
         int endIndex = value.length();
@@ -237,7 +238,7 @@ public class ParseUtils {
         if(direction == ConfigConstants.PARSE_TABLE_CELL_VALUE_DIRECTION_FROM_RIGHT){
             for(int i=value.length()-1; i>=0; i--){
                 Character c = value.charAt(i);
-                if(c == '.' || c=='-' || (c>='0' && c<='9')){
+                if(c == '.' || c=='-' || c==',' || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         endIndex = i+1;
@@ -257,7 +258,7 @@ public class ParseUtils {
             for(int i=0; i< value.length(); i++){
                 Character c = value.charAt(i);
 
-                if(c == '.' || c=='-'  || (c>='0' && c<='9')){
+                if(c == '.' || c=='-' || c==','  || (c>='0' && c<='9')){
                     if(startFlag == false){
                         startFlag = true;
                         startIndex = i;
@@ -302,4 +303,18 @@ public class ParseUtils {
         return foundFlag;
     }
 
+
+    /**
+     * 判断一个字符是英文
+     * @param charaString
+     * @return
+     */
+    public static boolean isEnglishLastChar(String charaString){
+
+        if(!StringUtils.hasLength(charaString.trim())){
+            return true;
+        }
+        String temp = charaString.substring(charaString.length()-1);
+        return temp.matches("^[a-zA-Z]*");
+    }
 }

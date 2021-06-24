@@ -128,6 +128,8 @@ public class ParseKeyValueWorker {
 		for (Object key : keyWordList) {
 			String keyWord = key.toString();
 			boolean isAllMatchFlag = keyWord.startsWith("*");
+			//去掉特殊字符 进行比较
+			keyWord = keyWord.replaceAll("[:： ]", "");
 			if(isAllMatchFlag){
 				keyWord = keyWord.substring(1);
 			}
@@ -135,6 +137,9 @@ public class ParseKeyValueWorker {
 				// 判断关键字
 				JSONObject blockItem = blockItemList.get(i);
 				String blockText = blockItem.getString("text");
+				//去掉特殊字符 进行比较
+				blockText = blockText.replaceAll("[:： ]", "");
+
 				int index = -1;
 //				logger.info("Find keys:     keyword {}          blockText {} ", keyWord, blockText);
 				if(isAllMatchFlag){
@@ -149,7 +154,7 @@ public class ParseKeyValueWorker {
 				if (index < 0 || !BlockItemUtils.isValidRange(mDefaultConfig, configMap, blockItem)) {
 					continue;
 				}
-
+				blockItem.put("text", blockText);
 				targetBlockItem = blockItem;
 				targetIndex = index ;
 				targetKeyWord = keyWord;
@@ -203,7 +208,10 @@ public class ParseKeyValueWorker {
 		if(DEBUG_PARSE_KEY_VALUE) {
 			logger.debug("【2.1 Value 的取值范围】[{}]  Text[{}]  isContainSelf=[{}]", rangeObject.toJSONString(), blockItem.getString("text"), isContainSelf);
 		}
+		//兼容以前版本
 		int maxLineCount = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LineCountMax", ConfigConstants.ITEM_LINE_COUNT_MAX).toString());
+		boolean multiLine = (boolean)mDefaultConfig.getKeyValue(configMap, "MultiLine", false) || maxLineCount >1 ;
+
 		int lengthMax = Integer.parseInt(mDefaultConfig.getKeyValue(configMap, "LengthMax", ConfigConstants.ITEM_LENGTH_MAX).toString());
 		List<JSONObject> contentBlockItemList = new ArrayList<>();
 
@@ -214,19 +222,16 @@ public class ParseKeyValueWorker {
 			if (blockItem.getString("id").equals(curItem.getString("id"))) {
 				continue;
 			}
-			// 行高的范围判断， 后期可以优化 和范围判断合并。
-//				logger.warn("-------------------   2 {} ", curItem.getString("text"));
-				//范围的判断
-				if(BlockItemUtils.checkBlockItemRangeValidation(curItem, rangeObject)){
-					contentBlockItemList.add(curItem);
+			//范围的判断
+			if(BlockItemUtils.checkBlockItemRangeValidation(curItem, rangeObject)){
+				contentBlockItemList.add(curItem);
 //					logger.warn("CurrItem: {} ", BlockItemUtils.generateBlockItemString(curItem));
-				}
-
 			}
+
+		}
 		//未找到元素
-		double valueXRangeMax = Double.parseDouble(mDefaultConfig.getKeyValue(configMap, "ValueXRangeMax", ConfigConstants.ITEM_VALUE_X_RANGE_MAX).toString());
 		double compareHeightRate = ConfigConstants.COMPARE_HEIGHT_RATE;
-		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+		if(!multiLine  && configMap.get("ValueXRangeMax") == null){
 			//尽量找坐标靠的比较近的元素
 			compareHeightRate = 0.2d;
 		}
@@ -256,7 +261,7 @@ public class ParseKeyValueWorker {
 		 */
 		if( (contentBlockItemList.size()>0 && keyBlockText.length() >= lengthMax)
 				|| (contentBlockItemList.size()==0  )
-				|| (valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE && maxLineCount ==1  &&  keyBlockText.length()>=1 )
+				|| (configMap.get("ValueXRangeMax") == null && !multiLine  &&  keyBlockText.length()>=1 )
 		) {
 			cell.text = keyBlockText ;
 			cell.confidence = blockItem.getFloat("Confidence");
@@ -268,7 +273,7 @@ public class ParseKeyValueWorker {
 
 		contentBlockItemList.sort(new BlockItemComparator(compareHeightRate));
 
-		if(maxLineCount ==1  && valueXRangeMax > ConfigConstants.DOUBLE_ONE_VALUE){
+		if(!multiLine  && configMap.get("ValueXRangeMax") == null){
 			JSONObject item = contentBlockItemList.get(0);
 			cell.text = keyBlockText + item.getString("text");
 			cell.confidence = item.getFloat("Confidence");
@@ -287,8 +292,33 @@ public class ParseKeyValueWorker {
 			stringBuilder.append(keyBlockText);
 		}
 
+
+		List<String> stopWordList = (List) configMap.getOrDefault("StopWordList", new ArrayList<>());
 		for (int i = 0; i < contentBlockItemList.size(); i++) {
-			stringBuilder.append(contentBlockItemList.get(i).getString("text"));
+
+			String text = contentBlockItemList.get(i).getString("text");
+			//下一行停用词判断
+			boolean stopFlag = false;
+			for(String stopWord: stopWordList){
+				if(StringUtils.hasLength(text) && text.startsWith(stopWord)){
+					stopFlag = true;
+					if(DEBUG_PARSE_KEY_VALUE) {
+						logger.debug("【\t 3.2.1   停用词 [{}]  停止查找  】   Text [{}]    ", stopWord, text);
+					}
+				}
+
+			}
+			if(stopFlag){
+
+				break;
+			}
+
+			stringBuilder.append(text);
+			// 不是最后一个元素， 并且是英文结尾加空格
+			if(i< contentBlockItemList.size()-1 && ParseUtils.isEnglishLastChar(text)){
+				stringBuilder.append(" ");
+			}
+
 			float confidence = contentBlockItemList.get(i).getFloat("Confidence");
 			if(confidence < minConfidence){
 				minConfidence = confidence;

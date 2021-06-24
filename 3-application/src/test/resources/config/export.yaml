@@ -1,0 +1,131 @@
+TemplateName: 'identity-card'
+Targets:
+  - Name: "编号"
+  - Name: "网上订舱号"
+    RightOffsetRadio: 3.0
+  - Name: "订舱日期"
+  - Name: "货代名称"
+  - Name: "联系人"
+  - Name: "TEL"
+  - Name: "FAX"
+  - Name: "E-Mail"
+  - Name: "地址"
+  - Name: "托运人"
+  - Name: "储运"
+    LineCountMax: 2
+  - Name: "单证"
+    LineCountMax: 2
+  - Name: "发票抬头"
+    StopWordList: ["产地抬头"]
+    MultiLine: true
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 20.0
+    LengthMax: 300
+  - Name: "传真"
+  - Name: "寄单地址"
+  - Name: "SHIPPRER（承运人）"
+    StopWordList: ["CONSIGNEE"]
+    MultiLine: true
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 9.0
+    ValueXRangeMin: 0
+    ValueXRangeMax: 0.5
+    LengthMax: 300
+  - Name: "CONSIGNEE（收货人）"
+    MultiLine: true
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 5.0
+    ValueXRangeMin: -0.02
+    ValueXRangeMax: 0.5
+    LengthMax: 200
+  - Name: "NOTIFYPARTY（通知人）"
+    LineCountMax: 2
+    LeftOffsetRadio: -5.0
+    RightOffsetRadio: 1.0
+    BottomOffsetRadio: 4.0
+  - Name: "客户订单号或合同号"
+    MultiLine: true
+    LeftOffsetRadio: -1.1
+    RightOffsetRadio: 1.0
+    BottomOffsetRadio: 3.0
+  - Name: "付款条件"
+  - Name: "信用证号"
+    RightOffsetRadio: 2.0
+  - Name: "价格条款"
+  - Name: "起运港"
+  - Name: "目的港"
+  - Name: "目的地"
+  - Name: "国别地区"
+  - Name: "出货日期"
+  - Name: "运费"
+  - Name: "箱量"
+  - Name: "约定船期"
+  - Name: "最晚船期"
+  - Name: "发票拾头"
+    LineCountMax: 6
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 8.0
+    RightOffsetRadio: 8.0
+  - Name: "产地抬头"
+    KeyWordList: ["地拍头"]
+  - Name: "唛头"
+    LineCountMax: 2
+    LeftOffsetRadio: -5.0
+    RightOffsetRadio: 4.0
+    BottomOffsetRadio: 4.0
+  - Name: "备注："
+    MultiLine: true
+    LeftOffsetRadio: -10
+    ValueXRangeMin: 0.3
+    ValueXRangeMax: 1.0
+    TopOffsetRadio: 0.0
+    BottomOffsetRadio: 8.0
+    LengthMax: 1000
+
+  - Name: "合计-件数"
+    RecognitionType: "FixedPosition"
+    XRangeMin: 0.556
+    YRangeMin: 0.861
+    XRangeMax: 0.640
+    YRangeMax: 0.887
+  - Name: "合计-毛重"
+    RecognitionType: "FixedPosition"
+    XRangeMin: 0.747
+    YRangeMin: 0.861
+    XRangeMax: 0.862
+    YRangeMax: 0.887
+  - Name: "合计-体积"
+    RecognitionType: "FixedPosition"
+    XRangeMin: 0.934
+    YRangeMin: 0.861
+    XRangeMax: 1.000
+    YRangeMax: 0.887
+  - Name: "货物明细"
+    RecognitionType: "Table"
+    MaxRowHeightRatio: 2.5
+    Columns:
+      - ColumnName: "货名"
+        MainColumn: true
+        Location: true
+        MarginLeftType: "near"
+        MoveLeftRatio: -4.0
+        MarginRightType: "near"
+        MoveRightRatio: 2.0
+        YRangeMin: 0.5
+      - ColumnName: "件数（CTNS）"
+        ValueType: "number"
+        Location: true
+        MarginLeftType: "near"
+        YRangeMin: 0.5
+      - ColumnName: "毛重（KGS）"
+        ValueType: "number"
+        KeyWordList: ["手重（KGS）"]
+        MarginRightType: "far"
+        YRangeMin: 0.5
+      - ColumnName: "体积（CBM）"
+        ValueType: "number"
+        MarginRightType: "near"
+        MoveRightRatio: 1.0
+        YRangeMin: 0.5
+  
+  

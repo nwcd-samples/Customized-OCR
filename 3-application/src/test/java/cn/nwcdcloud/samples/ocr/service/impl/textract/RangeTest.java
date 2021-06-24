@@ -135,5 +135,17 @@ public class RangeTest {
 
     }
 
+
+    @Test
+    public void isEnglishLastChar(){
+
+
+        assert  ParseUtils.isEnglishLastChar("abcd");
+        assert  ParseUtils.isEnglishLastChar("");
+        assert  ParseUtils.isEnglishLastChar(" ");
+        assert  !ParseUtils.isEnglishLastChar("你好");
+        assert  !ParseUtils.isEnglishLastChar("你abcd好");
+
+    }
 //
 }

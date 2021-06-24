@@ -1326,7 +1326,7 @@ public class OutpatientTest {
 
 
         assert ((JSONArray) table2RowList.get(0)).getJSONObject(1).getString("text").equals("");
-        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("22.4000");
+        assert ((JSONArray) table2RowList.get(1)).getJSONObject(1).getString("text").equals("2");
         assert ((JSONArray) table2RowList.get(2)).getJSONObject(1).getString("text").equals("50.7300");
         assert ((JSONArray) table2RowList.get(3)).getJSONObject(1).getString("text").equals("1");
         assert ((JSONArray) table2RowList.get(4)).getJSONObject(1).getString("text").equals("76.7700");
