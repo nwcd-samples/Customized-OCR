@@ -35,14 +35,25 @@ public class InferenceController {
 		String contentType = request.getContentType();
 		try {
 			if (StringUtils.hasLength(contentType) && contentType.startsWith("image")) {
-				return inferenceService.predict(contentType, request.getInputStream());
+				long begin = System.currentTimeMillis();
+				Result result = inferenceService.predict(contentType, request.getInputStream());
+				long end = System.currentTimeMillis();
+				if (logger.isDebugEnabled()) {
+					logger.debug("推理执行{}毫秒", (end - begin));
+				}
+				return result;
 			} else {
 				String requestBucketName = request.getParameter("bucketName");
 				if (!StringUtils.hasLength(requestBucketName)) {
 					requestBucketName = bucketName;
 				}
 				String keyName = request.getParameter("keyName");
+				long begin = System.currentTimeMillis();
 				Result result = inferenceService.predict(requestBucketName, keyName);
+				long end = System.currentTimeMillis();
+				if (logger.isDebugEnabled()) {
+					logger.debug("推理执行{}毫秒", (end - begin));
+				}
 				return result;
 			}
 		} catch (Exception e) {
