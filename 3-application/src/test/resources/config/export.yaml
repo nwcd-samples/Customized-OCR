@@ -17,18 +17,6 @@ Targets:
   - Name: "单证"
     MultiLine: true
     LengthMax: 100
-  - Name: "发票抬头"
-    StopWordList: ["产地抬头"]
-    MultiLine: true
-    LeftOffsetRadio: -1.5
-    BottomOffsetRadio: 20.0
-    LengthMax: 300
-  - Name: "产地抬头"
-    StopWordList: ["件数","毛重","体积"]
-    MultiLine: true
-    LeftOffsetRadio: -1.5
-    BottomOffsetRadio: 20.0
-    LengthMax: 300
   - Name: "传真"
     TopOffsetRadio: -0.5
   - Name: "寄单地址"
@@ -41,9 +29,10 @@ Targets:
     ValueXRangeMax: 0.5
     LengthMax: 300
   - Name: "CONSIGNEE（收货人）"
+    StopWordList: ["NOTIFY"]
     MultiLine: true
     LeftOffsetRadio: -1.5
-    BottomOffsetRadio: 5.0
+    BottomOffsetRadio: 9.0
     ValueXRangeMin: -0.02
     ValueXRangeMax: 0.5
     LengthMax: 200
@@ -72,13 +61,20 @@ Targets:
   - Name: "箱量"
   - Name: "约定船期"
   - Name: "最晚船期"
-  - Name: "发票拾头"
-    LineCountMax: 6
+  - Name: "发票抬头"
+    KeyWordList: ["发票拾头"]
+    StopWordList: ["产地抬头","地拍头"]
+    MultiLine: true
     LeftOffsetRadio: -1.5
-    BottomOffsetRadio: 8.0
-    RightOffsetRadio: 8.0
+    BottomOffsetRadio: 20.0
+    LengthMax: 300
   - Name: "产地抬头"
     KeyWordList: ["地拍头"]
+    StopWordList: ["件数","毛重","体积"]
+    MultiLine: true
+    LeftOffsetRadio: -1.5
+    BottomOffsetRadio: 20.0
+    LengthMax: 300
   - Name: "唛头"
     LineCountMax: 2
     LeftOffsetRadio: -5.0
@@ -138,5 +134,3 @@ Targets:
         MarginRightType: "near"
         MoveRightRatio: 1.0
         YRangeMin: 0.5
-  
-  

@@ -10,10 +10,11 @@ Targets:
   - Name: "性别"
     LengthMax: 1
   - Name: "民族"
+    KeyWordList: ["*民族"]
   - Name: "出生日期"
     KeyWordList: ["出生"]
   - Name: "住址"
-    LineCountMax: 2
+    MultiLine: true
     LeftOffsetRadio: -1.0
     BottomOffsetRadio: 3.0
   - Name: "公民身份号码"
@@ -64,8 +65,10 @@ Targets:
 |KeyWordList|二级|否|list|无|待搜索的关键字，可以让返回的关键字和待搜索的关键字不同|
 |LengthMin|二级|否|int|1|value最小匹配长度|
 |LengthMax|二级|否|int|40|value最大匹配长度|
-|LineCountMax|二级|否|int|1|最大匹配行数|
-|ValueType|三级|否|enumeration|String|value类型，可选值为：String、Number、Word。<br>String表示获取所有<br>Number表示只获取数字<br>Word表示去掉数字|
+|MultiLine|二级|否|bool|false|是否为多行，多行时配合4个OffsetRadio使用|
+|LineCountMax|二级|否|int|1|最大匹配行数，已作废，请使用MultiLine，LineCountMax > 1表示使用MultiLine为true|
+|ValueType|二级|否|enumeration|String|value类型，可选值为：String、Number、Word。<br>String表示获取所有<br>Number表示只获取数字<br>Word表示去掉数字|
+|StopWordList|二级|否|list|无|多行时，向下查找停止关键词|
 |XRangeMin|二级|否|float|0.0|key在页面上横坐标的最小值，如果页面上有多个key相同，需要用坐标进行区分|
 |XRangeMax|二级|否|float|1.0|key在页面上横坐标的最大值|
 |YRangeMin|二级|否|float|0.0|key在页面上纵坐标的最小值|

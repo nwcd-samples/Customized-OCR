@@ -1,18 +1,14 @@
 TemplateName: 'identity-card'
 Targets:
   - Name: "姓名"
-    TopOffsetRadio: -0.6
-    BottomOffsetRadio: 2
-    RightOffsetRadio: 4
   - Name: "性别"
     LengthMax: 1
   - Name: "民族"
-    KeyWordList: ["*民族", "民族"]
-    LengthMax: 3
+    KeyWordList: ["*民族"]
   - Name: "出生日期"
     KeyWordList: ["出生"]
   - Name: "住址"
-    LineCountMax: 3
+    MultiLine: true
     LeftOffsetRadio: -1.0
     BottomOffsetRadio: 3.0
   - Name: "公民身份号码"
