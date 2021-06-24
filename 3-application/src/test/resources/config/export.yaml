@@ -30,6 +30,7 @@ Targets:
     BottomOffsetRadio: 20.0
     LengthMax: 300
   - Name: "传真"
+    TopOffsetRadio: -0.5
   - Name: "寄单地址"
   - Name: "SHIPPRER（承运人）"
     StopWordList: ["CONSIGNEE"]
@@ -52,10 +53,11 @@ Targets:
     RightOffsetRadio: 1.0
     BottomOffsetRadio: 4.0
   - Name: "客户订单号或合同号"
+    StopWordList: ["付款条件"]
     MultiLine: true
     LeftOffsetRadio: -1.1
     RightOffsetRadio: 1.0
-    BottomOffsetRadio: 3.0
+    BottomOffsetRadio: 4.0
   - Name: "付款条件"
   - Name: "信用证号"
     RightOffsetRadio: 2.0
@@ -66,6 +68,7 @@ Targets:
   - Name: "国别地区"
   - Name: "出货日期"
   - Name: "运费"
+    TopOffsetRadio: -0.5
   - Name: "箱量"
   - Name: "约定船期"
   - Name: "最晚船期"

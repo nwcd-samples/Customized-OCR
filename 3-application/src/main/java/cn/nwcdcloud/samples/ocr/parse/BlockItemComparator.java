@@ -20,9 +20,9 @@ public class BlockItemComparator implements Comparator<JSONObject> {
         double height = j1.getDouble("heightRate");
 
         if(Math.abs(j1YMin - j2YMin) < height/compareHeightRate){
-            return j1.getInteger("x") - j2.getInteger("x");
+            return (int) ((j1.getDouble("xMin") - j2.getDouble("xMin")) * 10000);
         }else{
-            return j1.getInteger("y") - j2.getInteger("y");
+            return (int) ((j1.getDouble("yMin") - j2.getDouble("yMin")) * 10000);
         }
 
 //
