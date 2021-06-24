@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 public interface ConfigConstants {
 
     Logger logger = LoggerFactory.getLogger(ConfigConstants.class);
-    boolean DEBUG_PARSE_KEY_VALUE =  true && logger.isDebugEnabled();
+    boolean DEBUG_PARSE_KEY_VALUE =  false && logger.isDebugEnabled();
     boolean DEBUG_PARSE_FIXED_POSITION =  false && logger.isDebugEnabled();
     boolean DEBUG_PARSE_TABLE =  false && logger.isDebugEnabled();
 

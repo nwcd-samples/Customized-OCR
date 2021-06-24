@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 public class BlockItemComparator implements Comparator<JSONObject> {
 
-    // 优先比较 x 坐标的 高度范围， Y值比较接近的时候， 比较x的值。
+    // 优先比较 y 坐标的 高度范围， Y值比较接近的时候， 比较x的值。
     private double compareHeightRate ;
     public BlockItemComparator(double compareHeightRate) {
         this.compareHeightRate = compareHeightRate;

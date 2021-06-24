@@ -2,6 +2,9 @@ package cn.nwcdcloud.samples.ocr.parse;
 
 import java.util.Map;
 
+/**
+ * 获取配置文件默认值
+ */
 public class DefaultValueConfig {
 
     private Map<String, ?> mDefaultRootValueMap;
