@@ -3,7 +3,7 @@ function inference(type,showJson){
 	predict(type,showJson,file);
 }
 
-var globalData;
+
 function predict(type,showJson,file){
     $("#loading-icon").show();
 	if(!file){

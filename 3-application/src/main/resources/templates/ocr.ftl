@@ -159,6 +159,11 @@
 <script src="/static/id/index.js"></script>
 <script src="/static/id/utils.js"></script>
 <script type="text/javascript">
+$(document).keyup(function(event){
+	  if(event.keyCode ==13){
+		  onlyAnalysis('${type}');
+	  }
+	});
 $("body").on('paste', function (event) {
     //详细可查看clipboardData属性的使用方式
     var data = (event.clipboardData || event.originalEvent.clipboardData);
@@ -194,11 +199,13 @@ function showImg(){
 	}
 }
 
+var globalData;
 function loadLocalJson(){
 	var reader = new FileReader();
     reader.onload = function() 
     {
-    	analysis("${type}",JSON.parse(this.result));
+    	globalData = JSON.parse(this.result);
+    	analysis("${type}",globalData);
     }
     var f = document.getElementById("upload").files[0];
     reader.readAsText(f);

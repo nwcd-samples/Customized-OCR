@@ -43,7 +43,7 @@ function upload(type,data,showJson){
 	});
 }
 
-var globalData;
+
 function predict(type,keyName,showJson){
 	var url = "/inference/predict";
 	if(showJson){
