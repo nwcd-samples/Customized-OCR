@@ -147,7 +147,16 @@ public class RangeTest {
         assert  !ParseUtils.isEnglishLastChar("你abcd好");
 
         assert "".equals(ParseUtils.getItemNumericalValue("shipfrom", 0));
-        logger.info(ParseUtils.getItemNumericalValue("shipfrom", 0));
+
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("11.23shipfrom", 0));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("shipfrom11.23", 0));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("11.23shipfrom", 1));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("shipfrom11.23", 1));
+
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("from11.23ship", 0));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("shipfrom11.23abcd", 0));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("from 11.23ship", 1));
+        assert "11.23".equals(ParseUtils.getItemNumericalValue("shipfrom11.23 abcd", 1));
     }
 
 //
