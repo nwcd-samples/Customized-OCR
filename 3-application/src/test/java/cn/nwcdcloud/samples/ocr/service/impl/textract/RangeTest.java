@@ -146,6 +146,9 @@ public class RangeTest {
         assert  !ParseUtils.isEnglishLastChar("你好");
         assert  !ParseUtils.isEnglishLastChar("你abcd好");
 
+        assert "".equals(ParseUtils.getItemNumericalValue("shipfrom", 0));
+        logger.info(ParseUtils.getItemNumericalValue("shipfrom", 0));
     }
+
 //
 }

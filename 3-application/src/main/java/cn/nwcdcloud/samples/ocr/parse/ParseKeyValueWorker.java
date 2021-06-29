@@ -300,7 +300,7 @@ public class ParseKeyValueWorker {
 			//下一行停用词判断
 			boolean stopFlag = false;
 			for(String stopWord: stopWordList){
-				if(StringUtils.hasLength(text) && text.startsWith(stopWord)){
+				if(StringUtils.hasLength(text) && text.indexOf(stopWord)>=0){
 					stopFlag = true;
 					if(DEBUG_PARSE_KEY_VALUE) {
 						logger.debug("【\t 3.2.1   停用词 [{}]  停止查找  】   Text [{}]    ", stopWord, text);
@@ -309,7 +309,6 @@ public class ParseKeyValueWorker {
 
 			}
 			if(stopFlag){
-
 				break;
 			}
 

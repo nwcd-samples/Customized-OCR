@@ -21,7 +21,7 @@ Targets:
     TopOffsetRadio: -0.5
   - Name: "寄单地址"
   - Name: "SHIPPRER（承运人）"
-    StopWordList: ["CONSIGNEE"]
+    StopWordList: ["CONSIGNEE", "收货人"]
     MultiLine: true
     LeftOffsetRadio: -1.5
     BottomOffsetRadio: 9.0
@@ -29,11 +29,12 @@ Targets:
     ValueXRangeMax: 0.5
     LengthMax: 300
   - Name: "CONSIGNEE（收货人）"
-    StopWordList: ["NOTIFY"]
+    StopWordList: ["NOTIFY","通知人"]
     MultiLine: true
     LeftOffsetRadio: -1.5
+    TopOffsetRadio: -0.3
     BottomOffsetRadio: 9.0
-    ValueXRangeMin: -0.02
+    ValueXRangeMin: 0
     ValueXRangeMax: 0.5
     LengthMax: 200
   - Name: "NOTIFYPARTY（通知人）"

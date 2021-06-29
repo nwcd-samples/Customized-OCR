@@ -406,7 +406,13 @@ public class BlockItemUtils {
             if(value.equals(tempValue)  &&  name.equals(tempName)){
                 return true;
             }
+
+            if(name.equals(tempName) && !value.equals(tempValue) ){
+                logger.warn("Key[{}]   预计：[{}]   实际: [{}]", name, value, tempName );
+                return false;
+            }
         }
+
         return false;
     }
 

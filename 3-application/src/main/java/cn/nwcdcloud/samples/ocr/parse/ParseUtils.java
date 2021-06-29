@@ -43,7 +43,7 @@ public class ParseUtils {
      * @param value
      * @return
      */
-    private static String getItemNumericalValue(String value, int direction){
+    public static String getItemNumericalValue(String value, int direction){
         if(!StringUtils.hasLength(value)){
             return value;
         }
@@ -67,8 +67,9 @@ public class ParseUtils {
         }
 
 
-//        value = value.replaceAll("[^0-9.-]", "");
+
         value = remainNumberString(value, direction);
+        value = value.replaceAll("[^0-9.,-]", "");
         return retainFixedLength(value);
     }
 
