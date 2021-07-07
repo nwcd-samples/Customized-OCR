@@ -1,4 +1,10 @@
 #this project specific
+1-training/container/ch_ppocr_server_v2.0_rec_pre/*
+1-training/container/dockersource/*
+1-training/container/local_test/checkpoints/*
+1-training/container/local_test/input/data/*
+1-training/container/local_test/model/*
+1-training/model_data.txt
 2-inference/dockersource/*
 
 

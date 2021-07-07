@@ -37,7 +37,7 @@ COPY aws /root/.aws
 WORKDIR /opt/ml/code
 COPY dockersource ./
 RUN pip install -r requirements.txt -i https://opentuna.cn/pypi/web/simple
-        
+
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
 # keeps Python from writing the .pyc files which are unnecessary in this case. We also update

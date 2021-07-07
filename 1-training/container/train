@@ -1,0 +1,42 @@
+#! /bin/bash
+hpfile=/opt/ml/input/config/hyperparameters.json
+echo "========hyperparameters======="
+cat $hpfile
+echo ""
+
+training_file="/opt/ml/input/data/training/training.zip"
+if [ ! -f "${training_file}" ];then
+    echo "Not exist ${training_file},train end"
+    exit 1
+fi
+
+validation_file="/opt/ml/input/data/validation/validation.zip"
+if [ ! -f "${validation_file}" ];then
+    echo "Not exist ${validation_file},train end"
+    exit 1
+fi
+
+echo "Exist ${training_file},begin unzip"
+unzip -q -d /tmp/training/ ${training_file}
+echo "${training_file} unzip ok."
+
+echo "Exist ${validation_file},begin unzip"
+unzip -q -d /tmp/validation/ ${validation_file}
+echo "${validation_file} unzip ok."
+
+
+hp=$(cat $hpfile |jq -r -c 'to_entries | .[] | .key + "=" + .value ' | tr '\n' ' ')
+gpu=$(cat $hpfile |jq -r ".gpu")
+if [[ "$gpu" == "null" || "$gpu" == "0" ]]; then
+  echo python3 tools/train.py -c rec_chinese_common_train_v2.0.yml -o $hp
+  python3 tools/train.py -c rec_chinese_common_train_v2.0.yml -o $hp
+else
+  echo python3 -m paddle.distributed.launch --gpus "$gpu" tools/train.py -c rec_chinese_common_train_v2.0.yml -o $hp
+  python3 -m paddle.distributed.launch --gpus "$gpu" tools/train.py -c rec_chinese_common_train_v2.0.yml -o $hp
+fi
+
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/latest.* /opt/ml/model/
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/train.log /opt/ml/model/
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/config.yml /opt/ml/model/
+
+echo "train end."
