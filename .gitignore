@@ -105,3 +105,10 @@ cdk.context.json
 *dockersource
 */model
 *model
+*/ch_ppocr_server_v2.0_rec_pre
+*ch_ppocr_server_v2.0_rec_pre
+*input/data/
+*/input/data/
+1_1-training_local/container/local_test/input/data/training/
+1_1-training_local/container/local_test/checkpoints/
+1_1-training_local/container/local_test/input/data/validation/
