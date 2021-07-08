@@ -62,7 +62,7 @@ Train:
   dataset:
     name: SimpleDataSet
     data_dir: /tmp/training/
-    label_file_list: ["/tmp/training/training.txt"]
+    label_file_list: ["/tmp/training/label.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -83,7 +83,7 @@ Eval:
   dataset:
     name: SimpleDataSet
     data_dir: /tmp/validation/
-    label_file_list: ["/tmp/validation/validation.txt"]
+    label_file_list: ["/tmp/validation/label.txt"]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
