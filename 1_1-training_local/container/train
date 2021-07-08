@@ -1,0 +1,25 @@
+#! /bin/bash
+hpfile=/opt/ml/input/config/hyperparameters.json
+echo "========hyperparameters======="
+cat $hpfile
+echo ""
+
+echo "---------------------------  Train Start ------------------- "
+
+
+
+hp=$(cat $hpfile |jq -r -c 'to_entries | .[] | .key + "=" + .value ' | tr '\n' ' ')
+gpu=$(cat $hpfile |jq -r ".gpu")
+if [[ "$gpu" == "null" || "$gpu" == "0" ]]; then
+  echo python3 tools/train.py -c /opt/ml/rec_chinese_common_train_v2.0.yml -o $hp
+  python3 tools/train.py -c /opt/ml/rec_chinese_common_train_v2.0.yml -o $hp
+else
+  echo python3 -m paddle.distributed.launch --gpus "$gpu" tools/train.py -c /opt/ml/rec_chinese_common_train_v2.0.yml -o $hp
+  python3 -m paddle.distributed.launch --gpus "$gpu" tools/train.py -c /opt/ml/rec_chinese_common_train_v2.0.yml -o $hp
+fi
+
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/latest.* /opt/ml/model/
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/train.log /opt/ml/model/
+cp /opt/ml/checkpoints/rec_chinese_common_v2.0/config.yml /opt/ml/model/
+
+echo "----------------------------  Train End  ------------------- "
