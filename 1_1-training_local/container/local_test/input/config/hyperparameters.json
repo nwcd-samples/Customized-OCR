@@ -1,4 +1,0 @@
-{
-    "Train.loader.batch_size_per_card": "128",
-    "gpu":"0"
-}
