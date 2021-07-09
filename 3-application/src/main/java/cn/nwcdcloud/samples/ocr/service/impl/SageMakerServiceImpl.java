@@ -33,6 +33,8 @@ public class SageMakerServiceImpl implements SageMakerService {
 	private int instanceCount;
 	@Value("${imageUri}")
 	private String imageUri;
+	@Value("${modelUri}")
+	private String modelUri;
 	@Value("${endpointName}")
 	private String endpointName;
 	@Value("${instanceType}")
@@ -43,21 +45,21 @@ public class SageMakerServiceImpl implements SageMakerService {
 
 	@Override
 	public Result deploy() {
-		Result result = createModel(imageUri, endpointName);
+		Result result = createModel();
 		if (result.getCode() != CommonConstants.NORMAL) {
 			return result;
 		}
 
 		String modelName = (String) result.getData();
-		result = createEndpointConfig(endpointName, modelName, instanceType);
+		result = createEndpointConfig(modelName);
 		if (result.getCode() != CommonConstants.NORMAL) {
 			return result;
 		}
-		result = createEndpoint(endpointName);
+		result = createEndpoint();
 		return result;
 	}
 
-	private Result createEndpoint(String endpointName) {
+	private Result createEndpoint() {
 		Result result = new Result();
 		SageMakerClient client = SageMakerClient.create();
 		CreateEndpointRequest request = CreateEndpointRequest.builder().endpointName(endpointName)
@@ -66,7 +68,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		return result;
 	}
 
-	private Result createEndpointConfig(String endpointName, String modelName, String instanceType) {
+	private Result createEndpointConfig(String modelName) {
 		Result result = new Result();
 		SageMakerClient client = SageMakerClient.create();
 		ProductionVariant productionVariant = ProductionVariant.builder().instanceType(instanceType)
@@ -77,7 +79,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		return result;
 	}
 
-	private Result createModel(String imageUri, String endpointName) {
+	private Result createModel() {
 		Result result = iamService.getRoleArn();
 		if (result.getCode() != CommonConstants.NORMAL) {
 			return result;
@@ -86,7 +88,7 @@ public class SageMakerServiceImpl implements SageMakerService {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
 		String modelName = endpointName + "-inference-" + df.format(new Date());
 		SageMakerClient client = SageMakerClient.create();
-		ContainerDefinition container = ContainerDefinition.builder().image(imageUri).build();
+		ContainerDefinition container = ContainerDefinition.builder().image(imageUri).modelDataUrl(modelUri).build();
 		CreateModelRequest request = CreateModelRequest.builder().modelName(modelName).executionRoleArn(roleArn)
 				.primaryContainer(container).build();
 		try {
