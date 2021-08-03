@@ -1,27 +1,14 @@
 # -*- coding:utf-8 -*-
 # 该文件有修改，主要修改logger以及输出格式
 # 该文件原始路径：deploy/hubserving/ocr_system/module.py
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import os
 import sys
 sys.path.insert(0, ".")
 
-import argparse
-import ast
-import copy
-import math
 import time
-
-from paddle.fluid.core import AnalysisConfig, create_paddle_predictor, PaddleTensor
 from PIL import Image
 import cv2
-import numpy as np
-import paddle.fluid as fluid
-
-from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
 import uuid
 
