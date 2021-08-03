@@ -26,6 +26,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	@Override
 	public Result analyse(String type, JSONObject jsonData) {
+		long begin = System.currentTimeMillis();
 		if (logger.isDebugEnabled()) {
 			logger.debug(JSON.toJSONString(jsonData));
 		}
@@ -43,6 +44,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 			logger.debug(resultJson.toJSONString());
 		}
 		result.setData(resultJson);
+		long end = System.currentTimeMillis();
+		logger.debug("解析执行{}毫秒", (end - begin));
 		return result;
 	}
 

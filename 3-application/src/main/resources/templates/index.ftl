@@ -20,7 +20,7 @@
 			<#if recognitionType == 1>
 			
             <div style="margin-top:20px">
-                OCR推理服务状态: <b id="status">获取状态中</b>
+                ${endpointName}推理服务状态: <b id="status">获取状态中</b>
             </div>
 
             <div style="margin-top:20px">
