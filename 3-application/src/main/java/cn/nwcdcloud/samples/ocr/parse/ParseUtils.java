@@ -146,18 +146,13 @@ public class ParseUtils {
         boolean outsideContainFlag = item.getDouble("xMin") <= middleX
                 && item.getDouble("xMax")>= middleX && item.getDouble("widthRate") >= columnItem.getDouble("widthRate") ;
 
-        if(item.getString("text").equals("10.00") && columnItem.getString("text").equals("金额")){
-
-        }
 
         if(columnItem.getDouble("widthRate") < 0.06){
             outsideContainFlag = item.getDouble("xMin") <= columnItem.getDouble("xMin")
                     && item.getDouble("xMax")>= columnItem.getDouble("xMax") && item.getDouble("widthRate") >= columnItem.getDouble("widthRate") ;
 
         }
-//        if(item.getString("text").equals("10.00") && columnItem.getString("text").equals("金额")) {
-//            logger.warn("--------------  insideContainFlag={}   outsideContainFlag={} ", insideContainFlag, outsideContainFlag);
-//        }
+
         return insideContainFlag || outsideContainFlag;
     }
 

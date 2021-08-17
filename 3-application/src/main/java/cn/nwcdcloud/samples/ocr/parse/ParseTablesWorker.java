@@ -582,8 +582,11 @@ public class ParseTablesWorker {
                 List<JSONObject> cellList = new ArrayList<>();
                 for(JSONObject item: blockItemList){
 
-                    if( ParseUtils.isContainItemInRow(item, columnItem)  && item.getDouble("yMin")>= top &&
-                       item.getDouble("yMax")<= bottom ){
+                    if(item.getString("id").equals(columnItem.getString("id"))){
+                        continue;
+                    }
+                    if( ParseUtils.isContainItemInRow(item, columnItem)  && item.getDouble("yMin")> top    &&
+                       item.getDouble("yMax")<= bottom   ){
                         cellList.add(item);
                         if(DEBUG_PARSE_TABLE ){
                             logger.debug("\t【找到第{}元素】\t{} ",
