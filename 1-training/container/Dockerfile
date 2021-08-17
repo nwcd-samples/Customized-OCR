@@ -21,8 +21,7 @@ RUN apt-get install -y --no-install-recommends \
     libxrender-dev \
     zlib1g-dev
 
-RUN apt-get install -y --no-install-recommends nginx net-tools\
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y --no-install-recommends jq unzip
 
 RUN curl -L -o ~/miniconda.sh https://nwcd-samples.s3.cn-northwest-1.amazonaws.com.cn/software/miniconda/Miniconda3-latest-Linux-x86_64.sh \
  && chmod +x ~/miniconda.sh \
@@ -31,25 +30,11 @@ RUN curl -L -o ~/miniconda.sh https://nwcd-samples.s3.cn-northwest-1.amazonaws.c
 RUN conda update -n base conda
 RUN conda install -y python=$PYTHON_VERSION
 
-RUN pip install flask gevent gunicorn boto3 -i https://opentuna.cn/pypi/web/simple && \
-        rm -rf /root/.cache
-
 RUN conda install paddlepaddle-gpu==2.0.2 cudatoolkit=10.1 -c paddle
-COPY aws /root/.aws
-WORKDIR /opt/ml/code
+WORKDIR /opt/code
+ENV PATH="/opt/code:${PATH}"
 COPY dockersource ./
 RUN pip install -r requirements.txt -i https://opentuna.cn/pypi/web/simple
-
-
-# Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
-# output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
-# keeps Python from writing the .pyc files which are unnecessary in this case. We also update
-# PATH so that the train and serve programs are found when the container is invoked.
-
-ENV PYTHONUNBUFFERED=TRUE
-ENV PYTHONDONTWRITEBYTECODE=TRUE
-ENV PATH="/opt/ml/code/:${PATH}"
-ENV USE_GPU=True
-ENV CUDA_VISIBLE_DEVICES=0
-
-ENTRYPOINT ["python3"]
+COPY ch_ppocr_server_v2.0_rec_pre/ pretrain_models/ch_ppocr_server_v2.0_rec_pre/
+COPY rec_chinese_common_train_v2.0.yml ./     
+COPY train ./

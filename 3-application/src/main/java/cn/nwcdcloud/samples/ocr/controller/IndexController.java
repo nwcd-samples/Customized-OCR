@@ -32,6 +32,8 @@ public class IndexController {
 	private String uploadType;
 	@Value("${recognition.type}")
 	private int recognitionType;
+	@Value("${endpointName}")
+	private String endpointName;
 	private static Map<String, String> mapOcrType = new HashMap<>();
 	{
 		mapOcrType.put("id", "身份证识别");
@@ -45,6 +47,7 @@ public class IndexController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("version", manifestService.get("Implementation-Version"));
 		mv.addObject("recognitionType", recognitionType);
+		mv.addObject("endpointName", endpointName);
 		mv.setViewName("index");
 		return mv;
 	}

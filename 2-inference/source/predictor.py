@@ -11,7 +11,6 @@ from deploy.hubserving.ocr_system.module import OCRSystem
 DEBUG = False
 from my_logging import get_logger
 logger = get_logger('predictor')
-logger.info("test")
 
 # The flask app for serving predictions
 app = flask.Flask(__name__)
